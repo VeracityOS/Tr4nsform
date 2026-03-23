@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Colour Palette</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ────────────────────────────────────────────
+   TR4NSFORM DESIGN SYSTEM — PALETTE REFERENCE
+   Extracted from tr4nsform.me + extended
+   v1.0 · March 2026
+──────────────────────────────────────────── */
+
+:root {
+  /* ── SITE EXTRACTED (live values from tr4nsform.me) ── */
+  --site-void:         #080910;
+  --site-bg:           #0D0F1C;
+  --site-surface:      #181828;
+  --site-panel:        rgba(14, 16, 24, 0.78);
+  --site-border:       rgba(255,255,255,0.10);
+  --site-btn:          rgba(255,255,255,0.06);
+  --site-text:         rgba(255,255,255,0.92);
+  --site-muted:        rgba(255,255,255,0.55);
+  --site-accent-cool:  #e0e6ff;
+  --site-shadow:       0 30px 80px rgba(0,0,0,0.45);
+
+  /* ── PROPOSED EXTENDED PALETTE ── */
+
+  /* Void — backgrounds */
+  --void-deep:    #080910;
+  --void:         #0D0F1C;
+  --void-surface: #131525;
+  --void-raised:  #1A1C30;
+  --void-float:   #20223A;
+
+  /* Text hierarchy */
+  --text:         #F0F4FF;
+  --text-2:       rgba(240,244,255,0.72);
+  --text-muted:   rgba(240,244,255,0.45);
+  --text-subtle:  rgba(240,244,255,0.22);
+
+  /* Bio — Bioluminescent Teal (primary) */
+  --bio:          #2ED8B8;
+  --bio-bright:   #4EFAD8;
+  --bio-dim:      #1A8C78;
+  --bio-glass:    rgba(46,216,184,0.12);
+  --bio-glow:     0 0 24px rgba(46,216,184,0.4);
+
+  /* Neural — Violet (psychedelic, consciousness) */
+  --neural:       #9D7AFF;
+  --neural-bright:#BDA4FF;
+  --neural-dim:   #5C44A8;
+  --neural-glass: rgba(157,122,255,0.12);
+  --neural-glow:  0 0 24px rgba(157,122,255,0.35);
+
+  /* Vital — Gold (longevity, apex, premium) */
+  --vital:        #E8C46A;
+  --vital-bright: #FFDC8A;
+  --vital-dim:    #9A7E3A;
+  --vital-glass:  rgba(232,196,106,0.10);
+  --vital-glow:   0 0 20px rgba(232,196,106,0.3);
+
+  /* Regen — Cellular Green (recovery, gut, energy) */
+  --regen:        #3EDB90;
+  --regen-bright: #62F5AC;
+  --regen-dim:    #228052;
+  --regen-glass:  rgba(62,219,144,0.10);
+  --regen-glow:   0 0 20px rgba(62,219,144,0.3);
+
+  /* Signal — Electric Blue (clinical, diagnostic) */
+  --signal:       #4AB4F5;
+  --signal-bright:#7ACEFF;
+  --signal-dim:   #2278A8;
+  --signal-glass: rgba(74,180,245,0.10);
+
+  /* Borders & glass */
+  --border:        rgba(255,255,255,0.08);
+  --border-mid:    rgba(255,255,255,0.14);
+  --border-bright: rgba(255,255,255,0.22);
+  --glass:         rgba(255,255,255,0.04);
+  --glass-hover:   rgba(255,255,255,0.07);
+  --glass-active:  rgba(255,255,255,0.10);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── atmospheric background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(157,122,255,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 85% 100%, rgba(46,216,184,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(232,196,106,0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+/* ── HEADER ── */
+.hero {
+  padding: 64px 0 56px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 64px;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bio);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--bio-glass), transparent);
+  max-width: 200px;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+h1 span { color: var(--bio); }
+
+.hero-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.source-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 8px;
+  background: var(--glass);
+  border: 1px solid var(--border-mid);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.source-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--bio);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--bio); }
+  50% { opacity: 0.4; box-shadow: none; }
+}
+
+/* ── SECTION HEADINGS ── */
+.s-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 6px;
+}
+
+.s-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.s-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+.section { margin-bottom: 72px; }
+
+/* ── EXTRACTED COLORS GRID ── */
+.extracted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.ext-swatch {
+  padding: 20px 18px;
+  position: relative;
+  cursor: default;
+  transition: transform 0.15s;
+}
+
+.ext-swatch:hover { transform: scale(1.02); z-index: 2; }
+
+.ext-swatch-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.ext-swatch-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  opacity: 0.65;
+  letter-spacing: 0.05em;
+}
+
+.ext-swatch-role {
+  font-size: 10px;
+  margin-top: 8px;
+  opacity: 0.55;
+  line-height: 1.5;
+}
+
+/* ── MAIN PALETTE ── */
+.palette-group {
+  margin-bottom: 48px;
+}
+
+.pg-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.pg-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pg-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.pg-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.swatch-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.swatch {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.swatch:hover {
+  transform: translateY(-3px);
+  z-index: 2;
+}
+
+.swatch-color {
+  height: 72px;
+  position: relative;
+}
+
+.swatch-color::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent);
+}
+
+.swatch-info {
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.3);
+}
+
+.swatch-var {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+}
+
+.swatch-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 3px;
+}
+
+.swatch-name {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ── GLASS & ALPHA SWATCHES ── */
+.glass-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.glass-swatch {
+  border-radius: 6px;
+  padding: 20px 16px;
+  position: relative;
+  background: var(--void-surface);
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.gs-inner {
+  border-radius: 4px;
+  padding: 14px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.gs-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.gs-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.gs-use {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── USAGE DEMOS ── */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.demo-card {
+  border-radius: 10px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  background: var(--void-surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+}
+
+.demo-card.bio::before  { background: linear-gradient(90deg, transparent, var(--bio), transparent); }
+.demo-card.neural::before { background: linear-gradient(90deg, transparent, var(--neural), transparent); }
+.demo-card.vital::before { background: linear-gradient(90deg, transparent, var(--vital), transparent); }
+.demo-card.regen::before { background: linear-gradient(90deg, transparent, var(--regen), transparent); }
+
+.demo-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.demo-card.bio .demo-tag    { background: var(--bio-glass); color: var(--bio); border: 1px solid rgba(46,216,184,0.25); }
+.demo-card.neural .demo-tag { background: var(--neural-glass); color: var(--neural); border: 1px solid rgba(157,122,255,0.25); }
+.demo-card.vital .demo-tag  { background: var(--vital-glass); color: var(--vital); border: 1px solid rgba(232,196,106,0.25); }
+.demo-card.regen .demo-tag  { background: var(--regen-glass); color: var(--regen); border: 1px solid rgba(62,219,144,0.25); }
+
+.demo-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.demo-card.bio .demo-title    { color: var(--bio); }
+.demo-card.neural .demo-title { color: var(--neural); }
+.demo-card.vital .demo-title  { color: var(--vital); }
+.demo-card.regen .demo-title  { color: var(--regen); }
+
+.demo-text { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
+
+.demo-btn {
+  margin-top: 16px;
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.demo-card.bio .demo-btn    { background: var(--bio); color: #0D0F1C; }
+.demo-card.neural .demo-btn { background: var(--neural); color: #0D0F1C; }
+.demo-card.vital .demo-btn  { background: var(--vital); color: #0D0F1C; }
+.demo-card.regen .demo-btn  { background: var(--regen); color: #0D0F1C; }
+
+/* ── GRADIENT SHOWCASE ── */
+.grad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.grad-swatch {
+  border-radius: 8px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.grad-info {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+}
+
+.grad-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.grad-val {
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  font-family: 'JetBrains Mono', monospace;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+/* ── PROTOCOL COLOUR MAP ── */
+.proto-map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.proto-item {
+  padding: 14px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--void-surface);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.15s;
+}
+
+.proto-item:hover { background: var(--glass-hover); }
+
+.proto-dot-wrap {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.proto-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 1px;
+}
+
+.proto-evoc {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── CSS OUTPUT ── */
+.code-block {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.code-header {
+  padding: 10px 18px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.code-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--bio);
+  text-transform: uppercase;
+}
+
+.code-file {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+pre {
+  background: #060810;
+  padding: 24px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+
+.c-comment { color: #3D5068; }
+.c-var { color: var(--bio); }
+.c-val-void { color: #6B7FA8; }
+.c-val-bio { color: var(--bio); }
+.c-val-neural { color: var(--neural); }
+.c-val-vital { color: var(--vital); }
+.c-val-regen { color: var(--regen); }
+.c-val-text { color: rgba(240,244,255,0.6); }
+
+/* ── TYPOGRAPHY PREVIEW ── */
+.type-demo {
+  padding: 32px;
+  background: var(--void-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 28px;
+}
+
+.type-row {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.type-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+.type-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-subtle);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 28px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ft-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.ft-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+}
+
+@media(max-width:768px){
+  .wrap, footer { padding-left: 20px; padding-right: 20px; }
+  .swatch-row { grid-template-columns: repeat(3,1fr); }
+  .demo-grid, .grad-grid, .proto-map { grid-template-columns: 1fr; }
+  .extracted-grid { grid-template-columns: 1fr 1fr; }
+  h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">tr4nsform.me · extracted + extended</div>
+  <h1>Colour<br/><span>Palette</span></h1>
+  <p class="hero-desc">Scanned from the live site. Extended into a full design system. Built around the visual language of biological intelligence — dark, bioluminescent, conscious, clinical.</p>
+  <div class="source-pill">
+    <div class="source-dot"></div>
+    Extracted from tr4nsform.me · Webflow CSS · Custom inline styles · March 2026
+  </div>
+</div>
+
+
+<!-- SECTION 01: EXTRACTED LIVE COLORS -->
+<div class="section">
+  <div class="s-label">01 · Source</div>
+  <div class="s-title">What the site is using now</div>
+  <div class="s-desc">Colors extracted directly from the live Webflow CSS and custom style blocks at tr4nsform.me. These are the actual values in production.</div>
+
+  <div class="extracted-grid">
+
+    <div class="ext-swatch" style="background:#080910; color:#fff;">
+      <div class="ext-swatch-name">Void Deep</div>
+      <div class="ext-swatch-hex">#080910</div>
+      <div class="ext-swatch-role">Deepest background<br/>body base</div>
+    </div>
+
+    <div class="ext-swatch" style="background:#181828; color:#fff;">
+      <div class="ext-swatch-name">Surface</div>
+      <div class="ext-swatch-hex">#181828</div>
+      <div class="ext-swatch-role">Nav dropdowns<br/>panels, cards</div>
+    </div>
+
+    <div class="ext-swatch" style="background:rgba(14,16,24,0.78); color:#fff; border:1px solid rgba(255,255,255,0.08);">
+      <div class="ext-swatch-name">Panel Glass</div>
+      <div class="ext-swatch-hex">rgba(14,16,24, .78)</div>
+      <div class="ext-swatch-role">Floating panels<br/>nav background</div>
+    </div>
+
+    <div class="ext-swatch" style="background:#ffffff; color:#181828;">
+      <div class="ext-swatch-name">Primary Text</div>
+      <div class="ext-swatch-hex">rgba(255,255,255, .92)</div>
+      <div class="ext-swatch-role">Headings<br/>main body copy</div>
+    </div>
+
+    <div class="ext-swatch" style="background:rgba(255,255,255,0.55); color:#181828;">
+      <div class="ext-swatch-name">Muted Text</div>
+      <div class="ext-swatch-hex">rgba(255,255,255, .55)</div>
+      <div class="ext-swatch-role">Subheadings<br/>labels, metadata</div>
+    </div>
+
+    <div class="ext-swatch" style="background:#e0e6ff; color:#181828;">
+      <div class="ext-swatch-name">Dropdown Text</div>
+      <div class="ext-swatch-hex">#e0e6ff</div>
+      <div class="ext-swatch-role">Nav sub-items<br/>cool accent text</div>
+    </div>
+
+    <div class="ext-swatch" style="background:rgba(255,255,255,0.10); color:#fff; border:1px solid rgba(255,255,255,0.12);">
+      <div class="ext-swatch-name">Border / Button</div>
+      <div class="ext-swatch-hex">rgba(255,255,255, .10)</div>
+      <div class="ext-swatch-role">Button borders<br/>dividers</div>
+    </div>
+
+    <div class="ext-swatch" style="background:rgba(255,255,255,0.06); color:#fff; border:1px solid rgba(255,255,255,0.12);">
+      <div class="ext-swatch-name">Button BG</div>
+      <div class="ext-swatch-hex">rgba(255,255,255, .06)</div>
+      <div class="ext-swatch-role">Glass buttons<br/>inactive states</div>
+    </div>
+
+    <div class="ext-swatch" style="background:rgba(20,20,30,0.97); color:#fff;">
+      <div class="ext-swatch-name">Overlay</div>
+      <div class="ext-swatch-hex">rgba(20,20,30, .97)</div>
+      <div class="ext-swatch-role">Mobile nav overlay<br/>modal backdrops</div>
+    </div>
+
+  </div>
+
+  <p style="font-size:11px; color:var(--text-subtle); font-family:'JetBrains Mono',monospace; letter-spacing:.08em; margin-top:8px;">
+    Note: site uses Webflow default blues (#0050bd, #3898ec) only in Webflow system UI — not custom brand colors.
+  </p>
+</div>
+
+
+<!-- SECTION 02: PROPOSED PALETTE -->
+<div class="section">
+  <div class="s-label">02 · Extended System</div>
+  <div class="s-title">Proposed brand palette</div>
+  <div class="s-desc">Built from the site's existing dark foundation. Five accent families drawn from the biology of transformation — bioluminescence, neural activity, cellular gold, regeneration, and clinical signal. Each anchors a protocol family.</div>
+
+  <!-- VOID -->
+  <div class="palette-group">
+    <div class="pg-header">
+      <div class="pg-dot" style="background: linear-gradient(135deg, #080910, #1A1C30);"></div>
+      <span class="pg-name">VOID</span>
+      <span class="pg-desc">Background depth system · 5 levels</span>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch" style="box-shadow: var(--bio-glow)">
+        <div class="swatch-color" style="background:#080910;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--void-deep</div>
+          <div class="swatch-hex">#080910</div>
+          <div class="swatch-name">Body base</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#0D0F1C;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--void</div>
+          <div class="swatch-hex">#0D0F1C</div>
+          <div class="swatch-name">Page bg</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#131525;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--void-surface</div>
+          <div class="swatch-hex">#131525</div>
+          <div class="swatch-name">Cards</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1A1C30;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--void-raised</div>
+          <div class="swatch-hex">#1A1C30</div>
+          <div class="swatch-name">Elevated</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#20223A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--void-float</div>
+          <div class="swatch-hex">#20223A</div>
+          <div class="swatch-name">Hover state</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIO -->
+  <div class="palette-group">
+    <div class="pg-header">
+      <div class="pg-dot" style="background: var(--bio);"></div>
+      <span class="pg-name" style="color:var(--bio)">BIO</span>
+      <span class="pg-desc">Bioluminescent Teal · Primary accent · CTAs, active, interactive</span>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4EFAD8;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--bio-bright</div>
+          <div class="swatch-hex">#4EFAD8</div>
+          <div class="swatch-name">Highlight</div>
+        </div>
+      </div>
+      <div class="swatch" style="box-shadow: 0 0 20px rgba(46,216,184,0.5);">
+        <div class="swatch-color" style="background:#2ED8B8; position:relative;">
+          <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.4);border-radius:2px;padding:2px 6px;font-family:'JetBrains Mono',monospace;font-size:8px;color:#fff;letter-spacing:.1em;">PRIMARY</div>
+        </div>
+        <div class="swatch-info">
+          <div class="swatch-var">--bio</div>
+          <div class="swatch-hex">#2ED8B8</div>
+          <div class="swatch-name">Primary CTA</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1A8C78;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--bio-dim</div>
+          <div class="swatch-hex">#1A8C78</div>
+          <div class="swatch-name">Dim / border</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(46,216,184,0.12); border:1px solid rgba(46,216,184,0.2);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--bio-glass</div>
+          <div class="swatch-hex">rgba(46,216,184, .12)</div>
+          <div class="swatch-name">Glass tint</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #2ED8B8, #4EFAD8);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">gradient-bio</div>
+          <div class="swatch-hex">bio → bio-bright</div>
+          <div class="swatch-name">CTA gradient</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px; color:var(--text-subtle); margin-top:6px; font-family:'JetBrains Mono',monospace;">
+      Use on: CTA buttons · active nav items · progress indicators · links · focus rings · protocol tags
+    </p>
+  </div>
+
+  <!-- NEURAL -->
+  <div class="palette-group">
+    <div class="pg-header">
+      <div class="pg-dot" style="background: var(--neural);"></div>
+      <span class="pg-name" style="color:var(--neural)">NEURAL</span>
+      <span class="pg-desc">Consciousness Violet · Psychedelic, brain, mood protocols</span>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#BDA4FF;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--neural-bright</div>
+          <div class="swatch-hex">#BDA4FF</div>
+          <div class="swatch-name">Highlight</div>
+        </div>
+      </div>
+      <div class="swatch" style="box-shadow: 0 0 18px rgba(157,122,255,0.45);">
+        <div class="swatch-color" style="background:#9D7AFF;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--neural</div>
+          <div class="swatch-hex">#9D7AFF</div>
+          <div class="swatch-name">Main</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#5C44A8;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--neural-dim</div>
+          <div class="swatch-hex">#5C44A8</div>
+          <div class="swatch-name">Dim</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(157,122,255,0.12); border:1px solid rgba(157,122,255,0.2);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--neural-glass</div>
+          <div class="swatch-hex">rgba(157,122,255, .12)</div>
+          <div class="swatch-name">Glass tint</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #9D7AFF, #2ED8B8);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">gradient-consciousness</div>
+          <div class="swatch-hex">neural → bio</div>
+          <div class="swatch-name">Psychedelic</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px; color:var(--text-subtle); margin-top:6px; font-family:'JetBrains Mono',monospace;">
+      Use on: Brain · Mood · Flow protocols · psychedelic therapy section · consciousness copy
+    </p>
+  </div>
+
+  <!-- VITAL -->
+  <div class="palette-group">
+    <div class="pg-header">
+      <div class="pg-dot" style="background: var(--vital);"></div>
+      <span class="pg-name" style="color:var(--vital)">VITAL</span>
+      <span class="pg-desc">Longevity Gold · Premium, Apex tier, ancient wisdom</span>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FFDC8A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--vital-bright</div>
+          <div class="swatch-hex">#FFDC8A</div>
+          <div class="swatch-name">Highlight</div>
+        </div>
+      </div>
+      <div class="swatch" style="box-shadow: 0 0 16px rgba(232,196,106,0.4);">
+        <div class="swatch-color" style="background:#E8C46A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--vital</div>
+          <div class="swatch-hex">#E8C46A</div>
+          <div class="swatch-name">Main</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#9A7E3A;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--vital-dim</div>
+          <div class="swatch-hex">#9A7E3A</div>
+          <div class="swatch-name">Dim</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(232,196,106,0.10); border:1px solid rgba(232,196,106,0.2);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--vital-glass</div>
+          <div class="swatch-hex">rgba(232,196,106, .10)</div>
+          <div class="swatch-name">Glass tint</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #E8C46A, #FFDC8A);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">gradient-vital</div>
+          <div class="swatch-hex">vital → bright</div>
+          <div class="swatch-name">Apex CTA</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px; color:var(--text-subtle); margin-top:6px; font-family:'JetBrains Mono',monospace;">
+      Use on: Longevity · Hormonal · Apex tier badges · retreat pricing · premium highlights
+    </p>
+  </div>
+
+  <!-- REGEN -->
+  <div class="palette-group">
+    <div class="pg-header">
+      <div class="pg-dot" style="background: var(--regen);"></div>
+      <span class="pg-name" style="color:var(--regen)">REGEN</span>
+      <span class="pg-desc">Cellular Green · Recovery, gut, energy, regeneration</span>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#62F5AC;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--regen-bright</div>
+          <div class="swatch-hex">#62F5AC</div>
+          <div class="swatch-name">Highlight</div>
+        </div>
+      </div>
+      <div class="swatch" style="box-shadow: 0 0 16px rgba(62,219,144,0.4);">
+        <div class="swatch-color" style="background:#3EDB90;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--regen</div>
+          <div class="swatch-hex">#3EDB90</div>
+          <div class="swatch-name">Main</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#228052;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--regen-dim</div>
+          <div class="swatch-hex">#228052</div>
+          <div class="swatch-name">Dim</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(62,219,144,0.10); border:1px solid rgba(62,219,144,0.2);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--regen-glass</div>
+          <div class="swatch-hex">rgba(62,219,144, .10)</div>
+          <div class="swatch-name">Glass tint</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #3EDB90, #2ED8B8);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">gradient-regen</div>
+          <div class="swatch-hex">regen → bio</div>
+          <div class="swatch-name">Vitality</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px; color:var(--text-subtle); margin-top:6px; font-family:'JetBrains Mono',monospace;">
+      Use on: Gut · Recovery · Energy protocols · success states · active health indicators
+    </p>
+  </div>
+
+  <!-- SIGNAL -->
+  <div class="palette-group">
+    <div class="pg-header">
+      <div class="pg-dot" style="background: var(--signal);"></div>
+      <span class="pg-name" style="color:var(--signal)">SIGNAL</span>
+      <span class="pg-desc">Clinical Blue · Diagnostics, data, Sleep, Performance</span>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#7ACEFF;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--signal-bright</div>
+          <div class="swatch-hex">#7ACEFF</div>
+          <div class="swatch-name">Highlight</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4AB4F5;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--signal</div>
+          <div class="swatch-hex">#4AB4F5</div>
+          <div class="swatch-name">Main</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2278A8;"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--signal-dim</div>
+          <div class="swatch-hex">#2278A8</div>
+          <div class="swatch-name">Dim</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(74,180,245,0.10); border:1px solid rgba(74,180,245,0.2);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">--signal-glass</div>
+          <div class="swatch-hex">rgba(74,180,245, .10)</div>
+          <div class="swatch-name">Glass tint</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #4AB4F5, #9D7AFF);"></div>
+        <div class="swatch-info">
+          <div class="swatch-var">gradient-clinical</div>
+          <div class="swatch-hex">signal → neural</div>
+          <div class="swatch-name">Clinical</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px; color:var(--text-subtle); margin-top:6px; font-family:'JetBrains Mono',monospace;">
+      Use on: Sleep · Performance · Metabolic · diagnostic data · biometric readouts · TR4RX
+    </p>
+  </div>
+</div>
+
+
+<!-- SECTION 03: PROTOCOL COLOUR MAP -->
+<div class="section">
+  <div class="s-label">03 · Protocol Mapping</div>
+  <div class="s-title">Protocol → colour assignment</div>
+  <div class="s-desc">Each protocol is anchored to an accent family. Consistent colour-to-protocol mapping creates instant recognition across cards, tags, and pathway displays.</div>
+
+  <div class="proto-map">
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(74,180,245,0.12);">🌙</div>
+      <div><div class="proto-name" style="color:var(--signal)">Sleep</div><div class="proto-evoc">Night Architecture · Signal Blue</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(157,122,255,0.12);">🌊</div>
+      <div><div class="proto-name" style="color:var(--neural)">Calm</div><div class="proto-evoc">Nervous System Reset · Neural Violet</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(157,122,255,0.12);">🧠</div>
+      <div><div class="proto-name" style="color:var(--neural)">Brain</div><div class="proto-evoc">Cognitive Dominance · Neural Violet</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(46,216,184,0.12);">⚡</div>
+      <div><div class="proto-name" style="color:var(--bio)">Energy</div><div class="proto-evoc">Mitochondrial Ignition · Bio Teal</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(62,219,144,0.12);">🌱</div>
+      <div><div class="proto-name" style="color:var(--regen)">Gut</div><div class="proto-evoc">Terrain Rebuild · Regen Green</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(46,216,184,0.12);">🔥</div>
+      <div><div class="proto-name" style="color:var(--bio)">Metabolic</div><div class="proto-evoc">Recomposition Engine · Bio Teal</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(232,196,106,0.12);">⚗️</div>
+      <div><div class="proto-name" style="color:var(--vital)">Hormonal</div><div class="proto-evoc">Endocrine Reset · Vital Gold</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(157,122,255,0.12);">💧</div>
+      <div><div class="proto-name" style="color:var(--neural)">Flow</div><div class="proto-evoc">Flow State · Neural Violet</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(62,219,144,0.12);">🩹</div>
+      <div><div class="proto-name" style="color:var(--regen)">Recovery</div><div class="proto-evoc">Regeneration Core · Regen Green</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(46,216,184,0.12);">💪</div>
+      <div><div class="proto-name" style="color:var(--bio)">Performance</div><div class="proto-evoc">Limitless State · Bio Teal</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(157,122,255,0.12);">❤️</div>
+      <div><div class="proto-name" style="color:var(--neural)">Mood</div><div class="proto-evoc">Emotional Sovereignty · Neural Violet</div></div>
+    </div>
+    <div class="proto-item">
+      <div class="proto-dot-wrap" style="background:rgba(232,196,106,0.12);">🧬</div>
+      <div><div class="proto-name" style="color:var(--vital)">Longevity</div><div class="proto-evoc">Future Body · Vital Gold</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 04: GRADIENTS -->
+<div class="section">
+  <div class="s-label">04 · Gradients</div>
+  <div class="s-title">Named gradients</div>
+  <div class="s-desc">Atmospheric gradients for hero sections, cards, and protocol backgrounds. Never use flat color where a gradient reads better.</div>
+
+  <div class="grad-grid">
+    <div class="grad-swatch" style="background: linear-gradient(135deg, #2ED8B8, #4EFAD8);">
+      <div class="grad-info"><div class="grad-name">Bio Primary</div><div class="grad-val">bio → bio-bright</div></div>
+    </div>
+    <div class="grad-swatch" style="background: linear-gradient(135deg, #9D7AFF, #BDA4FF);">
+      <div class="grad-info"><div class="grad-name">Neural</div><div class="grad-val">neural → neural-bright</div></div>
+    </div>
+    <div class="grad-swatch" style="background: linear-gradient(135deg, #E8C46A, #FFDC8A);">
+      <div class="grad-info"><div class="grad-name">Vital Gold</div><div class="grad-val">vital → vital-bright</div></div>
+    </div>
+    <div class="grad-swatch" style="background: linear-gradient(135deg, #9D7AFF, #2ED8B8);">
+      <div class="grad-info"><div class="grad-name">Consciousness</div><div class="grad-val">neural → bio</div></div>
+    </div>
+    <div class="grad-swatch" style="background: linear-gradient(135deg, #3EDB90, #2ED8B8);">
+      <div class="grad-info"><div class="grad-name">Vitality</div><div class="grad-val">regen → bio</div></div>
+    </div>
+    <div class="grad-swatch" style="background: linear-gradient(135deg, #E8C46A, #9D7AFF);">
+      <div class="grad-info"><div class="grad-name">Apex</div><div class="grad-val">vital → neural</div></div>
+    </div>
+    <div class="grad-swatch" style="background: radial-gradient(ellipse at 30% 30%, rgba(46,216,184,0.2), transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(157,122,255,0.15), transparent 55%), #0D0F1C;">
+      <div class="grad-info"><div class="grad-name">Hero Ambient</div><div class="grad-val">bio-glass + neural-glass radial on void</div></div>
+    </div>
+    <div class="grad-swatch" style="background: radial-gradient(ellipse at 20% 0%, rgba(232,196,106,0.12), transparent 50%), radial-gradient(ellipse at 90% 100%, rgba(46,216,184,0.08), transparent 50%), #0D0F1C;">
+      <div class="grad-info"><div class="grad-name">Longevity Ambient</div><div class="grad-val">vital-glass + bio-glass on void</div></div>
+    </div>
+    <div class="grad-swatch" style="background: linear-gradient(180deg, rgba(157,122,255,0.08) 0%, transparent 60%), #131525;">
+      <div class="grad-info"><div class="grad-name">Card Tint · Neural</div><div class="grad-val">neural-glass fade on void-surface</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 05: USAGE DEMOS -->
+<div class="section">
+  <div class="s-label">05 · In Context</div>
+  <div class="s-title">Colour in use</div>
+  <div class="s-desc">How the accents behave at component level — protocol cards, tags, buttons, and tier states.</div>
+
+  <div class="demo-grid">
+    <div class="demo-card bio">
+      <div class="demo-tag">Energy</div>
+      <div class="demo-title">Mitochondrial Performance</div>
+      <div style="font-size:10px; font-style:italic; color:var(--bio); margin-bottom:8px; opacity:0.7;">for Mitochondrial Ignition</div>
+      <div class="demo-text">MOTS-c · NMN · CJC-1295 / Ipamorelin · Rhodiola. 60-day protocol for deep cellular energy restoration and metabolic flexibility.</div>
+      <button class="demo-btn">View Protocol</button>
+    </div>
+    <div class="demo-card neural">
+      <div class="demo-tag">Brain</div>
+      <div class="demo-title">Cognitive Enhancement</div>
+      <div style="font-size:10px; font-style:italic; color:var(--neural); margin-bottom:8px; opacity:0.7;">for Cognitive Dominance</div>
+      <div class="demo-text">Semax · Selank · Dihexa · NMN · Lion's Mane · Green Tea. Full-spectrum neural performance stack for precision cognition.</div>
+      <button class="demo-btn">View Protocol</button>
+    </div>
+    <div class="demo-card vital">
+      <div class="demo-tag">Longevity · Apex</div>
+      <div class="demo-title">Longevity Stack</div>
+      <div style="font-size:10px; font-style:italic; color:var(--vital); margin-bottom:8px; opacity:0.7;">for Future Body</div>
+      <div class="demo-text">Epithalon · GHK-Cu · NMN · FOX-04 DRI · MOTS-c · CJC-1295 / Ipamorelin. The apex longevity protocol — cellular, hormonal, telomeric.</div>
+      <button class="demo-btn">View Protocol</button>
+    </div>
+    <div class="demo-card regen">
+      <div class="demo-tag">Recovery</div>
+      <div class="demo-title">Full Regeneration</div>
+      <div style="font-size:10px; font-style:italic; color:var(--regen); margin-bottom:8px; opacity:0.7;">for Regeneration Core</div>
+      <div class="demo-text">BPC-157 · TB-500 · Thymosin Alpha-1 · KPV. Complete tissue, gut, and immune regeneration across 90 days.</div>
+      <button class="demo-btn">View Protocol</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 06: GLASS & BORDERS -->
+<div class="section">
+  <div class="s-label">06 · Glass System</div>
+  <div class="s-title">Borders, glass, and alpha layers</div>
+  <div class="s-desc">The site is built on frosted glass over dark void. These are the exact alpha values to use — do not improvise new ones.</div>
+
+  <div class="glass-row">
+    <div class="glass-swatch">
+      <div class="gs-inner" style="border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04);">
+        <div class="gs-name">DEFAULT</div>
+        <div class="gs-val">border + glass</div>
+      </div>
+      <div class="gs-name">--border</div>
+      <div class="gs-val" style="margin-bottom:6px;">rgba(255,255,255, 0.08)</div>
+      <div class="gs-name">--glass</div>
+      <div class="gs-val" style="margin-bottom:6px;">rgba(255,255,255, 0.04)</div>
+      <div class="gs-use">Resting state of all cards and panels</div>
+    </div>
+
+    <div class="glass-swatch">
+      <div class="gs-inner" style="border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.07);">
+        <div class="gs-name">HOVER</div>
+        <div class="gs-val">border + glass</div>
+      </div>
+      <div class="gs-name">--border-mid</div>
+      <div class="gs-val" style="margin-bottom:6px;">rgba(255,255,255, 0.14)</div>
+      <div class="gs-name">--glass-hover</div>
+      <div class="gs-val" style="margin-bottom:6px;">rgba(255,255,255, 0.07)</div>
+      <div class="gs-use">Hover / focus state — all interactive elements</div>
+    </div>
+
+    <div class="glass-swatch">
+      <div class="gs-inner" style="border:1px solid rgba(255,255,255,0.22); background:rgba(255,255,255,0.10);">
+        <div class="gs-name">ACTIVE / BRIGHT</div>
+        <div class="gs-val">border + glass</div>
+      </div>
+      <div class="gs-name">--border-bright</div>
+      <div class="gs-val" style="margin-bottom:6px;">rgba(255,255,255, 0.22)</div>
+      <div class="gs-name">--glass-active</div>
+      <div class="gs-val" style="margin-bottom:6px;">rgba(255,255,255, 0.10)</div>
+      <div class="gs-use">Selected / active / pressed states</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 07: CSS OUTPUT -->
+<div class="section">
+  <div class="s-label">07 · Output</div>
+  <div class="s-title">CSS variables — paste ready</div>
+  <div class="s-desc">Drop into your Webflow Custom Code → head, or into any global stylesheet. Overrides Webflow defaults cleanly.</div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">CSS</span>
+      <span class="code-file">global-palette.css · Webflow Custom Code &lt;head&gt;</span>
+    </div>
+<pre><code><span class="c-comment">/* ═══════════════════════════════════════════════
+   TR4NSFORM DESIGN SYSTEM — COLOUR PALETTE v1.0
+   tr4nsform.me · March 2026
+   ═══════════════════════════════════════════════ */</span>
+
+:root {
+
+  <span class="c-comment">/* ── VOID (backgrounds) ───────────────────── */</span>
+  <span class="c-var">--void-deep</span>:     <span class="c-val-void">#080910</span>;    <span class="c-comment">/* body base */</span>
+  <span class="c-var">--void</span>:          <span class="c-val-void">#0D0F1C</span>;    <span class="c-comment">/* page bg */</span>
+  <span class="c-var">--void-surface</span>:  <span class="c-val-void">#131525</span>;    <span class="c-comment">/* cards, panels */</span>
+  <span class="c-var">--void-raised</span>:   <span class="c-val-void">#1A1C30</span>;    <span class="c-comment">/* elevated UI */</span>
+  <span class="c-var">--void-float</span>:    <span class="c-val-void">#20223A</span>;    <span class="c-comment">/* hover bg */</span>
+
+  <span class="c-comment">/* ── TEXT ─────────────────────────────────── */</span>
+  <span class="c-var">--text</span>:          <span class="c-val-text">#F0F4FF</span>;
+  <span class="c-var">--text-2</span>:        <span class="c-val-text">rgba(240,244,255,0.72)</span>;
+  <span class="c-var">--text-muted</span>:    <span class="c-val-text">rgba(240,244,255,0.45)</span>;
+  <span class="c-var">--text-subtle</span>:   <span class="c-val-text">rgba(240,244,255,0.22)</span>;
+
+  <span class="c-comment">/* ── BIO (primary · teal) ─────────────────── */</span>
+  <span class="c-var">--bio</span>:           <span class="c-val-bio">#2ED8B8</span>;
+  <span class="c-var">--bio-bright</span>:    <span class="c-val-bio">#4EFAD8</span>;
+  <span class="c-var">--bio-dim</span>:       <span class="c-val-bio">#1A8C78</span>;
+  <span class="c-var">--bio-glass</span>:     <span class="c-val-bio">rgba(46,216,184,0.12)</span>;
+  <span class="c-var">--bio-glow</span>:      <span class="c-val-bio">0 0 24px rgba(46,216,184,0.4)</span>;
+
+  <span class="c-comment">/* ── NEURAL (violet · consciousness) ─────── */</span>
+  <span class="c-var">--neural</span>:        <span class="c-val-neural">#9D7AFF</span>;
+  <span class="c-var">--neural-bright</span>: <span class="c-val-neural">#BDA4FF</span>;
+  <span class="c-var">--neural-dim</span>:    <span class="c-val-neural">#5C44A8</span>;
+  <span class="c-var">--neural-glass</span>:  <span class="c-val-neural">rgba(157,122,255,0.12)</span>;
+  <span class="c-var">--neural-glow</span>:   <span class="c-val-neural">0 0 24px rgba(157,122,255,0.35)</span>;
+
+  <span class="c-comment">/* ── VITAL (gold · longevity · apex) ─────── */</span>
+  <span class="c-var">--vital</span>:         <span class="c-val-vital">#E8C46A</span>;
+  <span class="c-var">--vital-bright</span>:  <span class="c-val-vital">#FFDC8A</span>;
+  <span class="c-var">--vital-dim</span>:     <span class="c-val-vital">#9A7E3A</span>;
+  <span class="c-var">--vital-glass</span>:   <span class="c-val-vital">rgba(232,196,106,0.10)</span>;
+  <span class="c-var">--vital-glow</span>:    <span class="c-val-vital">0 0 20px rgba(232,196,106,0.3)</span>;
+
+  <span class="c-comment">/* ── REGEN (green · recovery · gut) ──────── */</span>
+  <span class="c-var">--regen</span>:         <span class="c-val-regen">#3EDB90</span>;
+  <span class="c-var">--regen-bright</span>:  <span class="c-val-regen">#62F5AC</span>;
+  <span class="c-var">--regen-dim</span>:     <span class="c-val-regen">#228052</span>;
+  <span class="c-var">--regen-glass</span>:   <span class="c-val-regen">rgba(62,219,144,0.10)</span>;
+  <span class="c-var">--regen-glow</span>:    <span class="c-val-regen">0 0 20px rgba(62,219,144,0.3)</span>;
+
+  <span class="c-comment">/* ── SIGNAL (blue · clinical · sleep) ────── */</span>
+  <span class="c-var">--signal</span>:        <span class="c-val-bio">#4AB4F5</span>;
+  <span class="c-var">--signal-bright</span>: <span class="c-val-bio">#7ACEFF</span>;
+  <span class="c-var">--signal-dim</span>:    <span class="c-val-bio">#2278A8</span>;
+  <span class="c-var">--signal-glass</span>:  <span class="c-val-bio">rgba(74,180,245,0.10)</span>;
+
+  <span class="c-comment">/* ── GLASS & BORDERS ─────────────────────── */</span>
+  <span class="c-var">--border</span>:        <span class="c-val-text">rgba(255,255,255,0.08)</span>;
+  <span class="c-var">--border-mid</span>:    <span class="c-val-text">rgba(255,255,255,0.14)</span>;
+  <span class="c-var">--border-bright</span>: <span class="c-val-text">rgba(255,255,255,0.22)</span>;
+  <span class="c-var">--glass</span>:         <span class="c-val-text">rgba(255,255,255,0.04)</span>;
+  <span class="c-var">--glass-hover</span>:   <span class="c-val-text">rgba(255,255,255,0.07)</span>;
+  <span class="c-var">--glass-active</span>:  <span class="c-val-text">rgba(255,255,255,0.10)</span>;
+
+  <span class="c-comment">/* ── GRADIENTS ───────────────────────────── */</span>
+  <span class="c-var">--grad-bio</span>:          <span class="c-val-bio">linear-gradient(135deg, #2ED8B8, #4EFAD8)</span>;
+  <span class="c-var">--grad-neural</span>:       <span class="c-val-neural">linear-gradient(135deg, #9D7AFF, #BDA4FF)</span>;
+  <span class="c-var">--grad-vital</span>:        <span class="c-val-vital">linear-gradient(135deg, #E8C46A, #FFDC8A)</span>;
+  <span class="c-var">--grad-consciousness</span>:<span class="c-val-neural">linear-gradient(135deg, #9D7AFF, #2ED8B8)</span>;
+  <span class="c-var">--grad-vitality</span>:     <span class="c-val-regen">linear-gradient(135deg, #3EDB90, #2ED8B8)</span>;
+  <span class="c-var">--grad-apex</span>:         <span class="c-val-vital">linear-gradient(135deg, #E8C46A, #9D7AFF)</span>;
+
+}</code></pre>
+  </div>
+</div>
+
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="ft-brand">TR4NSFORM</div>
+  <div class="ft-meta">Colour Palette v1.0 · Extracted from tr4nsform.me · SASCOSM Design System · March 2026</div>
+</footer>
+
+</body>
+</html>

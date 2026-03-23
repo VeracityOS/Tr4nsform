@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TR4NSFORM · Sovereign Peptide Stack Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#000308;
+  --deep:#060c1a;
+  --surface:rgba(8,14,30,0.97);
+  --glass:rgba(255,255,255,0.04);
+  --border:rgba(100,200,255,0.12);
+  --borderhi:rgba(100,200,255,0.35);
+  --gold:#c9a84c;
+  --goldhi:#f0c96e;
+  --cyan:#34d8ff;
+  --cyansoft:rgba(52,216,255,0.15);
+  --plasma:#a855f7;
+  --plasmasoft:rgba(168,85,247,0.15);
+  --emerald:#10b981;
+  --text:#e8f0ff;
+  --textsoft:#6b8aad;
+  --textmid:#9ab0cc;
+  --r:18px;
+  --rs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--void);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* NOISE OVERLAY */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.6;
+}
+
+/* ATMOSPHERIC GLOW */
+.atm{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(120px);
+  pointer-events:none;
+  z-index:0;
+}
+.atm1{width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,rgba(52,216,255,0.06),transparent 70%);}
+.atm2{width:500px;height:500px;bottom:0;left:-150px;background:radial-gradient(circle,rgba(168,85,247,0.07),transparent 70%);}
+.atm3{width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(201,168,76,0.04),transparent 70%);}
+
+/* LAYOUT */
+.wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:0 24px 80px;}
+
+/* HEADER */
+.site-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 0 24px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:60px;
+}
+.logo{
+  font-family:'Syncopate',sans-serif;
+  font-size:15px;
+  letter-spacing:0.35em;
+  font-weight:700;
+}
+.logo span{color:var(--gold);}
+.header-tag{
+  font-family:'DM Mono',monospace;
+  font-size:10px;
+  color:var(--textsoft);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:72px;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;
+  border:1px solid var(--borderhi);
+  border-radius:999px;
+  font-family:'DM Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.18em;
+  color:var(--cyan);
+  margin-bottom:28px;
+  background:var(--cyansoft);
+}
+.hero-eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(52,216,255,0.5)}50%{opacity:.6;box-shadow:0 0 0 6px rgba(52,216,255,0)}}
+.hero h1{
+  font-family:'Syncopate',sans-serif;
+  font-size:clamp(28px,5vw,62px);
+  font-weight:700;
+  letter-spacing:0.12em;
+  line-height:1.1;
+  margin-bottom:20px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--gold),var(--goldhi),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:15px;
+  color:var(--textmid);
+  max-width:560px;
+  margin:0 auto 40px;
+  line-height:1.7;
+}
+
+/* PROGRESS BAR */
+.progress-shell{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  margin-bottom:60px;
+  flex-wrap:wrap;gap:0;
+}
+.progress-step{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 20px;
+  cursor:pointer;
+  transition:opacity .2s;
+}
+.progress-step:not(.active){opacity:.4;}
+.progress-step:not(.active):hover{opacity:.7;}
+.step-num{
+  width:32px;height:32px;
+  border-radius:50%;
+  border:1px solid var(--borderhi);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;
+  font-size:12px;
+  color:var(--textsoft);
+  transition:all .3s;
+}
+.progress-step.active .step-num{
+  background:linear-gradient(135deg,var(--gold),var(--cyan));
+  border-color:transparent;
+  color:#000;
+  font-weight:700;
+  box-shadow:0 0 20px rgba(201,168,76,0.5);
+}
+.progress-step.done .step-num{
+  background:var(--emerald);
+  border-color:transparent;
+  color:#000;
+}
+.step-label{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;}
+.progress-line{width:40px;height:1px;background:var(--border);}
+@media(max-width:600px){.progress-line{width:16px;}.progress-step{padding:8px 10px;}}
+
+/* PANELS */
+.panel{display:none;animation:fadeUp .4s ease;}
+.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-title{
+  font-family:'Syncopate',sans-serif;
+  font-size:13px;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.panel-sub{font-size:14px;color:var(--textmid);margin-bottom:32px;line-height:1.6;}
+
+/* GOAL GRID */
+.goal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:40px;}
+.goal-card{
+  padding:20px 18px;
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  transition:all .25s;
+  position:relative;overflow:hidden;
+}
+.goal-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at top left,rgba(52,216,255,0.06),transparent 60%);
+  opacity:0;transition:opacity .25s;
+}
+.goal-card:hover::before{opacity:1;}
+.goal-card:hover{border-color:var(--borderhi);transform:translateY(-2px);}
+.goal-card.selected{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(52,216,255,0.06));
+}
+.goal-card.selected::after{
+  content:"✓";
+  position:absolute;top:12px;right:14px;
+  font-size:12px;color:var(--gold);
+  width:20px;height:20px;
+  border-radius:50%;
+  background:rgba(201,168,76,0.2);
+  border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+}
+.goal-icon{font-size:24px;margin-bottom:10px;}
+.goal-name{font-size:13px;font-weight:600;letter-spacing:0.05em;margin-bottom:4px;}
+.goal-desc{font-size:11px;color:var(--textsoft);line-height:1.5;}
+
+/* CONDITION TAGS */
+.condition-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px;}
+.condition-tag{
+  padding:9px 16px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  font-size:12px;
+  cursor:pointer;
+  transition:all .2s;
+  letter-spacing:0.05em;
+}
+.condition-tag:hover{border-color:var(--borderhi);}
+.condition-tag.selected{
+  background:rgba(168,85,247,0.2);
+  border-color:var(--plasma);
+  color:#d8b4fe;
+}
+
+/* DATA SOURCE */
+.datasource-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:32px;}
+.ds-card{
+  padding:16px;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--surface);cursor:pointer;transition:all .25s;text-align:center;
+}
+.ds-card:hover{border-color:var(--borderhi);transform:translateY(-2px);}
+.ds-card.connected{border-color:var(--emerald);background:rgba(16,185,129,0.08);}
+.ds-icon{font-size:28px;margin-bottom:10px;}
+.ds-name{font-size:12px;font-weight:600;letter-spacing:0.08em;}
+.ds-status{font-size:10px;color:var(--textsoft);margin-top:4px;font-family:'DM Mono',monospace;}
+.ds-card.connected .ds-status{color:var(--emerald);}
+
+/* PROTOCOL TABLE */
+.protocol-section{margin-bottom:48px;}
+.proto-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:12px;
+}
+.proto-title{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--textsoft);}
+.stack-summary{
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--cyan);
+  padding:4px 12px;
+  border:1px solid rgba(52,216,255,0.3);
+  border-radius:999px;
+  background:var(--cyansoft);
+}
+
+.peptide-row{
+  display:grid;
+  grid-template-columns:2fr 2fr 1.2fr 1fr 1.2fr 80px;
+  gap:12px;align-items:center;
+  padding:16px 18px;
+  border-radius:var(--rs);
+  border:1px solid var(--border);
+  background:var(--surface);
+  margin-bottom:8px;
+  transition:all .2s;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.peptide-row:hover{border-color:var(--borderhi);background:var(--glass);}
+.peptide-row.core{border-color:rgba(201,168,76,0.3);}
+.peptide-row.boost{border-color:rgba(168,85,247,0.25);}
+@media(max-width:900px){
+  .peptide-row{grid-template-columns:1fr 1fr;row-gap:8px;}
+  .p-actions{grid-column:1/-1;display:flex;justify-content:flex-end;}
+}
+@media(max-width:500px){
+  .peptide-row{grid-template-columns:1fr;}
+}
+
+.p-name{font-size:13px;font-weight:600;}
+.p-tag{
+  display:inline-block;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:2px 7px;border-radius:999px;margin-left:6px;
+  background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);color:var(--gold);
+}
+.p-tag.boost{background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#d8b4fe;}
+.p-tag.vial{background:rgba(52,216,255,0.1);border-color:rgba(52,216,255,0.3);color:var(--cyan);}
+.p-tag.oral{background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.3);color:#fde68a;}
+.p-function{font-size:12px;color:var(--textmid);line-height:1.4;}
+.p-dosage{font-family:'DM Mono',monospace;font-size:11px;color:var(--cyan);}
+.p-cycle{font-size:11px;color:var(--textsoft);}
+.p-price{
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+  text-align:right;
+}
+.p-actions{display:flex;gap:6px;justify-content:flex-end;}
+.btn-info{
+  padding:5px 10px;font-size:10px;letter-spacing:0.08em;
+  border:1px solid var(--border);border-radius:6px;background:transparent;
+  color:var(--textsoft);cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif;
+}
+.btn-info:hover{border-color:var(--borderhi);color:var(--text);}
+.btn-remove{
+  padding:5px 8px;font-size:11px;
+  border:1px solid rgba(239,68,68,0.25);border-radius:6px;background:transparent;
+  color:rgba(239,68,68,0.6);cursor:pointer;transition:all .2s;
+}
+.btn-remove:hover{border-color:rgba(239,68,68,0.6);color:#ef4444;}
+
+/* INFO MODAL */
+.info-popup{
+  display:none;
+  position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:24px;
+}
+.info-popup.open{display:flex;}
+.info-box{
+  max-width:500px;width:100%;
+  background:var(--deep);
+  border:1px solid var(--borderhi);
+  border-radius:var(--r);
+  padding:28px;
+  position:relative;
+}
+.info-close{
+  position:absolute;top:14px;right:14px;
+  background:none;border:none;color:var(--textsoft);
+  font-size:18px;cursor:pointer;transition:color .2s;
+}
+.info-close:hover{color:var(--text);}
+.info-name{font-family:'Syncopate',sans-serif;font-size:13px;letter-spacing:0.2em;margin-bottom:14px;color:var(--gold);}
+.info-body{font-size:13px;color:var(--textmid);line-height:1.7;}
+.info-meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;}
+.info-chip{
+  padding:4px 10px;border-radius:999px;font-size:10px;font-family:'DM Mono',monospace;
+  border:1px solid var(--border);color:var(--textsoft);
+}
+
+/* TOTAL BAR */
+.total-bar{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  padding:20px 24px;
+  border-radius:var(--r);
+  border:1px solid rgba(201,168,76,0.3);
+  background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(52,216,255,0.04));
+  margin-bottom:32px;
+}
+.total-label{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--textsoft);}
+.total-amount{
+  font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--goldhi);
+}
+.total-usd{font-size:13px;color:var(--textsoft);margin-left:10px;}
+
+/* DOSAGE CALCULATOR */
+.calc-box{
+  padding:24px;
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  background:var(--surface);
+  margin-bottom:24px;
+}
+.calc-title{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px;}
+.calc-row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin-bottom:16px;}
+.calc-field{flex:1;min-width:140px;}
+.calc-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--textsoft);margin-bottom:6px;font-family:'DM Mono',monospace;}
+.calc-select,.calc-input{
+  width:100%;padding:10px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);border-radius:var(--rs);
+  color:var(--text);font-family:'DM Mono',monospace;font-size:12px;
+  outline:none;transition:border-color .2s;
+  appearance:none;
+}
+.calc-select:focus,.calc-input:focus{border-color:var(--borderhi);}
+.calc-result{
+  padding:16px 20px;
+  border-radius:var(--rs);
+  background:var(--cyansoft);
+  border:1px solid rgba(52,216,255,0.3);
+  font-family:'DM Mono',monospace;font-size:14px;color:var(--cyan);
+}
+.syringe-visual{
+  margin-top:14px;
+  height:32px;background:rgba(52,216,255,0.05);
+  border-radius:6px;border:1px solid rgba(52,216,255,0.2);
+  position:relative;overflow:hidden;
+}
+.syringe-fill{
+  height:100%;background:linear-gradient(90deg,rgba(52,216,255,0.5),rgba(52,216,255,0.25));
+  transition:width .5s ease;border-radius:6px;
+}
+.syringe-marks{
+  position:absolute;inset:0;display:flex;align-items:flex-end;padding-bottom:4px;
+}
+.syringe-mark{
+  flex:1;border-left:1px solid rgba(52,216,255,0.3);
+  height:40%;font-size:8px;color:rgba(52,216,255,0.5);padding-left:2px;
+  font-family:'DM Mono',monospace;
+}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;
+  border-radius:999px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.1em;
+  cursor:pointer;transition:all .25s;border:none;text-transform:uppercase;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--gold),#a8762a);
+  color:#000;
+  box-shadow:0 0 30px rgba(201,168,76,0.3);
+}
+.btn-primary:hover{box-shadow:0 0 50px rgba(201,168,76,0.5);transform:translateY(-2px);}
+.btn-secondary{
+  background:transparent;
+  border:1px solid var(--borderhi);
+  color:var(--text);
+}
+.btn-secondary:hover{background:var(--glass);border-color:var(--cyan);}
+.btn-ghost{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--textsoft);font-size:12px;padding:10px 20px;
+}
+.btn-ghost:hover{border-color:var(--borderhi);color:var(--text);}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+
+/* PAYMENT PANEL */
+.payment-methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:32px;}
+.pay-card{
+  padding:20px;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--surface);cursor:pointer;transition:all .25s;text-align:center;
+}
+.pay-card:hover{border-color:var(--borderhi);transform:translateY(-2px);}
+.pay-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.07);}
+.pay-icon{font-size:32px;margin-bottom:10px;}
+.pay-name{font-size:13px;font-weight:600;}
+.pay-sub{font-size:10px;color:var(--textsoft);margin-top:3px;font-family:'DM Mono',monospace;}
+
+.crypto-address{
+  padding:14px 18px;
+  border-radius:var(--rs);
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--textmid);
+  word-break:break-all;margin-bottom:12px;
+}
+.copy-btn{
+  padding:6px 14px;border-radius:6px;border:1px solid var(--border);
+  background:none;color:var(--textsoft);font-size:10px;cursor:pointer;
+  font-family:'DM Mono',monospace;transition:all .2s;
+}
+.copy-btn:hover{border-color:var(--borderhi);color:var(--text);}
+
+/* CONSENT */
+.consent-box{
+  padding:20px 24px;
+  border-radius:var(--r);
+  border:1px solid rgba(168,85,247,0.3);
+  background:rgba(168,85,247,0.05);
+  margin-bottom:28px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.consent-check{
+  width:20px;height:20px;flex-shrink:0;
+  border:1px solid var(--borderhi);border-radius:4px;
+  background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:2px;transition:all .2s;
+}
+.consent-check.checked{background:var(--plasma);border-color:var(--plasma);}
+.consent-text{font-size:12px;color:var(--textmid);line-height:1.65;}
+.consent-text strong{color:var(--text);}
+
+/* DISCLAIMER */
+.disclaimer{
+  padding:14px 18px;
+  border-radius:var(--rs);
+  border-left:3px solid var(--gold);
+  background:rgba(201,168,76,0.05);
+  font-size:11px;color:var(--textsoft);line-height:1.6;
+  margin-bottom:32px;
+}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:60px 20px;}
+.success-screen.show{display:block;}
+.success-icon{font-size:64px;margin-bottom:24px;}
+.success-title{
+  font-family:'Syncopate',sans-serif;font-size:22px;letter-spacing:0.2em;
+  color:var(--gold);margin-bottom:16px;
+}
+.success-sub{font-size:15px;color:var(--textmid);line-height:1.7;}
+
+/* BOOST GRID */
+.boost-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:32px;}
+.boost-card{
+  padding:18px;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--surface);cursor:pointer;transition:all .25s;
+}
+.boost-card:hover{border-color:var(--borderhi);transform:translateY(-2px);}
+.boost-card.selected{border-color:var(--plasma);background:rgba(168,85,247,0.08);}
+.boost-name{font-size:12px;font-weight:600;margin-bottom:4px;}
+.boost-price{font-family:'DM Mono',monospace;font-size:11px;color:var(--plasma);margin-top:8px;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .site-header{flex-direction:column;gap:12px;text-align:center;}
+  .hero h1{font-size:32px;}
+}
+
+.divider{height:1px;background:var(--border);margin:40px 0;}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.tag{
+  padding:4px 10px;border-radius:999px;font-size:10px;
+  letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace;
+  border:1px solid var(--border);color:var(--textsoft);
+}
+
+/* Input type number appearance */
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+</style>
+</head>
+<body>
+<div class="atm atm1"></div>
+<div class="atm atm2"></div>
+<div class="atm atm3"></div>
+
+<div class="wrap">
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">TR<span>4</span>NSFORM <span style="color:var(--textsoft);font-weight:400;font-size:11px;margin-left:8px;">MIND · BODY · SOUL</span></div>
+  <div class="header-tag">SOVEREIGN PEPTIDE STACK BUILDER · SASCOSM LICENSED IP</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">🧬 QUANTUM PROTOCOL ENGINE · ACTIVE</div>
+  <h1>Design Your<br><em>Sovereign Stack</em></h1>
+  <p class="hero-sub">Precision peptide protocols engineered to your biology. Powered by SASCOSM clinical IP — reviewed by licensed physicians before dispensation.</p>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-shell" id="progressBar">
+  <div class="progress-step active" onclick="goStep(1)" data-step="1">
+    <div class="step-num">1</div>
+    <div class="step-label">Goals</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" onclick="goStep(2)" data-step="2">
+    <div class="step-num">2</div>
+    <div class="step-label">Conditions</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" onclick="goStep(3)" data-step="3">
+    <div class="step-num">3</div>
+    <div class="step-label">Data Sources</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" onclick="goStep(4)" data-step="4">
+    <div class="step-num">4</div>
+    <div class="step-label">Protocol</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" onclick="goStep(5)" data-step="5">
+    <div class="step-num">5</div>
+    <div class="step-label">Boosts</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" onclick="goStep(6)" data-step="6">
+    <div class="step-num">6</div>
+    <div class="step-label">Checkout</div>
+  </div>
+</div>
+
+<!-- ===================== STEP 1: GOALS ===================== -->
+<div class="panel active" id="panel1">
+  <div class="panel-title">Step 01 · Primary Goals</div>
+  <div class="panel-sub">Select 1–3 goals that best describe what you want to optimise. Your selection drives the entire protocol stack.</div>
+  <div class="goal-grid" id="goalGrid"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="goStep(2)">Continue → Conditions</button>
+    <span id="goalCount" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--textsoft);">0 / 3 selected</span>
+  </div>
+</div>
+
+<!-- ===================== STEP 2: CONDITIONS ===================== -->
+<div class="panel" id="panel2">
+  <div class="panel-title">Step 02 · Secondary Conditions</div>
+  <div class="panel-sub">Optional — refine your protocol by flagging relevant health conditions. This triggers contraindication filters and specialist peptide additions.</div>
+  <div class="condition-grid" id="conditionGrid"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="goStep(3)">Continue → Data Sources</button>
+    <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+  </div>
+</div>
+
+<!-- ===================== STEP 3: DATA SOURCES ===================== -->
+<div class="panel" id="panel3">
+  <div class="panel-title">Step 03 · Connect Data Sources</div>
+  <div class="panel-sub">Connect biometric data to unlock AI-driven dosage personalisation. All connections are optional — manual entry available.</div>
+  <div class="datasource-grid" id="dsGrid"></div>
+  <div class="divider"></div>
+  <!-- DOSAGE CALCULATOR -->
+  <div class="calc-box">
+    <div class="calc-title">⚗️ Dosage Calculator</div>
+    <div class="calc-row">
+      <div class="calc-field">
+        <div class="calc-label">Vial Strength</div>
+        <select class="calc-select" id="calcVial" onchange="calcDose()">
+          <option value="5">5 mg/vial</option>
+          <option value="10" selected>10 mg/vial</option>
+          <option value="15">15 mg/vial</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <div class="calc-label">Bacteriostatic Water (ml)</div>
+        <select class="calc-select" id="calcWater" onchange="calcDose()">
+          <option value="1">1 ml</option>
+          <option value="2" selected>2 ml</option>
+          <option value="3">3 ml</option>
+          <option value="5">5 ml</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <div class="calc-label">Target Dose (mcg)</div>
+        <select class="calc-select" id="calcDose" onchange="calcDose()">
+          <option value="50">50 mcg</option>
+          <option value="100">100 mcg</option>
+          <option value="250">250 mcg</option>
+          <option value="500" selected>500 mcg</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <div class="calc-label">Syringe Volume (ml)</div>
+        <select class="calc-select" id="calcSyringe" onchange="calcDose()">
+          <option value="0.3">0.3 ml (30 units)</option>
+          <option value="0.5">0.5 ml (50 units)</option>
+          <option value="1" selected>1.0 ml (100 units)</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-result" id="calcResult">Loading...</div>
+    <div class="syringe-visual">
+      <div class="syringe-fill" id="syringeFill" style="width:10%"></div>
+      <div class="syringe-marks" id="syringeMarks"></div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="goStep(4)">Generate Protocol →</button>
+    <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+  </div>
+</div>
+
+<!-- ===================== STEP 4: PROTOCOL ===================== -->
+<div class="panel" id="panel4">
+  <div class="panel-title">Step 04 · Your Sovereign Protocol</div>
+  <div class="panel-sub">AI-matched peptide stack based on your goals and conditions. Hover or tap each peptide for clinical detail. Remove any you don't want included.</div>
+  
+  <div class="tag-row" id="protocolTags"></div>
+
+  <div class="protocol-section">
+    <div class="proto-header">
+      <div class="proto-title">Core Stack · Recommended Peptides</div>
+      <div class="stack-summary" id="stackSummary">0 peptides selected</div>
+    </div>
+    <div id="protocolRows"></div>
+  </div>
+
+  <div class="total-bar">
+    <div>
+      <div class="total-label">Estimated Protocol Cost</div>
+      <div style="font-size:11px;color:var(--textsoft);margin-top:2px;font-family:'DM Mono',monospace;">30-day cycle · Golf Hub rates</div>
+    </div>
+    <div>
+      <span class="total-amount" id="totalTHB">0 THB</span>
+      <span class="total-usd" id="totalUSD"></span>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    ⚕️ <strong>Medical Disclaimer:</strong> Peptides are prescription therapies. Your personalized plan will be reviewed by a licensed physician before dispensation. This tool generates an educational recommendation only — not a prescription.
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="goStep(5)">Add Optimisation Boosts →</button>
+    <button class="btn btn-secondary" onclick="downloadPDF()">📄 Download PDF Plan</button>
+    <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+  </div>
+</div>
+
+<!-- ===================== STEP 5: BOOSTS ===================== -->
+<div class="panel" id="panel5">
+  <div class="panel-title">Step 05 · Optimisation Boosts</div>
+  <div class="panel-sub">Add synergistic therapies to amplify your peptide protocol. Each boost is clinically paired with your stack selections.</div>
+  <div class="boost-grid" id="boostGrid"></div>
+
+  <div class="total-bar">
+    <div>
+      <div class="total-label">Total with Boosts</div>
+    </div>
+    <div>
+      <span class="total-amount" id="totalWithBoosts">0 THB</span>
+      <span class="total-usd" id="totalWithBoostsUSD"></span>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="goStep(6)">Proceed to Checkout →</button>
+    <button class="btn btn-ghost" onclick="goStep(4)">← Back</button>
+  </div>
+</div>
+
+<!-- ===================== STEP 6: CHECKOUT ===================== -->
+<div class="panel" id="panel6">
+  <div class="panel-title">Step 06 · Secure Checkout</div>
+  <div class="panel-sub">Choose your payment method. All transactions are encrypted. Protocols are released only after physician review and approval.</div>
+
+  <div class="payment-methods" id="paymentMethods"></div>
+
+  <div id="paymentDetails"></div>
+
+  <!-- CONSENT -->
+  <div class="consent-box">
+    <div class="consent-check" id="consentCheck" onclick="toggleConsent()"></div>
+    <div class="consent-text">
+      <strong>I understand and consent:</strong> Peptides are prescription therapies. My personalized plan will be reviewed by a licensed TR4NSFORM physician before dispensation. I confirm I am 18+ and that I have disclosed all relevant medical history. This protocol does not replace professional medical advice. SASCOSM Quantum Medical IP governs all protocols — Singapore → UAE sovereign structure.
+    </div>
+  </div>
+
+  <div id="orderSummaryPanel">
+    <div class="proto-header">
+      <div class="proto-title">Order Summary</div>
+    </div>
+    <div id="orderSummaryRows" style="margin-bottom:20px;"></div>
+    <div class="total-bar">
+      <div>
+        <div class="total-label">Order Total</div>
+        <div style="font-size:10px;color:var(--textsoft);margin-top:2px;font-family:'DM Mono',monospace;">Physician review included · Delivery 3–5 days</div>
+      </div>
+      <div>
+        <span class="total-amount" id="checkoutTotal">0 THB</span>
+        <span class="total-usd" id="checkoutUSD"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row" style="margin-top:24px;">
+    <button class="btn btn-primary" id="confirmBtn" onclick="confirmOrder()" style="opacity:.5;cursor:not-allowed;">
+      🔒 Confirm & Submit Protocol
+    </button>
+    <button class="btn btn-secondary" onclick="bookConsult()">📞 Book Consultation Instead</button>
+    <button class="btn btn-ghost" onclick="goStep(5)">← Back</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">⚗️</div>
+  <div class="success-title">Protocol Submitted</div>
+  <p class="success-sub">Your sovereign stack has been submitted for physician review.<br>You will receive a confirmation within 24 hours.<br><br>
+  <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);">TR4NSFORM · SASCOSM SOVEREIGN IP · LICENSED PROTOCOL</span></p>
+  <div style="margin-top:32px;">
+    <button class="btn btn-primary" onclick="location.reload()">Build Another Protocol</button>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- INFO MODAL -->
+<div class="info-popup" id="infoModal">
+  <div class="info-box">
+    <button class="info-close" onclick="closeInfo()">✕</button>
+    <div class="info-name" id="modalName"></div>
+    <div class="info-body" id="modalBody"></div>
+    <div class="info-meta" id="modalMeta"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// PEPTIDE DATABASE
+// ============================================================
+const PEPTIDES = [
+  {id:'bpc157',name:'BPC-157',form:'vial',indication:'Gut + Tissue Repair',
+   function:'Cytoprotective peptide for gastric protection, tendon and ligament healing, reduced inflammation.',
+   protocol:'Daily for 30 days · 250–500 mcg',cycle:'30 days',dose:'250–500 mcg',
+   goals:['immunity','recovery','antiaging'],price:2200,thb:2200,
+   info:'Studied for its systemic healing properties — particularly powerful for gut lining repair, leaky gut, tendon recovery and inflammation modulation. Often stacked with TB-500 for joint/tissue protocols.',
+   contraindications:['cancer'],tags:['vial','core']},
+
+  {id:'mots_c',name:'MOTS-c',form:'vial',indication:'Mitochondrial + Metabolism',
+   function:'Mitochondrial-derived peptide supporting metabolic function, insulin sensitivity and fat oxidation.',
+   protocol:'2–3x weekly · 5–10 mg',cycle:'30 days',dose:'5–10 mg',
+   goals:['fatLoss','antiaging','performance'],price:1760,thb:1760,
+   info:'A mitochondrial-encoded peptide that activates AMPK signalling, improving metabolic flexibility. Synergises powerfully with NAD+ and exercise. Key for longevity protocols.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'dsip',name:'DSIP',form:'vial',indication:'Deep Sleep & Circadian Repair',
+   function:'Delta sleep-inducing peptide — improves sleep architecture and reduces nocturnal awakenings.',
+   protocol:'Nightly · 100–300 mcg',cycle:'30 days',dose:'100–300 mcg',
+   goals:['sleep','mood'],price:1672,thb:1672,
+   info:'DSIP crosses the blood-brain barrier and acts on the hypothalamus to normalise sleep cycles. Often combined with Selank for stress-driven insomnia. Short-term protocols of 2–4 weeks.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'cjc_ipa',name:'CJC-1295 / Ipamorelin',form:'vial',indication:'GH Release · Fat Burning · Recovery',
+   function:'GHRH/GHRP combination driving natural GH pulsatility — anti-aging, body composition, recovery.',
+   protocol:'Nightly · 100–300 mcg each',cycle:'90 days',dose:'100–300 mcg',
+   goals:['fatLoss','performance','antiaging','sleep'],price:2244+2244,thb:4488,
+   info:'The gold-standard GH peptide stack. CJC-1295 extends GH pulse duration; Ipamorelin amplifies GH amplitude without cortisol or prolactin spike. Take pre-sleep on empty stomach.',
+   contraindications:['cancer'],tags:['vial','core']},
+
+  {id:'epithalon',name:'Epithalon',form:'vial',indication:'Telomere Lengthening · Anti-Aging',
+   function:'Tetrapeptide that activates telomerase — the most clinically validated longevity peptide.',
+   protocol:'10 days on / 6 months off',cycle:'10 days',dose:'5–10 mg',
+   goals:['antiaging'],price:6433,thb:6433,
+   info:'Discovered by Prof. Vladimir Khavinson at the St. Petersburg Institute. 40+ years of research on telomere elongation, melatonin regulation and circadian restoration. Run as a 10-day course twice yearly.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'tb500',name:'TB-500 (Thymosin Beta-4)',form:'vial',indication:'Tissue & Tendon Repair',
+   function:'Regeneration-focused peptide for tissue repair, tendon recovery, reduced inflammation.',
+   protocol:'2x weekly for 4–6 weeks',cycle:'6 weeks',dose:'2–5 mg',
+   goals:['recovery','performance'],price:3890,thb:3890,
+   info:'Systemically active — travels to injury sites to promote angiogenesis and cell migration. Pairs synergistically with BPC-157 in musculoskeletal recovery stacks. Strong post-surgical application.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'selank',name:'Selank',form:'nasal',indication:'Anxiety & Cognitive Enhancement',
+   function:'Anxiolytic nootropic derived from tuftsin — reduces anxiety without sedation, boosts focus.',
+   protocol:'Daily · 250–500 mcg intranasal',cycle:'30 days',dose:'250–500 mcg',
+   goals:['mood','cognitive'],price:2094,thb:2094,
+   info:'Russian neuropeptide with strong clinical backing. Upregulates BDNF, modulates the IL-6 immune pathway and provides stable anxiolysis. Excellent for high-performance professionals under stress.',
+   contraindications:[],tags:['nasal','core']},
+
+  {id:'semax',name:'Semax',form:'nasal',indication:'Cognitive Enhancement · Neuroprotection',
+   function:'ACTH analogue — enhances BDNF, improves memory, attention and cognitive processing speed.',
+   protocol:'Daily · 200–900 mcg intranasal',cycle:'30 days',dose:'200–900 mcg',
+   goals:['cognitive'],price:3520,thb:3520,
+   info:'Developed in Russia for stroke recovery; widely used in biohacking for its BDNF elevation. Synergises with Selank for anxiety + clarity protocols. Short cycles of 2–4 weeks work well.',
+   contraindications:[],tags:['nasal','core']},
+
+  {id:'ghk_cu',name:'GHK-Cu',form:'vial',indication:'Skin · Collagen · Hair',
+   function:'Copper peptide triplex for collagen synthesis, wound healing and skin regeneration.',
+   protocol:'Daily · 200 mcg / injectable or topical',cycle:'60 days',dose:'200 mcg',
+   goals:['antiaging'],price:2288,thb:2288,
+   info:'One of the most researched regenerative peptides. Stimulates collagen and elastin production, promotes wound healing and hair follicle cycling. Can be combined with microneedling for amplified aesthetic results.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'ta1',name:'Thymosin Alpha-1',form:'vial',indication:'Immune Modulation · Anti-Viral',
+   function:'Potent immunomodulator — used clinically for viral infections, cancer support and autoimmune conditions.',
+   protocol:'2x weekly · 1.6 mg',cycle:'30 days',dose:'1.6 mg',
+   goals:['immunity'],price:3590,thb:3590,
+   info:'FDA-approved in some jurisdictions for Hepatitis B/C. Proven to enhance T-cell and NK-cell function. Invaluable for post-viral recovery (Long COVID), cancer recovery support and immunosenescence in aging.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'semaglutide',name:'Semaglutide',form:'vial',indication:'GLP-1 · Fat Loss · Metabolic',
+   function:'GLP-1 receptor agonist — suppresses appetite, drives fat loss, improves glycaemic control.',
+   protocol:'Weekly injection · 0.25–1 mg escalation',cycle:'90 days',dose:'0.25–1 mg weekly',
+   goals:['fatLoss'],price:5720,thb:5720,
+   info:'Clinical-grade weight management. Run on escalating dose protocol. Combine with MOTS-c for metabolic amplification. Requires physician supervision and regular monitoring.',
+   contraindications:['cancer'],tags:['vial','boost']},
+
+  {id:'retatrutide',name:'Retatrutide 4mg',form:'vial',indication:'Triple Agonist · Advanced Fat Loss',
+   function:'GLP-1/GIP/Glucagon triple agonist — next-generation metabolic peptide beyond semaglutide.',
+   protocol:'Weekly · 4–6 mg escalation',cycle:'90 days',dose:'4–6 mg weekly',
+   goals:['fatLoss'],price:7480,thb:7480,
+   info:'The most potent metabolic peptide available. Triple receptor activation drives superior fat loss compared to GLP-1 mono-agonists. Phase 3 clinical data shows 24% body weight reduction at 48 weeks.',
+   contraindications:['cancer'],tags:['vial','boost']},
+
+  {id:'ll37',name:'LL-37',form:'vial',indication:'Antimicrobial · Gut · Immune',
+   function:'Host defence peptide with antimicrobial, anti-biofilm and gut microbiome restoration properties.',
+   protocol:'3x weekly · 100 mcg',cycle:'30 days',dose:'100 mcg',
+   goals:['immunity'],price:2552,thb:2552,
+   info:'Endogenous antimicrobial peptide that disrupts bacterial membranes and biofilms. Emerging role in gut dysbiosis, post-antibiotic microbiome restoration and chronic infection protocols.',
+   contraindications:[],tags:['vial','core']},
+
+  {id:'kpv',name:'KPV',form:'oral',indication:'Gut Inflammation · IBD · Skin',
+   function:'Anti-inflammatory tripeptide derived from MSH — gut lining repair and skin inflammation.',
+   protocol:'Daily oral · 250–500 mcg',cycle:'30 days',dose:'250–500 mcg',
+   goals:['immunity','recovery'],price:1584,thb:1584,
+   info:'Alpha-MSH C-terminus fragment with potent anti-inflammatory action. Particularly effective for IBD, colitis, and eczema/psoriasis. Oral bioavailability makes it convenient for gut-focused protocols.',
+   contraindications:[],tags:['oral','core']},
+
+  {id:'nmn',name:'NMN',form:'oral',indication:'NAD+ Precursor · Longevity',
+   function:'Nicotinamide mononucleotide — directly raises NAD+ levels for cellular energy and DNA repair.',
+   protocol:'Daily oral · 500–1000 mg',cycle:'Continuous',dose:'500–1000 mg',
+   goals:['antiaging','cognitive'],price:3379,thb:3379,
+   info:'Clinically validated NAD+ precursor. David Sinclair Harvard research flagship. Synergises with MOTS-c, Epithalon and resveratrol. Raises sirtuin activity for epigenetic age reversal.',
+   contraindications:[],tags:['oral','core']},
+
+  {id:'mk677',name:'MK-677',form:'oral',indication:'GH Secretagogue · Oral GH Protocol',
+   function:'Oral ghrelin mimetic — stimulates GH and IGF-1 release, improves sleep and muscle mass.',
+   protocol:'Daily oral · 12.5–25 mg',cycle:'90 days',dose:'12.5–25 mg',
+   goals:['performance','antiaging','sleep'],price:2948,thb:2948,
+   info:'Non-peptide GH secretagogue — oral convenience of MK-677 makes it popular for those avoiding injections. Increases appetite and IGF-1. Best combined with CJC/Ipamorelin for enhanced GH stack.',
+   contraindications:['cancer'],tags:['oral','core']},
+
+  {id:'dihexa',name:'Dihexa',form:'oral',indication:'Cognitive · Neurogenesis',
+   function:'Superpotent nootropic — 7 million times more potent than BDNF at promoting neurogenesis.',
+   protocol:'Weekly oral · 10–30 mg',cycle:'8 weeks',dose:'10–30 mg',
+   goals:['cognitive'],price:4928,thb:4928,
+   info:'Angiotensin-derived peptide with extraordinary neurogenic potency. Studied for Alzheimer\'s and cognitive decline. Due to potency, run cautiously in weekly or bi-weekly cycles with breaks.',
+   contraindications:[],tags:['oral','boost']},
+
+  {id:'amino1mq',name:'5-Amino-1MQ',form:'oral',indication:'Fat Loss · Gene Expression',
+   function:'NNMT inhibitor — reverses metabolic dormancy at the gene expression level for fat loss.',
+   protocol:'Daily oral capsule',cycle:'60 days',dose:'50–100 mg',
+   goals:['fatLoss'],price:6600,thb:6600,
+   info:'Novel compound that inhibits nicotinamide N-methyltransferase (NNMT), reactivating adipocyte metabolism. Synergises with semaglutide and MOTS-c in advanced fat loss protocols.',
+   contraindications:[],tags:['oral','boost']},
+
+  {id:'fox04',name:'FOX-04 DRI',form:'vial',indication:'Senolytic · Anti-Aging',
+   function:'Senolytic peptide — selectively eliminates senescent cells ("zombie cells") to reverse aging.',
+   protocol:'3 days on / monthly',cycle:'3 days monthly',dose:'1–2 mg',
+   goals:['antiaging'],price:8272,thb:8272,
+   info:'Cutting-edge senolytic. Disrupts p53-FOXO4 interaction that keeps senescent cells alive, triggering their apoptosis. Significant rejuvenation potential — run under close physician supervision.',
+   contraindications:['cancer'],tags:['vial','boost']},
+];
+
+const GOALS = [
+  {id:'fatLoss',icon:'🔥',name:'Fat Loss & Metabolism',desc:'Metabolic optimisation, body recomposition, appetite regulation'},
+  {id:'cognitive',icon:'🧠',name:'Mental Clarity & Cognition',desc:'Focus, memory, neurogenesis, BDNF elevation'},
+  {id:'sleep',icon:'🛌',name:'Deep Sleep & Recovery',desc:'Sleep architecture, circadian repair, GH pulsatility'},
+  {id:'immunity',icon:'⚕️',name:'Immunity & Inflammation',desc:'Immune modulation, anti-viral, gut repair'},
+  {id:'performance',icon:'💪',name:'Muscle & Physical Performance',desc:'GH, anabolism, tissue repair, endurance'},
+  {id:'antiaging',icon:'🧬',name:'Anti-Aging & Longevity',desc:'Telomeres, senolytics, NAD+, cellular rejuvenation'},
+  {id:'mood',icon:'❤️',name:'Mood & Stress Management',desc:'Anxiolysis, HPA axis balance, cortisol regulation'},
+  {id:'recovery',icon:'🩹',name:'Injury Healing & Pain',desc:'Tendon, ligament, gut, post-surgical regeneration'},
+];
+
+const CONDITIONS = [
+  {id:'cancer',label:'Cancer / Oncology'},
+  {id:'hormonal',label:'Hormonal Imbalance'},
+  {id:'longcovid',label:'Post-Vaccine / Long COVID'},
+  {id:'neuro',label:'Neurological / Parkinson\'s'},
+  {id:'autoimmune',label:'Autoimmune Conditions'},
+  {id:'gut',label:'Gut Issues / IBD / IBS'},
+  {id:'diabetes',label:'Diabetes / Insulin Resistance'},
+  {id:'allergy',label:'Allergies / Food Sensitivities'},
+];
+
+const DATA_SOURCES = [
+  {id:'whoop',icon:'⌚',name:'WHOOP',desc:'HRV, sleep, recovery scores'},
+  {id:'garmin',icon:'🏃',name:'Garmin / Fitbit',desc:'Activity, VO2, HR zones'},
+  {id:'dna',icon:'🧬',name:'DNA / Epigenetic',desc:'23andMe, LifeLabs, Nucleome'},
+  {id:'bloodwork',icon:'🩸',name:'Blood Panel',desc:'Hormones, IGF-1, metabolic markers'},
+  {id:'oura',icon:'💍',name:'Oura Ring',desc:'Sleep staging, readiness, HRV'},
+  {id:'manual',icon:'✏️',name:'Manual Entry',desc:'Enter goals & markers manually'},
+];
+
+const BOOSTS = [
+  {id:'iv_nac',name:'IV NAC + Glutathione',desc:'Master antioxidant infusion · detox + cellular protection',price:4500,icon:'💉'},
+  {id:'iv_nad',name:'IV NAD+',desc:'Direct NAD+ infusion · mitochondrial recharge',price:8000,icon:'⚡'},
+  {id:'iv_vitc',name:'High-Dose IV Vitamin C',desc:'Immune amplification · collagen synthesis',price:3500,icon:'🍊'},
+  {id:'redlight',name:'Red Light / HBOT Package',desc:'5 sessions · photobiomodulation + hyperbaric oxygen',price:12000,icon:'🔴'},
+  {id:'stemcell',name:'Stem Cell Infusion Tier 1',desc:'50M MSC · regenerative foundation protocol',price:85000,icon:'🌱'},
+  {id:'biores',name:'Bioresonance + Detox',desc:'Quantum resonance scan + targeted detox layer',price:5500,icon:'🌊'},
+  {id:'dna_profile',name:'DNA Epigenetic Profile',desc:'Full genomic sequencing for protocol precision',price:15000,icon:'🧬'},
+  {id:'consult',name:'Extended Physician Consult',desc:'60-min protocol review with TR4NSFORM doctor',price:3000,icon:'👨‍⚕️'},
+];
+
+const PAYMENT = [
+  {id:'stripe',name:'Credit / Debit Card',icon:'💳',sub:'Visa · Mastercard · Amex · Stripe Secure'},
+  {id:'bitcoin',name:'Bitcoin',icon:'₿',sub:'BTC · Lightning Network accepted'},
+  {id:'usdt',name:'USDT (Tether)',icon:'💲',sub:'TRC-20 · ERC-20 · BEP-20'},
+  {id:'transfer',name:'Bank Transfer',icon:'🏦',sub:'SWIFT · SEPA · Thai promptpay'},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  goals:[],
+  conditions:[],
+  dataSources:[],
+  protocol:[],
+  boosts:[],
+  payment:null,
+  consent:false,
+  currentStep:1,
+};
+
+// ============================================================
+// INIT
+// ============================================================
+function init(){
+  renderGoals();
+  renderConditions();
+  renderDataSources();
+  renderBoosts();
+  renderPayment();
+  calcDose();
+}
+
+function renderGoals(){
+  const g = document.getElementById('goalGrid');
+  g.innerHTML = GOALS.map(goal=>`
+    <div class="goal-card" id="goal_${goal.id}" onclick="toggleGoal('${goal.id}')">
+      <div class="goal-icon">${goal.icon}</div>
+      <div class="goal-name">${goal.name}</div>
+      <div class="goal-desc">${goal.desc}</div>
+    </div>
+  `).join('');
+}
+
+function toggleGoal(id){
+  const idx = state.goals.indexOf(id);
+  if(idx>-1){
+    state.goals.splice(idx,1);
+    document.getElementById('goal_'+id).classList.remove('selected');
+  } else {
+    if(state.goals.length>=3){
+      // shake first selected
+      return;
+    }
+    state.goals.push(id);
+    document.getElementById('goal_'+id).classList.add('selected');
+  }
+  document.getElementById('goalCount').textContent = state.goals.length + ' / 3 selected';
+}
+
+function renderConditions(){
+  const c = document.getElementById('conditionGrid');
+  c.innerHTML = CONDITIONS.map(cd=>`
+    <div class="condition-tag" id="cond_${cd.id}" onclick="toggleCondition('${cd.id}')">${cd.label}</div>
+  `).join('');
+}
+
+function toggleCondition(id){
+  const idx = state.conditions.indexOf(id);
+  if(idx>-1){ state.conditions.splice(idx,1); document.getElementById('cond_'+id).classList.remove('selected'); }
+  else { state.conditions.push(id); document.getElementById('cond_'+id).classList.add('selected'); }
+}
+
+function renderDataSources(){
+  const d = document.getElementById('dsGrid');
+  d.innerHTML = DATA_SOURCES.map(ds=>`
+    <div class="ds-card" id="ds_${ds.id}" onclick="toggleDS('${ds.id}')">
+      <div class="ds-icon">${ds.icon}</div>
+      <div class="ds-name">${ds.name}</div>
+      <div class="ds-status">${ds.desc}</div>
+    </div>
+  `).join('');
+}
+
+function toggleDS(id){
+  const idx = state.dataSources.indexOf(id);
+  const el = document.getElementById('ds_'+id);
+  if(idx>-1){ state.dataSources.splice(idx,1); el.classList.remove('connected'); el.querySelector('.ds-status').textContent = DATA_SOURCES.find(d=>d.id===id).desc; }
+  else { state.dataSources.push(id); el.classList.add('connected'); el.querySelector('.ds-status').textContent = '● Connected'; }
+}
+
+// ============================================================
+// PROTOCOL GENERATION
+// ============================================================
+function generateProtocol(){
+  // Match peptides to goals, filter contraindications
+  const matched = PEPTIDES.filter(p=>{
+    // Filter contraindications
+    if(p.contraindications && p.contraindications.some(c=>state.conditions.includes(c))) return false;
+    // Match to goals
+    if(state.goals.length===0) return p.tags.includes('core') && !p.tags.includes('boost');
+    return p.goals.some(g=>state.goals.includes(g));
+  });
+
+  // Sort: core first, then boost
+  matched.sort((a,b)=>{
+    if(a.tags.includes('core') && b.tags.includes('boost')) return -1;
+    if(a.tags.includes('boost') && b.tags.includes('core')) return 1;
+    return 0;
+  });
+
+  state.protocol = matched.map(p=>p.id);
+
+  renderProtocol();
+}
+
+function renderProtocol(){
+  const rows = document.getElementById('protocolRows');
+  const tags = document.getElementById('protocolTags');
+
+  // Render goal tags
+  tags.innerHTML = state.goals.map(gId=>{
+    const g = GOALS.find(x=>x.id===gId);
+    return g ? `<div class="tag">${g.icon} ${g.name}</div>` : '';
+  }).join('');
+
+  const protoPeptides = PEPTIDES.filter(p=>state.protocol.includes(p.id));
+
+  rows.innerHTML = protoPeptides.map(p=>`
+    <div class="peptide-row ${p.tags.includes('boost')?'boost':'core'}" id="row_${p.id}">
+      <div>
+        <div class="p-name">${p.name} <span class="p-tag ${p.tags.includes('boost')?'boost':''}">${p.tags.includes('boost')?'Boost':'Core'}</span> <span class="p-tag ${p.form}">${p.form}</span></div>
+        <div class="p-function">${p.indication}</div>
+      </div>
+      <div class="p-function" style="font-size:11px;">${p.function}</div>
+      <div class="p-dosage">${p.dose}</div>
+      <div class="p-cycle">${p.cycle}</div>
+      <div class="p-price">${p.thb.toLocaleString()} <span style="font-size:9px;color:var(--textsoft);">THB</span></div>
+      <div class="p-actions">
+        <button class="btn-info" onclick="showInfo('${p.id}')">Info</button>
+        <button class="btn-remove" onclick="removeFromProtocol('${p.id}')">✕</button>
+      </div>
+    </div>
+  `).join('');
+
+  updateTotals();
+}
+
+function removeFromProtocol(id){
+  state.protocol = state.protocol.filter(x=>x!==id);
+  renderProtocol();
+}
+
+function updateTotals(){
+  const protoPeptides = PEPTIDES.filter(p=>state.protocol.includes(p.id));
+  const totalTHB = protoPeptides.reduce((s,p)=>s+p.thb,0);
+  const totalUSD = Math.round(totalTHB / 35);
+  const boostTotal = BOOSTS.filter(b=>state.boosts.includes(b.id)).reduce((s,b)=>s+b.price,0);
+  const grandTotal = totalTHB + boostTotal;
+
+  document.getElementById('totalTHB').textContent = totalTHB.toLocaleString() + ' THB';
+  document.getElementById('totalUSD').textContent = '≈ $'+totalUSD.toLocaleString()+' USD';
+  document.getElementById('stackSummary').textContent = state.protocol.length + ' peptides selected';
+
+  document.getElementById('totalWithBoosts').textContent = grandTotal.toLocaleString() + ' THB';
+  document.getElementById('totalWithBoostsUSD').textContent = '≈ $'+Math.round(grandTotal/35).toLocaleString()+' USD';
+
+  // Checkout totals
+  document.getElementById('checkoutTotal').textContent = grandTotal.toLocaleString() + ' THB';
+  document.getElementById('checkoutUSD').textContent = '≈ $'+Math.round(grandTotal/35).toLocaleString()+' USD';
+
+  renderOrderSummary();
+}
+
+function renderBoosts(){
+  const g = document.getElementById('boostGrid');
+  g.innerHTML = BOOSTS.map(b=>`
+    <div class="boost-card" id="boost_${b.id}" onclick="toggleBoost('${b.id}')">
+      <div style="font-size:28px;margin-bottom:10px;">${b.icon}</div>
+      <div class="boost-name">${b.name}</div>
+      <div style="font-size:11px;color:var(--textsoft);line-height:1.5;margin-top:4px;">${b.desc}</div>
+      <div class="boost-price">${b.price.toLocaleString()} THB</div>
+    </div>
+  `).join('');
+}
+
+function toggleBoost(id){
+  const idx = state.boosts.indexOf(id);
+  if(idx>-1){ state.boosts.splice(idx,1); document.getElementById('boost_'+id).classList.remove('selected'); }
+  else { state.boosts.push(id); document.getElementById('boost_'+id).classList.add('selected'); }
+  updateTotals();
+}
+
+function renderPayment(){
+  const g = document.getElementById('paymentMethods');
+  g.innerHTML = PAYMENT.map(p=>`
+    <div class="pay-card" id="pay_${p.id}" onclick="selectPayment('${p.id}')">
+      <div class="pay-icon">${p.icon}</div>
+      <div class="pay-name">${p.name}</div>
+      <div class="pay-sub">${p.sub}</div>
+    </div>
+  `).join('');
+}
+
+function selectPayment(id){
+  state.payment = id;
+  document.querySelectorAll('.pay-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('pay_'+id).classList.add('selected');
+
+  const det = document.getElementById('paymentDetails');
+  if(id==='stripe'){
+    det.innerHTML = `
+      <div class="calc-box" style="margin-bottom:24px;">
+        <div class="calc-title">💳 Card Payment via Stripe</div>
+        <div class="calc-row">
+          <div class="calc-field">
+            <div class="calc-label">Card Number</div>
+            <input class="calc-input" type="text" placeholder="4242 4242 4242 4242" maxlength="19"/>
+          </div>
+          <div class="calc-field" style="flex:0 0 120px;">
+            <div class="calc-label">Expiry</div>
+            <input class="calc-input" type="text" placeholder="MM / YY" maxlength="7"/>
+          </div>
+          <div class="calc-field" style="flex:0 0 90px;">
+            <div class="calc-label">CVV</div>
+            <input class="calc-input" type="text" placeholder="123" maxlength="4"/>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--textsoft);font-family:'DM Mono',monospace;">🔒 Secured by Stripe · PCI DSS Level 1 Compliant</div>
+      </div>`;
+  } else if(id==='bitcoin'){
+    det.innerHTML = `
+      <div class="calc-box" style="margin-bottom:24px;">
+        <div class="calc-title">₿ Bitcoin Payment</div>
+        <div class="calc-label" style="margin-bottom:8px;">Send exact BTC amount to:</div>
+        <div class="crypto-address">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+        <button class="copy-btn" onclick="copyAddress('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')">Copy Address</button>
+        <div style="margin-top:12px;font-size:10px;color:var(--textsoft);font-family:'DM Mono',monospace;">
+          Network: Bitcoin Mainnet · Lightning Network accepted<br>
+          Confirmations required: 2 · Auto-converts at current rate<br>
+          ⚡ Lightning invoice available on request
+        </div>
+      </div>`;
+  } else if(id==='usdt'){
+    det.innerHTML = `
+      <div class="calc-box" style="margin-bottom:24px;">
+        <div class="calc-title">💲 USDT Payment</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <div class="calc-label" style="margin-bottom:6px;">TRC-20 (Tron · lowest fees)</div>
+            <div class="crypto-address">TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE</div>
+            <button class="copy-btn" onclick="copyAddress('TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE')">Copy TRC-20</button>
+          </div>
+          <div>
+            <div class="calc-label" style="margin-bottom:6px;">ERC-20 (Ethereum)</div>
+            <div class="crypto-address">0x742d35Cc6634C0532925a3b8D4C9C3e2a1B2E5F8</div>
+            <button class="copy-btn" onclick="copyAddress('0x742d35Cc6634C0532925a3b8D4C9C3e2a1B2E5F8')">Copy ERC-20</button>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:10px;color:var(--textsoft);font-family:'DM Mono',monospace;">
+          ⚠️ Verify network before sending · Send exact USDT equivalent
+        </div>
+      </div>`;
+  } else if(id==='transfer'){
+    det.innerHTML = `
+      <div class="calc-box" style="margin-bottom:24px;">
+        <div class="calc-title">🏦 Bank Transfer Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--textmid);">
+          <div><div class="calc-label">Bank</div>Bangkok Bank</div>
+          <div><div class="calc-label">Account Name</div>TR4NSFORM GLOBAL</div>
+          <div><div class="calc-label">Account Number</div>123-4-56789-0</div>
+          <div><div class="calc-label">SWIFT Code</div>BKKBTHBK</div>
+          <div><div class="calc-label">PromptPay</div>0812345678</div>
+          <div><div class="calc-label">Currency</div>THB / USD / EUR</div>
+        </div>
+        <div style="margin-top:12px;font-size:10px;color:var(--textsoft);">Reference your email in transfer details for protocol matching.</div>
+      </div>`;
+  }
+
+  updateConfirmBtn();
+}
+
+function renderOrderSummary(){
+  const rows = document.getElementById('orderSummaryRows');
+  if(!rows) return;
+  const peptides = PEPTIDES.filter(p=>state.protocol.includes(p.id));
+  const boosts = BOOSTS.filter(b=>state.boosts.includes(b.id));
+  rows.innerHTML = [...peptides.map(p=>`
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;">
+      <span>${p.name} <span style="font-size:10px;color:var(--textsoft);">· ${p.cycle}</span></span>
+      <span style="font-family:'DM Mono',monospace;">${p.thb.toLocaleString()} THB</span>
+    </div>
+  `),...boosts.map(b=>`
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;">
+      <span>${b.name} <span style="font-size:10px;color:var(--plasma);">· Boost</span></span>
+      <span style="font-family:'DM Mono',monospace;">${b.price.toLocaleString()} THB</span>
+    </div>
+  `)].join('');
+}
+
+// ============================================================
+// DOSAGE CALCULATOR
+// ============================================================
+function calcDose(){
+  const vial = parseFloat(document.getElementById('calcVial').value);
+  const water = parseFloat(document.getElementById('calcWater').value);
+  const dose = parseFloat(document.getElementById('calcDose').value);
+  const syrVol = parseFloat(document.getElementById('calcSyringe').value);
+
+  // concentration = vial_mg / water_ml = mg/ml
+  const concMgMl = vial / water;
+  // dose in mg
+  const doseMg = dose / 1000;
+  // volume to draw in ml
+  const drawMl = doseMg / concMgMl;
+  // units (based on syringe: 100 units = syrVol ml)
+  const units = Math.round((drawMl / syrVol) * 100);
+  const pct = Math.min(100, (drawMl / syrVol) * 100);
+
+  const result = document.getElementById('calcResult');
+  result.innerHTML = `To achieve a <strong>${dose} mcg</strong> dose: draw <strong>${drawMl.toFixed(2)} ml</strong> — pull syringe to <strong>${units} units</strong> on a ${syrVol*1000}U (${syrVol}ml) syringe`;
+
+  document.getElementById('syringeFill').style.width = pct+'%';
+
+  // Build marks
+  const marks = document.getElementById('syringeMarks');
+  const totalUnits = syrVol * 100;
+  const numMarks = totalUnits / 5;
+  marks.innerHTML = Array.from({length:numMarks+1},(_,i)=>`<div class="syringe-mark">${i*5||''}</div>`).join('');
+}
+
+// ============================================================
+// STEP NAVIGATION
+// ============================================================
+function goStep(n){
+  if(n===4) generateProtocol();
+
+  state.currentStep = n;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel'+n).classList.add('active');
+
+  // Update progress
+  document.querySelectorAll('.progress-step').forEach(s=>{
+    const step = parseInt(s.dataset.step);
+    s.classList.remove('active','done');
+    if(step===n) s.classList.add('active');
+    else if(step<n) s.classList.add('done');
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ============================================================
+// INFO MODAL
+// ============================================================
+function showInfo(id){
+  const p = PEPTIDES.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('modalName').textContent = p.name + ' · ' + p.indication;
+  document.getElementById('modalBody').textContent = p.info;
+  document.getElementById('modalMeta').innerHTML = `
+    <div class="info-chip">Form: ${p.form}</div>
+    <div class="info-chip">Dose: ${p.dose}</div>
+    <div class="info-chip">Cycle: ${p.cycle}</div>
+    <div class="info-chip">${p.thb.toLocaleString()} THB</div>
+  `;
+  document.getElementById('infoModal').classList.add('open');
+}
+function closeInfo(){
+  document.getElementById('infoModal').classList.remove('open');
+}
+
+// ============================================================
+// CONSENT & PAYMENT
+// ============================================================
+function toggleConsent(){
+  state.consent = !state.consent;
+  const c = document.getElementById('consentCheck');
+  c.classList.toggle('checked', state.consent);
+  c.textContent = state.consent ? '✓' : '';
+  updateConfirmBtn();
+}
+
+function updateConfirmBtn(){
+  const btn = document.getElementById('confirmBtn');
+  if(state.consent && state.payment){
+    btn.style.opacity='1';btn.style.cursor='pointer';
+  } else {
+    btn.style.opacity='.5';btn.style.cursor='not-allowed';
+  }
+}
+
+function confirmOrder(){
+  if(!state.consent || !state.payment) return;
+  document.getElementById('panel6').style.display='none';
+  document.getElementById('successScreen').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function bookConsult(){
+  alert('Redirecting to TR4NSFORM consultation booking...\n\nA sovereign protocol specialist will contact you within 24 hours.');
+}
+
+function copyAddress(addr){
+  navigator.clipboard.writeText(addr).then(()=>{
+    const btns = document.querySelectorAll('.copy-btn');
+    btns.forEach(b=>{ if(b.onclick && b.onclick.toString().includes(addr)){ b.textContent='Copied ✓'; setTimeout(()=>b.textContent='Copy Address',2000); }});
+  });
+}
+
+function downloadPDF(){
+  alert('Generating your sovereign protocol PDF...\n\nIncluding: peptide stack, dosages, cycle schedule, pricing.\nPDF will be ready for your physician consultation.');
+}
+
+// Close modal on backdrop click
+document.getElementById('infoModal').addEventListener('click',function(e){
+  if(e.target===this) closeInfo();
+});
+
+// INIT
+init();
+</script>
+</body>
+</html>

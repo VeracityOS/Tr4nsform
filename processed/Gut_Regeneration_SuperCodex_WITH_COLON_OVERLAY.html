@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gut Regeneration SuperCodex · Sub-Codex I–VII (EN/RU)</title>
+
+<style>
+:root{
+  --bg:#05070b;
+  --glass:rgba(255,255,255,0.055);
+  --border:rgba(255,255,255,0.18);
+  --accent:#41eab8;
+  --accent2:#7b47ff;
+  --warn:#ff5b6c;
+  --txt:#e8f2ff;
+  --soft:#a7b6d5;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  background:
+    radial-gradient(circle at 10% -10%, rgba(123,71,255,0.22), transparent 55%),
+    radial-gradient(circle at 90% 110%, rgba(65,234,184,0.22), transparent 60%),
+    #05070b;
+  color:var(--txt);
+  -webkit-font-smoothing:antialiased;
+}
+.shell{max-width:1200px;margin:auto;padding:16px}
+h1,h2{letter-spacing:.08em;text-transform:uppercase}
+h1{margin:10px 0 8px;font-size:1.25rem}
+h2{color:var(--accent);margin:22px 0 10px;font-size:1.05rem}
+h3{margin:.6em 0 .2em;font-size:.95rem;color:#d7fdf4}
+p,li{font-size:.86rem;color:var(--soft);line-height:1.35}
+ul{padding-left:18px;margin:6px 0}
+.lang-toggle{display:flex;gap:10px;margin:10px 0 14px;flex-wrap:wrap}
+.lang-toggle button{
+  border-radius:999px;padding:7px 14px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,0.35);
+  color:var(--txt);cursor:pointer
+}
+.lang-toggle button.active{
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:0 0 14px rgba(65,234,184,0.22);
+}
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:14px;
+  backdrop-filter:blur(14px);
+  overflow:hidden;
+  position:relative;
+}
+.card::before{
+  content:"";
+  position:absolute;inset:0;
+  background:radial-gradient(circle at top left, rgba(123,71,255,0.12), transparent 55%);
+  pointer-events:none;
+}
+.card > *{position:relative;z-index:1}
+details summary{
+  cursor:pointer;
+  list-style:none;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:#eef7ff;
+}
+details summary::-webkit-details-marker{display:none}
+.meta{font-size:.75rem;color:#d6cfae;margin-top:6px;opacity:.95}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 6px}
+.badge{
+  font-size:.72rem;padding:5px 10px;border-radius:999px;
+  border:1px solid var(--border);color:#dfeaff;background:rgba(0,0,0,0.35)
+}
+.badge.warn{border-color:rgba(255,91,108,0.75);color:#ffd1d8}
+.badge.prime{border-color:rgba(65,234,184,0.65);color:#bfffee}
+.callout{
+  border:1px dashed rgba(255,255,255,0.22);
+  border-radius:14px;
+  padding:10px 12px;
+  margin:10px 0 6px;
+  background:linear-gradient(135deg, rgba(255,255,255,0.06), transparent);
+  color:var(--soft);
+}
+.callout.warn{
+  border-color:rgba(255,91,108,0.75);
+  background:linear-gradient(135deg, rgba(255,91,108,0.16), transparent);
+  color:#ffd3da;
+}
+.callout.prime{
+  border-color:rgba(65,234,184,0.6);
+  background:linear-gradient(135deg, rgba(65,234,184,0.12), transparent);
+  color:#d7fff4;
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+.hidden{display:none !important}
+hr.sep{border:none;border-top:1px solid rgba(255,255,255,0.12);margin:10px 0}
+.small{font-size:.8rem}
+</style>
+
+<script>
+(function(){
+  const KEY = "gut_codex_lang";
+
+  function setLang(lang){
+    lang = (lang === "ru") ? "ru" : "en";
+    document.documentElement.lang = lang;
+    localStorage.setItem(KEY, lang);
+
+    // toggle ONLY content with data-lang
+    document.querySelectorAll('[data-lang]').forEach(el=>{
+      el.classList.toggle('hidden', el.dataset.lang !== lang);
+    });
+
+    // buttons use data-setlang (never hidden)
+    document.querySelectorAll('.lang-toggle button').forEach(btn=>{
+      const active = btn.dataset.setlang === lang;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+
+  window.switchLang = setLang;
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    setLang(localStorage.getItem(KEY) || 'en');
+  });
+})();
+</script>
+</head>
+
+<body>
+<div class="shell">
+
+<h1>Gut Regeneration SuperCodex · Sub-Codex I–VII</h1>
+
+<div class="badge-row">
+  <span class="badge warn" data-lang="en">Not medical advice · clinician-led only</span>
+  <span class="badge warn hidden" data-lang="ru">Не медицинская рекомендация · только под наблюдением врача</span>
+  <span class="badge prime" data-lang="en">30-day defaults · sequencing & guardrails</span>
+  <span class="badge prime hidden" data-lang="ru">30 дней по умолчанию · последовательность и рамки безопасности</span>
+</div>
+
+<div class="lang-toggle">
+  <button class="active" data-setlang="en" onclick="switchLang('en')">EN</button>
+  <button data-setlang="ru" onclick="switchLang('ru')">RU</button>
+</div>
+
+<h2>Sub-Codex I · Phoenix Gut Broth & Barrier Repair</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">Purpose & Clinical Logic</span>
+  <span data-lang="ru" class="hidden">Назначение и клиническая логика</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  This sub-codex establishes the non-negotiable foundation: **seal the gut lining**, reduce inflammatory leakage,
+  restore absorption, and stabilize stool/pain before escalation into metabolic, parasite, or regenerative layers.
+  </p>
+  <div class="callout warn">
+    If there is active GI bleeding, suspected obstruction, severe dehydration, uncontrolled vomiting, or fever with rigors:
+    pause protocols and follow the Emergency Sub-Codex (VII).
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>
+  Этот раздел — фундамент: восстановление слизистой, снижение воспалительной проницаемости и стабилизация стула/боли
+  до перехода к более сложным уровням.
+  </p>
+  <div class="callout warn">
+    При кровотечении, подозрении на непроходимость, сильной дегидратации, неукротимой рвоте или высокой температуре —
+    остановить протокол и следовать аварийному разделу (VII).
+  </div>
+</div>
+
+<div class="meta">Duration: minimum 30 days · often continuous</div>
+<div class="meta">Cost: Lite $50–200 · Core $300–800 · Ascension $1,200+</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Phoenix Bone Broth · Full Recipe & Use</span>
+  <span data-lang="ru" class="hidden">Костный бульон Phoenix · рецепт и применение</span>
+</summary>
+
+<div data-lang="en">
+  <div class="grid2">
+    <div>
+      <h3>Ingredients</h3>
+      <ul>
+        <li>2–3kg organic chicken carcasses OR beef marrow/joint bones</li>
+        <li>2 carrots, 2 celery stalks</li>
+        <li>1 onion (omit if histamine-sensitive)</li>
+        <li>3–5cm fresh ginger</li>
+        <li>3–5cm turmeric OR 1–2 tsp powder</li>
+        <li>2 tbsp apple cider vinegar</li>
+        <li>Filtered water to cover</li>
+        <li>Optional: bay leaf; peppercorns (omit if gastritis/reactive)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Method</h3>
+      <ul>
+        <li>Optional: roast bones 20–30 min at 180–200°C</li>
+        <li>Combine ingredients, cover with water</li>
+        <li>Bring to gentle boil, skim foam</li>
+        <li>Reduce to very low simmer 12–24 hours</li>
+        <li>Strain; cool; refrigerate or freeze portions</li>
+        <li>For pancreatic compromise: cool fully and remove fat cap</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Use Pattern (Clinician-adapted)</h3>
+  <ul>
+    <li>2–4 small cups daily, warm, sipped slowly</li>
+    <li>Flare / post-procedure days: broth may replace meals temporarily</li>
+    <li>Refeed rule: advance textures slowly (soup → puree → soft solids)</li>
+  </ul>
+  <div class="callout prime">
+    “Bad day” minimum viable plan: warm water + broth + rest + calm breathing.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Подробный рецепт: кости + овощи + имбирь/куркума + уксус → томить 12–24 часа на слабом огне → процедить → пить тёплым малыми порциями.</p>
+  <p class="small">При панкреатической чувствительности: охлаждать и удалять жир.</p>
+</div>
+
+<div class="meta">Storage: 3–4 days refrigerated · freeze portions</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Barrier Peptides & Nutrients (Clinician Layer)</span>
+  <span data-lang="ru" class="hidden">Пептиды и нутриенты для барьера</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Peptide Families (examples used in clinics)</h3>
+  <ul>
+    <li><strong>BPC-157 family:</strong> mucosal repair signaling; microcirculation support; ulcer-pattern healing.</li>
+    <li><strong>KPV-type tripeptides:</strong> local inflammatory signaling reduction in epithelial environments.</li>
+    <li><strong>GHK-Cu (support layer):</strong> tissue remodeling signaling; skin/gut repair adjacency in some protocols.</li>
+  </ul>
+
+  <h3>Barrier Nutrient Logic</h3>
+  <ul>
+    <li><strong>Collagen / gelatin:</strong> structural substrate for mucosa repair (often via broth).</li>
+    <li><strong>Zinc + vitamin A/D:</strong> epithelial integrity signaling (dose/route clinician-led).</li>
+    <li><strong>Magnesium:</strong> motility + autonomic stability adjacency.</li>
+    <li><strong>Glutamine (case-by-case):</strong> enterocyte fuel in some settings; not universal—clinician decides.</li>
+  </ul>
+
+  <div class="callout warn">
+    Sequencing rule: do not add “power” layers (mitochondrial/immune/onco-terrain peptides, aggressive antimicrobials)
+    until stool consistency, pain, hydration, and bleeding risk are stabilized.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Пептиды/нутриенты для восстановления слизистой применяются только под контролем врача. Последовательность важнее агрессии.</p>
+</div>
+
+<div class="meta">Default duration: 30 days before escalation</div>
+</details>
+</div>
+
+<h2>Sub-Codex II · Metabolic & Mitochondrial Warfare (ETC)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">ETC Rationale (Why Energy Comes First)</span>
+  <span data-lang="ru" class="hidden">Логика ETC (почему энергия — прежде всего)</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  Gut epithelial turnover is extremely high. When mitochondria and the electron transport chain (ETC) are impaired,
+  barrier repair stalls and inflammation persists. This layer restores **electron flow, oxygen utilization, and redox balance**
+  in a clinician-supervised way.
+  </p>
+  <div class="callout prime">
+    Practical rule: if the patient cannot sleep, cannot keep fluids, or has uncontrolled nausea—prioritize stabilization
+    and symptom control before adding “performance” tools.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Слизистая кишечника быстро обновляется и зависит от митохондрий. При нарушении ETC восстановление останавливается. Этот слой — про редокс и энергию.</p>
+</div>
+
+<div class="meta">Default duration: 30–90 days</div>
+<div class="meta">Cost: Lite $50–200 · Core $250–800 · Ascension $1,000+</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Hydrogen Therapy (Tablets / Water)</span>
+  <span data-lang="ru" class="hidden">Водородная терапия (таблетки/вода)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Why clinics use it</h3>
+  <ul>
+    <li>Selective antioxidant behavior (hydroxyl radical modulation)</li>
+    <li>Mitochondrial membrane protection signaling</li>
+    <li>Inflammation downshift without blunt immune suppression</li>
+  </ul>
+
+  <h3>Integration rules (non-dosing)</h3>
+  <ul>
+    <li>Start low in highly reactive patients; track reflux, bloating, stool changes.</li>
+    <li>Separate from binders and certain meds if clinician advises.</li>
+    <li>On chemo days, timing is clinician-led to avoid interference with therapy intent.</li>
+  </ul>
+
+  <div class="callout warn">
+    Do not treat hydrogen as “harmless water” in complex cases. It is a physiological input; monitor response.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Водород — физиологический модификатор редокса. Начинать осторожно, отслеживать реактивность. Тайминг при терапии — только врач.</p>
+</div>
+
+<div class="meta">Cost range: $50–300 / month (device or tablets vary)</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Methylene Blue (Clinical Only)</span>
+  <span data-lang="ru" class="hidden">Метиленовый синий (только клиника)</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  In specialist settings, methylene blue may be used as an alternative electron carrier within the ETC.
+  This is **not** a consumer supplement and must be governed by a clinician experienced in drug interactions.
+  </p>
+  <h3>Governance checklist</h3>
+  <ul>
+    <li>Medication interaction review (especially serotonergic agents and other redox-active drugs)</li>
+    <li>Contraindication screening + baseline vitals</li>
+    <li>Conservative introduction + explicit stop rules</li>
+  </ul>
+  <div class="callout warn">
+    No self-sourcing, no self-dosing. This belongs inside regulated clinical oversight.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Метиленовый синий применяется только в медицинском контроле из-за взаимодействий и рисков. Самостоятельное использование недопустимо.</p>
+</div>
+
+<div class="meta">Cost: clinical pricing varies</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Cacao Elixir (Gut-Safe Version)</span>
+  <span data-lang="ru" class="hidden">Какао-эликсир (щадящий для ЖКТ)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Base recipe</h3>
+  <ul>
+    <li>1 tbsp raw cacao powder (start with 1 tsp if reactive)</li>
+    <li>250ml warm water or tolerated plant milk (not boiling)</li>
+    <li>Pinch cinnamon + sea salt</li>
+    <li>Optional: vanilla; clinician-approved non-sugar sweetener</li>
+  </ul>
+  <h3>Use rules</h3>
+  <ul>
+    <li>Stop if reflux worsens or anxiety spikes.</li>
+    <li>Prefer earlier in day for sensitive sleepers.</li>
+    <li>Do not pair with aggressive kill-phases if it increases gut irritation.</li>
+  </ul>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Какао: начинать с малых доз, избегать при усилении рефлюкса/тревоги. Лучше раньше днём.</p>
+</div>
+
+<div class="meta">Cost: low</div>
+</details>
+</div>
+
+<h2>Sub-Codex III · Parasite & Pathogen Axis (FULL)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">Core Principle</span>
+  <span data-lang="ru" class="hidden">Основной принцип</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  Parasites and chronic pathogens can drain nutrients, distort immune signaling, and perpetuate gut inflammation.
+  The goal is **bandwidth recovery** and improved terrain—not “scorched earth”.
+  </p>
+  <div class="callout warn">
+    In cancer/severe GI disease: parasite work is clinician-governed only. Timing and exit strategy matter more than force.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Паразитарная/патогенная нагрузка может поддерживать воспаление. Цель — восстановить «биологическую пропускную способность», а не агрессию любой ценой.</p>
+</div>
+
+<div class="meta">Default duration: 30 days (staged) · many patients 60–90 days</div>
+<div class="meta">Cost: $200–1,500 depending on track</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Protocol Sequencing (All Tracks)</span>
+  <span data-lang="ru" class="hidden">Последовательность (для всех треков)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Phase 0 — Assess</h3>
+  <ul>
+    <li>Exposure history + symptom clustering (GI, skin, sleep, cravings, anemia patterns)</li>
+    <li>Testing where indicated (stool PCR/microscopy; inflammatory markers)</li>
+  </ul>
+
+  <h3>Phase 1 — Prepare (non-negotiable)</h3>
+  <ul>
+    <li>Hydration + minerals</li>
+    <li>Bowel regularity plan (avoid constipation during kill phases)</li>
+    <li>Liver/lymph support (gentle)</li>
+    <li>Barrier support from Sub-Codex I</li>
+  </ul>
+
+  <h3>Phase 2 — Target</h3>
+  <ul>
+    <li>Choose Track A, B, or C based on risk/tolerance</li>
+    <li>One change at a time; track symptoms daily</li>
+  </ul>
+
+  <h3>Phase 3 — Bind & Exit</h3>
+  <ul>
+    <li>Binders are timed by clinician (avoid grabbing essential meds/nutrients)</li>
+    <li>Ensure elimination pathways: stool/urine/sweat as tolerated</li>
+  </ul>
+
+  <h3>Phase 4 — Repair</h3>
+  <ul>
+    <li>Microbiome rebuild (phased)</li>
+    <li>Mucosal repair (peptide/nutrient layers as appropriate)</li>
+    <li>Autonomic downshift (sleep + nervous system work)</li>
+  </ul>
+
+  <div class="callout prime">
+    “Kill → Bind → Repair” is the integrity triangle. Missing one corner = chaos.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Последовательность: Оценка → Подготовка → Таргетирование → Связывание/выведение → Восстановление.</p>
+</div>
+
+<div class="meta">Default cycle: 30 days · repeat only if tolerated</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Track A · Pharmaceutical</span>
+  <span data-lang="ru" class="hidden">Трек A · Фармакология</span>
+</summary>
+
+<div data-lang="en">
+  <h3>When clinics choose this</h3>
+  <ul>
+    <li>Clear testing + high suspicion</li>
+    <li>Severe symptoms with low tolerance for long botanical courses</li>
+    <li>Need for rapid de-load in a carefully monitored window</li>
+  </ul>
+
+  <h3>Governance</h3>
+  <ul>
+    <li>Prescription selection by clinician only</li>
+    <li>Liver and hydration monitoring as indicated</li>
+    <li>Mandatory repair phase after each pulse</li>
+  </ul>
+
+  <div class="callout warn">
+    Pharma antiparasitics are powerful. Poor timing can worsen dehydration, inflammation, or treatment tolerance.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Фармакологический путь: только по назначению врача, с мониторингом и обязательным этапом восстановления.</p>
+</div>
+
+<div class="meta">Duration: commonly 14–30 days active + repair</div>
+<div class="meta">Cost: $300–1,500</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Track B · Holistic / Botanical</span>
+  <span data-lang="ru" class="hidden">Трек B · Фитотерапия</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Pattern used in integrative clinics</h3>
+  <ul>
+    <li>Rotational botanical triads (commonly: bitter/anthelmintic + aromatic + tannin support)</li>
+    <li>Digestive bitters + bile flow support</li>
+    <li>Lower intensity, longer timeline</li>
+  </ul>
+
+  <h3>Why it works (terrain framing)</h3>
+  <ul>
+    <li>Shifts ecological pressure gradually</li>
+    <li>Often better tolerated in reactive mucosa</li>
+    <li>Pairs naturally with repair layers</li>
+  </ul>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Фитопротокол: мягче, дольше, обычно лучше переносится при реактивной слизистой. Всегда с этапом восстановления.</p>
+</div>
+
+<div class="meta">Duration: 30–90 days</div>
+<div class="meta">Cost: $200–600</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Track C · Hybrid (Tr4nsform Standard)</span>
+  <span data-lang="ru" class="hidden">Трек C · Гибрид (стандарт)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Hybrid design</h3>
+  <ul>
+    <li>Short clinician-led pharmaceutical pulses when appropriate</li>
+    <li>Botanical rotation between pulses</li>
+    <li>Binders + elimination support throughout (timed)</li>
+    <li>Repair blocks after each push</li>
+    <li>Nervous system downshift during die-off windows</li>
+  </ul>
+
+  <div class="callout prime">
+    Hybrid is often the best “real world” model: speed when needed, softness when required, repair always.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Гибрид: короткие фарма-пульсы + фитоподдержка + сорбенты/выведение + обязательное восстановление.</p>
+</div>
+
+<div class="meta">Duration: 30–90 days</div>
+<div class="meta">Cost: $500–1,200</div>
+</details>
+</div>
+
+<hr class="sep"/>
+
+<h2>Sub-Codex IV · Regenerative Medicine (Peptides) · Gut + Neuro + Mito</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">Architecture & Sequencing (Non-Negotiable)</span>
+  <span data-lang="ru" class="hidden">Архитектура и последовательность</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  This sub-codex is built as a **layered stack**, introduced slowly and measured.
+  The clinical aim is to restore: (1) barrier integrity, (2) neuro-enteric regulation,
+  (3) mitochondrial throughput, (4) immune orchestration — in that order.
+  </p>
+
+  <h3>Stop Rules (any layer)</h3>
+  <ul>
+    <li>Worsening bleeding, black stools, severe abdominal pain</li>
+    <li>Fever, rigors, confusion, dehydration escalation</li>
+    <li>Sudden psychiatric destabilization (especially if cannabinoids introduced)</li>
+  </ul>
+
+  <div class="callout warn">
+    Peptides are jurisdiction-dependent, often off-label, and supply-chain sensitive.
+    This is a clinician governance framework, not self-prescribing instructions.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Пептидный стек вводится слоями: барьер → нейро-кишечный контур → митохондрии → иммунная координация. Только под наблюдением врача.</p>
+</div>
+
+<div class="meta">Default duration: 30 days per layer (minimum)</div>
+<div class="meta">Cost: Lite $300–900 · Core $1,200–3,500 · Ascension $5,000+</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Layer 1 · Gut Barrier & Tissue Repair (Selected Peptides)</span>
+  <span data-lang="ru" class="hidden">Слой 1 · Барьер и восстановление тканей</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Primary (gut-first)</h3>
+  <ul>
+    <li><strong>BPC-157 family:</strong> mucosal repair signaling, microcirculation support, ulcer-pattern healing.</li>
+    <li><strong>KPV-type:</strong> local inflammatory downshift in epithelial contexts.</li>
+  </ul>
+
+  <h3>Adjacency (repair ecosystem)</h3>
+  <ul>
+    <li><strong>TB-500 / thymosin beta-4 family (context-dependent):</strong> tissue repair signaling; used cautiously with oncology governance.</li>
+    <li><strong>GHK-Cu:</strong> remodeling signals; often used as a support layer when skin/gut repair are both impaired.</li>
+  </ul>
+
+  <div class="callout prime">
+    Goal outcome markers: less pain, more stable stool, reduced urgency, improved tolerance to nutrition and hydration.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Слой 1: пептиды для слизистой/микроциркуляции и контроля локального воспаления. Маркеры: стабильный стул, меньше боли, лучше переносимость питания.</p>
+</div>
+
+<div class="meta">Default duration: 30 days before adding Layer 2</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Layer 2 · Neuro–Enteric / Vagus / Motility Stabilization</span>
+  <span data-lang="ru" class="hidden">Слой 2 · Нейро-кишечный контур / вагус / моторика</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  This layer targets the gut-brain axis: nausea, motility dysregulation, threat signaling,
+  and autonomic imbalance (sympathetic dominance or dorsal vagal collapse).
+  </p>
+  <h3>Clinic pattern (families)</h3>
+  <ul>
+    <li><strong>Autonomic-modulating peptide families</strong> (used to support vagal tone / nausea regulation under supervision).</li>
+    <li><strong>Sleep-stabilizing peptide families</strong> (used only when the patient’s nervous system is destabilized and insomnia blocks healing).</li>
+  </ul>
+
+  <div class="callout prime">
+    If the nervous system can’t downshift, the gut cannot rebuild. This layer is often the difference between “protocol works” and “protocol fails”.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Слой 2: нормализация оси кишечник–мозг, тошноты, моторики, автономной регуляции. Без снижения тревожного режима кишечник не восстанавливается.</p>
+</div>
+
+<div class="meta">Default duration: 30 days before adding Layer 3</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Layer 3 · Mitochondrial Throughput (ETC Peptides)</span>
+  <span data-lang="ru" class="hidden">Слой 3 · Митохондрии (ETC-пептиды)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Common clinical families (examples)</h3>
+  <ul>
+    <li><strong>SS-31 / elamipretide family:</strong> mitochondrial membrane stabilization signaling (specialist use).</li>
+    <li><strong>MOTS-c family:</strong> metabolic signaling and stress adaptation (specialist use).</li>
+    <li><strong>Humanin-family peptides:</strong> cytoprotective signaling under stress (specialist use).</li>
+  </ul>
+
+  <div class="callout warn">
+    Mitochondrial tools can shift energy and appetite quickly. Introduce conservatively, track sleep, anxiety, reflux, and stool.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Слой 3: митохондриальные семейства (SS-31, MOTS-c, humanin) применяются специалистами для поддержки редокса/энергии. Вводить осторожно.</p>
+</div>
+
+<div class="meta">Default duration: 30–60 days, clinician-governed</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Layer 4 · Immune Orchestration (Thymic Families)</span>
+  <span data-lang="ru" class="hidden">Слой 4 · Иммунная координация (тимические семейства)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Common clinic families (examples)</h3>
+  <ul>
+    <li><strong>Thymosin alpha-1 (TA-1) family:</strong> immune orchestration signaling (oncology-aware governance).</li>
+    <li><strong>Thymalin / thymic peptide families:</strong> immunoregulatory patterns used in some jurisdictions.</li>
+  </ul>
+
+  <h3>Oncology integration rules</h3>
+  <ul>
+    <li>Any immune-modulating layer is reviewed against chemo/immunotherapy plan.</li>
+    <li>Use “support & orchestrate” logic, not blunt stimulation.</li>
+    <li>Track labs and clinical symptoms with a defined stop policy.</li>
+  </ul>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Слой 4: тимические семейства (например TA-1/Thymalin) — только при онкологически грамотном надзоре и мониторинге.</p>
+</div>
+
+<div class="meta">Default duration: 30–90 days, integrated with primary team</div>
+</details>
+</div>
+
+<h2>Sub-Codex V · Stem Cells / Exosomes (Options + Guardrails)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">The Guardrail (Cancer Context)</span>
+  <span data-lang="ru" class="hidden">Рамки безопасности (контекст онкологии)</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  Regenerative cell therapies are frontier medicine. In cancer contexts, governance must explicitly consider:
+  infection risk, clotting risk, immune signaling shifts, and tumor microenvironment uncertainty.
+  </p>
+
+  <div class="callout warn">
+    This section is an options map for clinician discussion.
+    It is not a recommendation to pursue stem cells/exosomes in active malignancy without multidisciplinary sign-off.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Клеточные терапии — передний край. При онкологии требуется междисциплинарное согласование и контроль рисков.</p>
+</div>
+
+<div class="meta">Default planning horizon: 30 days for workup + decision</div>
+<div class="meta">Cost: $2,500–25,000+ depending on jurisdiction and product</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Option Matrix (What Clinics Offer)</span>
+  <span data-lang="ru" class="hidden">Матрица опций</span>
+</summary>
+
+<div data-lang="en">
+  <div class="grid2">
+    <div>
+      <h3>Autologous (self-derived)</h3>
+      <ul>
+        <li>Bone marrow / adipose-derived MSC workflows (regulated settings)</li>
+        <li>Often preferred when feasible due to donor considerations</li>
+        <li>Requires clean processing chain and infection control</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Allogeneic (donor-derived)</h3>
+      <ul>
+        <li>Cord tissue / donor MSC products in governed clinics or trials</li>
+        <li>Requires strict donor screening and manufacturing controls</li>
+        <li>Explicit tumor interaction and clotting risk review</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="sep"/>
+
+  <h3>Exosomes / EVs (Investigational)</h3>
+  <ul>
+    <li>Quality and regulation vary widely; treat as investigational</li>
+    <li>Require traceability, testing, and pharmacovigilance posture</li>
+    <li>Often positioned as adjunct signals, not “miracle cures”</li>
+  </ul>
+
+  <h3>Growth Factor / PRP Layer (Adjunct)</h3>
+  <ul>
+    <li>Used as local/systemic adjuncts in some programs</li>
+    <li>Indication-specific, evidence varies; avoid hype, keep governance tight</li>
+  </ul>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Опции: аутологичные MSC, донорские MSC, экзосомы/EV (исследовательское), PRP/факторы роста (адъювантно). Качество и регулирование критичны.</p>
+</div>
+
+<div class="meta">Rule: licensed facility + traceability + informed consent + long follow-up</div>
+</details>
+</div>
+
+
+<hr class="sep"/>
+
+<h2>Adjunct Overlay · Colon Cancer Support (Consultation Add-On)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">Purpose · Integrate (Do Not Replace Oncology Care)</span>
+  <span data-lang="ru" class="hidden">Назначение · добавить (не заменять онкологическое лечение)</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+    This overlay captures supportive elements raised in a consultation call. It is designed to be <strong>added</strong> to the existing stack
+    (not substituted for medical care). All items here are clinician-governed, especially in active cancer treatment.
+  </p>
+
+  <div class="callout warn">
+    Not medical advice. No self-prescribing. All peptide and fasting decisions are made with the primary oncology/GI team.
+  </div>
+
+  <h3>Support Protocol Summary (Spreadsheet-Ready)</h3>
+  <div class="callout">
+    Suggested columns: <strong>Category</strong> · <strong>Item</strong> · <strong>Description/Details</strong> · <strong>Frequency/Pattern</strong> · <strong>Notes</strong>
+  </div>
+
+  <ul>
+    <li><strong>Peptides · MET 5-Enkephalin (Met-enkephalin / OGF axis):</strong> immune/orchestration + symptom support framing in some programs · <em>pattern: specialist-prescribed only</em> · monitor nausea/sedation and stop rules.</li>
+    <li><strong>Peptides · GHK-Cu:</strong> repair/anti-inflammatory/antioxidant signaling adjacency · <em>pattern: topical or clinician-directed</em> · avoid if copper allergy; track reactions.</li>
+    <li><strong>Peptides · Thymosin Alpha 1:</strong> immune orchestration used in some oncology-aware programs · <em>pattern: clinician cycles</em> · coordinate with chemo/immunotherapy plan.</li>
+    <li><strong>Breathwork · Wim Hof (retention + breath hold):</strong> 4 rounds per session · <em>pattern: 10–20 min daily if tolerated</em> · start slow; stop for dizziness, chest pain, or anxiety spike.</li>
+    <li><strong>Food · No processed foods:</strong> 100% whole-food bias (veg/fruit, quality proteins, healthy fats) · <em>pattern: daily</em> · keep a simple food diary during unstable weeks.</li>
+    <li><strong>Food · Fasting / time-restricted eating:</strong> metabolic support framing · <em>pattern: 16–18h window only if weight and oncology team allow</em> · avoid in underweight/frail patients; hydration/electrolytes matter.</li>
+  </ul>
+
+  <div class="callout prime">
+    Practical integration: <strong>one variable at a time</strong> → track sleep, stool, pain, nausea, hydration, mood → weekly clinician review.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>
+    Этот модуль — поддерживающее дополнение по итогам консультации. Он <strong>добавляется</strong> к существующему стеку и не заменяет
+    основное лечение. Все решения — только совместно с онкологом/гастроэнтерологом.
+  </p>
+
+  <div class="callout warn">
+    Не медицинская рекомендация. Никакого самостоятельного назначения. Пептиды и голодание — только под контролем основной команды.
+  </div>
+
+  <h3>Краткая таблица (удобно для Excel/Sheets)</h3>
+  <div class="callout">
+    Колонки: <strong>Категория</strong> · <strong>Пункт</strong> · <strong>Описание</strong> · <strong>Частота/паттерн</strong> · <strong>Примечания</strong>
+  </div>
+
+  <ul>
+    <li><strong>Пептиды · MET 5‑Enkephalin (Met‑энкефалин / ось OGF):</strong> оркестрация иммунного ответа + симптомная поддержка в некоторых программах · <em>только по назначению специалиста</em> · мониторинг тошноты/сонливости и стоп‑правила.</li>
+    <li><strong>Пептиды · GHK‑Cu:</strong> сигналы восстановления/антиоксидантная поддержка · <em>топически или по решению врача</em> · избегать при аллергии на медь; отслеживать реакции.</li>
+    <li><strong>Пептиды · Thymosin Alpha 1:</strong> иммунная координация в онкологически грамотных схемах · <em>циклы только врачом</em> · согласовать с химио/иммунотерапией.</li>
+    <li><strong>Дыхание · Wim Hof (ретенция + задержка):</strong> 4 раунда · <em>10–20 минут ежедневно при переносимости</em> · начинать мягко; остановить при головокружении, боли в груди, усилении тревоги.</li>
+    <li><strong>Питание · без ультра‑переработанных продуктов:</strong> упор на цельные продукты · <em>ежедневно</em> · в нестабильные недели вести простой дневник питания.</li>
+    <li><strong>Питание · интервальное голодание:</strong> метаболическая поддержка · <em>16–18 часов только если вес/состояние позволяют</em> · не применять при истощении; важны гидратация и электролиты.</li>
+  </ul>
+
+  <div class="callout prime">
+    Интеграция: <strong>одна переменная за раз</strong> → сон, стул, боль, тошнота, гидратация, настроение → еженедельный разбор с врачом.
+  </div>
+</div>
+
+<div class="meta">Status: add-on module · oncology-aware governance</div>
+</details>
+</div>
+
+<h2>Sub-Codex VI · Sleep / ECS / Cannabinoids (THC & CBD) + Love Field</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">Clinical Logic: Sleep Architecture → Repair Biology</span>
+  <span data-lang="ru" class="hidden">Логика: сон → восстановление</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  Deep sleep is one of the strongest biological repair windows. Many clinicians link stable sleep architecture
+  with improved recovery capacity (including nighttime hormone pulses such as growth hormone).
+  The goal here is **safe downshift**, not intoxication.
+  </p>
+
+  <div class="callout prime">
+    Sleep is a protocol. The gut repairs best when the nervous system feels safe.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Глубокий сон — окно восстановления. Цель — безопасное «снижение оборотов», а не интоксикация.</p>
+</div>
+
+<div class="meta">Default duration: 30 days to stabilize sleep pattern</div>
+<div class="meta">Cost: $150–1,200 (jurisdiction dependent)</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Cannabinoid Protocol Pattern (Sublingual Drops · Pre-Sleep)</span>
+  <span data-lang="ru" class="hidden">Каннабиноиды (сублингвальные капли перед сном)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Pattern used in supervised medical programs</h3>
+  <ul>
+    <li><strong>Route:</strong> sublingual drops (fast, predictable onset vs edibles)</li>
+    <li><strong>Timing:</strong> commonly taken ~20 minutes before intended sleep window (clinician adjusted)</li>
+    <li><strong>Objective:</strong> calm the autonomic system, reduce nausea/pain, improve sleep continuity</li>
+    <li><strong>ECS framing:</strong> aim for endocannabinoid balance, not “getting high”</li>
+  </ul>
+
+  <h3>Why it matters for gut repair</h3>
+  <ul>
+    <li>Reduced nighttime sympathetic activity → improved motility patterns</li>
+    <li>Better sleep continuity → improved tissue repair signaling</li>
+    <li>Lower stress hormones → less inflammatory signaling load</li>
+  </ul>
+
+  <h3>Governance (must-have)</h3>
+  <ul>
+    <li>Micro-titration only; single-variable changes; track mood/anxiety, heart rate, reflux, dreams</li>
+    <li>Screen for psychosis vulnerability, severe anxiety sensitivity, and medication interactions</li>
+    <li>Do not combine with alcohol or other sedatives unless physician explicitly manages</li>
+  </ul>
+
+  <div class="callout warn">
+    Claims like “shrinks cancer” are not established medical proof. This is positioned as symptom support and sleep-architecture support
+    within a clinician-led oncology plan.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Сублингвальные капли часто применяют за ~20 минут до сна (по решению врача) для снижения боли/тошноты и улучшения непрерывности сна. Цель — баланс ECS и безопасный дауншифт.</p>
+</div>
+
+<div class="meta">Default duration: 30 days stabilization, then reassess</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Love Field Protocol (Operational, Not Fluffy)</span>
+  <span data-lang="ru" class="hidden">Love Field (операционально)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Daily minimum (10 minutes)</h3>
+  <ul>
+    <li>4–6 slow exhale breaths (longer exhale) × 3 rounds</li>
+    <li>Warm hands on abdomen (consent) + gentle circular contact</li>
+    <li>One sentence only: “You are safe. We are here. We are rebuilding.”</li>
+  </ul>
+
+  <h3>Why it’s biological</h3>
+  <ul>
+    <li>Threat signals shut down digestion</li>
+    <li>Safety cues restore parasympathetic tone</li>
+    <li>Language hygiene changes physiology</li>
+  </ul>
+
+  <div class="callout prime">
+    The caregiver’s nervous system is part of the patient’s medicine.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Love Field: дыхание с длинным выдохом, мягкий контакт, фразы безопасности. Это физиология, а не «вибрации».</p>
+</div>
+
+<div class="meta">Duration: daily, continuous</div>
+</details>
+</div>
+
+<h2>Sub-Codex VI-b · Bioresonance Scan & Treatment (Operationalized)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">What It Is (and What It Isn’t)</span>
+  <span data-lang="ru" class="hidden">Что это (и чем не является)</span>
+</summary>
+
+<div data-lang="en">
+  <p>
+  Bioresonance-style systems are used in some integrative clinics to map physiological stress patterns
+  (e.g., sensitivities, autonomic load, inflammatory “noise”). Evidence quality varies by device and claim.
+  This codex frames it as: **scan → reduce sensitivity → support regulation**, not as a guaranteed tumor treatment.
+  </p>
+
+  <div class="callout warn">
+    Statements like “resonate cancer into shrinking” are not established clinical proof.
+    Position this as adjunctive regulation / symptom support unless your licensed clinicians have jurisdiction-specific approved claims.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Биорезонанс: использовать как скан и регуляцию/снижение реактивности, а не как гарантированное лечение опухоли.</p>
+</div>
+
+<div class="meta">Default block: 30 days</div>
+<div class="meta">Cost: $300–3,000 depending on clinic and frequency</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Scan → Sensitivity Downshift → Treatment Loop</span>
+  <span data-lang="ru" class="hidden">Скан → снижение чувствительности → курс</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Step 1 — Baseline scan</h3>
+  <ul>
+    <li>Identify high-reactivity domains: gut, liver, lymph, nervous system, allergens/foods</li>
+    <li>Record symptom baselines (pain, stool, sleep, nausea, appetite)</li>
+  </ul>
+
+  <h3>Step 2 — Sensitivity downshift protocol</h3>
+  <ul>
+    <li>Reduce “energetic noise” targets linked to intolerance patterns</li>
+    <li>Pair with hydration/minerals and barrier protection from Sub-Codex I</li>
+  </ul>
+
+  <h3>Step 3 — Treatment sessions (cadence set by clinic)</h3>
+  <ul>
+    <li>Re-test, iterate, reduce load progressively</li>
+    <li>Stop rules: symptom flare beyond agreed threshold</li>
+  </ul>
+
+  <div class="callout prime">
+    The win condition: reduced reactivity, better sleep, better stool, better tolerance to nutrition and therapies.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Петля: базовый скан → снижение реактивности → курс с повторной оценкой. Цель — переносимость, сон, стул, снижение симптомной нагрузки.</p>
+</div>
+
+<div class="meta">Default duration: 30 days, then reassess</div>
+</details>
+</div>
+
+<h2>Sub-Codex VII · Emergency Gut Navigation (Red Flags + Pause Rules)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">Emergency Triggers (Act Immediately)</span>
+  <span data-lang="ru" class="hidden">Тревожные признаки (срочно)</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Go to emergency care / call your clinician urgently if:</h3>
+  <ul>
+    <li>Black/tarry stools, vomiting blood, or rapid worsening bleeding</li>
+    <li>Severe abdominal pain with distension, inability to pass stool/gas (possible obstruction)</li>
+    <li>Fever with rigors, confusion, fainting, very low urine output (possible sepsis/dehydration)</li>
+    <li>Uncontrolled vomiting, inability to keep fluids for >12–24 hours</li>
+    <li>Sudden chest pain, shortness of breath, new neurological deficit</li>
+  </ul>
+
+  <div class="callout warn">
+    In these events: stop all non-essential supplements/herbals/peptides immediately unless the primary team says otherwise.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Срочно: кровь/чёрный стул, сильная боль/вздутие и задержка стула/газов, высокая температура с ознобом, спутанность, обезвоживание, неукротимая рвота.</p>
+</div>
+
+<div class="meta">This section overrides all other sections</div>
+</details>
+</div>
+
+<div class="card">
+<details>
+<summary>
+  <span data-lang="en">Pause Rules (When to Stop the Protocol)</span>
+  <span data-lang="ru" class="hidden">Когда остановить протокол</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Pause immediately if:</h3>
+  <ul>
+    <li>New severe GI pain, worsening bleeding, severe diarrhea, or dehydration signs</li>
+    <li>New agitation/panic/psychosis symptoms after cannabinoids or neuro layers</li>
+    <li>Strong “die-off” reaction beyond agreed clinician threshold</li>
+  </ul>
+
+  <h3>What remains (Minimum Viable Support)</h3>
+  <ul>
+    <li>Hydration + electrolytes as tolerated</li>
+    <li>Phoenix broth (small sips) if tolerated</li>
+    <li>Rest + gentle breathing</li>
+    <li>Primary oncology/GI plan continues unless told otherwise</li>
+  </ul>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>Пауза при ухудшении боли/кровотечения/диареи/обезвоживания или психических симптомах. Минимум: гидратация, бульон (если переносится), отдых, дыхание.</p>
+</div>
+
+<div class="meta">Default: pause 24–72 hours and reassess with clinician</div>
+</details>
+</div>
+
+<h2>Implementation Tile · 30-Day Build (Default if in doubt)</h2>
+
+<div class="card">
+<details open>
+<summary>
+  <span data-lang="en">30-Day Sequencing (Dense, Practical)</span>
+  <span data-lang="ru" class="hidden">30-дневная последовательность</span>
+</summary>
+
+<div data-lang="en">
+  <h3>Days 1–7: Stabilize</h3>
+  <ul>
+    <li>Broth + hydration + gut-gentle meals only</li>
+    <li>Start hydrogen if tolerated</li>
+    <li>No kill phases yet; no advanced stacks yet</li>
+    <li>Begin Love Field daily minimum</li>
+  </ul>
+
+  <h3>Days 8–14: Seal the Hull</h3>
+  <ul>
+    <li>Consider Layer 1 gut peptides (clinician-led) if stable</li>
+    <li>Start bioresonance baseline scan if available</li>
+    <li>Introduce cacao only if reflux stable</li>
+  </ul>
+
+  <h3>Days 15–21: Parasite Axis (if indicated)</h3>
+  <ul>
+    <li>Pick Track A/B/C with clinician</li>
+    <li>Bind/exit plan mandatory</li>
+    <li>Keep nutrition simple, reduce variables</li>
+  </ul>
+
+  <h3>Days 22–30: Consolidate & Decide Escalations</h3>
+  <ul>
+    <li>Reassess: stool, pain, sleep, appetite, hydration</li>
+    <li>If sleep is still broken: consider cannabinoid sleep pathway (legal + clinician)</li>
+    <li>Plan next 30 days: Layer 2 or Layer 3 depending on blockers</li>
+  </ul>
+
+  <div class="callout prime">
+    The win condition is not “doing everything”. The win condition is stability + repair momentum.
+  </div>
+</div>
+
+<div data-lang="ru" class="hidden">
+  <p>30 дней: 1–7 стабилизация; 8–14 восстановление барьера; 15–21 паразитарная ось (если нужно); 22–30 консолидация и решение об эскалации.</p>
+</div>
+
+<div class="meta">Cost highlight: Lite $200–600 · Core $1,500–5,000 · Ascension $8,000–30,000+</div>
+</details>
+</div>
+
+</div>
+</body>
+</html>

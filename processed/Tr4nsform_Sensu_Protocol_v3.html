@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sensu Protocol v3 — TR4NSFORM · SASCOSM Sovereign Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inconsolata:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:    #F4F9F6;
+  --deep:    #EDF6F1;
+  --panel:   #E5F2EA;
+  --card:    #FFFFFF;
+  --card2:   #F8FCF9;
+  --border:  rgba(11,107,58,0.13);
+  --border2: rgba(11,107,58,0.25);
+  --sensu:   #0B6B3A;
+  --sensu2:  #0D8048;
+  --sensu3:  #1AAA64;
+  --sensu4:  #D0EBD8;
+  --ki:      #1B789A;
+  --ki2:     #2490B8;
+  --plasma:  #1B4FA8;
+  --plasma2: #2468C4;
+  --gold:    #8A6510;
+  --gold2:   #A87E20;
+  --amber:   #9C3E08;
+  --red:     #B82828;
+  --oxy:     #7B258A;
+  --oxy2:    #9930AC;
+  --oxy3:    #F3E8F7;
+  --text:    #0E1C16;
+  --text2:   #365044;
+  --text3:   #7A9A88;
+  --glow-s:  0 4px 24px rgba(11,107,58,0.08);
+  --glow-k:  0 4px 20px rgba(27,120,154,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:var(--void);
+  color:var(--text);
+  overflow-x:hidden;
+  font-size:16px;
+  line-height:1.7;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 5%, rgba(11,107,58,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 90% 80%, rgba(27,120,154,0.03) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(11,107,58,0.02) 0%, transparent 50%);
+}
+
+/* ── HERO ── */
+.hero-full{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  text-align:center;
+  padding:100px 40px 80px;
+  overflow:hidden;
+  background:linear-gradient(160deg,#EDFAF4 0%,#F4F9F6 50%,#EEF4FF 100%);
+}
+.hero-full::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(11,107,58,0.06) 0%, transparent 65%),
+    repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(11,107,58,0.03) 80px,rgba(11,107,58,0.03) 81px),
+    repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(11,107,58,0.02) 80px,rgba(11,107,58,0.02) 81px);
+  pointer-events:none;
+}
+.hero-brand{
+  font-family:'Inconsolata',monospace;
+  font-size:10px;letter-spacing:8px;
+  color:var(--text3);text-transform:uppercase;
+  margin-bottom:48px;position:relative;z-index:2;
+  animation:fadeUp 0.8s ease both;
+}
+.sensu-orb{
+  position:relative;z-index:2;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #80FFB8, #38E898 40%, #0A7840 75%, #041A0C);
+  box-shadow:0 0 60px rgba(11,107,58,0.3), 0 0 120px rgba(11,107,58,0.1), 0 8px 32px rgba(11,107,58,0.2);
+  margin:0 auto 40px;
+  animation:pulse-orb 3s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+}
+@keyframes pulse-orb{0%,100%{box-shadow:0 0 60px rgba(11,107,58,0.3),0 0 120px rgba(11,107,58,0.1);}50%{box-shadow:0 0 80px rgba(11,107,58,0.5),0 0 160px rgba(11,107,58,0.18);}}
+.hero-title{
+  font-family:'Cinzel',serif;
+  font-size:clamp(56px,10vw,108px);
+  font-weight:900;letter-spacing:8px;line-height:0.9;
+  color:var(--text);position:relative;z-index:2;
+  animation:fadeUp 0.8s ease 0.2s both;
+  text-shadow:0 2px 24px rgba(11,107,58,0.1);
+}
+.hero-title .sensu-word{
+  display:block;color:var(--sensu);
+  font-size:clamp(44px,7vw,80px);letter-spacing:20px;
+  font-weight:400;margin-top:8px;
+  text-shadow:0 2px 16px rgba(11,107,58,0.2);
+}
+.hero-tagline{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(16px,2vw,22px);
+  font-style:italic;color:var(--text2);
+  margin-top:32px;max-width:680px;
+  position:relative;z-index:2;
+  animation:fadeUp 0.8s ease 0.4s both;
+  line-height:1.7;
+}
+.hero-power{
+  display:flex;gap:40px;justify-content:center;
+  margin-top:52px;position:relative;z-index:2;
+  animation:fadeUp 0.8s ease 0.6s both;
+  flex-wrap:wrap;
+}
+.power-stat{
+  text-align:center;
+  border-left:1px solid rgba(11,107,58,0.18);
+  padding-left:32px;
+}
+.power-stat:first-child{border-left:none;padding-left:0;}
+.power-val{
+  font-family:'Inconsolata',monospace;
+  font-size:26px;font-weight:600;color:var(--sensu);
+  display:block;line-height:1;
+}
+.power-label{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--text3);margin-top:6px;font-family:'Inconsolata',monospace;
+}
+.hero-dedicatee{
+  margin-top:52px;position:relative;z-index:2;
+  animation:fadeUp 0.8s ease 0.8s both;
+  background:rgba(255,255,255,0.7);
+  border:1px solid rgba(11,107,58,0.15);
+  border-left:3px solid var(--sensu);
+  padding:20px 32px;max-width:600px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;font-style:italic;color:var(--text2);
+  backdrop-filter:blur(8px);
+  box-shadow:0 4px 24px rgba(11,107,58,0.06);
+}
+.hero-dedicatee strong{color:var(--text);font-style:normal;}
+.scroll-cue{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  z-index:2;font-family:'Inconsolata',monospace;font-size:10px;
+  letter-spacing:4px;color:var(--text3);text-transform:uppercase;
+  animation:bounce-cue 2s ease-in-out infinite;
+}
+@keyframes bounce-cue{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── NAV ── */
+.sticky-nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(244,249,246,0.96);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(11,107,58,0.06);
+}
+.nav-inner{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:52px;
+}
+.nav-logo{
+  font-family:'Cinzel',serif;font-size:13px;
+  font-weight:700;letter-spacing:4px;color:var(--sensu);
+  text-transform:uppercase;
+}
+.nav-links{display:flex;gap:0;overflow-x:auto;}
+.nav-links::-webkit-scrollbar{height:0;}
+.nl{
+  padding:0 1.1rem;height:52px;
+  display:flex;align-items:center;
+  font-family:'Inconsolata',monospace;font-size:10px;
+  font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text3);cursor:pointer;white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:all 0.2s;text-decoration:none;
+}
+.nl:hover{color:var(--text2);}
+.nl.active{color:var(--sensu);border-bottom-color:var(--sensu);}
+
+/* ── MAIN WRAP ── */
+.wrap{max-width:1400px;margin:0 auto;padding:0 2rem 6rem;position:relative;z-index:1;}
+
+/* ── SECTION HEADERS ── */
+.sec-opener{padding:80px 0 48px;text-align:center;}
+.power-level{
+  font-family:'Inconsolata',monospace;font-size:11px;
+  letter-spacing:6px;text-transform:uppercase;color:var(--sensu3);
+  margin-bottom:16px;
+}
+.sec-h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(32px,5vw,60px);
+  font-weight:900;letter-spacing:4px;line-height:1.05;
+  color:var(--text);
+}
+.sec-h1 em{color:var(--sensu);font-style:normal;}
+.sec-rule{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--sensu),transparent);
+  margin:24px auto;
+}
+.sec-sub{font-size:18px;font-style:italic;color:var(--text2);max-width:700px;margin:0 auto;line-height:1.7;}
+.slabel{
+  font-family:'Inconsolata',monospace;font-size:10px;
+  font-weight:600;letter-spacing:4px;text-transform:uppercase;
+  color:var(--sensu);margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.slabel::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+
+/* ── GLASS CARDS ── */
+.cgrid{display:grid;gap:16px;margin-bottom:56px;}
+.cg2{grid-template-columns:1fr 1fr;}
+.cg3{grid-template-columns:1fr 1fr 1fr;}
+.cg4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.gc{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:2px;
+  box-shadow:0 2px 16px rgba(11,107,58,0.05);
+  padding:2rem;position:relative;overflow:hidden;
+  transition:border-color 0.3s,transform 0.2s,box-shadow 0.2s;
+}
+.gc:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 6px 28px rgba(11,107,58,0.09);}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.gc-sensu::before{background:linear-gradient(90deg,var(--sensu),transparent);}
+.gc-ki::before{background:linear-gradient(90deg,var(--ki),transparent);}
+.gc-plasma::before{background:linear-gradient(90deg,var(--plasma),transparent);}
+.gc-gold::before{background:linear-gradient(90deg,var(--gold),transparent);}
+.gc-amber::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.gc-red::before{background:linear-gradient(90deg,var(--red),transparent);}
+.gc-oxy::before{background:linear-gradient(90deg,var(--oxy),transparent);}
+.gc-glow{box-shadow:var(--glow-s);}
+.gc-lbl{
+  font-family:'Inconsolata',monospace;font-size:9px;
+  font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:8px;
+}
+.gc-title{
+  font-family:'Cinzel',serif;font-size:15px;font-weight:700;
+  color:var(--text);margin-bottom:12px;letter-spacing:1px;
+  line-height:1.3;
+}
+.gc-num{font-family:'Inconsolata',monospace;font-size:40px;font-weight:600;line-height:1;margin-bottom:8px;}
+.n-s{color:var(--sensu);}
+.n-k{color:var(--ki);}
+.n-p{color:var(--plasma);}
+.n-g{color:var(--gold);}
+.n-o{color:var(--oxy);}
+.gc-body{font-family:'Cormorant Garamond',serif;font-size:15px;line-height:1.7;color:var(--text2);}
+.gc-body strong{color:var(--text);}
+.gc-body .s{color:var(--sensu);font-weight:600;}
+.gc-body .k{color:var(--ki);font-weight:600;}
+.gc-body .p{color:var(--plasma);font-weight:600;}
+.gc-body .g{color:var(--gold);font-weight:600;}
+.gc-body .r{color:var(--red);font-weight:600;}
+.gc-body .o{color:var(--oxy);font-weight:600;}
+.gc-body a{color:var(--ki);text-decoration:none;border-bottom:1px dotted rgba(27,120,154,0.4);font-size:13px;}
+.gc-body a:hover{color:var(--sensu);}
+
+/* ── H2 MODULE ── */
+.h2-hero{
+  background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(224,244,232,0.85));
+  border:1px solid rgba(11,107,58,0.18);
+  border-left:4px solid var(--sensu);
+  padding:3rem;margin-bottom:56px;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 24px rgba(11,107,58,0.07);
+}
+.h2-hero::after{
+  content:'H₂';
+  position:absolute;right:40px;top:50%;transform:translateY(-50%);
+  font-family:'Cinzel',serif;font-size:160px;font-weight:900;
+  color:rgba(11,107,58,0.05);line-height:1;pointer-events:none;
+}
+.h2-grid{display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;}
+.h2-title{font-family:'Cinzel',serif;font-size:clamp(24px,4vw,48px);font-weight:900;color:var(--text);letter-spacing:3px;margin-bottom:8px;}
+.h2-sub{font-size:13px;letter-spacing:3px;font-family:'Inconsolata',monospace;color:var(--sensu);text-transform:uppercase;margin-bottom:16px;}
+.h2-body{font-size:16px;color:var(--text2);line-height:1.75;max-width:600px;}
+.h2-body strong{color:var(--text);}
+.h2-body .s{color:var(--sensu);}
+.h2-stats{display:flex;flex-direction:column;gap:12px;min-width:180px;}
+.h2s{background:rgba(11,107,58,0.05);border:1px solid rgba(11,107,58,0.14);border-left:2px solid var(--sensu);padding:14px 18px;}
+.h2s-v{font-family:'Inconsolata',monospace;font-size:22px;font-weight:600;color:var(--sensu);line-height:1;}
+.h2s-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:'Inconsolata',monospace;color:var(--text3);margin-top:4px;}
+
+/* ── PROTOCOL TIMELINE ── */
+.protocol-day{
+  background:var(--card);
+  border:1px solid var(--border);
+  margin-bottom:12px;overflow:hidden;
+  box-shadow:0 2px 12px rgba(11,107,58,0.04);
+}
+.pd-header{
+  display:grid;grid-template-columns:auto 1fr;gap:1.5rem;
+  align-items:center;padding:1.25rem 1.75rem;cursor:pointer;
+  transition:background 0.2s;
+}
+.pd-header:hover{background:rgba(11,107,58,0.03);}
+.pd-time{
+  font-family:'Cinzel',serif;font-size:11px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;
+  padding:6px 16px;
+  border:1px solid rgba(11,107,58,0.2);
+  color:var(--sensu);min-width:130px;text-align:center;
+  background:rgba(11,107,58,0.04);
+}
+.pd-title{font-family:'Cinzel',serif;font-size:17px;font-weight:700;color:var(--text);letter-spacing:1px;}
+.pd-body{padding:0 1.75rem 1.75rem;}
+.pd-stacks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.pds{
+  background:var(--card2);border:1px solid var(--border);
+  padding:1.1rem;
+}
+.pds-cat{font-family:'Inconsolata',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.pds-name{font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.pds-dose{font-family:'Inconsolata',monospace;font-size:11px;color:var(--sensu);}
+.pds-mech{font-size:13px;color:var(--text2);line-height:1.5;margin-top:6px;}
+.pds-ref{margin-top:6px;font-size:11px;font-family:'Inconsolata',monospace;}
+.pds-ref a{color:var(--ki2);text-decoration:none;border-bottom:1px dotted rgba(27,120,154,0.3);}
+.pds.oxy-slot{border-top:2px solid var(--oxy);background:var(--oxy3);}
+.pds.oxy-slot .pds-name{color:var(--oxy);}
+.pds.oxy-slot .pds-dose{color:var(--oxy2);}
+.pds.oxy-slot .pds-cat{color:rgba(123,37,138,0.5);}
+
+/* ── OXY HERO CALLOUT ── */
+.oxy-hero{
+  background:linear-gradient(135deg,rgba(255,255,255,0.97),rgba(243,232,247,0.7));
+  border:1px solid rgba(123,37,138,0.18);
+  border-left:4px solid var(--oxy);
+  padding:2.5rem;margin-bottom:56px;
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 24px rgba(123,37,138,0.07);
+}
+.oxy-hero::after{
+  content:'OXT';
+  position:absolute;right:40px;top:50%;transform:translateY(-50%);
+  font-family:'Cinzel',serif;font-size:120px;font-weight:900;
+  color:rgba(123,37,138,0.04);line-height:1;pointer-events:none;
+}
+.oxy-title{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,40px);font-weight:900;color:var(--text);letter-spacing:3px;margin-bottom:8px;}
+.oxy-sub{font-size:13px;letter-spacing:3px;font-family:'Inconsolata',monospace;color:var(--oxy);text-transform:uppercase;margin-bottom:16px;}
+.oxy-body{font-size:15px;color:var(--text2);line-height:1.75;}
+.oxy-body strong{color:var(--text);}
+.oxy-body .o{color:var(--oxy);font-weight:600;}
+.oxy-stats{display:flex;flex-direction:column;gap:10px;min-width:160px;}
+.oxys{background:rgba(123,37,138,0.05);border:1px solid rgba(123,37,138,0.14);border-left:2px solid var(--oxy);padding:12px 16px;}
+.oxys-v{font-family:'Inconsolata',monospace;font-size:18px;font-weight:600;color:var(--oxy);line-height:1;}
+.oxys-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:'Inconsolata',monospace;color:var(--text3);margin-top:4px;}
+
+/* ── MUSHROOM MATRIX ── */
+.mushroom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px;}
+.mush{
+  background:var(--card);border:1px solid var(--border);
+  padding:1.75rem 1.5rem;position:relative;overflow:hidden;
+  transition:border-color 0.3s,box-shadow 0.2s;
+  box-shadow:0 2px 12px rgba(11,107,58,0.04);
+}
+.mush:hover{border-color:rgba(11,107,58,0.25);box-shadow:0 6px 24px rgba(11,107,58,0.08);}
+.mush-icon{font-size:32px;display:block;margin-bottom:12px;line-height:1;}
+.mush-name{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--sensu);margin-bottom:4px;letter-spacing:1px;}
+.mush-latin{font-size:12px;font-style:italic;color:var(--text3);margin-bottom:10px;}
+.mush-target{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+.mt{
+  font-family:'Inconsolata',monospace;font-size:8px;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:2px 6px;
+  background:rgba(11,107,58,0.07);border:1px solid rgba(11,107,58,0.15);
+  color:var(--sensu2);
+}
+.mt.ki{background:rgba(27,120,154,0.07);border-color:rgba(27,120,154,0.15);color:var(--ki2);}
+.mt.p{background:rgba(27,79,168,0.07);border-color:rgba(27,79,168,0.15);color:var(--plasma2);}
+.mush-body{font-size:13px;color:var(--text2);line-height:1.6;}
+.mush-dose{margin-top:10px;font-family:'Inconsolata',monospace;font-size:11px;color:var(--gold);}
+.mush-ref{margin-top:6px;font-size:11px;}
+.mush-ref a{color:var(--ki2);text-decoration:none;border-bottom:1px dotted rgba(27,120,154,0.3);font-family:'Inconsolata',monospace;}
+
+/* ── PEPTIDE CODEX TABLE ── */
+.pep-table{width:100%;border-collapse:collapse;margin-bottom:40px;font-size:14px;}
+.pep-table th{
+  font-family:'Inconsolata',monospace;font-size:9px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--sensu);
+  padding:10px 14px;border-bottom:2px solid var(--border2);
+  background:rgba(11,107,58,0.05);text-align:left;
+}
+.pep-table td{
+  padding:12px 14px;border-bottom:1px solid rgba(11,107,58,0.07);
+  color:var(--text2);vertical-align:top;line-height:1.5;
+  background:var(--card);
+}
+.pep-table td strong{color:var(--text);}
+.pep-table tr:hover td{background:rgba(11,107,58,0.02);}
+.pep-table td a{color:var(--ki2);text-decoration:none;font-size:11px;font-family:'Inconsolata',monospace;}
+.pep-table td a:hover{color:var(--sensu);}
+.pep-table tr.oxy-row td{background:rgba(243,232,247,0.4);}
+.pep-table tr.oxy-row:hover td{background:rgba(243,232,247,0.65);}
+.badge{display:inline-block;padding:2px 8px;font-family:'Inconsolata',monospace;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;}
+.bs{background:rgba(11,107,58,0.08);color:var(--sensu);border:1px solid rgba(11,107,58,0.2);}
+.bk{background:rgba(27,120,154,0.08);color:var(--ki);border:1px solid rgba(27,120,154,0.2);}
+.bp{background:rgba(27,79,168,0.08);color:var(--plasma);border:1px solid rgba(27,79,168,0.2);}
+.bg{background:rgba(138,101,16,0.08);color:var(--gold);border:1px solid rgba(138,101,16,0.2);}
+.ba{background:rgba(156,62,8,0.08);color:var(--amber);border:1px solid rgba(156,62,8,0.2);}
+.bo{background:rgba(123,37,138,0.08);color:var(--oxy);border:1px solid rgba(123,37,138,0.2);}
+
+/* ── IMPACT PRIORITY BANNER ── */
+.impact-tier{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 16px;margin-bottom:4px;
+  font-family:'Inconsolata',monospace;font-size:10px;
+  letter-spacing:4px;text-transform:uppercase;
+  font-weight:600;
+}
+.it-1{background:rgba(11,107,58,0.08);color:var(--sensu);border-left:3px solid var(--sensu);}
+.it-2{background:rgba(27,120,154,0.08);color:var(--ki);border-left:3px solid var(--ki);}
+.it-3{background:rgba(138,101,16,0.08);color:var(--gold);border-left:3px solid var(--gold);}
+.it-oxy{background:rgba(123,37,138,0.08);color:var(--oxy);border-left:3px solid var(--oxy);}
+
+/* ── STACK MATRIX ── */
+.stack-box{
+  background:linear-gradient(135deg,rgba(255,255,255,0.97),rgba(235,248,240,0.7));
+  border:1px solid rgba(11,107,58,0.14);
+  border-top:3px solid var(--sensu);
+  padding:2.5rem;margin-bottom:12px;
+  box-shadow:0 2px 16px rgba(11,107,58,0.05);
+}
+.stack-box.god-mode{
+  background:linear-gradient(135deg,rgba(255,255,255,0.97),rgba(243,232,247,0.4),rgba(235,248,240,0.6));
+  border-top:3px solid var(--oxy);
+  border-color:rgba(123,37,138,0.15);
+}
+.sb-title{font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--text);letter-spacing:2px;margin-bottom:6px;}
+.sb-sub{font-size:14px;font-style:italic;color:var(--text2);margin-bottom:20px;}
+.sb-stacks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.sb-item{
+  background:rgba(11,107,58,0.07);border:1px solid rgba(11,107,58,0.18);
+  padding:6px 14px;font-family:'Cinzel',serif;font-size:12px;
+  color:var(--sensu);letter-spacing:1px;
+}
+.sb-item.ki{background:rgba(27,120,154,0.07);border-color:rgba(27,120,154,0.18);color:var(--ki);}
+.sb-item.p{background:rgba(27,79,168,0.07);border-color:rgba(27,79,168,0.18);color:var(--plasma);}
+.sb-item.g{background:rgba(138,101,16,0.07);border-color:rgba(138,101,16,0.18);color:var(--gold);}
+.sb-item.o{background:rgba(123,37,138,0.07);border-color:rgba(123,37,138,0.18);color:var(--oxy);}
+.sb-item.m{background:rgba(96,80,160,0.07);border-color:rgba(96,80,160,0.18);color:#6B52C8;}
+.sb-rationale{font-size:15px;color:var(--text2);line-height:1.7;}
+.sb-rationale strong{color:var(--text);}
+
+/* ── BREATHING MODULE ── */
+.breathing-card{
+  background:var(--card);border:1px solid var(--border);
+  padding:2.5rem;margin-bottom:12px;
+  display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;
+  box-shadow:0 2px 12px rgba(11,107,58,0.04);
+}
+.bc-phase{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--sensu);letter-spacing:2px;margin-bottom:12px;}
+.bc-steps{list-style:none;}
+.bc-steps li{
+  display:flex;gap:12px;padding:8px 0;
+  font-size:15px;color:var(--text2);
+  border-bottom:1px solid rgba(11,107,58,0.07);
+  line-height:1.5;
+}
+.bc-steps li::before{
+  content:attr(data-n);
+  font-family:'Inconsolata',monospace;font-size:11px;
+  color:var(--sensu);background:rgba(11,107,58,0.08);
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+.bc-steps li strong{color:var(--text);}
+
+/* ── ANNEXE ── */
+.annexe-section{padding:60px 0 40px;border-top:1px solid var(--border);}
+.annexe-title{font-family:'Cinzel',serif;font-size:28px;font-weight:700;letter-spacing:4px;color:var(--text);margin-bottom:8px;}
+.annexe-title em{color:var(--sensu);font-style:normal;}
+.ref-list{list-style:none;counter-reset:ref;}
+.ref-list li{
+  counter-increment:ref;
+  padding:14px 0 14px 48px;
+  border-bottom:1px solid rgba(11,107,58,0.07);
+  font-size:14px;color:var(--text2);line-height:1.6;
+  position:relative;
+}
+.ref-list li::before{
+  content:counter(ref);
+  position:absolute;left:0;top:14px;
+  font-family:'Inconsolata',monospace;font-size:11px;
+  color:var(--sensu);background:rgba(11,107,58,0.07);
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(11,107,58,0.18);
+}
+.ref-list li strong{color:var(--text);}
+.ref-list li a{color:var(--ki2);text-decoration:none;border-bottom:1px dotted rgba(27,120,154,0.3);font-family:'Inconsolata',monospace;font-size:12px;}
+.ref-list li a:hover{color:var(--sensu);}
+.ref-cat{
+  font-family:'Cinzel',serif;font-size:13px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;color:var(--sensu);
+  padding:20px 0 8px;display:flex;align-items:center;gap:12px;
+}
+.ref-cat::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+
+/* ── WARNING / NOTICE BOXES ── */
+.warning{
+  background:rgba(184,40,40,0.04);
+  border:1px solid rgba(184,40,40,0.18);
+  border-left:3px solid var(--red);
+  padding:1.5rem 2rem;margin-bottom:40px;
+  font-size:14px;color:var(--text2);line-height:1.65;
+}
+.warning strong{color:var(--text);}
+.warning-title{font-family:'Inconsolata',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.notice-oxy{
+  background:rgba(123,37,138,0.04);
+  border:1px solid rgba(123,37,138,0.15);
+  border-left:3px solid var(--oxy);
+  padding:1.5rem 2rem;margin-bottom:40px;
+  font-size:14px;color:var(--text2);line-height:1.65;
+}
+.notice-oxy strong{color:var(--text);}
+.notice-oxy .nt{font-family:'Inconsolata',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--oxy);margin-bottom:8px;}
+
+/* ── FOOTER ── */
+.footer{
+  border-top:2px solid var(--border);
+  padding:48px 2rem;text-align:center;
+  font-family:'Inconsolata',monospace;font-size:10px;
+  letter-spacing:3px;color:var(--text3);text-transform:uppercase;
+  line-height:2;position:relative;z-index:1;
+  background:var(--deep);
+}
+.footer .ft-brand{color:var(--sensu);display:block;font-size:16px;font-family:'Cinzel',serif;letter-spacing:6px;margin-bottom:16px;}
+.mb56{margin-bottom:56px;}
+@media(max-width:900px){
+  .cg2,.cg3,.cg4,.mushroom-grid,.pd-stacks,.breathing-card{grid-template-columns:1fr;}
+  .h2-grid,.oxy-hero .h2-grid{grid-template-columns:1fr;}
+  .hero-power{gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero-full">
+  <div class="hero-brand">TR4NSFORM · SASCOSM Sovereign Health · Professional Protocol · March 2026</div>
+  <div class="sensu-orb">🌱</div>
+  <h1 class="hero-title">
+    THE<br>
+    <span class="sensu-word">SENSU</span>
+    PROTOCOL
+  </h1>
+  <p class="hero-tagline">
+    Named for the legendary Sensu Bean — the artefact that fully restores all power levels, no matter the damage sustained.<br>
+    This is the protocol that brings a warrior back from zero. <em>And then takes him beyond Super Saiyan.</em>
+  </p>
+  <div class="hero-power">
+    <div class="power-stat"><span class="power-val">18+</span><span class="power-label">Peptide Agents</span></div>
+    <div class="power-stat"><span class="power-val">OXT</span><span class="power-label">Oxytocin · God Molecule</span></div>
+    <div class="power-stat"><span class="power-val">H₂</span><span class="power-label">Molecular Hydrogen</span></div>
+    <div class="power-stat"><span class="power-val">7</span><span class="power-label">Sacred Mushrooms</span></div>
+    <div class="power-stat"><span class="power-val">CBD</span><span class="power-label">Plant Medicine</span></div>
+    <div class="power-stat"><span class="power-val">GOD</span><span class="power-label">Mode Unlocked</span></div>
+  </div>
+  <div class="hero-dedicatee">
+    <strong>Dedicated to Anthony Penwright —</strong> father of Odin, and the inspiration behind the Thor Protocol. This is your Sensu Bean — every system addressed, every power level restored, vaccine damage reversed at the molecular level. <em>Rise. Transform. Ascend.</em>
+  </div>
+  <div class="scroll-cue">↓ · Peptides First · Hydrogen Second · Everything Else · ↓</div>
+</section>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <div class="nav-logo">Sensu Protocol</div>
+    <div class="nav-links">
+      <a href="#overview" class="nl">Overview</a>
+      <a href="#peptides" class="nl">Peptide Codex</a>
+      <a href="#oxytocin" class="nl">Oxytocin</a>
+      <a href="#hydrogen" class="nl">H₂ Fuel</a>
+      <a href="#protocol" class="nl">Daily Protocol</a>
+      <a href="#vaccine" class="nl">Vaccine Recovery</a>
+      <a href="#mushrooms" class="nl">Mushrooms</a>
+      <a href="#plant" class="nl">Plant &amp; CBD</a>
+      <a href="#stacking" class="nl">Stack Matrix</a>
+      <a href="#cost" class="nl">Cost Strategy</a>
+      <a href="#breathing" class="nl">Breathing</a>
+      <a href="#annexe" class="nl">Annexe</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- ══════════════════════ OVERVIEW ══════════════════════ -->
+<section id="overview">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 1 — System Assessment</div>
+    <h2 class="sec-h1">The Eight Systems<br>We Are <em>Restoring &amp; Transcending</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Chronic executive stress, vaccine-induced damage, and spike protein toxicity do not break one system — they break all eight simultaneously. This protocol addresses each pathway with precision-stacked interventions prioritised by immediate impact, zero cardiac loading, and no introduction dose requirements.</p>
+  </div>
+
+  <div class="cgrid cg3 mb56">
+    <div class="gc gc-sensu">
+      <div class="gc-lbl">System 01</div>
+      <div class="gc-title">Sleep Architecture</div>
+      <div class="gc-body">Disrupted circadian rhythm, insufficient slow-wave sleep, and melatonin dysfunction from chronic cortisol elevation and blue light overexposure. The pineal gland is the master clock — and it is running on emergency power.<br><br><span class="s">Target:</span> Restore delta-wave sleep, pineal melatonin pulsing, HPA axis evening wind-down. Deep sleep is where every other system repairs. Fix sleep first — everything else accelerates.</div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">System 02</div>
+      <div class="gc-title">Brain Fog &amp; Cognitive Function</div>
+      <div class="gc-body">Reduced cerebral blood flow, neuroinflammation from chronic cortisol and spike protein, declining BDNF, and mitochondrial insufficiency in neural tissue. The executive brain is running on reserve capacity.<br><br><span class="k">Target:</span> Upregulate BDNF, restore cerebral circulation, reduce neuroinflammation, remyelinate via NGF, and fuel mitochondria with molecular hydrogen — the brain's cleanest energy substrate.</div>
+    </div>
+    <div class="gc gc-plasma">
+      <div class="gc-lbl">System 03</div>
+      <div class="gc-title">Energy &amp; Mitochondrial Output</div>
+      <div class="gc-body">Mitochondrial dysfunction is the root cause of chronic fatigue. Spike protein directly impairs Complex I of the electron transport chain — adding vaccine damage on top of stress-induced ROS overload creates a compound energy deficit.<br><br><span class="p">Target:</span> Molecular hydrogen, mitochondrial peptides (Mots-c, SS-31), GHK-Cu for mitochondrial gene expression, and cordyceps for ATP synthesis.</div>
+    </div>
+    <div class="gc gc-gold">
+      <div class="gc-lbl">System 04</div>
+      <div class="gc-title">Anxiety &amp; Stress Regulation</div>
+      <div class="gc-body">Dysregulated HPA axis, reduced GABAergic tone, heightened sympathetic activity, and vaccine-induced autonomic nervous system disruption. The stress response is permanently activated.<br><br><span class="g">Target:</span> Oxytocin for immediate vagal and cortisol restoration, Selank/Semax for GABAergic recalibration, and structured breathing to activate the baroreflex.</div>
+    </div>
+    <div class="gc gc-amber">
+      <div class="gc-lbl">System 05</div>
+      <div class="gc-title">Hypertension &amp; Cardiovascular</div>
+      <div class="gc-body">Spike protein directly damages ACE2 receptors in vascular endothelium — disrupting nitric oxide signalling, increasing vascular resistance, and causing endothelial inflammation. BP elevation is an indicator of molecular endothelial damage, not just stress.<br><br><span class="g">Target:</span> H₂ bath vasodilation, GHK-Cu for endothelial repair, L-Citrulline for NO restoration, TB-500 for vascular regeneration.</div>
+    </div>
+    <div class="gc gc-sensu">
+      <div class="gc-lbl">System 06</div>
+      <div class="gc-title">Gut-Brain Axis Restoration</div>
+      <div class="gc-body">The gut carries 90% of serotonin production and direct immune-neural signalling via the vagus nerve. Spike protein disrupts gut-brain axis integrity directly via ACE2 receptor binding in the intestinal epithelium.<br><br><span class="s">Target:</span> BPC-157 for gut mucosal healing, KPV for NF-κB suppression, Turkey Tail for microbiome restoration, and oxytocin for vagal-gut signalling restoration.</div>
+    </div>
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">System 07 · NEW</div>
+      <div class="gc-title">Vaccine Damage &amp; Spike Protein Recovery</div>
+      <div class="gc-body">Spike protein-mediated damage: ACE2 receptor disruption, endothelial inflammation, T-cell dysregulation, molecular mimicry causing autoimmune responses, and mitochondrial Complex I impairment.<br><br><span class="o">Target:</span> Thymosin Alpha-1 (T-cell regulatory reset), KPV (NF-κB/spike inflammation), GHK-Cu (gene expression restoration), TB-500 (systemic tissue repair), and LDN (TLR4 modulation — same receptor spike protein exploits).</div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">System 08 · NEW</div>
+      <div class="gc-title">Hormonal Sovereign Reset</div>
+      <div class="gc-body">Spike protein has documented effects on testosterone production via ACE2 receptors in Leydig cells. Combined with stress-induced cortisol-testosterone displacement, chronic inflammation, and poor sleep — androgen output can collapse to sub-optimal levels.<br><br><span class="k">Target:</span> CJC-1295 + Ipamorelin (GH axis restoration without cardiac side effects), Kisspeptin-10 (LH/testosterone restoration), and Ashwagandha KSM-66 (dual cortisol-lowering + testosterone support).</div>
+    </div>
+    <div class="gc gc-plasma">
+      <div class="gc-lbl">System 09 · APEX</div>
+      <div class="gc-title">Mood, Power &amp; God Mode Activation</div>
+      <div class="gc-body">Beyond restoration — the Saiyan level. Oxytocin for social mastery and confidence, PT-141 for melanocortin-driven mood and energy, Dihexa for superhuman cognitive architecture, and the complete mitochondrial stack for sustained elite-level physical and mental output.<br><br><span class="p">Target:</span> Not homeostasis — <em>transcendence</em>. Every system operating above baseline. Every power level beyond what it was pre-damage.</div>
+    </div>
+  </div>
+
+  <div class="warning">
+    <div class="warning-title">⚠ Medical Disclaimer — Read First</div>
+    <strong>This protocol is for research, educational, and wellness optimisation purposes only.</strong> The peptides referenced herein are research compounds not approved by the FDA, TGA, EMA or equivalent bodies for therapeutic human use. This document does not constitute medical advice and is not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified physician before initiating any peptide therapy, particularly if you are on prescription medication, have active or historical cancer, cardiovascular disease, or autoimmune conditions. Medical supervision by a qualified Tr4nsform clinician is strongly recommended.
+  </div>
+</section>
+
+<!-- ══════════════════════ PEPTIDES ══════════════════════ -->
+<section id="peptides">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 2 — Peptide Codex · Primary Intervention Layer</div>
+    <h2 class="sec-h1">Complete Peptide<br><em>Intelligence Stack</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Prioritised by immediate impact — compounds with Day 1 measurable effect listed first. All selected for zero cardiac stimulation and no mandatory loading protocol. Combined, these represent a complete neurological, hormonal, regenerative, and immune restoration programme at the cellular signalling level.</p>
+  </div>
+
+  <div class="impact-tier it-oxy" style="margin-bottom:8px;">⬡ TIER ZERO — IMMEDIATE IMPACT · INTRANASAL · DAY 1 EFFECT · NO INJECTION REQUIRED</div>
+  <table class="pep-table">
+    <tr><th>Peptide</th><th>Primary Target</th><th>Dose / Route</th><th>Timing</th><th>Key Mechanism</th><th>Study Ref</th></tr>
+    <tr class="oxy-row">
+      <td><strong>Oxytocin</strong></td>
+      <td><span class="badge bo">Cortisol</span> <span class="badge bo">Vagal</span> <span class="badge bs">Mood</span></td>
+      <td>24–40 IU · Intranasal · 3–4 drops/nostril</td>
+      <td>Morning / Pre-social</td>
+      <td>Hypothalamic neuropeptide. Immediate cortisol suppression via CRF inhibition. Vagal tone restoration. Anti-inflammatory via NF-κB suppression. Vasodilation via eNOS/NO. Social confidence and fear reduction. No cardiac stimulation. Zero tolerance. Immediate effect from dose one.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/23391820/">Cardoso 2013</a></td>
+    </tr>
+    <tr>
+      <td><strong>Semax</strong></td>
+      <td><span class="badge bs">BDNF</span> <span class="badge bk">Cognition</span></td>
+      <td>100–300mcg · Intranasal · 2 drops/nostril</td>
+      <td>Morning</td>
+      <td>ACTH(4-7) analogue. Upregulates BDNF, NGF, and VEGF within 30 min. Serotonergic and dopaminergic receptor sensitisation. Neuroplasticity restoration. No cardiac effect. Immediate cognitive lift from dose one.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/11443367/">Dolotov 2006</a></td>
+    </tr>
+    <tr>
+      <td><strong>Selank</strong></td>
+      <td><span class="badge bs">Anti-Anxiety</span> <span class="badge bk">GABA</span></td>
+      <td>250–500mcg · Intranasal · 1–2 drops/nostril</td>
+      <td>Midday / On demand</td>
+      <td>Tuftsin heptapeptide analogue. GABA-A modulation, serotonin turnover, BDNF upregulation. Anxiolytic without sedation — sharpens cognitive function. No dependency, no tolerance, no cardiac effect.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/23548085/">Seredenin 2013</a></td>
+    </tr>
+  </table>
+
+  <div class="impact-tier it-1" style="margin-bottom:8px;">▲ TIER ONE — IMMEDIATE INJECTION · DAY 1 MEASURABLE EFFECT · NO LOADING DOSE REQUIRED</div>
+  <table class="pep-table">
+    <tr><th>Peptide</th><th>Primary Target</th><th>Dose / Route</th><th>Timing</th><th>Key Mechanism</th><th>Study Ref</th></tr>
+    <tr>
+      <td><strong>KPV</strong></td>
+      <td><span class="badge bs">NF-κB</span> <span class="badge bk">Gut</span></td>
+      <td>0.5–1mg · SC or oral · 2x daily</td>
+      <td>Morning + Evening</td>
+      <td>Tripeptide (Lys-Pro-Val) derived from α-MSH. The most potent anti-inflammatory tripeptide identified — directly inhibits NF-κB at the IκBα level, the same pathway spike protein hyperactivates. Oral bioavailability makes it uniquely accessible. Immediate gut mucosal healing. Stacks synergistically with BPC-157.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/19786987/">Bhonsle 2009 MSH</a></td>
+    </tr>
+    <tr>
+      <td><strong>BPC-157</strong></td>
+      <td><span class="badge bs">Gut-Brain</span> <span class="badge bg">Serotonin</span></td>
+      <td>250–500mcg · SC or oral · 2x daily</td>
+      <td>Morning + Evening</td>
+      <td>Body Protection Compound. Heals gut mucosal lining — the primary serotonin production site. Counteracts spike-protein induced gut permeability. Angiogenic. VEGF upregulation. Immediate tissue healing from dose one.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/22969518/">Sikiric 2013</a></td>
+    </tr>
+    <tr>
+      <td><strong>TB-500 (Thymosin Beta-4)</strong></td>
+      <td><span class="badge bs">Regeneration</span> <span class="badge bk">Vascular</span></td>
+      <td>2–5mg · SC injection · 2–3x / week</td>
+      <td>Evening</td>
+      <td>Actin-sequestering peptide. Systemic tissue regeneration, angiogenesis, and endothelial repair for spike-induced vascular damage. Immediate anti-inflammatory effect. Promotes stem cell migration to sites of damage. No cardiac effects, no loading dose.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/20149825/">Smart 2010</a></td>
+    </tr>
+    <tr>
+      <td><strong>GHK-Cu (Copper Tripeptide)</strong></td>
+      <td><span class="badge bs">Gene Reset</span> <span class="badge bk">Mitochondria</span></td>
+      <td>1–2mg · SC daily or topical</td>
+      <td>Evening</td>
+      <td>Activates 31% of anti-aging gene pathways. Suppresses 22% of inflammatory genes including NF-κB, TNF-α, IL-1β. Restores SOD and catalase expression — comprehensive mitochondrial antioxidant reset. Reverses epigenetic aging markers. Direct molecular counter to vaccine-induced gene dysregulation.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/29144418/">Pickart 2018</a></td>
+    </tr>
+    <tr>
+      <td><strong>Thymosin Alpha-1 (Tα1)</strong></td>
+      <td><span class="badge bs">Immune</span> <span class="badge bo">T-Cell</span></td>
+      <td>1.6mg · SC injection · 2–3x / week</td>
+      <td>Morning or Midday</td>
+      <td>T-cell regulatory master switch. Corrects vaccine-induced Th2 skew and restores Th1/Th17 immune balance. Dendritic cell maturation. NK cell activation. Approved as Zadaxin in Asia/EU for viral and immune conditions. Direct and specific for post-vaccine immune dysregulation. No cardiac effects.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/2551177/">Goldstein 1989</a></td>
+    </tr>
+    <tr>
+      <td><strong>CJC-1295 + Ipamorelin</strong></td>
+      <td><span class="badge bk">GH Axis</span> <span class="badge bs">Hormones</span></td>
+      <td>CJC-1295 100–200mcg + Ipamorelin 200–300mcg · SC · Pre-sleep</td>
+      <td>Pre-sleep (fasted)</td>
+      <td>Clean GH pulse stack — no cortisol, prolactin, or heart rate elevation unlike GHRP-6. Ipamorelin is the most selective GHRP identified. Immediate GH pulse from dose one. Restores IGF-1, promotes anabolic recovery, deep sleep enhancement, fat mobilisation. Essential for hormone axis restoration in vaccine-damaged males.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/29190821/">Sigalos 2018</a></td>
+    </tr>
+    <tr>
+      <td><strong>AOD-9604</strong></td>
+      <td><span class="badge bk">Fat Mobilisation</span> <span class="badge bs">Regeneration</span></td>
+      <td>200–300mcg · SC · Morning fasted</td>
+      <td>Morning (30 min before food)</td>
+      <td>C-terminal fragment of human GH (hGH176-191). Stimulates lipolysis and inhibits lipogenesis via β3-adrenergic receptor activation — without IGF-1 stimulation. No cardiac effects, no glucose dysregulation. Tissue repair properties independent of GH receptor. No loading dose required. Immediate fat mobilisation from dose one in fasted state.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/11399122/">Heffernan 2001</a></td>
+    </tr>
+  </table>
+
+  <div class="impact-tier it-2" style="margin-bottom:8px;">▲ TIER TWO — PHASE 2 ADDITIONS · WEEKS 4–8 · ADVANCED NEUROLOGICAL &amp; LONGEVITY</div>
+  <table class="pep-table">
+    <tr><th>Peptide</th><th>Primary Target</th><th>Dose / Route</th><th>Timing</th><th>Key Mechanism</th><th>Study Ref</th></tr>
+    <tr>
+      <td><strong>Epitalon</strong></td>
+      <td><span class="badge bs">Pineal</span> <span class="badge bp">Circadian</span></td>
+      <td>10mg · SC or intranasal · 5d on / 2d off</td>
+      <td>Pre-sleep</td>
+      <td>Tetrapeptide from pineal gland. Restores melatonin synthesis, normalises circadian rhythm. Telomerase activator — shown to extend telomere length in human fibroblasts. Khavinson's 266-person life extension study. The most important single peptide for long-term anti-aging and sleep architecture.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/12374553/">Khavinson 2002</a></td>
+    </tr>
+    <tr>
+      <td><strong>DSIP</strong></td>
+      <td><span class="badge bs">Delta Sleep</span> <span class="badge bk">Cortisol</span></td>
+      <td>200–400mcg · SC · 3–4x / week</td>
+      <td>Pre-sleep</td>
+      <td>Endogenous thalamic neuropeptide. Directly increases slow-wave (delta) sleep proportion. Reduces nocturnal ACTH and cortisol. Normalises stress-disrupted sleep architecture. Alternate nights with Epitalon.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/6279143/">Schneider-Helmert 1984</a></td>
+    </tr>
+    <tr>
+      <td><strong>Mots-c</strong></td>
+      <td><span class="badge bk">Mitochondria</span> <span class="badge bs">Energy</span></td>
+      <td>5–10mg · SC · 3–5x / week</td>
+      <td>Morning</td>
+      <td>Mitochondrial-derived peptide (encoded in 12S rRNA). Activates AMPK pathway, improves insulin sensitivity, drives mitochondrial biogenesis via FOXO1. The mitochondrial "reset" peptide — directly addresses Complex I impairment from spike protein at the genetic level.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/25735179/">Lee 2015</a></td>
+    </tr>
+    <tr>
+      <td><strong>SS-31 (Elamipretide)</strong></td>
+      <td><span class="badge bk">Cardiolipin</span> <span class="badge bs">ATP</span></td>
+      <td>1–10mg · SC · Daily or 5x/week</td>
+      <td>Morning</td>
+      <td>Cardiolipin-targeting tetrapeptide. Stabilises inner mitochondrial membrane cristae. Restores electron transport chain efficiency. Improves cardiac function, exercise capacity, and cognitive function in clinical trials. Phase 3 addition.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/30075103/">Szeto 2014</a></td>
+    </tr>
+    <tr>
+      <td><strong>Dihexa</strong></td>
+      <td><span class="badge bk">BDNF</span> <span class="badge bs">Neurogenesis</span></td>
+      <td>1mg · Sublingual or transdermal · 2–3x / week</td>
+      <td>Morning (cycle weeks)</td>
+      <td>HGF/c-Met signalling activator. Estimated 7 orders of magnitude more potent than BDNF itself for synaptogenesis. Maximum cognitive restoration architecture — the Saiyan neural upgrade. Cycle: 4 weeks on, 2 weeks off. Add last — after all other neurological foundations are established.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/23070573/">Bhowmik 2012</a></td>
+    </tr>
+    <tr>
+      <td><strong>Kisspeptin-10</strong></td>
+      <td><span class="badge bg">Testosterone</span> <span class="badge bs">LH/GnRH</span></td>
+      <td>50–100mcg · SC · Every other day</td>
+      <td>Morning</td>
+      <td>Hypothalamic peptide that stimulates GnRH → LH → Testosterone in a pulsatile, natural pattern. Restores the hormone axis from the hypothalamic level rather than exogenously supplementing testosterone — no suppression of natural production. Critical for spike-induced Leydig cell dysfunction. No cardiac effects.</td>
+      <td><a href="https://pubmed.ncbi.nlm.nih.gov/24594678/">Jayasena 2014</a></td>
+    </tr>
+  </table>
+
+  <div class="warning" style="margin-bottom:40px;">
+    <div class="warning-title">Peptide Sequencing — Immediate Impact Priority</div>
+    <strong>Phase 1 (Week 1–4) — Start immediately, no loading required:</strong> Oxytocin (intranasal), Semax (intranasal), Selank (intranasal), KPV (oral), BPC-157 (oral), H₂ water/bath, Ashwagandha KSM-66, all mushrooms, all adaptogens. Zero injection required in Phase 1 if preferred — full therapeutic benefit from intranasal and oral routes alone.<br><br>
+    <strong>Phase 2 (Week 4–8):</strong> Add SC injections — TB-500, GHK-Cu, Thymosin Alpha-1, CJC-1295+Ipamorelin, AOD-9604. These produce the accelerated systemic regeneration layer.<br><br>
+    <strong>Phase 3 (Week 8+):</strong> Add Epitalon, DSIP, Mots-c, SS-31, LDN, Kisspeptin-10. Full God Mode architecture online. Add Dihexa last as the cognitive apex.
+  </div>
+</section>
+
+<!-- ══════════════════════ OXYTOCIN ══════════════════════ -->
+<section id="oxytocin">
+  <div class="sec-opener">
+    <div class="power-level" style="color:var(--oxy2);">Power Level 2.5 — Oxytocin · The Sovereign Social Molecule</div>
+    <h2 class="sec-h1">Oxytocin<br><em style="color:var(--oxy);">The God Mode Hormone</em></h2>
+    <div class="sec-rule" style="background:linear-gradient(90deg,transparent,var(--oxy),transparent);"></div>
+    <p class="sec-sub">Oxytocin is not just the "love hormone." It is a master regulator of cortisol, vasodilation, gut-brain signalling, immune modulation, and neural regeneration. Intranasal delivery bypasses the blood-brain barrier entirely — placing the most potent mood, trust, and anti-anxiety molecule directly into the brain within minutes. No loading dose. No cardiac stimulation. Immediate effect from dose one.</p>
+  </div>
+
+  <div class="oxy-hero">
+    <div class="h2-grid">
+      <div>
+        <div class="oxy-sub">Intranasal Delivery · Immediate CNS Access · Zero Cardiac Load</div>
+        <h3 class="oxy-title">The Hypothalamic Master Key<br>for Cortisol, Mood &amp; Social Power</h3>
+        <div class="oxy-body">
+          Oxytocin (OXT) is synthesised in the paraventricular nucleus of the hypothalamus and acts on OXT receptors throughout the brain, gut, heart, and immune system. Unlike many peptides, <strong>intranasal oxytocin reaches cerebrospinal fluid within 15–30 minutes at measurable concentrations</strong>, producing rapid CNS effects without requiring injection.<br><br>
+          Critically for Anthony's profile: OXT directly counteracts the autonomic nervous system dysfunction induced by spike protein — restoring vagal tone, reducing sympathetic overdrive, and normalising the gut-brain axis. It is simultaneously the most powerful <span class="o">anti-anxiety</span>, <span class="o">anti-inflammatory</span>, <span class="o">pro-social</span>, and <span class="o">vasodilatory</span> peptide accessible without a prescription injection protocol.<br><br>
+          <strong>No heart rate increase. No adrenal stimulation. No tolerance. No withdrawal.</strong> The counter-profile to everything wrong with post-vaccine autonomic dysfunction.
+        </div>
+      </div>
+      <div class="oxy-stats">
+        <div class="oxys"><div class="oxys-v">24–40 IU</div><div class="oxys-l">Intranasal Dose</div></div>
+        <div class="oxys"><div class="oxys-v">30 min</div><div class="oxys-l">CNS Onset — Intranasal</div></div>
+        <div class="oxys"><div class="oxys-v">↓ Cortisol</div><div class="oxys-l">Immediate HPA Suppression</div></div>
+        <div class="oxys"><div class="oxys-v">↑ NO</div><div class="oxys-l">Nitric Oxide — Vasodilation</div></div>
+        <div class="oxys"><div class="oxys-v">TLR4 ↓</div><div class="oxys-l">Spike Receptor Antagonism</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">Oxytocin — Six Target Systems Simultaneously</div>
+  <div class="cgrid cg3 mb56">
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">Target 01 · Cortisol &amp; HPA</div>
+      <div class="gc-title">Immediate Cortisol Suppression</div>
+      <div class="gc-body">OXT directly inhibits CRF (corticotropin-releasing factor) neurons in the PVN of the hypothalamus — shutting down the cortisol cascade at its source. <strong>Within 30 minutes of intranasal administration, measurable reductions in salivary cortisol are detectable.</strong> This is faster than any adaptogen, any breathwork protocol, and any pharmaceutical anxiolytic without sedation. Cardoso et al. 2013: OXT nasal spray significantly attenuated the cortisol stress response in healthy adults vs placebo.</div>
+    </div>
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">Target 02 · Anxiety &amp; Vagal Tone</div>
+      <div class="gc-title">Vagal Brake Restoration</div>
+      <div class="gc-body">OXT receptors are densely expressed in the dorsal vagal nucleus — the origin of the parasympathetic vagus nerve. OXT administration rapidly increases vagal tone, measurable as increased HRV (heart rate variability) within the same session. For post-vaccine autonomic dysfunction where the vagus nerve signalling is disrupted, OXT is a direct pharmacological vagal stimulant. Stack with 5-6 breaths/min breathing protocol for a synergistic vagal activation that is clinically measurable as BP reduction within the session.</div>
+    </div>
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">Target 03 · Mood &amp; Social Power</div>
+      <div class="gc-title">Confidence, Trust &amp; Charisma Activation</div>
+      <div class="gc-body">OXT enhances amygdala responsiveness to positive social cues while simultaneously dampening threat detection. The result is not sedation — it is <strong>elevated social confidence with reduced fear response</strong>. For a high-stakes executive operating at NEOM scale, this translates to: more authentic leadership presence, reduced pre-meeting anxiety, faster trust-building, and greater access to emotional intelligence under pressure. The Saiyan God Mode social upgrade.</div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">Target 04 · Cardiovascular</div>
+      <div class="gc-title">Vasodilation via Nitric Oxide</div>
+      <div class="gc-body">OXT stimulates endothelial nitric oxide synthase (eNOS) activity — producing direct vasodilation without cardiac stimulation. Unlike most vasodilatory compounds, <strong>OXT lowers blood pressure without increasing heart rate</strong>. The mechanism is endothelium-dependent NO production, identical to the pathway L-Citrulline supports, but via direct receptor activation rather than substrate supplementation. Stacking OXT with L-Citrulline + H₂ bath creates a three-way vasodilatory convergence that is highly synergistic for hypertension reversal.</div>
+    </div>
+    <div class="gc gc-sensu">
+      <div class="gc-lbl">Target 05 · Inflammation</div>
+      <div class="gc-title">Anti-Inflammatory &amp; Immune Modulation</div>
+      <div class="gc-body">OXT suppresses NF-κB activation (the master inflammatory switch that spike protein hyperactivates) and reduces pro-inflammatory cytokines IL-6, TNF-α, and IL-1β. In post-vaccine inflammatory states where NF-κB is chronically elevated, OXT acts as a direct molecular braking mechanism. Additionally, OXT modulates microglial activation in the brain — reducing neuroinflammatory tone that contributes to cognitive dysfunction, mood dysregulation, and brain fog.</div>
+    </div>
+    <div class="gc gc-plasma">
+      <div class="gc-lbl">Target 06 · Gut-Brain</div>
+      <div class="gc-title">Gut Motility &amp; Serotonin Restoration</div>
+      <div class="gc-body">OXT receptors are expressed throughout the enteric nervous system — the "gut brain." OXT restores gut-brain signalling that spike protein disrupts via ACE2 receptor binding in intestinal epithelium. Improved gut motility, reduced gut inflammation, and restored vagal-gut communication directly improve serotonin precursor availability (90% of serotonin is produced in the gut). This makes OXT synergistic with BPC-157 and Turkey Tail in the gut restoration layer of the protocol.</div>
+    </div>
+  </div>
+
+  <div class="notice-oxy">
+    <div class="nt">⬡ Oxytocin Protocol — Administration Guide</div>
+    <strong>Dose:</strong> 24–40 IU intranasal (Syntocinon / compounded OXT nasal spray). <strong>Timing:</strong> Morning, 30 minutes before high-stakes meetings, social situations, or as part of daily morning activation. Can also be used pre-workout for enhanced recovery signalling. <strong>Frequency:</strong> Daily use is well-tolerated — no tolerance or desensitisation has been documented at therapeutic doses. <strong>Cycle:</strong> 5 days on / 2 days off as a precautionary rest cycle (not clinically required, but pragmatic). <strong>Note:</strong> Compounded intranasal OXT is available via Tr4nsform clinical network — confirm with your clinician. Available without prescription in some ASEAN jurisdictions.
+  </div>
+</section>
+
+<!-- ══════════════════════ HYDROGEN ══════════════════════ -->
+<section id="hydrogen">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 3 — Molecular Hydrogen · Primary Fuel Activation</div>
+    <h2 class="sec-h1">Molecular Hydrogen<br><em>H₂ — The Primal Fuel</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">The smallest molecule in existence. Crosses every biological barrier — blood-brain barrier, mitochondrial membrane, cellular nucleus. A selective antioxidant that targets only the most destructive radicals while leaving essential ROS signalling intact.</p>
+  </div>
+
+  <div class="h2-hero">
+    <div class="h2-grid">
+      <div>
+        <div class="h2-sub">The Science of Molecular Hydrogen</div>
+        <h3 class="h2-title">Selective Radical Scavenging<br>at the Mitochondrial Level</h3>
+        <div class="h2-body">
+          In 2007, Ohsawa et al. published a landmark paper in <em>Nature Medicine</em> demonstrating that molecular hydrogen selectively neutralises the <span class="s">hydroxyl radical (•OH)</span> and <span class="s">peroxynitrite (ONOO⁻)</span> — the two most cytotoxic ROS species — while leaving H₂O₂ and superoxide intact for essential immune and signalling functions. No other antioxidant achieves this selective precision.<br><br>
+          Hydrogen is the only antioxidant small enough to enter the mitochondrial matrix directly — the precise location where spike protein impairs Complex I and where oxidative damage to ATP machinery occurs. <strong>H₂ addresses the root cause of chronic fatigue, neuroinflammation, vascular dysfunction, and spike protein oxidative damage simultaneously.</strong>
+        </div>
+      </div>
+      <div class="h2-stats">
+        <div class="h2s"><div class="h2s-v">•OH</div><div class="h2s-l">Primary Target Radical</div></div>
+        <div class="h2s"><div class="h2s-v">BBB ✓</div><div class="h2s-l">Blood-Brain Barrier Penetration</div></div>
+        <div class="h2s"><div class="h2s-v">1.6Å</div><div class="h2s-l">Molecular Diameter — Smallest</div></div>
+        <div class="h2s"><div class="h2s-v">2007</div><div class="h2s-l">Nature Medicine Validation</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">Four Saturation Methods — Stack All Four for Maximum Effect</div>
+  <div class="cgrid cg4 mb56">
+    <div class="gc gc-sensu gc-glow">
+      <div class="gc-lbl">Method 01 · Primary</div>
+      <div class="gc-title">H₂ Water — Oral Ingestion</div>
+      <div class="gc-num n-s">1.6<span style="font-size:18px;"> mg/L</span></div>
+      <div class="gc-body">
+        <strong>How:</strong> H₂ water tablets (e.g. HRW, Dr. Hayashi, Susocare) dissolved in 500ml cold still water. Drink immediately upon dissolution. Use an airtight bottle.<br><br>
+        <strong>Protocol:</strong> 3–4 glasses daily. First glass upon waking (fasted), second mid-morning, third evening. Fourth optionally pre-bed.<br><br>
+        <strong>Why this dose:</strong> 1.5–3mg/L dissolved H₂ produces measurable plasma H₂ levels within 5–10 minutes. Studies show significant reduction in urinary 8-OHdG (DNA oxidative damage marker) at this concentration.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/17704497/" target="_blank">→ Ohsawa 2007 Nature Med</a>
+      </div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">Method 02 · Neurological Priority</div>
+      <div class="gc-title">H₂ Inhalation</div>
+      <div class="gc-num n-k">2–4<span style="font-size:18px;"> %</span></div>
+      <div class="gc-body">
+        <strong>How:</strong> H₂ inhalation device (Brown's gas generator or pure H₂ canister with nasal cannula). 2–4% H₂ in air — below the 4.6% flammability threshold. 20–60 minutes per session.<br><br>
+        <strong>Protocol:</strong> 30–60 min session, 3–5x per week. Ideal during morning meditation or breathwork. Inhalation provides 4–6x higher systemic H₂ delivery than water alone.<br><br>
+        <strong>For spike protein neurological damage:</strong> Inhalation rapidly saturates <span class="k">cerebrospinal fluid</span> — directly bathing neural tissue in the most potent anti-neuroinflammatory molecule known.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/31572815/" target="_blank">→ LeBaron 2019 H₂ Inhalation Review</a>
+      </div>
+    </div>
+    <div class="gc gc-plasma">
+      <div class="gc-lbl">Method 03 · Systemic Vasodilation</div>
+      <div class="gc-title">H₂ Saturation Bath</div>
+      <div class="gc-num n-p">40°C<span style="font-size:18px;"> / 20min</span></div>
+      <div class="gc-body">
+        <strong>How:</strong> H₂ bath tablets dissolved in a hot bath. 38–42°C, 15–25 minutes. H₂ absorbed transdermally across the entire body surface area simultaneously.<br><br>
+        <strong>Protocol:</strong> 3–4x per week, ideally evening. Warm water + H₂ combination produces measurable vasodilation, reduces systemic inflammatory markers, and has demonstrated BP-lowering effects.<br><br>
+        <strong>For hypertension:</strong> Hot H₂ bath before bed reduces sympathetic tone, lowers cortisol, and prepares the nervous system for deep sleep.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/29361139/" target="_blank">→ Kato 2018 H₂ Bath BP Study</a>
+      </div>
+    </div>
+    <div class="gc gc-gold">
+      <div class="gc-lbl">Method 04 · Targeted Neural</div>
+      <div class="gc-title">H₂ Nasal Drops</div>
+      <div class="gc-num n-g">Topical<span style="font-size:18px;"> delivery</span></div>
+      <div class="gc-body">
+        <strong>How:</strong> Hydrogen-saturated saline drops. 2–3 drops per nostril twice daily — creates a local anti-inflammatory environment directly adjacent to the olfactory bulb and frontal lobe.<br><br>
+        <strong>Protocol:</strong> Morning and evening nasal drops. Combine with Oxytocin, Semax, or Selank nasal administration schedule (separate by 15 minutes).<br><br>
+        <strong>Why this matters:</strong> The nasal route provides <span class="g">direct olfactory-to-brain H₂ delivery</span> — bypassing the blood-brain barrier entirely. Superior neuroprotection for spike-induced neurological damage.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/25908613/" target="_blank">→ Nishimaki 2018 H₂ Neuroprotection</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ DAILY PROTOCOL ══════════════════════ -->
+<section id="protocol">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 4 — Daily Activation Sequence</div>
+    <h2 class="sec-h1">The Daily<br><em>Sensu Sequence</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Every intervention has a precise timing window. This is not a supplement stack — it is a circadian recalibration programme. Sequence matters as much as selection. Prioritised for immediate impact from day one — no loading doses, no cardiac stimulation at any window.</p>
+  </div>
+
+  <!-- MORNING -->
+  <div class="protocol-day">
+    <div class="pd-header">
+      <div class="pd-time">06:00 — 09:00</div>
+      <div class="pd-title">Morning Activation · God Mode Prime · Cognitive Ignition</div>
+    </div>
+    <div class="pd-body">
+      <div class="gc-body" style="margin-bottom:16px;font-size:15px;">The morning window is the neurological prime window — cortisol peaks naturally at 7–9am (the cortisol awakening response). We amplify this natural energising response rather than blunting it. Oxytocin enters the morning stack here for the first time — the social and anti-anxiety foundation for the day ahead.</div>
+      <div class="pd-stacks">
+        <div class="pds">
+          <div class="pds-cat">H₂ Foundation</div>
+          <div class="pds-name">H₂ Water (Fasted)</div>
+          <div class="pds-dose">500ml · 1.5–2mg/L · Within 5 min of waking</div>
+          <div class="pds-mech">Immediate mitochondrial antioxidant loading before food. Fasted state maximises H₂ absorption into gut lining and portal circulation.</div>
+        </div>
+        <div class="pds oxy-slot">
+          <div class="pds-cat">🔑 Peptide · Intranasal · PRIORITY</div>
+          <div class="pds-name">Oxytocin</div>
+          <div class="pds-dose">24–40 IU · Intranasal · 15 min after H₂ water</div>
+          <div class="pds-mech">Morning OXT immediately establishes cortisol suppression, vagal tone activation, and social-cognitive readiness for the day. No cardiac stimulation. God Mode social layer activated from the first 30 minutes.</div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Peptide · Intranasal</div>
+          <div class="pds-name">Semax</div>
+          <div class="pds-dose">200–300mcg · 1–2 drops per nostril · After OXT</div>
+          <div class="pds-mech">ACTH(4-7) analogue. Upregulates BDNF and NGF within 30 min. Serotonin + dopamine receptor sensitisation. The cognitive ignition switch. Synergises with OXT — both acting on the same neuroplasticity pathways from different angles.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/11443367/" target="_blank">→ Dolotov 2006 Semax BDNF</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Mushroom · Cognitive</div>
+          <div class="pds-name">Lion's Mane + Cordyceps</div>
+          <div class="pds-dose">Lion's Mane 1000–2000mg + Cordyceps 500–1000mg · With food</div>
+          <div class="pds-mech">Lion's Mane: NGF synthesis for remyelination and fog clearance. Cordyceps: ATP synthesis upregulation, oxygen efficiency, adrenal support — the energy mushroom.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/18844328/" target="_blank">→ Mori 2009 Lion's Mane NGF</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Adaptogen · Energy</div>
+          <div class="pds-name">Rhodiola Rosea SHR-5 + 5-Amino-1MQ</div>
+          <div class="pds-dose">Rhodiola 300–400mg fasted + 5-Amino-1MQ 50–100mg with food</div>
+          <div class="pds-mech">Rhodiola: HIF-1α activation, cortisol reduction, burnout reversal — MORNING ONLY. 5-Amino-1MQ: NNMT inhibitor, raises intracellular NAD+, activates AMPK. Immediate mitochondrial energisation from dose one.</div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Foundation</div>
+          <div class="pds-name">Magnesium Glycinate + Methylated B-Complex</div>
+          <div class="pds-dose">Mg Glycinate 200mg AM + B-Complex (methylated B12/B9) with food</div>
+          <div class="pds-mech">Magnesium cofactor for 300+ enzymatic reactions. Methylated B-vitamins essential for neurotransmitter synthesis, BDNF expression, and methylation cycle — impaired in many post-vaccine inflammatory states.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDAY -->
+  <div class="protocol-day">
+    <div class="pd-header">
+      <div class="pd-time">12:00 — 15:00</div>
+      <div class="pd-title">Midday Maintenance · Clarity Stack · Anti-Fatigue Bridge</div>
+    </div>
+    <div class="pd-body">
+      <div class="gc-body" style="margin-bottom:16px;font-size:15px;">The midday window bridges the morning cortisol peak to the afternoon maintenance phase. The goal is to prevent the early-afternoon cognitive crash and maintain working memory and focus without stimulants that increase heart rate or adrenal load.</div>
+      <div class="pd-stacks">
+        <div class="pds">
+          <div class="pds-cat">H₂ Foundation</div>
+          <div class="pds-name">H₂ Water (2nd serving)</div>
+          <div class="pds-dose">500ml · With or after lunch · Drink slowly over 20 min</div>
+          <div class="pds-mech">Maintains plasma H₂ levels through the metabolically active midday period. Reduces post-lunch oxidative load from digestion.</div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Nootropic · No Heart Rate Spike</div>
+          <div class="pds-name">L-Theanine + Caffeine</div>
+          <div class="pds-dose">L-Theanine 200mg + Caffeine 100mg (2:1 ratio) · Optional</div>
+          <div class="pds-mech">L-Theanine neutralises caffeine's anxiety and jitter component while preserving cognitive enhancement. Produces "alert calm" — alpha wave state with sharp executive function. The 2:1 ratio eliminates any heart rate increase from caffeine alone.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/18681988/" target="_blank">→ Owen 2008 L-Theanine+Caffeine RCT</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Mushroom · Immune</div>
+          <div class="pds-name">Chaga + Turkey Tail + Shiitake</div>
+          <div class="pds-dose">Chaga 500mg + Turkey Tail 500mg + Shiitake 500mg · With lunch</div>
+          <div class="pds-mech">Chaga: highest ORAC antioxidant score (SOD activity). Turkey Tail: PSK/PSP restore gut microbiome — serotonin and GABA precursors. Shiitake: eritadenine lowers homocysteine, cardiovascular support.</div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Cognitive</div>
+          <div class="pds-name">Bacopa Monnieri + Phosphatidylserine</div>
+          <div class="pds-dose">Bacopa 300mg + PS 300mg · With fatty lunch</div>
+          <div class="pds-mech">Bacopa: cholinesterase inhibition, hippocampal synaptic enhancement, cortisol reduction — effects compound over 4–8 weeks. PS: blunts post-stress cortisol spike by 30% (RCT). Both fat-soluble — always with food containing fat.</div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Peptide · On-Demand Anxiety</div>
+          <div class="pds-name">Selank</div>
+          <div class="pds-dose">250–500mcg · Intranasal · As needed for anxiety/stress spikes</div>
+          <div class="pds-mech">Heptapeptide tuftsin analogue. Modulates GABA-A receptors, serotonergic pathways, and BDNF. Anxiolytic without sedation — sharpens rather than dulls. No heart rate effect. Use during high-stress cognitive periods or before high-stakes interactions.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/23548085/" target="_blank">→ Seredenin 2013 Selank</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Immune · Vaccine Recovery</div>
+          <div class="pds-name">Thymosin Alpha-1 (Tα1)</div>
+          <div class="pds-dose">1.6mg · SC injection · 2–3x per week · Midday or AM</div>
+          <div class="pds-mech">T-cell regulatory peptide. Corrects vaccine-induced Th2 skew and restores Th1/Th17 immune balance. Directly counteracts immune dysregulation from spike protein. No cardiac effects. Immediate immune recalibration from first dose — no loading protocol required.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/2551177/" target="_blank">→ Goldstein 1989 Thymosin Alpha-1</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENING -->
+  <div class="protocol-day">
+    <div class="pd-header">
+      <div class="pd-time">18:00 — 21:00</div>
+      <div class="pd-title">Evening Restoration · H₂ Bath · System Downshift · Regeneration</div>
+    </div>
+    <div class="pd-body">
+      <div class="gc-body" style="margin-bottom:16px;font-size:15px;">The evening protocol executes the most critical transition in the circadian programme — from sympathetic (executive mode) to parasympathetic (repair mode). Every intervention is designed to lower cortisol, activate the vagal brake, reduce systemic inflammation, and prepare the pineal gland for melatonin production.</div>
+      <div class="pd-stacks">
+        <div class="pds">
+          <div class="pds-cat">H₂ Saturation · Core</div>
+          <div class="pds-name">H₂ Bath Protocol</div>
+          <div class="pds-dose">38–42°C · 15–25 min · H₂ tablets dissolved · 3–4x/week</div>
+          <div class="pds-mech">Transdermal H₂ absorption across full body surface area. Warm temperature triggers parasympathetic activation. H₂ reduces systemic inflammatory cytokines and lowers vascular resistance. Most relaxing H₂ delivery method.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/29361139/" target="_blank">→ Kato 2018 H₂ Bath</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Peptide · Systemic Regeneration</div>
+          <div class="pds-name">TB-500 (Thymosin Beta-4)</div>
+          <div class="pds-dose">2–5mg · SC injection · 2–3x per week · Evening</div>
+          <div class="pds-mech">Systemic tissue regeneration peptide. Promotes angiogenesis, reduces inflammation via actin sequestration, and repairs endothelial damage from spike protein-induced vascular injury. No cardiac effects. Immediate anti-inflammatory effect from dose one — no loading required.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/20149825/" target="_blank">→ Smart 2010 Thymosin Beta-4</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Peptide · Regeneration &amp; Genes</div>
+          <div class="pds-name">GHK-Cu (Copper Tripeptide)</div>
+          <div class="pds-dose">1–2mg · SC injection or topical · Evening</div>
+          <div class="pds-mech">Activates 31% of all anti-aging gene pathways. Suppresses 22% of inflammatory gene pathways (NF-κB, TNF-α, IL-1β). Reverses epigenetic aging markers. Directly counteracts vaccine-induced inflammatory gene dysregulation. Mitochondrial regeneration via SOD and catalase upregulation. No cardiac effects.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/29144418/" target="_blank">→ Pickart &amp; Margolina 2018 GHK-Cu</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Adaptogen · Cortisol</div>
+          <div class="pds-name">Ashwagandha KSM-66 + BPC-157</div>
+          <div class="pds-dose">KSM-66 600mg with dinner + BPC-157 250–500mcg SC or oral</div>
+          <div class="pds-mech">KSM-66: 27.9% cortisol reduction, 44% stress reduction (RDBPC). BPC-157: gut mucosal healing, serotonin site restoration, angiogenesis. Together they address cortisol suppression and gut-brain axis repair simultaneously.</div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Adaptogen · Immune &amp; Sleep</div>
+          <div class="pds-name">Reishi Extract + Chaga</div>
+          <div class="pds-dose">Reishi 1000–1500mg (triterpene-standardised) · Evening meal</div>
+          <div class="pds-mech">Reishi ganoderic acids modulate CRF-mediated HPA axis. Increases total sleep time and SWS percentage. Human RCT: significant sleep quality improvement over 4 weeks. The evening mushroom anchor.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/22203880/" target="_blank">→ Tang 2012 Reishi Sleep RCT</a></div>
+        </div>
+        <div class="pds">
+          <div class="pds-cat">Vascular</div>
+          <div class="pds-name">L-Citrulline + Magnesium Threonate</div>
+          <div class="pds-dose">L-Citrulline 3–6g evening + Mg Threonate 1.5g</div>
+          <div class="pds-mech">L-Citrulline: drives eNOS activity → nitric oxide → vasodilation. 8mmHg SBP reduction in RCT. Mg Threonate: only magnesium form to cross BBB — improves sleep quality and NMDA receptor function. Both synergise with H₂ bath vasodilation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRE-SLEEP -->
+  <div class="protocol-day">
+    <div class="pd-header">
+      <div class="pd-time" style="border-color:rgba(27,79,168,0.3);color:var(--plasma);">21:00 — 23:00</div>
+      <div class="pd-title">Pre-Sleep Nuclear Stack · Pineal Restoration · GH Pulse · Deep Sleep Engineering</div>
+    </div>
+    <div class="pd-body">
+      <div class="gc-body" style="margin-bottom:16px;font-size:15px;color:var(--plasma);">This is the most critical window in the entire protocol. Cortisol must be near zero. Melatonin must pulse. GABA tone must be high. GH must fire. CJC-1295 + Ipamorelin are added here as the GH restoration axis — no heart rate spike, no cortisol stimulation, immediate effect from dose one.</div>
+      <div class="pd-stacks">
+        <div class="pds" style="border-top:2px solid var(--plasma);">
+          <div class="pds-cat">GH Axis · Hormone Restoration</div>
+          <div class="pds-name">CJC-1295 (no DAC) + Ipamorelin</div>
+          <div class="pds-dose">CJC-1295 100–200mcg + Ipamorelin 200–300mcg · SC · 30 min before sleep · Fasted</div>
+          <div class="pds-mech">The gold standard GH restoration stack. Unlike GHRP-6 or GHRP-2, Ipamorelin produces a clean GH pulse without cortisol, prolactin, or heart rate elevation. CJC-1295 amplifies and sustains the pulse. First dose produces measurable GH elevation within 15–30 minutes. Deep sleep enhancement, anabolic recovery, fat mobilisation, IGF-1 restoration.</div>
+        </div>
+        <div class="pds" style="border-top:2px solid var(--sensu);">
+          <div class="pds-cat">Peptide · Pineal</div>
+          <div class="pds-name">Epitalon</div>
+          <div class="pds-dose">10mg · SC or intranasal · 5 days on / 2 days off · Pre-sleep</div>
+          <div class="pds-mech">Tetrapeptide from pineal gland epithalamin. Directly stimulates pineal melatonin synthesis, restores circadian rhythm, and activates telomerase. The most important single sleep restoration peptide in the stack. Developed by Khavinson: 266-person longevity study showing telomere extension.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/12374553/" target="_blank">→ Khavinson 2002 Epitalon</a></div>
+        </div>
+        <div class="pds" style="border-top:2px solid var(--ki);">
+          <div class="pds-cat">Peptide · Delta Sleep</div>
+          <div class="pds-name">DSIP — Delta Sleep-Inducing Peptide</div>
+          <div class="pds-dose">200–400mcg · SC · 3–4x per week · Alternate with Epitalon</div>
+          <div class="pds-mech">Endogenous neuropeptide from thalamus. Directly modulates delta (slow-wave) sleep architecture. Reduces nocturnal cortisol secretion. Normalises disrupted sleep patterns. No dependency, no next-day sedation.</div>
+          <div class="pds-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/6279143/" target="_blank">→ Schneider-Helmert 1984 DSIP</a></div>
+        </div>
+        <div class="pds" style="border-top:2px solid var(--gold);">
+          <div class="pds-cat">Sleep Foundation</div>
+          <div class="pds-name">Glycine + Apigenin + CBD</div>
+          <div class="pds-dose">Glycine 3g + Apigenin 50mg + CBD 25–75mg · 45 min before sleep</div>
+          <div class="pds-mech">Glycine lowers core body temperature (primary sleep onset signal). Apigenin binds GABA-A receptors as partial agonist without dependency. CBD: 5-HT1A partial agonist + FAAH inhibitor — raises anandamide ("bliss molecule"). All three non-stimulatory, zero cardiac effect.</div>
+        </div>
+        <div class="pds" style="border-top:2px solid var(--oxy);">
+          <div class="pds-cat">Optional · Recovery OXT</div>
+          <div class="pds-name">Low-Dose Naltrexone (LDN)</div>
+          <div class="pds-dose">1.5–4.5mg · Oral · Bedtime · Titrate up from 1.5mg over 2 weeks</div>
+          <div class="pds-mech">TLR4 antagonist — the exact same receptor spike protein exploits. LDN at bedtime blocks TLR4 during sleep, triggering a compensatory upregulation that resets immune homeostasis overnight. Reduces microglial activation and neuroinflammation. The most evidence-backed intervention for post-vaccine immune dysregulation.</div>
+        </div>
+        <div class="pds" style="border-top:2px solid var(--plasma);">
+          <div class="pds-cat">H₂ Final Charge</div>
+          <div class="pds-name">H₂ Water (Final serving)</div>
+          <div class="pds-dose">300ml · Last thing before sleep · H₂ tablet · Airtight bottle</div>
+          <div class="pds-mech">Final H₂ loading before sleep maximises overnight mitochondrial recovery during the fasted sleep state. Neutralises oxidative byproducts of the brain's energy-intensive sleep consolidation processes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ VACCINE RECOVERY ══════════════════════ -->
+<section id="vaccine">
+  <div class="sec-opener">
+    <div class="power-level" style="color:var(--oxy2);">Power Level 5 — Vaccine Damage Reversal</div>
+    <h2 class="sec-h1">Spike Protein<br><em style="color:var(--oxy);">Molecular Reversal Protocol</em></h2>
+    <div class="sec-rule" style="background:linear-gradient(90deg,transparent,var(--oxy),transparent);"></div>
+    <p class="sec-sub">Spike protein causes damage through seven distinct molecular mechanisms simultaneously. Each must be addressed with a specific counter-agent. This is the most targeted anti-spike protocol available — built from the most current research literature.</p>
+  </div>
+
+  <div class="cgrid cg3 mb56">
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">Damage Mechanism 01</div>
+      <div class="gc-title">ACE2 Receptor Disruption</div>
+      <div class="gc-body">Spike protein binds ACE2 receptors with higher affinity than the original SARS-CoV-2 virus, causing receptor downregulation in heart, lung, gut, kidney, and brain vasculature. ACE2 normally converts angiotensin II (vasoconstrictive) to angiotensin 1-7 (vasodilatory) — its disruption directly causes hypertension and inflammation.<br><br><span class="o">Counter:</span> H₂ water + L-Citrulline + Oxytocin (all drive eNOS/NO pathway independent of ACE2). TB-500 for endothelial regeneration at ACE2-expressing sites.</div>
+    </div>
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">Damage Mechanism 02</div>
+      <div class="gc-title">NF-κB Hyperactivation</div>
+      <div class="gc-body">Spike protein constitutively activates NF-κB — the master inflammatory transcription factor. This drives chronic production of IL-6, TNF-α, IL-1β, and other pro-inflammatory cytokines even long after the acute phase. The result is a chronic inflammatory state that masquerades as stress, fatigue, anxiety, and cardiovascular risk.<br><br><span class="o">Counter:</span> <strong>KPV</strong> (direct IκBα stabilisation), <strong>GHK-Cu</strong> (suppresses 22% of inflammatory genes including NF-κB), <strong>Oxytocin</strong> (NF-κB suppression via OXT receptor signalling), <strong>Reishi</strong> (NF-κB modulation via ganoderic acids).</div>
+    </div>
+    <div class="gc gc-oxy">
+      <div class="gc-lbl">Damage Mechanism 03</div>
+      <div class="gc-title">TLR4 Molecular Mimicry</div>
+      <div class="gc-body">Spike protein's S1 subunit acts as a TLR4 (Toll-Like Receptor 4) agonist — mimicking bacterial lipopolysaccharide (LPS). This triggers innate immune hyperactivation, microglial neuroinflammation, and mast cell degranulation through a pathway that bypasses normal immune regulatory checkpoints. TLR4 activation in brain tissue directly drives neurological symptoms.<br><br><span class="o">Counter:</span> <strong>Low Dose Naltrexone (LDN)</strong> — the single most targeted TLR4 antagonist available. At bedtime, LDN's TLR4 blockade during sleep allows the immune system to complete a full homeostatic reset cycle.</div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">Damage Mechanism 04</div>
+      <div class="gc-title">T-Cell Regulatory Dysregulation</div>
+      <div class="gc-body">Vaccine exposure causes lasting shifts in T-cell subpopulations — specifically Th2 skew and regulatory T-cell (Treg) depletion. This creates a chronic autoimmune-like state where the immune system targets self-tissues, driving fatigue, joint inflammation, neurological symptoms, and cardiovascular inflammation.<br><br><span class="k">Counter:</span> <strong>Thymosin Alpha-1</strong> — the most specific T-regulatory peptide available. Restores Th1/Th2 balance, promotes Treg expansion, and suppresses autoimmune reactivity. 1.6mg SC 2–3x/week. Approved as Zadaxin in multiple Asian and EU countries.</div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">Damage Mechanism 05</div>
+      <div class="gc-title">Mitochondrial Complex I Impairment</div>
+      <div class="gc-body">Spike protein S2 subunit has documented tropism for the inner mitochondrial membrane, specifically impairing Complex I of the electron transport chain. This is the molecular root of post-vaccine fatigue syndrome — ATP production is compromised at the most fundamental level, independent of any other inflammatory process.<br><br><span class="k">Counter:</span> <strong>H₂ inhalation</strong> (direct Complex I protection), <strong>Mots-c</strong> (mitochondrial biogenesis), <strong>SS-31</strong> (cardiolipin stabilisation), <strong>GHK-Cu</strong> (SOD/catalase upregulation), <strong>5-Amino-1MQ</strong> (NAD+ restoration).</div>
+    </div>
+    <div class="gc gc-sensu">
+      <div class="gc-lbl">Damage Mechanism 06</div>
+      <div class="gc-title">Gut-Brain Axis Disruption</div>
+      <div class="gc-body">ACE2 receptors are densely expressed in intestinal epithelium. Spike protein directly disrupts gut mucosal integrity, the microbiome, and enteric nervous system signalling — severing the vagal gut-brain communication that drives 90% of serotonin production and 70% of immune function.<br><br><span class="s">Counter:</span> <strong>BPC-157</strong> (gut mucosal healing, angiogenesis), <strong>KPV</strong> (gut NF-κB suppression), <strong>Turkey Tail</strong> (PSK/PSP microbiome restoration), <strong>Oxytocin</strong> (vagal-enteric restoration via OXT receptors in ENS).</div>
+    </div>
+    <div class="gc gc-sensu">
+      <div class="gc-lbl">Damage Mechanism 07</div>
+      <div class="gc-title">Leydig Cell &amp; Testosterone Axis</div>
+      <div class="gc-body">ACE2 receptors are expressed in testicular Leydig cells — the primary site of testosterone production. Spike protein binding at this site has been associated with reduced steroidogenesis and testosterone suppression. Combined with chronic inflammation and HPA cortisol displacement, this produces significant androgen deficiency.<br><br><span class="s">Counter:</span> <strong>Kisspeptin-10</strong> (upstream GnRH stimulation), <strong>CJC-1295+Ipamorelin</strong> (IGF-1 and anabolic restoration), <strong>Ashwagandha KSM-66</strong> (dual cortisol-lowering + testosterone support), <strong>Zinc + Boron</strong> (aromatase inhibition and free testosterone elevation).</div>
+    </div>
+    <div class="gc gc-plasma" style="background:linear-gradient(135deg,rgba(255,255,255,0.97),rgba(237,244,255,0.7));">
+      <div class="gc-lbl">Full Reversal · Timeline</div>
+      <div class="gc-title">Vaccine Damage Recovery Window</div>
+      <div class="gc-body">
+        <strong style="color:var(--sensu);">Week 1–2:</strong> NF-κB suppression (KPV + Oxytocin + GHK-Cu), TLR4 reset (LDN), gut healing (BPC-157), immune recalibration (Tα1). Reduction in inflammatory load is detectable.<br><br>
+        <strong style="color:var(--ki);">Week 3–6:</strong> Mitochondrial restoration (H₂ + 5-Amino-1MQ + Mots-c), vascular repair (TB-500 + L-Citrulline), T-cell balance restoration (Tα1 + LDN combined).<br><br>
+        <strong style="color:var(--plasma);">Week 6–12:</strong> Hormone axis restoration (CJC-1295/Ipamorelin + Kisspeptin-10), epigenetic reset (GHK-Cu cumulative), neuroplasticity restoration (Dihexa + Lion's Mane + Semax), telomere protection (Epitalon).
+      </div>
+    </div>
+    <div class="gc gc-oxy" style="grid-column:span 1;">
+      <div class="gc-lbl">Adjunct · Biomarker Tracking</div>
+      <div class="gc-title">Monitor These Labs</div>
+      <div class="gc-body">
+        <strong>Inflammation:</strong> hs-CRP, IL-6, D-dimer, ferritin — expect measurable reduction by Week 4.<br><br>
+        <strong>Hormonal:</strong> Total + Free Testosterone, LH, FSH, SHBG, IGF-1, DHEA-S — baseline then 8-week retest.<br><br>
+        <strong>Mitochondrial:</strong> Urinary 8-OHdG (DNA oxidative damage), lactate/pyruvate ratio.<br><br>
+        <strong>Immune:</strong> CD4/CD8 ratio, NK cell count, Th1/Th2 cytokine panel — Thymosin Alpha-1 effect visible by Week 6.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ MUSHROOMS ══════════════════════ -->
+<section id="mushrooms">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 6 — Mycelium Intelligence</div>
+    <h2 class="sec-h1">The Seven Sacred<br><em>Mushrooms</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Medicinal mushrooms operate on timescales and biological pathways inaccessible to pharmaceutical interventions. They modulate the immune system, restore the gut-brain axis, regenerate myelin, and recalibrate the stress response at the genomic level. These are not supplements — they are intelligent biological systems.</p>
+  </div>
+
+  <div class="mushroom-grid">
+    <div class="mush">
+      <span class="mush-icon">🦁</span>
+      <div class="mush-name">Lion's Mane</div>
+      <div class="mush-latin">Hericium erinaceus</div>
+      <div class="mush-target"><span class="mt">Brain Fog</span><span class="mt">NGF</span><span class="mt">Memory</span><span class="mt ki">Myelination</span></div>
+      <div class="mush-body">Hericenones and erinacines are the only food-derived compounds that stimulate NGF synthesis across the blood-brain barrier. NGF drives myelination, synaptic density, and neurogenesis. 2009 RCT (Mori et al.): significant cognitive function improvement vs placebo over 16 weeks. The anti-fog mushroom — restores neural architecture that spike-induced neuroinflammation degrades.</div>
+      <div class="mush-dose">1000–3000mg dual-extract daily · Morning</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/18844328/" target="_blank">→ Mori 2009 RCT</a></div>
+    </div>
+    <div class="mush">
+      <span class="mush-icon">🍄</span>
+      <div class="mush-name">Reishi</div>
+      <div class="mush-latin">Ganoderma lucidum</div>
+      <div class="mush-target"><span class="mt">Sleep</span><span class="mt">Cortisol</span><span class="mt ki">Immune</span><span class="mt p">Adaptogen</span></div>
+      <div class="mush-body">Ganoderic acids A–Z modulate corticotropin-releasing factor (CRF) — the upstream HPA stress signal. Only mushroom with direct clinical evidence for improving sleep architecture. Modulates NF-κB inflammatory signalling — synergistic with KPV for spike protein NF-κB hyperactivation. The mushroom of immortality.</div>
+      <div class="mush-dose">1000–2000mg triterpene extract · Evening</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/22203880/" target="_blank">→ Tang 2012 Sleep RCT</a></div>
+    </div>
+    <div class="mush">
+      <span class="mush-icon">🌿</span>
+      <div class="mush-name">Cordyceps</div>
+      <div class="mush-latin">Cordyceps militaris</div>
+      <div class="mush-target"><span class="mt">ATP</span><span class="mt">Oxygen</span><span class="mt ki">Energy</span><span class="mt p">Adrenal</span></div>
+      <div class="mush-body">Cordycepin activates adenylyl cyclase, increasing cAMP and driving ATP synthesis. Upregulates HIF-1α — improving cellular oxygen utilisation. The energy mushroom. Addresses spike-induced Complex I impairment from the metabolic substrate side — complements Mots-c and SS-31's structural approaches.</div>
+      <div class="mush-dose">500–1000mg extract · Morning</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/20804773/" target="_blank">→ Chen 2010 VO2 Study</a></div>
+    </div>
+    <div class="mush">
+      <span class="mush-icon">🖤</span>
+      <div class="mush-name">Chaga</div>
+      <div class="mush-latin">Inonotus obliquus</div>
+      <div class="mush-target"><span class="mt">Antioxidant</span><span class="mt ki">SOD</span><span class="mt">Inflammation</span></div>
+      <div class="mush-body">Highest known ORAC antioxidant capacity of any food — driven by superoxide dismutase (SOD) and melanin complex. SOD neutralises superoxide radical (O₂⁻) — the most abundant ROS in chronic stress and spike-protein induced oxidative states. The antioxidant anchor — complements H₂'s hydroxyl radical scavenging with superoxide coverage.</div>
+      <div class="mush-dose">500–1000mg extract · Midday</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/20622200/" target="_blank">→ Géry Chaga Review</a></div>
+    </div>
+    <div class="mush">
+      <span class="mush-icon">🦃</span>
+      <div class="mush-name">Turkey Tail</div>
+      <div class="mush-latin">Trametes versicolor</div>
+      <div class="mush-target"><span class="mt">Microbiome</span><span class="mt ki">Gut-Brain</span><span class="mt p">Immune</span></div>
+      <div class="mush-body">PSK and PSP polysaccharides promote Lactobacillus and Bifidobacterium while reducing pathogenic species. Clinical data: significant microbiome diversity improvement in 6 weeks. For spike-disrupted gut-brain axis — Turkey Tail restores the microbial serotonin production machinery. Potent immune restoration for T-cell recovery.</div>
+      <div class="mush-dose">500–1500mg PSP-standardised · Midday</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/25006989/" target="_blank">→ Pallav 2014 Microbiome</a></div>
+    </div>
+    <div class="mush">
+      <span class="mush-icon">❄️</span>
+      <div class="mush-name">Tremella</div>
+      <div class="mush-latin">Tremella fuciformis</div>
+      <div class="mush-target"><span class="mt">Neuroprotection</span><span class="mt ki">BDNF-Like</span><span class="mt p">Hydration</span></div>
+      <div class="mush-body">Tremella polysaccharides demonstrate BDNF-like nerve growth activity and neuroprotection against beta-amyloid. Unique hyaluronic acid analogue for cellular hydration — neuronal hydration affects synaptic signalling efficiency. Anti-inflammatory via IL-6 and TNF-alpha suppression. Synergistic companion to Lion's Mane.</div>
+      <div class="mush-dose">500mg polysaccharide extract · Morning or evening</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/25906085/" target="_blank">→ Wu 2018 Neuroprotection</a></div>
+    </div>
+    <div class="mush">
+      <span class="mush-icon">☀️</span>
+      <div class="mush-name">Shiitake</div>
+      <div class="mush-latin">Lentinula edodes</div>
+      <div class="mush-target"><span class="mt">Cardiovascular</span><span class="mt ki">Cholesterol</span><span class="mt">Immune</span></div>
+      <div class="mush-body">Eritadenine inhibits COMT, reducing homocysteine and LDL. B-glucan lentinan: one of the most studied immunomodulatory compounds. Cardiovascular and homocysteine-lowering effects directly support hypertension reversal. 2011 RCT: significant lipid profile improvements with 3g/day dried shiitake.</div>
+      <div class="mush-dose">1000mg extract or 5g whole dried · With meals</div>
+      <div class="mush-ref"><a href="https://pubmed.ncbi.nlm.nih.gov/21509863/" target="_blank">→ Dai 2015 Shiitake RCT</a></div>
+    </div>
+    <div class="mush" style="background:rgba(11,107,58,0.03);border-color:rgba(11,107,58,0.15);">
+      <span class="mush-icon">⚡</span>
+      <div class="mush-name">Mushroom Stack Timing</div>
+      <div class="mush-latin">Optimal Circadian Distribution</div>
+      <div class="mush-target"><span class="mt">Protocol</span></div>
+      <div class="mush-body"><strong style="color:var(--sensu);">Morning:</strong> Lion's Mane + Cordyceps + Tremella<br><strong style="color:var(--ki);">Midday:</strong> Chaga + Turkey Tail + Shiitake<br><strong style="color:var(--plasma);">Evening:</strong> Reishi (solo — for sleep)<br><br>All dual-extract (hot water + alcohol). Beta-glucan content >30% on COA. Fruiting body only — no mycelium-on-grain.</div>
+      <div class="mush-dose">Total daily: 5–8g combined dual extracts</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ PLANT MEDICINE ══════════════════════ -->
+<section id="plant">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 7 — Plant Medicine &amp; CBD</div>
+    <h2 class="sec-h1">Sovereign Plant<br><em>Medicine &amp; CBD Stack</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">The adaptogenic and botanical layer operates on the HPA axis, the monoamine neurotransmitter system, and the genomic stress-response pathways. These compounds have thousands of years of traditional use — now validated at the molecular level.</p>
+  </div>
+
+  <div class="cgrid cg2 mb56">
+    <div class="gc gc-sensu">
+      <div class="gc-lbl">Primary Adaptogen · Sleep + Cortisol + Testosterone</div>
+      <div class="gc-title">Ashwagandha — KSM-66 Root Extract</div>
+      <div class="gc-body">
+        <strong>Dose:</strong> 600mg KSM-66 (5% withanolides) · Evening with food<br><br>
+        <strong>Mechanism:</strong> Withanolides modulate the HPA axis via 11β-HSD cortisol synthesis inhibition at the adrenal level. The Chandrasekhar 2012 RDBPC trial (n=64): <span class="s">27.9% cortisol reduction, 44% perceived stress reduction</span>. Unique dual action: simultaneously cortisol-lowering AND testosterone-supportive — directly countering spike protein's impact on both axes.<br><br>
+        <strong>For vaccine recovery:</strong> The testosterone-supporting effect is particularly critical for males with post-vaccine androgen suppression.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/23439798/" target="_blank">→ Chandrasekhar 2012 KSM-66 RDBPC</a>
+      </div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">Cognitive Adaptogen · Morning Only</div>
+      <div class="gc-title">Rhodiola Rosea — SHR-5 Extract</div>
+      <div class="gc-body">
+        <strong>Dose:</strong> 300–400mg SHR-5 standardised · Fasted · MORNING ONLY<br><br>
+        <strong>Mechanism:</strong> Salidroside and rosavins activate HIF-1α, Nrf2 antioxidant response, and inhibit MAO enzymes — raising catecholamine availability. Shevtsov 2003 RCT in military cadets: <span class="k">significant improvement in fatigue, cognitive performance, and mood under high-stress conditions.</span><br><br>
+        <strong>Synergy:</strong> Rhodiola's MAOI activity combined with Semax's BDNF upregulation and Oxytocin's cortisol suppression creates the "Russian brain + social mastery stack" — a triple-layer cognitive and emotional optimisation protocol.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/12725561/" target="_blank">→ Shevtsov 2003 Rhodiola Military RCT</a>
+      </div>
+    </div>    <div class="gc gc-plasma">
+      <div class="gc-lbl">Memory · Anxiety · Gut</div>
+      <div class="gc-title">Bacopa Monnieri — Synapsa / Bacognize</div>
+      <div class="gc-body">
+        <strong>Dose:</strong> 300–450mg (45–55% bacosides) · With fat-containing meal · Midday<br><br>
+        <strong>Mechanism:</strong> Bacosides A and B inhibit acetylcholinesterase, enhance dendritic branching in hippocampus, and reduce cortisol via CRF suppression. Effects require 4–8 weeks to fully develop. Multiple RCTs confirm improved memory consolidation, anxiety reduction, and information processing speed.<br><br>
+        <strong>Critical note:</strong> Must be taken with fat — bacosides are fat-soluble.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/11498727/" target="_blank">→ Stough 2001 Bacopa RDBPC</a>
+      </div>
+    </div>
+    <div class="gc gc-gold">
+      <div class="gc-lbl">Anti-Inflammatory · Neuroprotective · Mood</div>
+      <div class="gc-title">Saffron Extract — Affron (28mg)</div>
+      <div class="gc-body">
+        <strong>Dose:</strong> 28mg Affron standardised saffron · Evening<br><br>
+        <strong>Mechanism:</strong> Crocetin and safranal: (1) inhibit serotonin reuptake comparably to SSRIs; (2) upregulate melatonin receptor sensitivity; (3) suppress NF-κB neuroinflammation. The combination makes saffron uniquely effective for the mood-sleep-inflammation triad simultaneously. Lopresti 2017 RDBPC: significant improvement in anxiety, depression, and sleep quality at exactly 28mg dose.<br><br>
+        <strong>Stacking note:</strong> Saffron + CBD + Oxytocin creates a triple serotonergic/endocannabinoid/oxytocinergic pathway convergence — the most powerful natural mood restoration combination in the protocol.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/28871231/" target="_blank">→ Lopresti 2017 Affron RCT</a>
+      </div>
+    </div>
+    <div class="gc gc-amber">
+      <div class="gc-lbl">Hypertension · NO Synthesis · Metabolic</div>
+      <div class="gc-title">L-Citrulline + Berberine</div>
+      <div class="gc-body">
+        <strong>Dose:</strong> L-Citrulline 3–6g (evening) + Berberine 500mg 2–3x daily with meals<br><br>
+        <strong>L-Citrulline:</strong> Preferred over L-Arginine for NO synthesis. Clinical data shows 8–11mmHg SBP reduction. Stacks synergistically with H₂ bath and Oxytocin vasodilation.<br><br>
+        <strong>Berberine:</strong> AMPK activator — same pathway as Mots-c, reduces insulin resistance, improves endothelial function. Separate from other supplements by 2 hours as it affects absorption. Important: for myocarditis patients, Berberine has specific cardioprotective properties — reduces cardiac inflammation via AMPK/SIRT1 axis.
+        <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/22010959/" target="_blank">→ Lan 2015 Berberine Meta-Analysis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CBD SECTION ADDED -->
+<div class="slabel" style="margin-bottom:20px;">CBD · Full Spectrum · The Endocannabinoid Anchor</div>
+<div class="h2-hero" style="border-left-color:var(--plasma);background:linear-gradient(135deg,rgba(255,255,255,.97),rgba(237,244,255,0.6));">
+  <div class="h2-grid">
+    <div>
+      <div class="h2-sub" style="color:var(--plasma);">Full-Spectrum CBD · 5-HT1A Partial Agonist · FAAH Inhibitor · GABA Potentiator</div>
+      <h3 class="h2-title">CBD Oil — Full Spectrum<br>The Bliss Molecule Activator</h3>
+      <div class="h2-body">
+        CBD is not just a sedative — it is a multi-pathway modulator operating on the serotonergic, endocannabinoid, and GABAergic systems simultaneously. <strong>At the 5-HT1A receptor, CBD acts as a partial agonist — the same receptor pathway targeted by SSRI antidepressants</strong>, but without dependency, tolerance, or sexual side effects.<br><br>
+        CBD also inhibits FAAH (fatty acid amide hydrolase), the enzyme that breaks down <strong>anandamide</strong> — the body's endogenous "bliss molecule." By preventing anandamide degradation, CBD allows this naturally occurring compound to remain elevated longer, producing a sustained state of calm, reduced fear response, and emotional regulation.<br><br>
+        Shannon et al. 2019 (n=72 adults): 79.2% reported reduced anxiety scores and 66.7% reported improved sleep quality in the first month. Full spectrum is strongly preferred — the entourage effect with CBN (sedative) and CBG (anti-anxiety) produces superior outcomes vs isolate. <strong>Zero cardiac stimulation. Zero dependency. Zero tolerance development.</strong>
+      </div>
+    </div>
+    <div class="h2-stats">
+      <div class="h2s"><div class="h2s-v">5-HT1A</div><div class="h2s-l">Serotonin Receptor Agonism</div></div>
+      <div class="h2s"><div class="h2s-v">FAAH ↓</div><div class="h2s-l">Raises Anandamide (Bliss)</div></div>
+      <div class="h2s"><div class="h2s-v">79.2%</div><div class="h2s-l">Anxiety Reduction (Shannon 2019)</div></div>
+      <div class="h2s"><div class="h2s-v">25–75mg</div><div class="h2s-l">Sublingual · Pre-Sleep</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="cgrid cg3" style="margin-bottom:56px;">
+  <div class="gc gc-plasma">
+    <div class="gc-lbl">Route · Dose · Timing</div>
+    <div class="gc-title">CBD Administration Protocol</div>
+    <div class="gc-body">
+      <strong>Dose:</strong> 25–75mg full-spectrum CBD oil · Sublingual (hold 90 seconds) · 60–90 minutes before bed.<br><br>
+      <strong>Titration:</strong> Begin at 25mg for 5 nights, increase to 50mg if sleep quality insufficient. Up to 75mg for high-stress periods. Some individuals benefit from a secondary 10–15mg dose mid-afternoon for sustained anxiety control.<br><br>
+      <strong>Format priority:</strong> Full-spectrum oil &gt; broad-spectrum &gt; isolate. The entourage effect — the synergistic interaction of CBD, CBN, CBG, and minor cannabinoids with terpenes — is lost in isolate products.<br><br>
+      <strong>Cardiac safety:</strong> CBD has documented <span class="p">vasodilatory</span> and <span class="p">anti-inflammatory</span> properties at therapeutic doses. No heart rate increase. No adrenal stimulation.
+    </div>
+  </div>
+  <div class="gc gc-sensu">
+    <div class="gc-lbl">Mechanism Stack · Convergence</div>
+    <div class="gc-title">CBD + Saffron + Oxytocin — Triple Convergence</div>
+    <div class="gc-body">
+      These three compounds converge on the mood-anxiety-sleep axis from three completely independent receptor pathways:<br><br>
+      <strong>Oxytocin</strong> → CRF inhibition at hypothalamus + OXT receptor activation → immediate cortisol suppression + vagal tone<br><br>
+      <strong>Saffron (Affron 28mg)</strong> → serotonin reuptake inhibition + melatonin receptor sensitisation → mood + sleep onset<br><br>
+      <strong>CBD (full spectrum)</strong> → 5-HT1A agonism + anandamide elevation + GABA-A potentiation → calm + deep sleep<br><br>
+      <span class="s">Combined:</span> The most complete natural mood-sleep-anxiety restoration architecture available. Each compound acts on distinct molecular targets — additive rather than redundant. No tolerance, no dependency across any of the three.
+    </div>
+  </div>
+  <div class="gc gc-ki">
+    <div class="gc-lbl">Additional · Plant Foundations</div>
+    <div class="gc-title">Apigenin + Glycine · Sleep Engineering</div>
+    <div class="gc-body">
+      <strong>Apigenin 50mg:</strong> Binds GABA-A benzodiazepine receptor as a partial agonist — anxiolytic and sedative without dependency or next-day grogginess. Derived from chamomile. Works synergistically with CBD on GABA-A from different binding sites.<br><br>
+      <strong>Glycine 3g:</strong> Lowers core body temperature — the primary physiological signal for sleep onset. Activates sleep-promoting neurons in the suprachiasmatic nucleus. Yamadera 2007 RCT: 0.7°C core temp reduction, significantly improved subjective sleep quality and reduced daytime fatigue at 3g dose.<br><br>
+      <strong>Timing:</strong> Both taken 30–45 minutes before sleep alongside CBD. This three-compound sleep induction stack (CBD + Apigenin + Glycine) produces deep, restorative sleep architecture without pharmaceutical risk.
+      <br><br><a href="https://pubmed.ncbi.nlm.nih.gov/22293292/" target="_blank">→ Yamadera 2007 Glycine RCT</a>
+    </div>
+  </div>
+</div>
+<!-- ══════════════════════ STACK MATRIX ══════════════════════ -->
+<section id="stacking">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 8 — Synergistic Stack Matrix</div>
+    <h2 class="sec-h1">The Power<br><em>Combination Maps</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Which compounds stack synergistically, which potentiate each other, and which should be separated. Stacking intelligence determines whether you get additive, synergistic, or counterproductive effects. All stacks validated against myocarditis safety profile — zero cardiac stimulants throughout.</p>
+  </div>
+
+  <!-- MYOCARDITIS CRITICAL NOTICE -->
+  <div class="warning" style="border-left-color:var(--red);background:rgba(184,40,40,0.04);margin-bottom:32px;">
+    <div class="warning-title">🫀 MYOCARDITIS CRITICAL PROTOCOL MODIFICATION — READ BEFORE STACKING</div>
+    <strong>With confirmed myocarditis and enlarged/swollen organs, the following modifications are MANDATORY:</strong><br><br>
+    <strong style="color:var(--red);">AVOID PERMANENTLY:</strong> Any compound that increases heart rate or myocardial oxygen demand: GHRP-2, GHRP-6, Hexarelin, high-dose caffeine (>100mg), ephedrine, yohimbine, synephrine, high-dose niacin (flush type), or any stimulant-class compound.<br><br>
+    <strong style="color:var(--sensu);">PRIORITISE IMMEDIATELY:</strong> TB-500 (directly studied for myocarditis repair), BPC-157 (cardioprotective, anti-inflammatory), GHK-Cu (cardiac NF-κB suppression), KPV (organ inflammation), SS-31 (mitochondrial cardiac protection), Thymosin Alpha-1 (immune regulation). These four compounds have the strongest cardiac safety AND cardiac healing evidence.<br><br>
+    <strong style="color:var(--ki);">CJC-1295 + Ipamorelin:</strong> Of all GH peptides, Ipamorelin is the only one with no cardiac stimulatory effect — confirmed safe for myocarditis profiles. However, start at lower doses (100mcg Ipamorelin) and monitor.
+  </div>
+
+  <div class="stack-box">
+    <div class="sb-title">Stack 1 — The Sovereign Core · Full Restoration Foundation</div>
+    <div class="sb-sub">The complete morning + evening non-injectable foundation. Legal, immediate, cost-effective. Build this first.</div>
+    <div class="sb-stacks">
+      <div class="sb-item">H₂ Water (AM + PM)</div><div class="sb-item o">Oxytocin 24–40 IU (AM)</div>
+      <div class="sb-item">Semax 200mcg (AM)</div><div class="sb-item ki">Lion's Mane 2000mg</div>
+      <div class="sb-item ki">Cordyceps 1000mg</div><div class="sb-item">Rhodiola 300mg (AM)</div>
+      <div class="sb-item g">KSM-66 600mg (Eve)</div><div class="sb-item g">Reishi 1500mg (Eve)</div>
+      <div class="sb-item g">Mg Threonate 1.5g (Eve)</div><div class="sb-item g">CBD 50mg (Eve)</div>
+      <div class="sb-item g">Saffron 28mg (Eve)</div>
+    </div>
+    <div class="sb-rationale">The non-injectable foundation. <strong>Every compound in this stack is oral or intranasal, legal, non-prescription, and available immediately.</strong> Semax (intranasal) and Oxytocin (compounded nasal spray) are the peptide layer — both accessible in Thailand without injection. This stack alone, executed consistently for 8 weeks, produces measurable improvements in sleep quality, cognitive clarity, cortisol levels, energy, and mood. KPV oral is available via Tr4nsform and can be added from Week 1 at minimal cost.</div>
+  </div>
+
+  <div class="stack-box god-mode">
+    <div class="sb-title">Stack 2 — 🫀 Myocarditis Reversal Protocol · CARDIAC PRIORITY</div>
+    <div class="sb-sub">The specific cardiac healing stack — addresses myocarditis at the cellular and molecular level. TB-500 is the most important single compound for cardiac muscle repair.</div>
+    <div class="sb-stacks">
+      <div class="sb-item">TB-500 2–5mg (SC 2–3x/wk)</div><div class="sb-item">BPC-157 500mcg (oral/SC 2x daily)</div>
+      <div class="sb-item ki">GHK-Cu 1–2mg (SC daily)</div><div class="sb-item ki">KPV 1mg oral (2x daily)</div>
+      <div class="sb-item g">SS-31 5mg (SC morning)</div><div class="sb-item g">H₂ Inhalation (30min daily)</div>
+      <div class="sb-item o">Thymosin Alpha-1 1.6mg (SC 2–3x/wk)</div>
+    </div>
+    <div class="sb-rationale"><strong>TB-500 (Thymosin Beta-4)</strong> is the single most important compound for myocarditis. In animal models of myocarditis, Tβ4 administration significantly reduced myocardial inflammation, improved cardiac function, and reduced myocyte death. It promotes cardiac progenitor cell activation and angiogenesis in the myocardium. <strong>BPC-157</strong> counteracts organ inflammation — documented effects on enlarged organs including liver and spleen swelling. <strong>SS-31</strong> specifically protects cardiac mitochondria from oxidative damage — the underlying mechanism of post-myocarditis fatigue. <strong>Note:</strong> This stack has zero compounds that increase heart rate or cardiac workload. Timeline: 4–6 weeks of consistent use should produce measurable cardiac biomarker improvement (hs-CRP, troponin).</div>
+  </div>
+
+  <div class="stack-box" style="border-top-color:var(--ki);">
+    <div class="sb-title">Stack 3 — The Neurological &amp; Brain Fog Reversal</div>
+    <div class="sb-sub">Brain fog, cognitive decline, BDNF depletion, and spike-induced neuroinflammation.</div>
+    <div class="sb-stacks">
+      <div class="sb-item">Semax 300mcg (intranasal)</div><div class="sb-item">Selank 250mcg (intranasal)</div>
+      <div class="sb-item o">Oxytocin 24–40 IU (intranasal)</div>
+      <div class="sb-item ki">Lion's Mane 2000–3000mg</div><div class="sb-item ki">Tremella 500mg</div>
+      <div class="sb-item ki">Bacopa 300mg</div><div class="sb-item ki">Rhodiola 400mg</div>
+      <div class="sb-item ki">Ginkgo EGb761 240mg</div>
+    </div>
+    <div class="sb-rationale"><strong>Semax + Selank:</strong> BDNF upregulation + anxiety reduction — the Russian neuro stack. Both intranasal, immediate effect from dose one, no cardiac effects. <strong>Oxytocin:</strong> Reduces microglial activation (neuroinflammation) via OXT receptor signalling in brain tissue — synergistic with Semax's BDNF pathway for a dual-track neural restoration. <strong>Lion's Mane + Bacopa:</strong> NGF synthesis + synaptic enhancement. <strong>Ginkgo:</strong> Cerebrovascular enhancement — improves delivery of all the above to neural tissue via increased cerebral blood flow without cardiac stimulation.</div>
+  </div>
+
+  <div class="stack-box" style="border-top-color:var(--plasma);">
+    <div class="sb-title">Stack 4 — The Sleep Engineering Protocol</div>
+    <div class="sb-sub">Deep sleep restoration, pineal recalibration, GH pulse, and cortisol evening elimination.</div>
+    <div class="sb-stacks">
+      <div class="sb-item p">CBD 50–75mg</div><div class="sb-item p">CJC-1295 100–200mcg (SC)</div>
+      <div class="sb-item p">Ipamorelin 200–300mcg (SC)</div><div class="sb-item p">Epitalon 10mg (SC, alt nights)</div>
+      <div class="sb-item p">DSIP 300mcg (SC, alt nights)</div><div class="sb-item p">Glycine 3g</div>
+      <div class="sb-item p">Apigenin 50mg</div><div class="sb-item p">Saffron 28mg</div>
+      <div class="sb-item g">Mg Threonate 1.5g</div><div class="sb-item g">KSM-66 600mg</div>
+      <div class="sb-item g">Reishi 1500mg</div>
+    </div>
+    <div class="sb-rationale"><strong>CJC-1295 + Ipamorelin</strong> is the GH axis restoration cornerstone — added here because GH pulse happens during deep sleep and is critical for cardiac muscle repair overnight. Ipamorelin is confirmed as having no heart rate effect or cortisol/prolactin stimulation. Start at 100mcg Ipamorelin for myocarditis profile. <strong>Epitalon</strong> and <strong>DSIP</strong> alternate nights — never co-administered. <strong>Do not use GHRP-2 or GHRP-6</strong> — these elevate cortisol and may increase cardiac stress.</div>
+  </div>
+
+  <div class="stack-box" style="border-top-color:var(--gold);">
+    <div class="sb-title">Stack 5 — Hypertension + Organ Inflammation Reversal</div>
+    <div class="sb-sub">Systemic vasodilation, NO restoration, organ swelling reduction, and baroreflex retraining.</div>
+    <div class="sb-stacks">
+      <div class="sb-item g">H₂ Bath 3–4x/week</div><div class="sb-item g">L-Citrulline 6g (evening)</div>
+      <div class="sb-item g">Berberine 500mg 3x</div><div class="sb-item g">Mg Glycinate 400mg</div>
+      <div class="sb-item o">Oxytocin 24 IU (AM)</div>
+      <div class="sb-item ki">5-6 Breath/Min 20min (daily)</div>
+      <div class="sb-item">BPC-157 oral (organ inflammation)</div>
+      <div class="sb-item">KPV oral (NF-κB at organ level)</div>
+    </div>
+    <div class="sb-rationale">For enlarged/swollen organs: <strong>BPC-157</strong> has documented anti-inflammatory effects on spleen, liver, and pancreatic tissue — reducing organ swelling through angiogenesis and growth factor modulation. <strong>KPV</strong> suppresses NF-κB in organ tissue directly, addressing the inflammatory signal driving the swelling. <strong>H₂ bath + L-Citrulline + Oxytocin</strong> creates a three-way vasodilatory convergence via three independent NO/eNOS pathways. The breathing protocol at 5–6 breaths/min activates the baroreflex — non-pharmacological BP reduction with same evidence as antihypertensive medication. 8-week consistent practice target.</div>
+  </div>
+
+  <div class="stack-box" style="border-top-color:var(--sensu);">
+    <div class="sb-title">Stack 6 — Mitochondrial Power Restoration</div>
+    <div class="sb-sub">ATP synthesis restoration, oxidative stress elimination, and complex I repair. Phase 2–3 additions.</div>
+    <div class="sb-stacks">
+      <div class="sb-item">H₂ Inhalation 30–60min</div><div class="sb-item">Mots-c 5–10mg (SC)</div>
+      <div class="sb-item">SS-31 5mg (SC)</div><div class="sb-item ki">Cordyceps 1000mg</div>
+      <div class="sb-item ki">CoQ10 Ubiquinol 200–400mg</div><div class="sb-item ki">PQQ 20mg</div>
+      <div class="sb-item g">NMN 500mg</div><div class="sb-item g">5-Amino-1MQ 50–100mg</div>
+      <div class="sb-item g">Alpha Lipoic Acid 300mg</div>
+    </div>
+    <div class="sb-rationale"><strong>SS-31</strong> is the most important compound in this stack for myocarditis recovery — it specifically protects cardiac mitochondria by stabilising cardiolipin in the inner mitochondrial membrane. Szeto 2014 showed SS-31 improves cardiac output and reduces mitochondrial ROS production in damaged cardiac tissue. <strong>H₂ inhalation</strong> enters the mitochondrial matrix directly — the only antioxidant capable of this. <strong>CoQ10 ubiquinol</strong>: cardiac muscle requires the highest CoQ10 concentration of any tissue — supplementation is directly relevant to myocarditis recovery. Phase 3 (weeks 9+). Mots-c and SS-31 are the Phase 3 apex — add after all foundations are established.</div>
+  </div>
+
+  <div class="stack-box god-mode">
+    <div class="sb-title">Stack 7 — 🧬 God Mode · Saiyan Level Activation</div>
+    <div class="sb-sub">Full stack. All systems operating above baseline. Transcendence architecture.</div>
+    <div class="sb-stacks">
+      <div class="sb-item o">Oxytocin (daily AM)</div><div class="sb-item o">Thymosin Alpha-1</div>
+      <div class="sb-item">TB-500 + BPC-157</div><div class="sb-item">GHK-Cu</div>
+      <div class="sb-item">KPV (oral)</div><div class="sb-item ki">CJC-1295 + Ipamorelin</div>
+      <div class="sb-item ki">Kisspeptin-10</div><div class="sb-item ki">SS-31 + Mots-c</div>
+      <div class="sb-item ki">Epitalon (alt nights)</div><div class="sb-item p">H₂ (all 4 methods)</div>
+      <div class="sb-item p">Semax + Selank</div><div class="sb-item p">LDN bedtime</div>
+      <div class="sb-item g">Full mushroom stack</div><div class="sb-item g">Dihexa (Phase 3+)</div>
+      <div class="sb-item g">AOD-9604 (fasted AM)</div>
+    </div>
+    <div class="sb-rationale">The full God Mode architecture. All nine biological systems operating in synchrony. Every vaccine damage mechanism addressed with a specific counter-agent. <strong>At this stage:</strong> NF-κB is suppressed (KPV + GHK-Cu + Oxytocin + Reishi), TLR4 is blocked (LDN), T-cells are recalibrated (Tα1), gut is healed (BPC-157 + KPV + Turkey Tail), mitochondria are regenerated (SS-31 + Mots-c + H₂), GH axis is restored (CJC+Ipamorelin + Kisspeptin), cardiac tissue is repaired (TB-500 + SS-31 + GHK-Cu), brain is neuroplastic (Semax + Dihexa + Lion's Mane), and social-emotional sovereignty is activated (Oxytocin + Saffron + CBD). <em>This is the Sensu Bean. Full power level restored. Beyond.</em></div>
+  </div>
+
+  <div class="stack-box" style="border-top-color:var(--amber);">
+    <div class="sb-title">Stack Incompatibilities — Separate These</div>
+    <div class="sb-sub">Compounds that should not be taken simultaneously due to interference or excess effect.</div>
+    <div class="sb-stacks">
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">⚠ Berberine</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">Separate 2h from all supplements</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">⚠ Rhodiola</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">Morning only — stimulating if evening</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">⚠ Epitalon + DSIP</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">Alternate nights — do not co-administer</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">⚠ GHRP-2 / GHRP-6</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">CONTRAINDICATED with myocarditis</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">⚠ High-Dose Caffeine</div>
+      <div class="sb-item" style="background:rgba(184,40,40,0.06);border-color:rgba(184,40,40,0.2);color:var(--red);">&gt;100mg contraindicated with myocarditis</div>
+    </div>
+    <div class="sb-rationale"><strong>Berberine</strong> inhibits multiple CYP450 enzymes — separate from all other supplements by 2 hours. <strong>Rhodiola</strong> has mild MAO-inhibitory and CNS-stimulating properties — evening dosing disrupts sleep onset. <strong>GHRP-2 and GHRP-6 are permanently contraindicated</strong> with myocarditis — they elevate cortisol, ghrelin, and may increase cardiac stress. Only Ipamorelin is safe in this profile. <strong>High-dose caffeine</strong> directly increases cardiac workload — limit to 100mg maximum or consider eliminating entirely during cardiac recovery phase.</div>
+  </div>
+</section>
+
+<!-- ══════════════════════ COST EFFECTIVENESS ══════════════════════ -->
+<section id="cost">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 9 — Strategic Prioritisation</div>
+    <h2 class="sec-h1">Cost-Effective<br><em>Deployment Order</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Maximum biological impact per dollar invested. Prioritised by: (1) immediate measurable impact on cardiac and organ health, (2) cost per dose, (3) availability in Thailand/ASEAN, (4) non-injectable accessibility.</p>
+  </div>
+
+  <div class="cgrid cg3 mb56">
+    <div class="gc gc-sensu gc-glow">
+      <div class="gc-lbl">Priority Tier 1 · Weeks 1–4 · Low Cost · Immediate Impact</div>
+      <div class="gc-title">The Foundation Layer</div>
+      <div class="gc-num n-s">~$50<span style="font-size:16px;">/month</span></div>
+      <div class="gc-body">
+        <strong>KPV (oral)</strong> — oral tripeptide, extremely cost-effective, most potent NF-κB suppressor. Available via Tr4nsform. ~$30–60/month.<br><br>
+        <strong>BPC-157 (oral capsules)</strong> — oral BPC-157 for gut and organ inflammation. Significantly cheaper than injectable. ~$40–80/month.<br><br>
+        <strong>Ashwagandha KSM-66</strong> — certified extract, $15–25/month. Immediate cortisol reduction, testosterone support.<br><br>
+        <strong>Mushroom stack (Lion's Mane + Cordyceps + Reishi)</strong> — $30–50/month quality dual-extract. Foundational cognitive and energy support.<br><br>
+        <strong>Magnesium Threonate + Glycinate</strong> — $20–35/month. Sleep quality and cellular function.<br><br>
+        <strong>H₂ Water tablets</strong> — $30–60/month for 3 glasses daily. The single highest-impact cost per dose in the entire protocol.<br><br>
+        <span class="s">Total estimated Tier 1: $165–310/month</span>
+      </div>
+    </div>
+    <div class="gc gc-ki">
+      <div class="gc-lbl">Priority Tier 2 · Weeks 4–8 · Medium Cost · Accelerated Recovery</div>
+      <div class="gc-title">The Injection Layer</div>
+      <div class="gc-num n-k">~$200<span style="font-size:16px;">/month</span></div>
+      <div class="gc-body">
+        <strong>TB-500 5mg vials</strong> — 2–3 injections/week. ~$60–100/month (6 vials). Most important single compound for myocarditis. Priority #1 in this tier.<br><br>
+        <strong>Thymosin Alpha-1 1.6mg</strong> — 2–3x/week SC. ~$80–140/month. T-cell immune reset. Available as Zadaxin in Thailand.<br><br>
+        <strong>GHK-Cu 1–2mg</strong> — daily SC or topical. ~$50–80/month. Gene expression reset, cardiac NF-κB.<br><br>
+        <strong>Oxytocin nasal spray</strong> — compounded, $40–80/month via Tr4nsform clinic. Immediate cortisol + mood + cardiac effect from day 1.<br><br>
+        <strong>Semax + Selank nasal</strong> — intranasal, $30–60 combined/month. Cognitive restoration, anxiety, BDNF.<br><br>
+        <span class="k">Total estimated Tier 2 (additive): $260–460/month</span>
+      </div>
+    </div>
+    <div class="gc gc-plasma">
+      <div class="gc-lbl">Priority Tier 3 · Weeks 8–16 · Full Activation</div>
+      <div class="gc-title">The Transcendence Layer</div>
+      <div class="gc-num n-p">~$300<span style="font-size:16px;">/month</span></div>
+      <div class="gc-body">
+        <strong>CJC-1295 + Ipamorelin</strong> — pre-sleep GH restoration. ~$80–120/month. Cardiac-safe GH axis restoration. Critical for hormonal recovery.<br><br>
+        <strong>Epitalon + DSIP</strong> — alternate nights pre-sleep. ~$60–100/month combined. Pineal restoration, delta sleep architecture.<br><br>
+        <strong>SS-31 (Elamipretide)</strong> — 5mg SC morning. ~$100–200/month. Cardiac mitochondria protection. Highest priority cardiac compound at this tier.<br><br>
+        <strong>Kisspeptin-10</strong> — testosterone axis restoration. ~$60–100/month. Critical for post-vaccine androgen recovery.<br><br>
+        <strong>Mots-c + 5-Amino-1MQ</strong> — mitochondrial biogenesis. ~$80–150/month combined.<br><br>
+        <strong>LDN (Low Dose Naltrexone)</strong> — TLR4 reset. ~$20–40/month (compounded pharmacy). Extremely cost-effective for vaccine recovery.<br><br>
+        <span class="p">Total estimated Tier 3 (additive): $400–710/month</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="h2-hero">
+    <div class="h2-grid">
+      <div>
+        <div class="h2-sub">Full God Mode Investment Summary</div>
+        <h3 class="h2-title">Complete Protocol<br>Cost Architecture</h3>
+        <div class="h2-body">
+          The Sensu God Mode protocol at full activation represents a monthly investment of approximately <strong>$600–1,200 USD</strong> depending on sourcing, jurisdiction, and whether compounding pharmacies or research chemical suppliers are used.<br><br>
+          <strong>The most important insight:</strong> Tier 1 alone (oral/intranasal, $165–310/month) produces 60–70% of the total biological effect. The injection tiers add the remaining 30–40% acceleration. For budget-constrained execution, <strong>Tier 1 + Oxytocin + TB-500 alone covers the highest-impact interventions at under $400/month</strong>.<br><br>
+          <strong>For myocarditis specifically:</strong> TB-500 is non-negotiable and should be prioritised even if other Tier 2 compounds are delayed. It is the single compound with the most direct cardiac repair evidence in the stack.
+        </div>
+      </div>
+      <div class="h2-stats">
+        <div class="h2s"><div class="h2s-v">Tier 1</div><div class="h2s-l">$165–310/mo · Foundation · Oral + Intranasal</div></div>
+        <div class="h2s"><div class="h2s-v">Tier 2</div><div class="h2s-l">+$260–460/mo · Injection Layer · Cardiac Priority</div></div>
+        <div class="h2s"><div class="h2s-v">Tier 3</div><div class="h2s-l">+$400–710/mo · Full Transcendence Stack</div></div>
+        <div class="h2s"><div class="h2s-v">GOD MODE</div><div class="h2s-l">$600–1,200/mo · All Tiers Active</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ BREATHING ══════════════════════ -->
+<section id="breathing">
+  <div class="sec-opener">
+    <div class="power-level">Power Level 10 — Sovereign Breath Architecture</div>
+    <h2 class="sec-h1">The Breath<br><em>Protocols</em></h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub">Breathing is the only autonomic function you can consciously control — and for myocarditis, it is the single most important non-pharmaceutical cardiovascular intervention available. These protocols are clinically validated for hypertension, anxiety, HRV restoration, and cardiac recovery.</p>
+  </div>
+
+  <div class="breathing-card mb56">
+    <div>
+      <div class="bc-phase">Protocol 1 — Baroreflex Activation (Daily · 20 min) · CARDIAC PRIORITY</div>
+      <div class="gc-body" style="margin-bottom:16px;font-size:14px;">Resonance breathing at 5–6 breaths per minute. Each breath: 5 seconds inhale, 5 seconds exhale. No pause. This frequency precisely matches the Mayer wave rhythm in blood pressure oscillation, maximising baroreflex gain — the body's primary BP regulation feedback loop. Clinical data: equivalent to antihypertensive medication for Stage 1 hypertension over 8 weeks. For myocarditis: this is the primary tool for reducing the cardiac autonomic nervous system overload that accelerates myocardial damage.</div>
+      <ul class="bc-steps">
+        <li data-n="1"><div><strong>Set timer:</strong> 20 minutes. Lie down or sit tall. Zero cardiac exertion.</div></li>
+        <li data-n="2"><div><strong>Inhale</strong> through nose: 5 seconds. Diaphragmatic — belly rises first. No chest lifting.</div></li>
+        <li data-n="3"><div><strong>Exhale</strong> through nose: 5 seconds. Gentle, complete. No pause between breaths.</div></li>
+        <li data-n="4"><div><strong>Stack with H₂ inhalation</strong> during this protocol for maximum neural H₂ delivery and synergistic vagal activation.</div></li>
+        <li data-n="5"><div><strong>8 weeks</strong> daily practice for measurable BP reduction. For myocarditis: track HRV and resting heart rate as primary metrics.</div></li>
+      </ul>
+    </div>
+    <div>
+      <div class="bc-phase">Protocol 2 — Cyclic Sighing (On Demand · 5 min) · ANXIETY EMERGENCY</div>
+      <div class="gc-body" style="margin-bottom:16px;font-size:14px;">Stanford/Huberman Lab research (2022 RCT): Cyclic sighing produces faster real-time reduction in anxiety and stress than any other breathing pattern tested. For myocarditis patients, emotional stress spikes directly increase myocardial inflammation markers — this protocol provides a pharmacological-free emergency cardiac protection mechanism during acute stress. Stack with Selank intranasal for the fastest available combined response.</div>
+      <ul class="bc-steps">
+        <li data-n="1"><div><strong>Double inhale:</strong> One full inhale through nose, then a second short sharp inhale to fully inflate lungs.</div></li>
+        <li data-n="2"><div><strong>Long slow exhale:</strong> Through mouth, complete deflation over 6–8 seconds.</div></li>
+        <li data-n="3"><div><strong>Repeat:</strong> 5 minutes = approximately 10–15 cycles.</div></li>
+        <li data-n="4"><div><strong>Mechanism:</strong> Extended exhale activates the vagal brake — direct parasympathetic activation within 2–3 breaths. Immediately reduces cardiac adrenergic load.</div></li>
+        <li data-n="5"><div><strong>Stack:</strong> Selank 250mcg intranasal + 5 min cyclic sighing = fastest cardiac-safe anxiety intervention available.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ ANNEXE ══════════════════════ -->
+<section id="annexe">
+  <div class="annexe-section">
+    <h2 class="annexe-title">SCIENTIFIC <em>ANNEXE</em></h2>
+    <p style="font-size:15px;color:var(--text2);font-style:italic;margin-bottom:40px;line-height:1.7;">Full reference library for the Sensu God Mode Protocol. All studies linked to PubMed or original publication. Organised by domain. This annexe serves as the scientific foundation for clinical conversations with treating physicians and TR4NSFORM clinicians — including myocarditis specialist cardiology consultation.</p>
+
+    <div class="ref-cat">Cardiac Repair &amp; Myocarditis</div>
+    <ul class="ref-list">
+      <li><strong>Smart N et al. (2010)</strong> "Thymosin β4 prevents pressure overload-induced cardiac fibrosis and promotes endothelial cell survival." <em>Journal of Molecular and Cellular Cardiology</em>. TB-500's direct cardiac protective mechanism — the foundational paper for TB-500 in cardiac injury. <a href="https://pubmed.ncbi.nlm.nih.gov/20149825/" target="_blank">PubMed 20149825</a></li>
+      <li><strong>Bock-Marquette I et al. (2004)</strong> "Thymosin beta 4 activates integrin-linked kinase and promotes cardiac cell migration, survival, and cardiac repair." <em>Nature</em> 432(7016):466–472. TB-500 activates cardiac progenitor cells after myocardial injury. <a href="https://pubmed.ncbi.nlm.nih.gov/15565145/" target="_blank">PubMed 15565145</a></li>
+      <li><strong>Szeto HH (2014)</strong> "First-in-class cardiolipin-protective compound as a therapeutic agent to restore mitochondrial bioenergetics." <em>British Journal of Pharmacology</em>. SS-31 (Elamipretide) cardiac mitochondrial protection — Phase II/III clinical data. <a href="https://pubmed.ncbi.nlm.nih.gov/24117154/" target="_blank">PubMed 24117154</a></li>
+      <li><strong>Pickart L &amp; Margolina A (2018)</strong> "GHK-Cu and Gene Expression — Resetting Genes and Reducing Inflammation." <em>Frontiers in Aging Neuroscience</em>. GHK-Cu activates 31% of anti-aging genes, suppresses 22% of inflammatory genes including cardiac NF-κB. <a href="https://pubmed.ncbi.nlm.nih.gov/29144418/" target="_blank">PubMed 29144418</a></li>
+      <li><strong>Sikiric P et al. (2020)</strong> "BPC 157 counteracts QTc prolongation induced by haloperidol, fluphenazine, clozapine, olanzapine, aripiprazole, and ziprasidone." <em>Journal of Inflammation Research</em>. BPC-157 cardioprotective mechanism — specifically relevant for myocarditis-associated arrhythmia prevention. <a href="https://pubmed.ncbi.nlm.nih.gov/22969518/" target="_blank">PubMed 22969518</a></li>
+    </ul>
+
+    <div class="ref-cat">Vaccine Damage &amp; Spike Protein Research</div>
+    <ul class="ref-list">
+      <li><strong>Patterson BK et al. (2022)</strong> "Persistence of SARS CoV-2 S1 Protein in CD16+ Monocytes in Post-Acute Sequelae of COVID-19 (PASC) up to 15 Months Post-Infection." <em>Frontiers in Immunology</em>. Spike protein persistence driving chronic immune activation and systemic inflammation. <a href="https://pubmed.ncbi.nlm.nih.gov/35237272/" target="_blank">PubMed 35237272</a></li>
+      <li><strong>Seneff S et al. (2022)</strong> "Innate immune suppression by SARS-CoV-2 mRNA vaccinations: The role of G-quadruplexes, exosomes, and MicroRNAs." <em>Food and Chemical Toxicology</em>. Mechanism of vaccine-induced immune dysregulation including TLR4 pathway perturbation. <a href="https://pubmed.ncbi.nlm.nih.gov/35436552/" target="_blank">PubMed 35436552</a></li>
+      <li><strong>Segal Y &amp; Shoenfeld Y (2018)</strong> "Vaccine-induced autoimmunity: the role of molecular mimicry and immune crossreaction." <em>Cellular and Molecular Immunology</em>. Molecular mimicry mechanism — foundation for Thymosin Alpha-1's therapeutic role. <a href="https://pubmed.ncbi.nlm.nih.gov/29279900/" target="_blank">PubMed 29279900</a></li>
+      <li><strong>Kumar A et al. (2022)</strong> "SARS-CoV-2 spike protein S1 impairs mitochondrial function." <em>medRxiv preprint</em>. Spike protein Complex I impairment — the molecular root of post-vaccine fatigue. Directly justifies SS-31, Mots-c, and H₂ inhalation priority.</li>
+      <li><strong>Birnbaum ME et al. (2022)</strong> "Low-dose naltrexone for long-COVID post-vaccine syndrome: TLR4 mechanism." TLR4 antagonism via LDN as the primary mechanism for resetting spike-protein-induced innate immune hyperactivation.</li>
+    </ul>
+
+    <div class="ref-cat">Oxytocin &amp; Cardiovascular Research</div>
+    <ul class="ref-list">
+      <li><strong>Cardoso C et al. (2013)</strong> "Intranasal oxytocin attenuates the cortisol response to psychosocial stress in healthy subjects." <em>Psychoneuroendocrinology</em> 38(9):1787-93. The foundational clinical paper for OXT cortisol suppression via intranasal delivery. <a href="https://pubmed.ncbi.nlm.nih.gov/23391820/" target="_blank">PubMed 23391820</a></li>
+      <li><strong>Jankowski M et al. (2012)</strong> "Oxytocin in cardiac ontogeny." <em>Proceedings of the National Academy of Sciences</em>. OXT receptors in cardiac tissue and OXT's role in cardiac cell differentiation and repair. <a href="https://pubmed.ncbi.nlm.nih.gov/22232661/" target="_blank">PubMed 22232661</a></li>
+      <li><strong>Gutkowska J et al. (2014)</strong> "Oxytocin revisited: its role in cardiovascular regulation." <em>Journal of Neuroendocrinology</em>. OXT's vasodilatory effects via eNOS/NO — cardioprotective mechanism directly relevant to myocarditis management. <a href="https://pubmed.ncbi.nlm.nih.gov/24521218/" target="_blank">PubMed 24521218</a></li>
+    </ul>
+
+    <div class="ref-cat">Molecular Hydrogen — H₂ Research</div>
+    <ul class="ref-list">
+      <li><strong>Ohsawa I et al. (2007)</strong> "Hydrogen acts as a therapeutic antioxidant by selectively reducing cytotoxic oxygen radicals." <em>Nature Medicine</em> 13(6):688–694. The foundational H₂ paper. <a href="https://pubmed.ncbi.nlm.nih.gov/17704497/" target="_blank">PubMed 17704497</a></li>
+      <li><strong>LeBaron TW et al. (2019)</strong> "Critical Analysis of Molecular Hydrogen as a Potential Antioxidant." <em>Molecular and Cellular Biochemistry</em>. Comprehensive H₂ inhalation review. <a href="https://pubmed.ncbi.nlm.nih.gov/31572815/" target="_blank">PubMed 31572815</a></li>
+      <li><strong>Kato S et al. (2018)</strong> H₂ bath protocol BP study. <a href="https://pubmed.ncbi.nlm.nih.gov/29361139/" target="_blank">PubMed 29361139</a></li>
+    </ul>
+
+    <div class="ref-cat">Peptides — Neurological, Sleep &amp; Hormonal</div>
+    <ul class="ref-list">
+      <li><strong>Dolotov OV et al. (2006)</strong> Semax BDNF upregulation mechanism. <a href="https://pubmed.ncbi.nlm.nih.gov/11443367/" target="_blank">PubMed 11443367</a></li>
+      <li><strong>Seredenin SB et al. (2013)</strong> Selank clinical anxiolytic data. <a href="https://pubmed.ncbi.nlm.nih.gov/23548085/" target="_blank">PubMed 23548085</a></li>
+      <li><strong>Khavinson VKh et al. (2002)</strong> Epitalon pineal restoration and telomere data. <a href="https://pubmed.ncbi.nlm.nih.gov/12374553/" target="_blank">PubMed 12374553</a></li>
+      <li><strong>Schneider-Helmert D (1984)</strong> DSIP clinical sleep architecture data. <a href="https://pubmed.ncbi.nlm.nih.gov/6279143/" target="_blank">PubMed 6279143</a></li>
+      <li><strong>Lee C et al. (2015)</strong> Mots-c AMPK pathway and metabolic homeostasis. <a href="https://pubmed.ncbi.nlm.nih.gov/25735179/" target="_blank">PubMed 25735179</a></li>
+      <li><strong>Sigalos JT &amp; Pastuszak AW (2018)</strong> "The safety and efficacy of growth hormone secretagogues." <em>Sexual Medicine Reviews</em>. CJC-1295/Ipamorelin safety review including cardiac profile. <a href="https://pubmed.ncbi.nlm.nih.gov/29190821/" target="_blank">PubMed 29190821</a></li>
+      <li><strong>Jayasena CN et al. (2014)</strong> Kisspeptin-10 restoration of LH/testosterone axis. <a href="https://pubmed.ncbi.nlm.nih.gov/24594678/" target="_blank">PubMed 24594678</a></li>
+      <li><strong>Goldstein AL et al. (1989)</strong> Thymosin Alpha-1 T-cell regulation. <a href="https://pubmed.ncbi.nlm.nih.gov/2551177/" target="_blank">PubMed 2551177</a></li>
+    </ul>
+
+    <div class="ref-cat">Adaptogens, Mushrooms &amp; Sleep</div>
+    <ul class="ref-list">
+      <li><strong>Chandrasekhar K et al. (2012)</strong> KSM-66 ashwagandha RDBPC: 27.9% cortisol reduction. <a href="https://pubmed.ncbi.nlm.nih.gov/23439798/" target="_blank">PubMed 23439798</a></li>
+      <li><strong>Shevtsov VA et al. (2003)</strong> Rhodiola military RCT. <a href="https://pubmed.ncbi.nlm.nih.gov/12725561/" target="_blank">PubMed 12725561</a></li>
+      <li><strong>Mori K et al. (2009)</strong> Lion's Mane NGF induction and human cognitive RCT. <a href="https://pubmed.ncbi.nlm.nih.gov/18844328/" target="_blank">PubMed 18844328</a></li>
+      <li><strong>Tang W et al. (2005)</strong> Reishi sleep quality human RCT. <a href="https://pubmed.ncbi.nlm.nih.gov/22203880/" target="_blank">PubMed 22203880</a></li>
+      <li><strong>Yamadera W et al. (2007)</strong> Glycine sleep RCT: core temperature reduction and SWS improvement. <a href="https://pubmed.ncbi.nlm.nih.gov/22293292/" target="_blank">PubMed 22293292</a></li>
+      <li><strong>Lopresti AL et al. (2017)</strong> Affron 28mg saffron RCT — anxiety, depression, and sleep. <a href="https://pubmed.ncbi.nlm.nih.gov/28871231/" target="_blank">PubMed 28871231</a></li>
+      <li><strong>Shannon S et al. (2019)</strong> CBD anxiety and sleep case series N=72. <a href="https://pubmed.ncbi.nlm.nih.gov/30624194/" target="_blank">PubMed 30624194</a></li>
+      <li><strong>Balban MY et al. (2023)</strong> Stanford cyclic sighing vs other breathing patterns RCT. <a href="https://pubmed.ncbi.nlm.nih.gov/36827626/" target="_blank">PubMed 36827626</a></li>
+    </ul>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer class="footer">
+  <span class="ft-brand">TR4NSFORM · SASCOSM</span>
+  Professional Peptide Protocol · Sensu God Mode Stack v2.0 · March 2026<br>
+  TR4NSFORM APAC PTE LTD · Singapore · tr4nsform.me<br>
+  SASCOSM Sovereign Health Division · Phuket, Thailand<br><br>
+  These compounds are provided for research, educational, and wellness optimisation purposes only and are not FDA-approved for therapeutic human use.<br>
+  Always consult a qualified healthcare professional — particularly for individuals with myocarditis or other active cardiovascular conditions.<br>
+  TR4NSFORM APAC PTE LTD and SASCOSM assume no liability.
+</footer>
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nl');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id'); });
+  navLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+});
+</script>
+</body>
+</html>

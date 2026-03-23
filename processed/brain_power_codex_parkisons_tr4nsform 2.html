@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Brain Power Codex – Tr4nsform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1d2b64 0, #090a0f 45%, #000000 100%);
+      --glass-bg: rgba(10, 18, 40, 0.78);
+      --glass-border: rgba(120, 200, 255, 0.35);
+      --accent: #8bd8ff;
+      --accent-strong: #4ee3c2;
+      --text-main: #f3f6ff;
+      --text-soft: #b2bddb;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.65);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --card-padding: 16px 18px 18px 18px;
+      --transition-fast: 0.18s ease-out;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+      background: #000;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-image: var(--bg-gradient);
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page-shell {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header.hero {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: linear-gradient(120deg, rgba(7,12,28,0.95), rgba(4,10,18,0.9));
+      border-radius: 18px;
+      border: 1px solid rgba(140, 210, 255, 0.25);
+      padding: 12px 14px 10px 14px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .hero-title-block h1 {
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+      color: var(--accent);
+    }
+
+    .hero-title-block h2 {
+      font-size: 1.05rem;
+      margin: 2px 0 0 0;
+      color: var(--text-main);
+    }
+
+    .hero-tagline {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .hero-pill {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(139, 216, 255, 0.5);
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
+
+    nav.quick-nav {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 8px;
+      padding-top: 4px;
+      margin-top: 2px;
+      scrollbar-width: thin;
+    }
+
+    nav.quick-nav::-webkit-scrollbar {
+      height: 4px;
+    }
+    nav.quick-nav::-webkit-scrollbar-thumb {
+      background: rgba(139, 216, 255, 0.4);
+      border-radius: 999px;
+    }
+
+    .nav-chip {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(155, 210, 255, 0.45);
+      color: var(--text-soft);
+      background: radial-gradient(circle at top, rgba(79, 160, 255, 0.28), rgba(7,14,26,0.9));
+      text-decoration: none;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .nav-chip span {
+      opacity: 0.92;
+    }
+
+    .nav-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(190, 240, 255, 0.9);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      color: var(--accent);
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+      padding-bottom: 24px;
+    }
+
+    section {
+      width: 100%;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--glass-border);
+      padding: var(--card-padding);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -120px;
+      background:
+        radial-gradient(circle at 0 0, rgba(94, 212, 255, 0.14), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(81, 255, 210, 0.08), transparent 55%);
+      opacity: 0.75;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card h3 {
+      margin: 0 0 6px 0;
+      font-size: 0.98rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .card h4 {
+      margin: 8px 0 4px 0;
+      font-size: 0.9rem;
+      color: var(--accent-strong);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .card p {
+      margin: 4px 0 6px 0;
+      font-size: 0.83rem;
+      line-height: 1.5;
+      color: var(--text-soft);
+    }
+
+    .subtle {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    ul, ol {
+      padding-left: 18px;
+      margin: 4px 0 6px 0;
+    }
+
+    li {
+      margin-bottom: 3px;
+      font-size: 0.83rem;
+      color: var(--text-soft);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      border: 1px solid rgba(159, 214, 255, 0.7);
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: linear-gradient(120deg, rgba(9,21,38,0.9), rgba(14,36,62,0.9));
+    }
+
+    .pill-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .triple-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .triple-item {
+      border-radius: 12px;
+      border: 1px solid rgba(120, 200, 255, 0.4);
+      padding: 6px 8px;
+      font-size: 0.76rem;
+      background: radial-gradient(circle at top, rgba(35, 110, 190, 0.4), rgba(5, 12, 25, 0.9));
+    }
+
+    .triple-item strong {
+      display: block;
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--accent-strong);
+      margin-bottom: 3px;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 0.78rem;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      border: 1px solid rgba(130, 190, 240, 0.4);
+      padding: 4px 6px;
+      vertical-align: top;
+    }
+
+    .matrix-table th {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(11, 24, 46, 0.95);
+    }
+
+    .matrix-table td {
+      color: var(--text-soft);
+      background: rgba(4, 10, 24, 0.9);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .timeline-step {
+      border-radius: 12px;
+      border: 1px solid rgba(150, 220, 255, 0.5);
+      padding: 6px 8px;
+      font-size: 0.78rem;
+      background: radial-gradient(circle at top left, rgba(90, 190, 255, 0.4), rgba(5, 10, 20, 0.9));
+    }
+
+    .timeline-step strong {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      color: var(--accent-strong);
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+      header.hero {
+        padding: 10px 10px 8px 10px;
+      }
+      .hero-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-pill {
+        align-self: flex-start;
+      }
+      .triple-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .timeline {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .triple-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="hero-title-block">
+          <h1>BRAIN POWER CODEX – VOLUME I</h1>
+          <h2>Tr4nsform Neuro-Regenerative Protocol</h2>
+          <p class="hero-tagline">
+            Neurogenic medicine • Peptide biotech • Plant intelligence • Mitochondrial sovereignty
+          </p>
+        </div>
+        <div class="hero-pill">Parkinson&rsquo;s &amp; Brain Evolution Protocol</div>
+      </div>
+      <nav class="quick-nav">
+        <a class="nav-chip" href="#prime"><span>Prime Directive</span></a>
+        <a class="nav-chip" href="#fields"><span>9 Brain Fields</span></a>
+        <a class="nav-chip" href="#provo"><span>PRO–VO–G Matrix</span></a>
+        <a class="nav-chip" href="#neuro-energy"><span>Neuro-Energy</span></a>
+        <a class="nav-chip" href="#neurogenic"><span>Neurogenic</span></a>
+        <a class="nav-chip" href="#transcendent"><span>Transcendent</span></a>
+        <a class="nav-chip" href="#peptides"><span>Peptide Field</span></a>
+        <a class="nav-chip" href="#regeneration"><span>Regeneration</span></a>
+        <a class="nav-chip" href="#frequency"><span>Frequency</span></a>
+        <a class="nav-chip" href="#detox"><span>Detox</span></a>
+        <a class="nav-chip" href="#somatic"><span>Somatic</span></a>
+        <a class="nav-chip" href="#night"><span>Night Repair</span></a>
+        <a class="nav-chip" href="#ascension"><span>Ascension Flow</span></a>
+        <a class="nav-chip" href="#outcome"><span>Lifetime Outcome</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="prime">
+        <article class="card">
+          <div class="card-inner">
+            <h3>1 — Prologue: The Prime Directive</h3>
+            <p>
+              The brain does not decline because of age. It declines because of mitochondrial collapse,
+              dopamine dysfunction, neuroinflammation, frequency distortion, trauma-locked neural loops,
+              gut-brain poisoning, environmental toxicity, parasites and heavy metals, and a lack of neurogenic stimulus.
+            </p>
+            <p>
+              The Brain Power Codex reverses <strong>every one</strong> of these layers. This is the first sovereign protocol
+              to evolve the human brain, not just &ldquo;optimise&rdquo; it.
+            </p>
+            <div class="badge-row">
+              <span class="badge">Reversal &gt; Management</span>
+              <span class="badge">Regeneration First</span>
+              <span class="badge">Sovereign Neurobiology</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="fields">
+        <article class="card">
+          <div class="card-inner">
+            <h3>2 — The 9 Brain Fields (Tesla 3–6–9)</h3>
+            <p class="pill-label">The 3 — Anchor • Biological Foundation</p>
+            <div class="triple-grid">
+              <div class="triple-item">
+                <strong>Energy</strong>
+                Mitochondria, ATP, oxygenation.
+              </div>
+              <div class="triple-item">
+                <strong>Signal</strong>
+                Neurotransmitters, ECS, neuropeptides.
+              </div>
+              <div class="triple-item">
+                <strong>Structure</strong>
+                Neurons, synapses, myelin, axons.
+              </div>
+            </div>
+
+            <p class="pill-label" style="margin-top:8px;">The 6 — Engine • Regenerative Mechanisms</p>
+            <ul>
+              <li>Neurogenesis</li>
+              <li>Neuroprotection</li>
+              <li>Inflammation control</li>
+              <li>Gut–brain axis repair</li>
+              <li>Hormonal &amp; mineral balance</li>
+              <li>Electric field coherence</li>
+            </ul>
+
+            <p class="pill-label" style="margin-top:4px;">The 9 — Ascension • Human Evolution</p>
+            <ul>
+              <li>Neural plasticity &amp; cognitive expansion</li>
+              <li>Trauma resolution &amp; emotional sovereignty</li>
+              <li>Creative intelligence &amp; pattern recognition</li>
+              <li>Memory mastery &amp; motor fluidity</li>
+              <li>Long-term regeneration &amp; dignity in ageing</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <section id="provo">
+        <article class="card">
+          <div class="card-inner">
+            <h3>3 — PRO–VO–G Matrix</h3>
+            <p>
+              Each protocol element is mapped to the Tr4nsform PRO–VO–G lens:
+            </p>
+            <ul>
+              <li><strong>PRO</strong> — Mechanism: how it acts on pathology.</li>
+              <li><strong>VO</strong> — Visible Outcome: what the patient and family can see and feel.</li>
+              <li><strong>G</strong> — Global Regeneration: how it evolves the whole system over time.</li>
+            </ul>
+            <p class="subtle">
+              This converts a &ldquo;treatment menu&rdquo; into a coherent, long-term evolution framework.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section id="neuro-energy">
+        <article class="card">
+          <div class="card-inner">
+            <h3>4 — The Neuro-Energy Field</h3>
+
+            <h4>4.1 Methylene Blue</h4>
+            <p><strong>PRO:</strong> Upgrades Complex IV, boosts ATP, acts as a neural antioxidant.</p>
+            <p><strong>VO:</strong> Sharper cognition, reduced tremors, more stable focus.</p>
+            <p><strong>G:</strong> Reverses energy-collapse of dopaminergic neurons.</p>
+
+            <h4>4.2 Hydrogen Therapy</h4>
+            <p><strong>PRO:</strong> Scavenges hydroxyl radicals, lowers neuroinflammation, supports gut terrain.</p>
+            <p><strong>VO:</strong> Calmer mood, clearer thinking, improved sleep quality.</p>
+            <p><strong>G:</strong> Restores cellular homeostasis across brain–body systems.</p>
+
+            <h4>4.3 CoQ10 + PQQ</h4>
+            <p><strong>PRO:</strong> Drives mitochondrial biogenesis and resilience.</p>
+            <p><strong>VO:</strong> Higher stamina, more reliable recall, better motor endurance.</p>
+            <p><strong>G:</strong> Structural recovery of neuronal energy systems.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="neurogenic">
+        <article class="card">
+          <div class="card-inner">
+            <h3>5 — The Neurogenic Field</h3>
+
+            <h4>5.1 Lion’s Mane (NGF)</h4>
+            <p><strong>PRO:</strong> Stimulates nerve growth factor (NGF) and supports myelination.</p>
+            <p><strong>VO:</strong> Better memory, smoother thinking, improved fine-motor precision.</p>
+            <p><strong>G:</strong> Regrows degraded neural pathways.</p>
+
+            <h4>5.2 Psilocybin (Micro-Neurogenic Pathway)</h4>
+            <p><strong>PRO:</strong> Boosts BDNF and introduces &ldquo;neural entropy&rdquo; to break rigid circuits.</p>
+            <p><strong>VO:</strong> Emotional liberation, improved gait rhythm, increased creativity.</p>
+            <p><strong>G:</strong> Rewires trauma-locked and Parkinsonian rigidity loops.</p>
+
+            <h4>5.3 Mescaline-Derived Microdosing (Legal-Safe Routes)</h4>
+            <p><strong>PRO:</strong> Modulates serotonin &amp; dopamine receptors, stimulates neurogenesis.</p>
+            <p><strong>VO:</strong> More fluid movement, better speech, grounded emotional tone.</p>
+            <p><strong>G:</strong> Re-patterns sensorimotor networks at a systems level.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="transcendent">
+        <article class="card">
+          <div class="card-inner">
+            <h3>6 — The Transcendent Field</h3>
+
+            <h4>6.1 Ketamine (Interventional Neurogenesis)</h4>
+            <p><strong>PRO:</strong> NMDA receptor reset, synaptogenesis, disrupts maladaptive loops.</p>
+            <p><strong>VO:</strong> Rapid relief of rigidity, mood elevation, increased adaptability.</p>
+            <p><strong>G:</strong> Reconfigures whole-brain networks, creating new stable patterns.</p>
+
+            <h4>6.2 THC / CBD (ECS Regulation)</h4>
+            <p><strong>PRO:</strong> Endocannabinoid system modulation as a master regulator of brain–body signalling.</p>
+            <p><strong>VO:</strong> Reduced tremors, lower anxiety, deepened sleep.</p>
+            <p><strong>G:</strong> Establishes foundational homeostasis for all other interventions.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="peptides">
+        <article class="card">
+          <div class="card-inner">
+            <h3>7 — The Peptide Field (Bio-Intelligence)</h3>
+
+            <h4>7.1 BPC-157</h4>
+            <p><strong>PRO:</strong> Repairs gut lining, lowers inflammation, supports microvasculature.</p>
+            <p><strong>VO:</strong> Cleaner cognition, fewer flares in fatigue or mood.</p>
+            <p><strong>G:</strong> Restores gut–brain feedback loops essential for dopamine.</p>
+
+            <h4>7.2 TB-500 / Thymosin Beta-4</h4>
+            <p><strong>PRO:</strong> Drives myelin and axonal repair, enhances tissue regeneration.</p>
+            <p><strong>VO:</strong> Improved coordination and neuromuscular control.</p>
+            <p><strong>G:</strong> Rebuilds neuro-muscular pathways damaged by Parkinsonian progression.</p>
+
+            <h4>7.3 Selank / Semax</h4>
+            <p><strong>PRO:</strong> Enhances cerebral blood flow and dopaminergic signalling while reducing anxiety.</p>
+            <p><strong>VO:</strong> Clear focus, emotional stability, reduction in tremor triggers.</p>
+            <p><strong>G:</strong> Optimises brain signalling architecture.</p>
+
+            <h4>7.4 Cerebrolysin</h4>
+            <p><strong>PRO:</strong> Clinical-grade neuropeptide complex that protects and stimulates neurons.</p>
+            <p><strong>VO:</strong> Better memory, more fluent speech, improved motor control.</p>
+            <p><strong>G:</strong> Deep neural repair in cortical and subcortical structures.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="regeneration">
+        <article class="card">
+          <div class="card-inner">
+            <h3>8 — The Regeneration Field (Stem Cells)</h3>
+            <h4>8.1 Umbilical Cord MSCs</h4>
+            <p><strong>PRO:</strong> Downregulates microglial inflammation, secretes trophic factors, supports neural repair.</p>
+            <p><strong>VO:</strong> Reduced tremor and rigidity, stabilised mood, improved expressiveness.</p>
+            <p><strong>G:</strong> Shifts Parkinson&rsquo;s from a one-way decline into a regenerative trajectory.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="frequency">
+        <article class="card">
+          <div class="card-inner">
+            <h3>9 — The Frequency Field (TZLA)</h3>
+
+            <h4>9.1 Plasma Field</h4>
+            <p><strong>PRO:</strong> Normalises neuromuscular electrical firing patterns.</p>
+            <p><strong>VO:</strong> Smoother movement, fewer sudden tremor spikes.</p>
+            <p><strong>G:</strong> Creates electromagnetic coherence in the nervous system.</p>
+
+            <h4>9.2 Bioresonance</h4>
+            <p><strong>PRO:</strong> Maps and modulates distorted frequency signatures linked to neurological dysfunction.</p>
+            <p><strong>VO:</strong> More stable gait, reduced dyskinesia.</p>
+            <p><strong>G:</strong> Resets systemic frequency imbalances.</p>
+
+            <h4>9.3 PEMF</h4>
+            <p><strong>PRO:</strong> Boosts ATP and mitochondrial signalling using pulsed electromagnetic fields.</p>
+            <p><strong>VO:</strong> Deeper sleep, less rigidity, improved recovery.</p>
+            <p><strong>G:</strong> Rebuilds the mito–neuro signalling interface across tissues.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="detox">
+        <article class="card">
+          <div class="card-inner">
+            <h3>10 — The Detox Field</h3>
+
+            <h4>10.1 Anti-Parasitic Rotation</h4>
+            <p><strong>PRO:</strong> Removes parasites and biofilm that disrupt gut neurotransmitter production.</p>
+            <p><strong>VO:</strong> More energy, clearer mental state, fewer &ldquo;off&rdquo; days.</p>
+            <p><strong>G:</strong> Restores dopamine-friendly gut terrain.</p>
+
+            <h4>10.2 Heavy Metal Detox</h4>
+            <p><strong>PRO:</strong> Clears neurotoxic metals that accumulate in neuromelanin and basal ganglia.</p>
+            <p><strong>VO:</strong> Clearer speech, improved focus, attenuated tremor onset.</p>
+            <p><strong>G:</strong> Long-term neuroprotection and regeneration capacity.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="somatic">
+        <article class="card">
+          <div class="card-inner">
+            <h3>11 — The Somatic Field</h3>
+
+            <h4>11.1 Breathwork (4–6 Method)</h4>
+            <p><strong>PRO:</strong> Activates the vagus nerve, shifts from sympathetic to parasympathetic dominance.</p>
+            <p><strong>VO:</strong> Rapid calm, lowered tremor frequency, improved focus.</p>
+            <p><strong>G:</strong> Rebuilds autonomic sovereignty.</p>
+
+            <h4>11.2 Qigong / Tai Chi</h4>
+            <p><strong>PRO:</strong> Retrains motor patterns, balance and proprioception.</p>
+            <p><strong>VO:</strong> Improved balance, fewer falls, smoother gait.</p>
+            <p><strong>G:</strong> Rewrites the motor system at a pattern level.</p>
+          </div>
+        </article>
+      </section>
+
+      <section id="night">
+        <article class="card">
+          <div class="card-inner">
+            <h3>12 — The Night Repair Field</h3>
+            <p>
+              Night is when the brain decides whether to decay or evolve.
+              Deep sleep opens the glymphatic channels and clears metabolic waste from neural tissue.
+            </p>
+            <ul>
+              <li>CBD / THC synergy to stabilise sleep and reduce nocturnal tremors.</li>
+              <li>Magnesium L-threonate and glycine to deepen slow-wave sleep.</li>
+              <li>Dark, cool, silent environment to favour glymphatic flow.</li>
+            </ul>
+            <p>
+              <strong>Outcome:</strong> Morning clarity, reduced progression, better daily resilience.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section id="ascension">
+        <article class="card">
+          <div class="card-inner">
+            <h3>13 — The Ascension Protocol (Daily Flow)</h3>
+            <p class="pill-label">3–6–9 Flow for Brain Evolution &amp; Parkinson&rsquo;s Reversal</p>
+            <div class="timeline">
+              <div class="timeline-step">
+                <strong>Morning — Activation</strong>
+                <ul>
+                  <li>Methylene Blue, hydrogen therapy</li>
+                  <li>CoQ10 + PQQ, Lion’s Mane</li>
+                  <li>Breathwork / gentle Qigong</li>
+                </ul>
+              </div>
+              <div class="timeline-step">
+                <strong>Day — Neurogenic Support</strong>
+                <ul>
+                  <li>Selank / Semax dosing</li>
+                  <li>Omega-3 DHA</li>
+                  <li>Movement &amp; sun exposure</li>
+                </ul>
+              </div>
+              <div class="timeline-step">
+                <strong>Night — Repair</strong>
+                <ul>
+                  <li>CBD / THC sleep stack</li>
+                  <li>Magnesium L-threonate</li>
+                  <li>BPC-157 / TB-500 as indicated</li>
+                </ul>
+              </div>
+            </div>
+
+            <p style="margin-top:8px;" class="subtle">
+              Weekly: psilocybin microdose (where legal), plasma / PEMF, parasite protocol. <br />
+              Monthly: ketamine blocks, bioresonance, metal detox. <br />
+              Quarterly: Cerebrolysin courses, full diagnostics, stem cell blocks when aligned.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section id="outcome">
+        <article class="card">
+          <div class="card-inner">
+            <h3>14 — Lifetime Outcome</h3>
+            <p>
+              This Codex is not about symptom management. It is about turning degeneration into regeneration.
+              For Parkinson’s and for any brain under siege, the intended trajectory is:
+            </p>
+            <ul>
+              <li>Tremors reduce and rigidity softens.</li>
+              <li>Dopamine pathways stabilise instead of collapsing.</li>
+              <li>Speech, expression and presence return.</li>
+              <li>Creativity, humour and selfhood re-emerge.</li>
+              <li>Motor confidence grows. Falls reduce.</li>
+              <li>Identity is restored. Dignity is preserved.</li>
+            </ul>
+            <p>
+              This is what Tr4nsform was built for: a sovereign, regenerative brain evolution pathway —
+              for Lloyd, and for every mind we are here to protect.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section>
+        <article class="card">
+          <div class="card-inner">
+            <p class="subtle">
+              Internal Tr4nsform Codex &mdash; not medical advice; a design blueprint for sovereign neuro-regenerative care.
+            </p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

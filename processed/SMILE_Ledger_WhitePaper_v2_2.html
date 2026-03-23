@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SMILE Ledger — Sovereign Medical White Paper v2.0</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: rgba(255,255,255,0.88);
+    --surface2: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --line: rgba(17,24,39,0.09);
+    --line2: rgba(17,24,39,0.16);
+    --accent: #d97706;
+    --teal: #0891b2;
+    --emerald: #059669;
+    --violet: #7c3aed;
+    --rose: #e11d48;
+    --max: 1100px;
+    --r: 18px;
+    --r2: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(246,247,249,0.93);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+    padding: 0 24px;
+  }
+  .topbar-inner {
+    max-width: var(--max); margin: 0 auto;
+    display: flex; align-items: center;
+    justify-content: space-between; height: 54px; gap: 16px;
+  }
+  .brand-row { display: flex; align-items: center; gap: 12px; }
+  .brand-glyph {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, #d97706, #0891b2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; color: #fff;
+    letter-spacing: -0.05em; flex-shrink: 0;
+  }
+  .brand-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .brand-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .nav-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-pills a {
+    font-size: 11px; color: var(--muted); text-decoration: none;
+    padding: 5px 10px; border-radius: 999px; border: 1px solid transparent;
+    letter-spacing: 0.06em; transition: all 0.15s;
+  }
+  .nav-pills a:hover { color: var(--text); border-color: var(--line2); background: var(--surface); }
+
+  /* ── WRAP ── */
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── HERO ── */
+  .hero { padding: 68px 0 44px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; top: -60px; left: -100px;
+    width: 580px; height: 580px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(217,119,6,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; top: 0; right: -120px;
+    width: 480px; height: 480px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(8,145,178,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid rgba(217,119,6,0.24);
+    background: rgba(217,119,6,0.07);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 24px;
+  }
+  h1.hero-title {
+    font-size: clamp(36px, 6.5vw, 66px);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.04em; max-width: 880px; margin-bottom: 8px;
+  }
+  h1.hero-title .accent { color: var(--accent); }
+  h1.hero-title .teal { color: var(--teal); }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px); color: var(--muted);
+    max-width: 740px; margin-bottom: 28px; line-height: 1.65;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 18px;
+    font-size: 12px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 36px;
+  }
+  .hero-meta span { color: var(--teal); font-weight: 600; }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px; margin-bottom: 52px;
+  }
+  .stat-card {
+    background: var(--surface2); border: 1px solid var(--line);
+    border-radius: var(--r2); padding: 18px 20px;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .stat-num { font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    border: 1px solid rgba(217,119,6,0.2);
+    border-radius: var(--r);
+    background: linear-gradient(180deg, rgba(217,119,6,0.05), rgba(255,255,255,0));
+    padding: 36px 40px; margin-bottom: 52px; position: relative; overflow: hidden;
+  }
+  .manifesto::before {
+    content: '"'; position: absolute; top: -12px; left: 28px;
+    font-size: 170px; line-height: 1; color: rgba(217,119,6,0.05);
+    font-family: Georgia, serif; pointer-events: none;
+  }
+  .manifesto-label {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 18px;
+  }
+  .manifesto p { font-size: 17px; line-height: 1.8; color: var(--text); margin-bottom: 14px; }
+  .manifesto p:last-child { margin-bottom: 0; }
+  .manifesto strong { color: var(--accent); font-weight: 700; }
+  .manifesto em { color: var(--teal); font-style: normal; font-weight: 600; }
+
+  /* ── SECTION HEADINGS ── */
+  .section { margin-top: 60px; }
+  .kicker {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .kicker::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(217,119,6,0.28), transparent);
+  }
+  h2.sec-title {
+    font-size: clamp(24px, 3.8vw, 38px); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px;
+  }
+  h2.sec-title .accent { color: var(--accent); }
+  h2.sec-title .teal { color: var(--teal); }
+  h2.sec-title .emerald { color: var(--emerald); }
+  h2.sec-title .violet { color: var(--violet); }
+  .lede { font-size: 16px; color: var(--muted); max-width: 800px; line-height: 1.7; margin-bottom: 30px; }
+  h3.sub { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; margin: 28px 0 10px; }
+  h3.sub .accent { color: var(--accent); }
+  h3.sub .teal { color: var(--teal); }
+  p { margin-bottom: 14px; line-height: 1.75; }
+  p.muted { color: var(--muted); }
+  strong { font-weight: 700; }
+  em.teal { color: var(--teal); font-style: normal; font-weight: 600; }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface2); border: 1px solid var(--line);
+    border-radius: var(--r); padding: 24px;
+  }
+  .card-accent { border-color: rgba(217,119,6,0.22); background: linear-gradient(160deg,rgba(217,119,6,0.06),rgba(255,255,255,0)); }
+  .card-teal   { border-color: rgba(8,145,178,0.18);  background: linear-gradient(160deg,rgba(8,145,178,0.05),rgba(255,255,255,0)); }
+  .card-emerald{ border-color: rgba(5,150,105,0.18);  background: linear-gradient(160deg,rgba(5,150,105,0.05),rgba(255,255,255,0)); }
+  .card-violet { border-color: rgba(124,58,237,0.18); background: linear-gradient(160deg,rgba(124,58,237,0.05),rgba(255,255,255,0)); }
+  .card-rose   { border-color: rgba(225,29,72,0.18);  background: linear-gradient(160deg,rgba(225,29,72,0.04),rgba(255,255,255,0)); }
+  .tag {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 700; margin-bottom: 10px; display: block;
+  }
+  .tag.accent  { color: var(--accent); }
+  .tag.teal    { color: var(--teal); }
+  .tag.emerald { color: var(--emerald); }
+  .tag.violet  { color: var(--violet); }
+  .tag.rose    { color: var(--rose); }
+  .tag.muted   { color: var(--muted); }
+  .card h4 { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.3; }
+  .card p { font-size: 13px; color: var(--muted); margin-bottom: 0; line-height: 1.65; }
+
+  /* ── KEY HIERARCHY DIAGRAM ── */
+  .key-diagram {
+    margin: 28px 0;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .key-row {
+    display: flex; align-items: stretch; gap: 0;
+  }
+  .key-connector {
+    width: 48px; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .key-connector-line {
+    width: 2px; flex: 1;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .key-connector-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 2px solid var(--accent); background: var(--surface2);
+    flex-shrink: 0;
+  }
+  .key-connector-dot.teal { border-color: var(--teal); }
+  .key-connector-dot.emerald { border-color: var(--emerald); }
+  .key-block {
+    flex: 1; border-radius: var(--r2); border: 1px solid var(--line);
+    background: var(--surface2); padding: 18px 22px; margin-bottom: 12px;
+  }
+  .key-block.master {
+    border-color: rgba(217,119,6,0.35);
+    background: linear-gradient(135deg,rgba(217,119,6,0.07),rgba(255,255,255,0));
+    box-shadow: 0 2px 16px rgba(217,119,6,0.08);
+  }
+  .key-block.lease {
+    border-color: rgba(8,145,178,0.3);
+    background: linear-gradient(135deg,rgba(8,145,178,0.06),rgba(255,255,255,0));
+  }
+  .key-block.settlement {
+    border-color: rgba(5,150,105,0.28);
+    background: linear-gradient(135deg,rgba(5,150,105,0.05),rgba(255,255,255,0));
+  }
+  .key-name {
+    font-size: 14px; font-weight: 800; letter-spacing: 0.02em; margin-bottom: 4px;
+  }
+  .key-name.accent  { color: var(--accent); }
+  .key-name.teal    { color: var(--teal); }
+  .key-name.emerald { color: var(--emerald); }
+  .key-sub { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .key-permissions {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+  }
+  .perm {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+  }
+  .perm.yes { background: rgba(5,150,105,0.1); color: var(--emerald); }
+  .perm.no  { background: rgba(225,29,72,0.08); color: var(--rose); text-decoration: line-through; opacity: 0.7; }
+  .perm.opt { background: rgba(217,119,6,0.1); color: var(--accent); }
+
+  /* ── STACK DIAGRAM ── */
+  .stack { display: flex; flex-direction: column; gap: 6px; margin: 28px 0; }
+  .stack-row { display: flex; align-items: stretch; gap: 12px; min-height: 58px; }
+  .stack-num {
+    width: 36px; flex-shrink: 0; display: flex; align-items: center;
+    justify-content: center; font-size: 12px; font-weight: 800; color: var(--muted);
+  }
+  .stack-bar {
+    flex: 1; border-radius: var(--r2); padding: 13px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; border: 1px solid var(--line); background: var(--surface2);
+  }
+  .stack-bar.active {
+    border-color: rgba(217,119,6,0.38);
+    background: linear-gradient(90deg, rgba(217,119,6,0.09), rgba(217,119,6,0.03));
+    box-shadow: 0 0 18px rgba(217,119,6,0.07);
+  }
+  .stack-name { font-size: 13px; font-weight: 700; }
+  .stack-key-rule {
+    font-size: 11px; color: var(--muted); flex: 1; text-align: right;
+    font-family: 'SF Mono','Fira Code',monospace;
+  }
+  .badge {
+    font-size: 10px; padding: 3px 9px; border-radius: 999px;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
+  }
+  .badge.accent  { background: rgba(217,119,6,0.1);  color: var(--accent); }
+  .badge.teal    { background: rgba(8,145,178,0.1);   color: var(--teal); }
+  .badge.emerald { background: rgba(5,150,105,0.1);   color: var(--emerald); }
+  .badge.violet  { background: rgba(124,58,237,0.1);  color: var(--violet); }
+  .badge.muted   { background: rgba(107,114,128,0.1); color: var(--muted); }
+  .badge.rose    { background: rgba(225,29,72,0.08);  color: var(--rose); }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-radius: var(--r2); padding: 20px 24px;
+    margin: 20px 0; font-size: 14px; line-height: 1.7;
+  }
+  .callout-accent  { border: 1px solid rgba(217,119,6,0.24);  background: rgba(217,119,6,0.05); }
+  .callout-teal    { border: 1px solid rgba(8,145,178,0.2);   background: rgba(8,145,178,0.05); }
+  .callout-emerald { border: 1px solid rgba(5,150,105,0.2);   background: rgba(5,150,105,0.05); }
+  .callout-rose    { border: 1px solid rgba(225,29,72,0.18);  background: rgba(225,29,72,0.04); }
+  .callout-violet  { border: 1px solid rgba(124,58,237,0.18); background: rgba(124,58,237,0.04); }
+  .callout strong { font-weight: 700; }
+  .callout-accent strong  { color: var(--accent); }
+  .callout-teal strong    { color: var(--teal); }
+  .callout-emerald strong { color: var(--emerald); }
+  .callout-rose strong    { color: var(--rose); }
+  .callout-violet strong  { color: var(--violet); }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: #1e293b; border: 1px solid rgba(0,0,0,0.1);
+    border-radius: var(--r2); padding: 20px 22px;
+    font-family: 'SF Mono','Fira Code','Consolas',monospace;
+    font-size: 12.5px; line-height: 1.75; margin: 16px 0;
+    overflow-x: auto; color: #a8c4d4;
+  }
+  .code-block .k  { color: #67e8f9; font-weight: 600; }
+  .code-block .s  { color: #6ee7b7; }
+  .code-block .c  { color: #475569; font-style: italic; }
+  .code-block .n  { color: #fcd34d; }
+  .code-block .v  { color: #c4b5fd; }
+
+  /* ── DATA STRUCTURE ── */
+  .ds-card {
+    background: var(--surface2); border: 1px solid var(--line);
+    border-radius: var(--r); padding: 26px 28px; margin: 14px 0;
+  }
+  .ds-title {
+    font-size: 15px; font-weight: 800; letter-spacing: 0.02em;
+    margin-bottom: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .ds-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+  .ds-fields {
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  }
+  .ds-field {
+    display: grid; grid-template-columns: 190px 80px 1fr;
+    gap: 12px; align-items: start; padding: 9px 14px;
+    border-bottom: 1px solid var(--line); font-size: 12.5px;
+  }
+  .ds-field:last-child { border-bottom: none; }
+  .ds-field:nth-child(even) { background: rgba(17,24,39,0.025); }
+  .ds-field-name { font-family:'SF Mono','Fira Code',monospace; color: var(--teal); font-weight: 600; }
+  .ds-field-type { color: var(--violet); font-family:'SF Mono','Fira Code',monospace; font-size: 11px; }
+  .ds-field-desc { color: var(--muted); line-height: 1.55; }
+
+  /* ── FLOW ── */
+  .flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin: 20px 0; }
+  .flow-node {
+    background: var(--surface2); border: 1px solid var(--line2);
+    border-radius: var(--r2); padding: 12px 15px; text-align: center;
+    min-width: 100px; flex: 1;
+  }
+  .flow-node.accent { border-color: rgba(217,119,6,0.3); background: rgba(217,119,6,0.06); }
+  .flow-node.teal   { border-color: rgba(8,145,178,0.25); background: rgba(8,145,178,0.06); }
+  .flow-node.emerald{ border-color: rgba(5,150,105,0.25); background: rgba(5,150,105,0.05); }
+  .flow-node b { display: block; font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .flow-node span { font-size: 11px; color: var(--muted); line-height: 1.4; display: block; }
+  .flow-arrow { font-size: 17px; color: var(--muted); padding: 0 5px; flex-shrink: 0; align-self: center; }
+
+  /* ── TABLE ── */
+  table.t { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13px; }
+  table.t th {
+    text-align: left; font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted); padding: 8px 14px;
+    border-bottom: 1px solid var(--line); font-weight: 700;
+  }
+  table.t td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.6; }
+  table.t tr:last-child td { border-bottom: none; }
+  table.t .label { font-weight: 700; color: var(--accent); white-space: nowrap; font-size: 12px; }
+  table.t .muted  { color: var(--muted); font-size: 12px; }
+
+  /* ── NINE GRID ── */
+  .nine-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 22px 0; }
+  .nine-card {
+    background: var(--surface2); border: 1px solid var(--line);
+    border-radius: var(--r2); padding: 20px; position: relative; overflow: hidden;
+  }
+  .nine-ghost {
+    font-size: 48px; font-weight: 900; color: rgba(17,24,39,0.04);
+    position: absolute; top: 4px; right: 10px; line-height: 1; pointer-events: none;
+  }
+  .nine-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .nine-body  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: linear-gradient(90deg,transparent,rgba(17,24,39,0.12),transparent); margin: 52px 0; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 72px; padding: 28px 24px;
+    border-top: 1px solid var(--line);
+    text-align: center; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+  .footer strong { color: var(--accent); }
+  .footer-chips { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .footer-chip {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+    font-weight: 700; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; }
+    .nine-grid { grid-template-columns: repeat(2,1fr); }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); align-self: center; }
+    .ds-field { grid-template-columns: 130px 60px 1fr; }
+    .nav-pills { display: none; }
+    .manifesto { padding: 24px; }
+    .stack-key-rule { display: none; }
+  }
+  @media (max-width: 480px) {
+    .wrap { padding: 0 14px 60px; }
+    .nine-grid { grid-template-columns: 1fr; }
+    .ds-field { grid-template-columns: 1fr; }
+    .ds-field-type { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-row">
+      <div class="brand-glyph">S</div>
+      <div>
+        <div class="brand-label">SASCOSM · TR4NSFORM · Sovereign Stack</div>
+        <div class="brand-title">SMILE Ledger — White Paper v2.0</div>
+      </div>
+    </div>
+    <nav class="nav-pills">
+      <a href="#manifesto">Manifesto</a>
+      <a href="#enigma">Enigma Cipher</a>
+      <a href="#key-model">Key Model</a>
+      <a href="#stack">Sovereign Stack</a>
+      <a href="#data">Data Structures</a>
+      <a href="#governance">Governance</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">
+      SASCOSM · TR4NSFORM · N0MAD SOVEREIGN LIFESTYLE · 3·6·9 METHODOLOGY · v2.0
+    </div>
+    <h1 class="hero-title">
+      <span class="teal">SMILE</span><br>
+      <span class="accent">Sovereign Medical</span><br>
+      Integrated Ledger Environment
+    </h1>
+    <p class="hero-sub">
+      A key-gated mutable medical data store. Your health data lives on your terms — fully writable, fully deletable, fully yours. The key is the sovereignty mechanism. The infrastructure has no opinion.
+    </p>
+    <div class="hero-meta">
+      Version <span>2.0</span> &nbsp;·&nbsp;
+      Classification <span>SASCOSM Sovereign IP</span> &nbsp;·&nbsp;
+      Methodology <span>3·6·9 TIC·TAC·TOE</span> &nbsp;·&nbsp;
+      Architecture <span>Key-Gated Mutable Store</span>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-card">
+        <div class="stat-num">14</div>
+        <div class="stat-label">Ecosystem Components</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Key Types in the Hierarchy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Layer 2</div>
+        <div class="stat-label">SMILE in the Sovereign Stack</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Immutable Patient Records</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">Patient</div>
+        <div class="stat-label">Sole Holder of Master Key</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- TIC · SECTION 3 · EXECUTIVE VIEW -->
+  <!-- ════════════════════════════════ -->
+
+  <div id="manifesto" class="section">
+    <div class="kicker">TIC · Section 3 · Executive View</div>
+    <h2 class="sec-title">We Are <span class="accent">Satoshi</span></h2>
+    <p class="lede">The manifesto. The corrected philosophy. Why mutable is more sovereign than immutable — and why the key is the only mechanism that matters.</p>
+  </div>
+
+  <div class="manifesto">
+    <div class="manifesto-label">The SMILE Manifesto — Key-Gated Sovereign Medicine</div>
+    <p>In 2009, Satoshi Nakamoto gave the world a peer-to-peer electronic cash system built on one principle: <strong>whoever holds the private key controls the asset.</strong> Not the bank. Not the government. Not the network. The key. Without the key, the coins cannot move. With the key, nothing can stop them.</p>
+    <p>SMILE applies this logic exactly — but to health data, not money. <strong>Whoever holds the master key controls the medical record.</strong> They can read it, write it, edit it, share a scoped view of it, or destroy it entirely. The infrastructure does not resist any of these actions. The infrastructure is indifferent to content. It only enforces one rule: no key, no access.</p>
+    <p>An earlier version of this architecture made a critical error. It borrowed Bitcoin's <em>ledger immutability</em> — the blockchain's append-only structure — and applied it to patient data. That is wrong. Bitcoin transactions are immutable because two parties settled a transfer of value that is now complete. <strong>A patient's medical history is not a settled transaction. It is living information that the patient must be able to correct, retract, or destroy.</strong> Imposing immutability on medical data does not protect the patient — it imprisons them in their own chain.</p>
+    <p>The right model is simple: <em>the patient holds the master key.</em> They decide what exists. If they destroy the key, the data is computationally gone — no resurrection, no recovery, no override by any authority. The system has no backdoor because the system holds no keys. <strong>This is what sovereignty actually means. Not a chain you own but cannot break. A key you hold and can burn.</strong></p>
+    <p>We are Satoshi. The key is ours. The medicine is ours. The data is ours.</p>
+  </div>
+
+  <!-- ENIGMA PARALLEL -->
+  <div class="manifesto" style="border-color:rgba(8,145,178,0.24);background:linear-gradient(180deg,rgba(8,145,178,0.05),rgba(246,247,249,0));margin-bottom:24px;">
+    <div class="manifesto-label" style="color:var(--teal);">The Enigma Parallel — Intelligence Tradecraft Applied to Medicine</div>
+    <p>In the Second World War, German forces broadcast encrypted messages openly across radio frequencies. Allied intelligence captured every one. The ciphertext was public, permanent, and archived at Bletchley Park. <strong>It did not matter.</strong> Without the daily Enigma key settings — the rotor positions, the plugboard configuration — every intercepted message was permanently meaningless noise. The message travelled. The key did not. <strong>The key was the cipher.</strong></p>
+    <p>SMILE applies the same principle to health data. When a patient opts into a settlement proof, the mixed-payload hash is broadcast openly to Bitcoin — permanently, globally, for anyone to capture. <strong>It does not matter.</strong> Without the patient's <em class="teal">Sovereign Cipher Key</em> — the pre-image held only on their device — every on-chain record is permanently meaningless noise. The hash travels. The pre-image does not. <strong>The pre-image is the cipher.</strong></p>
+    <p>Bletchley Park eventually broke Enigma through three attack vectors: predictable message structures created known-plaintext cribs, repeated operator habits created timing correlations, and the mathematical constraint that no letter could encrypt to itself created solvable patterns. <strong>SMILE closes all three equivalents at the architectural level:</strong></p>
+    <p>The <em class="teal">QRNG temporal delay</em> eliminates timing correlation — there is no pattern between when a care event occurs and when its proof reaches Bitcoin. Independent delays per write mean a full care journey produces uncorrelated on-chain events that cannot be sequenced. The <em class="teal">anonymity mixer nonce</em> eliminates known-plaintext attacks — there is no predictable structure left in the mixed payload for a crib to grip. And <em class="teal">full field-stripping</em> eliminates repeating identifiers — no event type, no provider fingerprint, no protocol reference survives into the broadcast. The three attack vectors that broke the strongest cipher of the twentieth century are architecturally foreclosed. What remains on-chain is not weak ciphertext. It is genuine noise.</p>
+    <p>This architecture was conceived by founders with direct intelligence and foreign policy backgrounds who understand what it means when a cipher fails — and what it costs in human terms when sensitive information reaches the wrong hands. That tradecraft is now applied to the most sensitive information a human being generates: their medical history. <strong>The patient broadcasts in plain sight and is safe — not by policy, but by mathematics.</strong></p>
+  </div>
+
+  <!-- WORLD FIRST -->
+  <div class="callout callout-teal" style="margin-bottom:40px;">
+    <strong>A World-First Architecture in Health Data Sovereignty:</strong> Every prior approach to health data privacy attempts to prevent medical information from reaching immutable infrastructure. SMILE takes the structurally opposite position — and it is more sovereign because of it. The on-device Sovereign Anonymity Mixer processes all blockchain writes before any network connection is made. The patient's Sovereign Cipher Key — the pre-image — is the only artifact that can connect an on-chain record back to them. No government, no insurer, no blockchain forensic analyst, no nation-state actor, and no SASCOSM operator can make that connection without the patient's active cooperation. Mutable patient-held store. On-device mixer. QRNG temporal decorrelation. Sovereign Cipher Key custody. This combination — applied to health data — is a world first. <strong>You cannot steal what cannot be attributed. You cannot attribute what the patient has not chosen to reveal.</strong>
+  </div>
+
+  <!-- TIC 3.1 — THE PROBLEM -->
+  <div class="kicker">TIC · 3.1 · The Problem</div>
+  <h3 class="sub">Three Failures — Including the One We Made in v1</h3>
+
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card card-rose">
+      <span class="tag rose">Failure 01 · Ownership</span>
+      <h4>The Patient Owns Nothing</h4>
+      <p>Medical records are held by institutions who monetise, share, and withhold them. You are the data source but never the owner. You cannot delete your own history from a hospital system. You cannot retract a diagnosis. The institution decides what persists.</p>
+    </div>
+    <div class="card card-rose">
+      <span class="tag rose">Failure 02 · Surveillance</span>
+      <h4>Data as Weapon</h4>
+      <p>Insurers deny coverage based on pre-existing conditions. Governments monitor pharmaceutical consumption. Employers discriminate. Every medical data point is a potential liability in someone else's hands. Centralised profiles are honeypots for corporate and state capture.</p>
+    </div>
+    <div class="card card-accent">
+      <span class="tag accent">Failure 03 · v1 Error</span>
+      <h4>Immutability Is Not Sovereignty</h4>
+      <p>SMILE v1 imposed append-only immutability on patient data. This was wrong. A patient who cannot delete their own record is not sovereign — they are held captive by their own chain. Sovereignty requires full mutability. The patient must be able to destroy what they created.</p>
+    </div>
+  </div>
+
+  <!-- TIC 3.2 — THE CORRECTED SOLUTION -->
+  <div class="kicker">TIC · 3.2 · The Corrected Model</div>
+  <h3 class="sub">Key-Gated Mutable Store — <span class="accent">What Changed and Why</span></h3>
+
+  <div class="grid-2" style="margin-bottom:28px;">
+    <div class="card card-emerald">
+      <span class="tag emerald">SMILE IS</span>
+      <h4 style="margin-bottom:10px;">A Key-Gated Mutable Data Store</h4>
+      <p style="margin-bottom:8px;">A patient-held store of health events. Fully writable and fully deletable by the patient holding the master key. Access is governed entirely by key hierarchy — not by chain structure or system rules.</p>
+      <p>The patient can create, edit, or destroy any record at any time. The infrastructure enforces only key validity. No record is permanent unless the patient chooses to make it so.</p>
+    </div>
+    <div class="card card-rose">
+      <span class="tag rose">SMILE IS NOT</span>
+      <h4 style="margin-bottom:10px;">An Append-Only Ledger</h4>
+      <p style="margin-bottom:8px;">SMILE is not an immutable chain. It does not link events by hash in a way that prevents deletion. It does not record "corrections" as new events while preserving the originals. If data is deleted, it is gone.</p>
+      <p>SMILE is not a pricing input, a surveillance tool, or an institutional record. It is patient property — as mutable as a notebook, as private as a key.</p>
+    </div>
+  </div>
+
+  <!-- TIC 3.3 — NINE PRINCIPLES -->
+  <div class="kicker">TIC · 3.3 · Nine Non-Negotiable Principles</div>
+  <h3 class="sub">Corrected Design Laws — Mutability First</h3>
+
+  <div class="nine-grid">
+    <div class="nine-card">
+      <div class="nine-ghost">1</div>
+      <div class="nine-title" style="color:var(--accent);">Patient Sovereignty</div>
+      <div class="nine-body">The patient holds the master key and is the sole owner of their data. No institution, government, or platform has a copy, a backup, or a legal claim on the content of the Patient Store.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">2</div>
+      <div class="nine-title" style="color:var(--teal);">Full Mutability</div>
+      <div class="nine-body">The patient can create, edit, and delete any record in their store. Deletion is permanent. The infrastructure does not retain deleted data. No system-level audit trail persists without the patient's explicit consent.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">3</div>
+      <div class="nine-title" style="color:var(--emerald);">Key-Gated Access</div>
+      <div class="nine-body">All access — read or write — is governed by key validity. No key means no access. The infrastructure cannot be instructed to bypass key enforcement by any authority, including SASCOSM or TR4NSFORM.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">4</div>
+      <div class="nine-title" style="color:var(--violet);">Consent-First Disclosure</div>
+      <div class="nine-body">Every disclosure generates a Consent Receipt scoped to the specific purpose, grantee, and time window. Consent is always explicit, purpose-bound, and revocable by key rotation. Implied consent does not exist in SMILE.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">5</div>
+      <div class="nine-title" style="color:var(--accent);">Lease Not Transfer</div>
+      <div class="nine-body">Providers receive a derived read-only lease key scoped to specific records and a time window. They never receive a copy of the underlying data. When the lease key expires or the master key rotates, provider access ends — cryptographically, not contractually.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">6</div>
+      <div class="nine-title" style="color:var(--teal);">Unlinkability by Default</div>
+      <div class="nine-body">No shared global patient ID correlates records across providers. SovereignID aliases are context-scoped. Cross-provider correlation requires explicit patient-initiated disclosure. The patient cannot be profiled without their active participation.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">7</div>
+      <div class="nine-title" style="color:var(--emerald);">Offline Survivability</div>
+      <div class="nine-body">SMILE works without internet. The Patient Store is exportable as an encrypted local pack, QR-presentable for emergency access, and operable under infrastructure failure. Sovereignty cannot be contingent on connectivity.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">8</div>
+      <div class="nine-title" style="color:var(--violet);">Non-Discriminatory Architecture</div>
+      <div class="nine-body">SMILE is structurally incapable of feeding into pricing or eligibility models. The schema has no pathway to actuarial calculation. This is enforced by architecture, not policy — it cannot be overridden by a board decision or a contractual clause.</div>
+    </div>
+    <div class="nine-card">
+      <div class="nine-ghost">9</div>
+      <div class="nine-title" style="color:var(--accent);">Right to Erasure as Root Right</div>
+      <div class="nine-body">The patient's right to destroy their own data is the most fundamental guarantee in SMILE. Master key destruction renders all data computationally unrecoverable. GDPR right to erasure is the floor. Full cryptographic erasure is the ceiling.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- TAC · SECTION 6 · HIGH-LEVEL DESIGN -->
+  <!-- ════════════════════════════════ -->
+
+  <div id="key-model" class="section">
+    <div class="kicker">TAC · Section 6 · High-Level Design</div>
+    <h2 class="sec-title">The <span class="teal">Key Hierarchy</span> &amp; <span class="accent">Mutable Store</span></h2>
+    <p class="lede">The key is the sovereignty mechanism — not the chain structure. Three key types govern all access across SMILE and the broader sovereign stack. The infrastructure is indifferent to content. It only reads key validity.</p>
+  </div>
+
+  <!-- TAC 6.1 — THREE KEY TYPES -->
+  <div class="kicker">TAC · 6.1 · The Three-Key Hierarchy</div>
+  <h3 class="sub">Master → Lease → Settlement</h3>
+
+  <div class="key-diagram">
+
+    <div class="key-row">
+      <div style="width:48px;flex-shrink:0;"></div>
+      <div class="key-block master">
+        <div class="key-name accent">① Master Key — Patient Only</div>
+        <div class="key-sub">Held exclusively by the patient. Never transmitted to any provider, platform, or infrastructure operator. This key is the root of all trust in SMILE. All other keys are derived from it and are invalidated when the patient rotates or destroys it.</div>
+        <div class="key-permissions">
+          <span class="perm yes">Read All</span>
+          <span class="perm yes">Write All</span>
+          <span class="perm yes">Edit All</span>
+          <span class="perm yes">Delete All</span>
+          <span class="perm yes">Derive Lease Keys</span>
+          <span class="perm yes">Derive Settlement Keys</span>
+          <span class="perm yes">Destroy Store</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0;align-items:stretch;padding-left:22px;height:28px;">
+      <div style="width:26px;border-left:2px solid rgba(217,119,6,0.3);border-bottom:2px solid rgba(217,119,6,0.3);border-radius:0 0 0 6px;"></div>
+      <div style="width:26px;border-left:2px solid rgba(8,145,178,0.3);border-bottom:2px solid rgba(8,145,178,0.3);border-radius:0 0 0 6px;margin-left:16px;"></div>
+    </div>
+
+    <div class="key-row" style="gap:14px;">
+      <div style="width:48px;flex-shrink:0;"></div>
+      <div class="key-block lease" style="margin-bottom:0;">
+        <div class="key-name teal">② Lease Key — Provider Scoped</div>
+        <div class="key-sub">Derived from the master key by the patient when they choose to grant access. Scoped to specific record types, specific fields, and a time window. The provider receives this key — not the master. They can read only what the lease permits. They cannot write, copy, or retain data beyond the window.</div>
+        <div class="key-permissions">
+          <span class="perm yes">Read (scoped)</span>
+          <span class="perm no">Write</span>
+          <span class="perm no">Edit</span>
+          <span class="perm no">Delete</span>
+          <span class="perm no">Derive further keys</span>
+          <span class="perm no">Persist beyond expiry</span>
+        </div>
+      </div>
+      <div class="key-block settlement" style="margin-bottom:0;">
+        <div class="key-name emerald">③ Settlement Key — Opt-In Patient Choice</div>
+        <div class="key-sub">Also derived from the master key, by the patient, only when they choose to anchor a proof of care for billing or dispute purposes. This key is minimal — it proves a care event occurred without revealing clinical content. The patient can destroy this key at any time, removing the proof.</div>
+        <div class="key-permissions">
+          <span class="perm opt">Opt-in only</span>
+          <span class="perm yes">Prove care event (hash only)</span>
+          <span class="perm yes">Destroyable by patient</span>
+          <span class="perm no">Clinical content</span>
+          <span class="perm no">Diagnosis codes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-accent" style="margin-top:24px;">
+    <strong>The Logic Switch:</strong> When the patient rotates or destroys the master key, every derived key — every active lease, every settlement anchor — becomes computationally invalid simultaneously. One action. Total revocation. No server-side call required. No provider can argue they still have access. The key state is the access state. This is the same logic as destroying a Bitcoin private key — the coins do not disappear, but they become permanently unreachable. In SMILE, the data does not disappear either — but without a valid key, it is computationally indistinguishable from noise.
+  </div>
+
+  <!-- TAC 6.2 — MUTABLE STORE -->
+  <div class="kicker" style="margin-top:44px;">TAC · 6.2 · The Patient Store — Mutable by Design</div>
+  <h3 class="sub">Why Mutability Is Not a Weakness</h3>
+
+  <p>The instinct to make patient data immutable comes from a legitimate concern: if data can be edited, can a provider retroactively falsify a record? Can a patient delete evidence of a poor outcome? These are real risks. But immutability is the wrong solution to them — it solves the provider's audit problem by removing the patient's right to erasure. That trade is not sovereign.</p>
+
+  <p>SMILE separates the two concerns architecturally:</p>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card card-teal">
+      <span class="tag teal">Patient Store — Fully Mutable</span>
+      <h4>The Patient's Record</h4>
+      <p>The Patient Store is the patient's property. They can edit, delete, or destroy any entry. It reflects the patient's current understanding of their own health history. A diagnosis they believe was wrong can be removed. A record they no longer want to carry can be gone. The infrastructure supports this unconditionally.</p>
+    </div>
+    <div class="card card-accent">
+      <span class="tag accent">Provider Record — Provider's Problem</span>
+      <h4>The Provider's Audit Trail</h4>
+      <p>The clinic holds their own signed invoice and protocol lock — their record of service rendered, for their own regulatory and billing purposes. This is the clinic's document, not the patient's. The patient is not responsible for preserving the provider's business records. The provider's record and the Patient Store are entirely separate artifacts.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-teal">
+    <strong>The Correct Separation:</strong> The provider proves what they did through their own records. The patient proves what happened to them through their own store — if they choose to. Neither record is the canonical truth. They are two perspectives on the same event. The patient's perspective is theirs to hold, modify, or release. The provider's perspective is theirs to maintain for their own purposes. SMILE does not conflate these.
+  </div>
+
+  <!-- TAC 6.3 — LEASE ARCHITECTURE -->
+  <div class="kicker" style="margin-top:44px;">TAC · 6.3 · The Lease Architecture — Access Without Custody</div>
+  <h3 class="sub">Show, Not Give</h3>
+
+  <p>When a patient presents to a clinic, they do not hand over their records. They generate a Lease Key derived from their master key — scoped to the specific records needed, for the specific purpose, for a defined window. The provider reads through a cryptographic window. The window closes. The data stays with the patient.</p>
+
+  <div class="flow">
+    <div class="flow-node accent">
+      <b>Patient Creates Lease</b>
+      <span>Defines scope, purpose, grantee ID, time window</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <b>Lease Key Derived</b>
+      <span>From master key — scoped, time-bound, read-only</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node teal">
+      <b>Provider Reads Window</b>
+      <span>Sees only permitted fields for permitted duration</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <b>Window Closes</b>
+      <span>Key expires or master rotation invalidates it</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node emerald">
+      <b>Data Stays Home</b>
+      <span>Patient store unchanged. Provider holds nothing.</span>
+    </div>
+  </div>
+
+  <div class="callout callout-rose">
+    <strong>What Providers Cannot Do with a Lease Key:</strong> Copy the underlying data to their own systems. Re-derive further keys to extend access. Share the lease key with another provider. Read any field outside the declared scope. Access the record after expiry. None of these constraints are contractual — they are mathematical properties of the key derivation. A provider who attempts any of these simply receives a decryption failure.
+  </div>
+
+  <!-- TAC 6.4 — SETTLEMENT KEY + MIXER -->
+  <div class="kicker" style="margin-top:44px;">TAC · 6.4 · The Settlement Key &amp; Sovereign Anonymity Mixer</div>
+  <h3 class="sub">A <span class="accent">World-First Architecture</span> — Permanently Immutable, Permanently Unattributable</h3>
+
+  <p>Every other privacy approach to health data tries to keep medical information away from immutable infrastructure. SMILE takes the opposite position — and it is more sovereign precisely because of it. When a patient opts in to a settlement proof, the data goes through an <strong>on-device anonymity mixer</strong> before any Bitcoin write occurs. What reaches the blockchain is permanently immutable. But it is also permanently unattributable to the patient without their active cooperation. These two properties exist simultaneously — and that combination has never been applied to medical data before.</p>
+
+  <p>This is the breakthrough: <em class="teal">you cannot steal what cannot be attributed.</em> A thief who captures every Bitcoin node on earth, who de-anonymises every transaction ever broadcast, who subpoenas every healthcare provider in every jurisdiction — still gets nothing that connects to a patient. The connection lives in one place only: the patient's pre-image, on their device, under their master key.</p>
+
+  <div class="grid-4" style="margin-bottom:28px;">
+    <div class="card card-accent">
+      <span class="tag accent">Stage 1 · Patient-Side</span>
+      <h4>Event Descriptor Built</h4>
+      <p>Patient constructs minimal descriptor: event type, protocol reference, provider SovereignID. No dates. No clinical content. No patient identity fields at this stage.</p>
+    </div>
+    <div class="card card-teal">
+      <span class="tag teal">Stage 2 · Mixer</span>
+      <h4>Anonymity Mix</h4>
+      <p>All remaining patient-attributable fields are stripped. A cryptographically secure random nonce is injected. The descriptor is now decorrelated from the patient and from all other writes in the care journey.</p>
+    </div>
+    <div class="card card-violet">
+      <span class="tag violet">Stage 3 · QRNG Timing</span>
+      <h4>Quantum Random Delay</h4>
+      <p>A quantum random event governs the write timing — introducing unpredictable temporal separation between stage writes. Pattern analysis across multiple anchors from the same care journey cannot link them to one person or one clinical sequence.</p>
+    </div>
+    <div class="card card-emerald">
+      <span class="tag emerald">Stage 4 · Bitcoin Write</span>
+      <h4>OP_RETURN Broadcast</h4>
+      <p>The mixed, timing-randomised hash is written via OP_RETURN. What lands on-chain is permanently immutable — and permanently meaningless to any party who does not hold the patient's pre-image.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-accent">
+    <strong>The Pre-Image Is the Sovereignty Mechanism:</strong> Before the mixer runs, the patient's device retains the original unmixed descriptor — the pre-image. This is stored encrypted in the Patient Store under the master key. The pre-image is the only artifact in existence that can connect the on-chain record back to the patient. The patient holds it. No one else has ever seen it. SASCOSM does not hold it. The mixer runs on-device — pre-mix data never touches any server or network. To verify a settlement proof, the patient reveals their pre-image to the specific party they choose, at the time they choose. All other parties — including blockchain forensic analysts — see only an unattributable hash.
+  </div>
+
+  <div class="grid-3" style="margin-bottom:24px;margin-top:20px;">
+    <div class="card card-emerald">
+      <span class="tag emerald">What Hits the Blockchain</span>
+      <h4>An Unattributable Hash</h4>
+      <p>Mixed payload hash + QRNG nonce. No event type visible. No timing correlation to care event. No patient identity. No provider identity. No clinical signal of any kind. A forensic analyst sees noise with a timestamp.</p>
+    </div>
+    <div class="card">
+      <span class="tag accent">What the Patient Holds</span>
+      <h4>The Pre-Image</h4>
+      <p>The original descriptor before mixing. Encrypted in Patient Store. This is what lets the patient prove their own settlement to anyone they choose — on their terms, at their timing, to their chosen audience only.</p>
+    </div>
+    <div class="card card-rose">
+      <span class="tag rose">Honest Disclosure on Permanence</span>
+      <h4>OP_RETURN Is Forever</h4>
+      <p>The on-chain record cannot be deleted. The patient must acknowledge this before anchoring. What is permanent, however, is an unattributable hash — not the patient's data. The permanence is Bitcoin's. The attribution is the patient's. These are separate properties.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-violet">
+    <strong>Honest Disclosure on Bitcoin Anchoring — Corrected:</strong> OP_RETURN data written to Bitcoin is permanent and cannot be deleted. What is written, however, is a mixed, timing-randomised hash that contains no patient identity, no clinical information, no event date, and no provider attribution. It is permanently unattributable without the patient's pre-image. The settlement key workflow requires explicit patient acknowledgement: <em>"A permanently unattributable proof will be written to Bitcoin. Only you, holding your pre-image, can connect this record to yourself. No third party — including SASCOSM — can make that connection without your cooperation. The on-chain record cannot be deleted, but it cannot be used against you without your consent."</em> No other part of SMILE touches Bitcoin or any immutable infrastructure.
+  </div>
+
+  <!-- TAC 6.5 — NEURO DATA LOOP -->
+  <div class="kicker" style="margin-top:44px;">TAC · 6.5 · The TR4NSFORM Neuro-Data Loop — Mutable Events</div>
+  <h3 class="sub">Clinical Events as Patient-Authorised Mutable Records</h3>
+
+  <p>TR4NSFORM's five-stage clinical journey produces health events at each stage. In SMILE v2, these are mutable records in the Patient Store — not links in an immutable chain. The patient reviews, accepts, edits, or rejects each event. A clinician proposes; the patient decides what enters their store.</p>
+
+  <table class="t">
+    <thead>
+      <tr>
+        <th>Stage</th>
+        <th>Clinical Action</th>
+        <th>Event Type</th>
+        <th>Mutable?</th>
+        <th>Settlement Anchor?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label">1 · State</td>
+        <td>Baseline assessment</td>
+        <td>BaselineRecord</td>
+        <td style="color:var(--emerald);font-weight:700;">Yes — patient editable</td>
+        <td class="muted">No</td>
+      </tr>
+      <tr>
+        <td class="label">2 · Signal</td>
+        <td>Neuro/bio markers</td>
+        <td>SignalRecord</td>
+        <td style="color:var(--emerald);font-weight:700;">Yes — patient editable</td>
+        <td class="muted">No</td>
+      </tr>
+      <tr>
+        <td class="label">3 · Protocol</td>
+        <td>Care plan agreement</td>
+        <td>ProtocolRecord</td>
+        <td style="color:var(--emerald);font-weight:700;">Yes — patient editable</td>
+        <td class="muted">Opt-in only</td>
+      </tr>
+      <tr>
+        <td class="label">4 · Upgrade</td>
+        <td>Outcome data</td>
+        <td>OutcomeRecord</td>
+        <td style="color:var(--emerald);font-weight:700;">Yes — patient editable</td>
+        <td class="muted">Opt-in only</td>
+      </tr>
+      <tr>
+        <td class="label">5 · New State</td>
+        <td>Evolved baseline</td>
+        <td>DeltaRecord</td>
+        <td style="color:var(--emerald);font-weight:700;">Yes — patient editable</td>
+        <td class="muted">No</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-teal">
+    <strong>The Write-Back Rule:</strong> A provider never writes directly to the Patient Store. They generate a signed event proposal. The patient's SMILE client presents this as a pending record: "TR4NSFORM has proposed adding a ProtocolRecord — do you accept?" The patient approves, edits, or rejects. Only approved records enter the store. The patient can later edit or delete any record they accepted. The provider's proposal artifact is their own business record — separate from what the patient chose to keep.
+  </div>
+
+  <!-- TAC 6.6 — OFFLINE -->
+  <div class="kicker" style="margin-top:44px;">TAC · 6.6 · Offline Survivability</div>
+  <h3 class="sub">The Patient Pack — Sovereign Without Connectivity</h3>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card card-teal">
+      <span class="tag teal">Encrypted Local Export</span>
+      <h4>Patient Pack</h4>
+      <p>The complete Patient Store, encrypted with the master key, exportable as a single file. Lives on device, USB, or encrypted cloud backup of the patient's choice. No SASCOSM server. No TR4NSFORM infrastructure. The pack is the store.</p>
+    </div>
+    <div class="card">
+      <span class="tag accent">QR Disclosure</span>
+      <h4>Offline Presentation</h4>
+      <p>The patient generates a QR payload from specific scoped records — allergy flags, active protocol state, critical contraindications. The QR is time-bounded and single-use. A clinic scans it offline. No master key ever leaves the patient's device.</p>
+    </div>
+    <div class="card card-emerald">
+      <span class="tag emerald">Emergency Access</span>
+      <h4>Break-Glass Pattern</h4>
+      <p>The patient may optionally create an emergency-scoped sub-key and share it with a named trusted person. This sub-key grants minimal read access to critical records only. It is revocable by master key rotation. Never set by default.</p>
+    </div>
+  </div>
+
+  <!-- TAC 6.7 — SOVEREIGN STACK CONSISTENCY -->
+  <div id="stack" class="kicker" style="margin-top:44px;">TAC · 6.7 · Key Logic Across the Sovereign Stack</div>
+  <h3 class="sub">The Same Principle Propagated Through All 14 Components</h3>
+
+  <p>The key-gated mutable model is not just SMILE's architecture. It is the governing logic of the entire sovereign stack. Every component in the stack must be consistent with the same principle: <strong>the holder of the relevant key controls the resource — not the platform, not the infrastructure, not the operator.</strong></p>
+
+  <div class="stack" style="margin-bottom:28px;">
+    <div class="stack-row">
+      <div class="stack-num">L6</div>
+      <div class="stack-bar" style="border-color:rgba(124,58,237,0.22);background:linear-gradient(90deg,rgba(124,58,237,0.05),rgba(255,255,255,0));">
+        <span class="stack-name" style="color:var(--violet);">SCX — Sovereign Care Exchange</span>
+        <span class="stack-key-rule">Patient intent key → market access · no master key read</span>
+        <span class="badge violet">Crown Layer</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-num">L5</div>
+      <div class="stack-bar" style="border-color:rgba(5,150,105,0.2);">
+        <span class="stack-name" style="color:var(--emerald);">BUMP — Microflow Rail</span>
+        <span class="stack-key-rule">Spending key → micro-payments · no health data key</span>
+        <span class="badge emerald">Microfinance</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-num">L4</div>
+      <div class="stack-bar" style="border-color:rgba(8,145,178,0.2);">
+        <span class="stack-name" style="color:var(--teal);">SIP v2 — Settlement Rail</span>
+        <span class="stack-key-rule">Settlement key (opt-in) → proof of care · never clinical content</span>
+        <span class="badge teal">Settlement</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-num">L3</div>
+      <div class="stack-bar" style="border-color:rgba(217,119,6,0.2);">
+        <span class="stack-name" style="color:var(--accent);">SCV — Sovereign Care Vault</span>
+        <span class="stack-key-rule">Vault key → fund release on event type only · never clinical</span>
+        <span class="badge accent">Bitcoin Vault</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-num">L2</div>
+      <div class="stack-bar active">
+        <span class="stack-name" style="color:var(--accent);">SMILE — Key-Gated Mutable Store ← HERE</span>
+        <span class="stack-key-rule">Master key → full control · lease key → scoped read · settlement key → opt-in proof</span>
+        <span class="badge accent">You Are Here</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-num">L1</div>
+      <div class="stack-bar" style="border-color:rgba(107,114,128,0.18);">
+        <span class="stack-name" style="color:var(--muted);">SovereignID — Identity Rail</span>
+        <span class="stack-key-rule">Identity key → alias generation · no persistent global ID</span>
+        <span class="badge muted">Foundation</span>
+      </div>
+    </div>
+  </div>
+
+  <p>Below is how the key-gated mutable principle maps explicitly to each of the eight extended ecosystem components:</p>
+
+  <table class="t">
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Key Logic Applied</th>
+        <th>What It Cannot Do</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label">CodexCare</td>
+        <td>Generates signed event proposals. Patient key required to accept any record into SMILE. CodexCare holds no patient data — only its own workflow artifacts.</td>
+        <td class="muted">Cannot write to Patient Store without patient key approval. Cannot retain records after workflow completes.</td>
+      </tr>
+      <tr>
+        <td class="label">TR4NSFORM</td>
+        <td>Generates clinical event proposals at each care stage. Holds its own provider records. Uses lease keys to read permitted patient data during treatment. Never holds master key.</td>
+        <td class="muted">Cannot access patient records after lease expiry. Cannot retroactively alter patient-accepted records.</td>
+      </tr>
+      <tr>
+        <td class="label">SCV</td>
+        <td>Receives event type signals only from SMILE — specifically ProtocolRecord acceptance and care completion. Uses this to unlock pathway funding. Never reads clinical content.</td>
+        <td class="muted">Structurally cannot read diagnosis codes, clinical notes, or any health content. Schema enforces this.</td>
+      </tr>
+      <tr>
+        <td class="label">SIP v2</td>
+        <td>Routes settlement based on settlement key proofs (opt-in). Handles provider payment without ever touching patient health data.</td>
+        <td class="muted">Cannot trigger payment based on clinical outcomes — only on opt-in settlement key proofs issued by the patient.</td>
+      </tr>
+      <tr>
+        <td class="label">SCX</td>
+        <td>Receives only patient-consented, anonymised cohort-level outcome signals. No individual patient data ever surfaces to the market layer.</td>
+        <td class="muted">Cannot correlate individual patients across providers. Cannot request access to the Patient Store.</td>
+      </tr>
+      <tr>
+        <td class="label">SovereignID</td>
+        <td>Provides context-scoped aliases to SMILE. Each provider interaction uses a different alias derived from the identity key — preventing cross-provider correlation.</td>
+        <td class="muted">Never holds a global patient ID. Cannot link aliases across contexts without patient consent.</td>
+      </tr>
+      <tr>
+        <td class="label">N0mad Sovereign Lifestyle</td>
+        <td>Consumer-facing interface to health data and care choices. Uses lease keys issued by the patient to present relevant health context for pathway selection.</td>
+        <td class="muted">Never holds master key. Reads only what the patient's lease key permits at each session.</td>
+      </tr>
+      <tr>
+        <td class="label">DIO Systems</td>
+        <td>Biometric and session data from hydrogen wellness devices is packaged as event proposals. Patient accepts or rejects each one before it enters SMILE.</td>
+        <td class="muted">Device data does not auto-write to Patient Store. Patient reviews and approves each session record.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TAC 6.8 — SOVEREIGNID -->
+  <div class="kicker" style="margin-top:44px;">TAC · 6.8 · SovereignID — The Identity Rail Simon Designed</div>
+  <h3 class="sub">The Foundation That Makes the Entire Stack Possible</h3>
+
+  <p>Every key hierarchy in SMILE — master, lease, settlement — derives its identity layer from <strong>SovereignID</strong>: a privacy-preserving, offline-capable, zero-PII identity system designed within SASCOSM. SovereignID is not a login system. It is not an account. It is a cryptographic proof engine that returns only what was asked — and nothing more.</p>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card card-teal">
+      <span class="tag teal">Proof Not Identity</span>
+      <h4>Yes / No, Never Who</h4>
+      <p>A verifier asks a single question: does this person have the right to access this care pathway? SovereignID returns a binary proof. No name. No date of birth. No national identifier. No cross-correlatable attribute. The question is answered. The person remains unknown.</p>
+    </div>
+    <div class="card card-violet">
+      <span class="tag violet">Context-Scoped Aliases</span>
+      <h4>Different Key Per Provider</h4>
+      <p>Each clinical context receives a different SovereignID alias derived from the patient's identity key. Aliases cannot be linked across contexts without the patient's explicit action. Cross-provider profiling is mathematically impossible by default — not merely against policy.</p>
+    </div>
+    <div class="card card-emerald">
+      <span class="tag emerald">Offline First</span>
+      <h4>Works Without Infrastructure</h4>
+      <p>SovereignID proofs work without internet. Signed snapshots load onto verifier devices ahead of time. A clinic in rural Thailand, a ship at sea, a border crossing with no connectivity — all can verify patient eligibility without a live server call. Sovereignty cannot be contingent on connectivity.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-violet">
+    <strong>SovereignID as the Identity Physics SMILE Runs On:</strong> When SMILE generates a context-scoped alias, it calls SovereignID's key derivation function. When a lease key scopes to a specific grantee, it uses their SovereignID handle — not their legal name or national ID number. When a Consent Receipt is generated, it references SovereignID identifiers on both sides. SovereignID is not a plug-in component. It is the identity physics that SMILE runs on. Every alias, every proof, every selective disclosure is an expression of its core guarantee: <em>prove the fact, reveal nothing else, leave no trail.</em>
+  </div>
+
+  <!-- GENESIS BLOCK — DEVELOPER FREEDOM -->
+  <div class="kicker" style="margin-top:52px;">Genesis · For Developers Who Believe in Freedom</div>
+  <h3 class="sub">Build <span class="accent">With</span> Us — Not <span class="teal">For</span> Us</h3>
+
+  <p>This white paper is an open architectural invitation to engineers, cryptographers, and builders who believe that sovereign infrastructure is the most important software being written right now. The stack is modular. The interfaces are narrow. The keys are the contracts. The schemas are the constitution. You do not need to trust the founders to trust the architecture.</p>
+
+  <div class="manifesto" style="border-color:rgba(5,150,105,0.22);background:linear-gradient(180deg,rgba(5,150,105,0.05),rgba(246,247,249,0));margin-bottom:24px;">
+    <div class="manifesto-label" style="color:var(--emerald);">The Developer Covenant</div>
+    <p>The code you write here will run on no one's server but the patient's device. It will answer to no authority but the holder of the master key. It will make no network call it does not have to make. It will store no data it was not explicitly instructed to store. It will log nothing. It will phone home to nothing. <strong>It will be the most honest code you have ever written — because the architecture makes dishonesty impossible, not just against the rules.</strong></p>
+    <p>The stack — SovereignID, SMILE, SCV, SIP, BUMP, SCX, XDeed — is not a startup. It is a civilisation layer. Each component is designed so that the next builder can extend it without understanding the full system. <em class="teal">You do not need to trust the founders to trust the architecture.</em> Read the key derivation. Read the mixer. Read the lease expiry logic. The guarantees are in the mathematics, not in a terms of service document.</p>
+    <p>We are looking for engineers who have looked at the global health data system and felt genuine revulsion at what has been done with the most intimate information human beings generate. Who understand that GDPR is a floor, not a ceiling. Who believe that the right to be forgotten should mean the data is computationally gone — not archived in a server you no longer have access to. <strong>Who have read enough history to know what happens when states gain unrestricted access to their citizens' medical records. And who have decided that building the alternative is more important than anything else they could be working on.</strong></p>
+    <p>The architecture is open. The philosophy is stated. The stack is being built. Come and build it with us.</p>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:32px;">
+    <div class="card card-teal">
+      <span class="tag teal">Core Primitives</span>
+      <h4>What Needs Building First</h4>
+      <p>Master key generation UX. HKDF lease key derivation. Patient Store encryption layer. On-device anonymity mixer. QRNG integration. QR summary generator. Offline-first sync engine.</p>
+    </div>
+    <div class="card card-accent">
+      <span class="tag accent">Identity Rail</span>
+      <h4>SovereignID Integration</h4>
+      <p>Context-scoped alias derivation. Selective disclosure credential engine. Offline snapshot verifier. Duress persona switching. Guardian recovery k-of-n. Zero-PII proof generation across all SMILE interactions.</p>
+    </div>
+    <div class="card card-violet">
+      <span class="tag violet">Sovereign Cipher Key</span>
+      <h4>Mixer + Bitcoin Pipeline</h4>
+      <p>OP_RETURN broadcast pipeline. Pre-image custody in Patient Store. QRNG delay scheduler. Mixed-payload hash construction. Sovereign Cipher Key management. Settlement key derivation and secure destruction flows.</p>
+    </div>
+    <div class="card card-emerald">
+      <span class="tag emerald">Stack Interfaces</span>
+      <h4>Cross-Component Connectors</h4>
+      <p>SMILE ↔ SCV event signal. SMILE ↔ SIP settlement proof. SMILE ↔ SCX cohort aggregation. SMILE ↔ CodexCare write-back proposals. SMILE ↔ XDeed property-health crossover. All narrow interfaces. All auditable.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-emerald">
+    <strong>Modular by Design — Audit Any Part, Build Any Part:</strong> You do not need to build all of it to contribute to any of it. SovereignID is a standalone identity rail. The anonymity mixer is self-contained. The lease key derivation is a pure cryptographic function with no network dependencies. Every component in this stack is designed to be built, audited, and deployed independently. The interdependencies are interfaces, not inheritances. Fork any component. Audit any algorithm. The architecture welcomes scrutiny — because scrutiny is how sovereign infrastructure earns the right to be trusted.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- TOE · SECTION 9 · LOW-LEVEL SPEC -->
+  <!-- ════════════════════════════════ -->
+
+  <div id="data" class="section">
+    <div class="kicker">TOE · Section 9 · Low-Level Specification</div>
+    <h2 class="sec-title">Data Structures, <span class="teal">Schemas</span> &amp; <span class="accent">Integration Specs</span></h2>
+    <p class="lede">Every field, every type, every constraint — specified for engineers, auditors, and regulators. All structures reflect the key-gated mutable model.</p>
+  </div>
+
+  <!-- DS 1: PATIENT STORE -->
+  <div class="kicker">TOE · 9.1 · Core Container</div>
+  <div class="ds-card">
+    <div class="ds-title">
+      PatientStore
+      <span class="badge teal">Root Object · Patient Holds Master Key</span>
+    </div>
+    <div class="ds-desc">The root container for all patient health data. Encrypted with the patient's master key. Fully mutable. The patient can add, edit, or delete any child record at any time. Destruction of the master key renders the entire store permanently unreadable.</div>
+    <div class="ds-fields">
+      <div class="ds-field">
+        <span class="ds-field-name">store_id</span>
+        <span class="ds-field-type">UUID v4</span>
+        <span class="ds-field-desc">Locally generated identifier for this patient's store. Never transmitted to any third party. Not linked to legal identity or SovereignID.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">master_key_fingerprint</span>
+        <span class="ds-field-type">SHA-256</span>
+        <span class="ds-field-desc">Public fingerprint of the master key — used to verify key validity without exposing the key itself. This is the only key-related value stored in the store metadata.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">records</span>
+        <span class="ds-field-type">Array[HealthRecord]</span>
+        <span class="ds-field-desc">Mutable array of all health records. No ordering constraint. No prev_hash linking. Records can be inserted, edited, reordered, or deleted freely by the master key holder.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">consent_log</span>
+        <span class="ds-field-type">Array[ConsentReceipt]</span>
+        <span class="ds-field-desc">Patient-maintained log of all lease keys they have issued. The patient controls this log — they can delete entries. Deletion removes the patient's own audit reference but does not revoke the lease key (rotation of master key is required for revocation).</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">schema_version</span>
+        <span class="ds-field-type">SemVer</span>
+        <span class="ds-field-desc">SMILE schema version. Enables forward-compatible decryption by future tooling.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">qr_summary_config</span>
+        <span class="ds-field-type">Object | null</span>
+        <span class="ds-field-desc">Patient-configured settings for offline QR disclosure. Defines which record types and fields appear in the QR payload. Null by default — patient must actively configure.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">emergency_sub_key_ref</span>
+        <span class="ds-field-type">KeyRef | null</span>
+        <span class="ds-field-desc">Optional reference to an emergency-scoped sub-key shared with a trusted person. Null by default. Revoked automatically when master key is rotated.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DS 2: HEALTH RECORD -->
+  <div class="kicker" style="margin-top:32px;">TOE · 9.2 · Health Record</div>
+  <div class="ds-card">
+    <div class="ds-title">
+      HealthRecord
+      <span class="badge accent">Base Type · Fully Mutable · Patient-Authorised</span>
+    </div>
+    <div class="ds-desc">The atomic unit of health data in SMILE. Every clinical event — whether patient-entered or clinician-proposed and accepted — is a HealthRecord. All fields are editable by the master key holder. Deletion is permanent.</div>
+    <div class="ds-fields">
+      <div class="ds-field">
+        <span class="ds-field-name">record_id</span>
+        <span class="ds-field-type">UUID v4</span>
+        <span class="ds-field-desc">Locally generated identifier. Used by lease keys to scope access. Not globally unique or correlatable.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">record_type</span>
+        <span class="ds-field-type">Enum</span>
+        <span class="ds-field-desc">Baseline | Signal | Protocol | Outcome | Delta | Consent | PatientNote. Patient-entered records may use PatientNote without any provider involvement.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">created_at</span>
+        <span class="ds-field-type">ISO 8601</span>
+        <span class="ds-field-desc">Timestamp of initial record creation. Editable by the patient — the patient controls their own narrative of when events occurred.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">last_edited_at</span>
+        <span class="ds-field-type">ISO 8601 | null</span>
+        <span class="ds-field-desc">Timestamp of most recent patient edit. Null if the record has never been edited after initial acceptance. The full edit history is not retained unless the patient explicitly enables versioning.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">content</span>
+        <span class="ds-field-type">Encrypted Object</span>
+        <span class="ds-field-desc">The full record content, encrypted with the master key. Structure varies by record_type. Readable only by the master key holder or a validly scoped lease key holder.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">provider_proposal_sig</span>
+        <span class="ds-field-type">Ed25519 | null</span>
+        <span class="ds-field-desc">If this record originated as a provider proposal, the provider's signature over the original proposed content is stored here. If the patient edits the record after accepting it, this signature remains — it proves the original proposal, not the current content.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">patient_accepted_at</span>
+        <span class="ds-field-type">ISO 8601 | null</span>
+        <span class="ds-field-desc">Timestamp of patient acceptance if this record originated as a provider proposal. Null for patient-created records.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">settlement_anchor_ref</span>
+        <span class="ds-field-type">TxID | null</span>
+        <span class="ds-field-desc">Bitcoin transaction ID if the patient chose to anchor a proof of this record. Null unless patient explicitly triggered anchoring. The anchor contains only a hash — not the record content.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DS 3: LEASE KEY -->
+  <div class="kicker" style="margin-top:32px;">TOE · 9.3 · Access Architecture</div>
+  <div class="ds-card">
+    <div class="ds-title">
+      LeaseKey
+      <span class="badge teal">Derived from Master · Scoped · Time-Bound · Read-Only</span>
+    </div>
+    <div class="ds-desc">A cryptographic access grant derived from the patient's master key. Scoped to specific record types and fields. Time-bound with hard cryptographic expiry. Read-only — no write, edit, or delete capability. Invalidated automatically when the master key is rotated.</div>
+    <div class="ds-fields">
+      <div class="ds-field">
+        <span class="ds-field-name">lease_id</span>
+        <span class="ds-field-type">UUID v4</span>
+        <span class="ds-field-desc">Unique identifier for this lease. Referenced in the patient's consent log entry.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">grantee_sovereign_id</span>
+        <span class="ds-field-type">SovereignID</span>
+        <span class="ds-field-desc">The specific provider identity this lease is issued to. Cannot be a wildcard. The lease key is wrapped in the grantee's public key — only they can use it.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">permitted_record_types</span>
+        <span class="ds-field-type">Array[Enum]</span>
+        <span class="ds-field-desc">Explicit list of record types the grantee may read. No access beyond this list is possible with the issued key.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">permitted_fields</span>
+        <span class="ds-field-type">Array[String] | null</span>
+        <span class="ds-field-desc">Optional field-level restriction within permitted record types. E.g., ["allergy_flag", "active_protocol_ref"] rather than full record content. Null means full record content within permitted types is accessible.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">purpose</span>
+        <span class="ds-field-type">String</span>
+        <span class="ds-field-desc">Plain-language statement of access purpose. Binding under Digi-Carta framework. Recorded in the patient's consent log.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">valid_until</span>
+        <span class="ds-field-type">Unix timestamp</span>
+        <span class="ds-field-desc">Hard cryptographic expiry. Enforced via key derivation function incorporating the expiry timestamp. After this time, decryption fails — no server-side enforcement required.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">single_use</span>
+        <span class="ds-field-type">Boolean</span>
+        <span class="ds-field-desc">When true, the lease key is consumed on first successful decryption. Used for QR-code-based offline disclosure to prevent replay.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">master_key_generation</span>
+        <span class="ds-field-type">Integer</span>
+        <span class="ds-field-desc">The generation number of the master key at the time of lease issuance. When the master key is rotated (increments generation), all leases from prior generations are automatically invalid — even if valid_until has not elapsed.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DS 4: CONSENT RECEIPT -->
+  <div class="ds-card" style="margin-top:14px;">
+    <div class="ds-title">
+      ConsentReceipt
+      <span class="badge emerald">Patient Audit Log · Mutable · Digi-Carta Aligned</span>
+    </div>
+    <div class="ds-desc">The patient's own record that they issued a specific lease key. Stored in their consent log. The patient controls this — they can delete the receipt from their log. Deletion does not revoke the lease key itself (rotation is required for that) but removes the patient's local audit reference.</div>
+    <div class="ds-fields">
+      <div class="ds-field">
+        <span class="ds-field-name">lease_id_ref</span>
+        <span class="ds-field-type">UUID v4</span>
+        <span class="ds-field-desc">Reference to the LeaseKey this receipt records. Links the consent log entry to the specific access grant.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">grantee_name</span>
+        <span class="ds-field-type">String</span>
+        <span class="ds-field-desc">Human-readable name of the grantee as the patient knows them. Patient-entered — not fetched from any registry.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">issued_at</span>
+        <span class="ds-field-type">ISO 8601</span>
+        <span class="ds-field-desc">Timestamp of lease issuance.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">purpose_summary</span>
+        <span class="ds-field-type">String</span>
+        <span class="ds-field-desc">Copy of the purpose statement from the LeaseKey. Stored here for patient readability without needing to decrypt the full LeaseKey object.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">status</span>
+        <span class="ds-field-type">Enum</span>
+        <span class="ds-field-desc">Active | Expired | Revoked (by master key rotation). Patient-visible status for managing active access grants.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DS 5: SETTLEMENT PROOF -->
+  <div class="ds-card" style="margin-top:14px;">
+    <div class="ds-title">
+      SettlementProof
+      <span class="badge accent">Opt-In · On-Device Mixer · QRNG Timed · Pre-Image Sovereign</span>
+    </div>
+    <div class="ds-desc">The only SMILE artifact that touches Bitcoin. Processed entirely on the patient's device through a four-stage anonymity pipeline before any network write occurs. The on-chain result is permanently immutable and permanently unattributable. The patient's pre-image is the sole connection between the on-chain record and the care event — held only by the patient, under their master key.</div>
+    <div class="ds-fields">
+      <div class="ds-field">
+        <span class="ds-field-name">record_id_ref</span>
+        <span class="ds-field-type">UUID v4</span>
+        <span class="ds-field-desc">Reference to the HealthRecord in the Patient Store this proof relates to. Never transmitted. Exists only in the Patient Store to allow the patient to locate their own pre-image later.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">pre_image</span>
+        <span class="ds-field-type">Encrypted Object</span>
+        <span class="ds-field-desc">The original, unmixed event descriptor before the anonymity mixer ran. Stored encrypted in the Patient Store under the master key. Never transmitted to any network or server. This is the patient's proof-of-connection — the only artifact that can link the on-chain record back to them. Without this, the on-chain record is permanently unattributable.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">mixer_nonce</span>
+        <span class="ds-field-type">Bytes[32]</span>
+        <span class="ds-field-desc">Cryptographically secure random value injected by the on-device mixer to decorrelate the mixed payload from the original descriptor. Combined with stripped fields to produce the mixed_payload_hash. Generated on-device only — never transmitted pre-mix.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">qrng_delay_ms</span>
+        <span class="ds-field-type">Integer</span>
+        <span class="ds-field-desc">Quantum-random delay in milliseconds applied between mix completion and Bitcoin broadcast. Breaks temporal correlation between care event timing and on-chain write timing. Each stage write in a care journey uses an independent QRNG delay — preventing sequence analysis from linking multiple anchors to one clinical pathway.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">mixed_payload_hash</span>
+        <span class="ds-field-type">SHA-256</span>
+        <span class="ds-field-desc">SHA-256(stripped_descriptor + mixer_nonce). This is what reaches the Bitcoin blockchain. Contains no patient identity, no clinical content, no event date, no provider attribution. A blockchain observer sees a hash and nothing more.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">patient_confirmed_unattributable</span>
+        <span class="ds-field-type">Boolean</span>
+        <span class="ds-field-desc">Patient explicitly acknowledged the corrected disclosure: the on-chain record is permanent AND permanently unattributable without their pre-image. Cannot be set programmatically — requires interactive confirmation. Replaces the prior "patient_confirmed_permanent" field.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">btc_txid</span>
+        <span class="ds-field-type">String | null</span>
+        <span class="ds-field-desc">Bitcoin transaction ID of the OP_RETURN broadcast. Null until confirmed. Populated after the QRNG delay has elapsed and the transaction is confirmed. Stored in the Patient Store only — never transmitted to SASCOSM or TR4NSFORM infrastructure.</span>
+      </div>
+      <div class="ds-field">
+        <span class="ds-field-name">anchor_key_ref</span>
+        <span class="ds-field-type">KeyRef</span>
+        <span class="ds-field-desc">Reference to the settlement key used to sign the broadcast. If the patient destroys this key, no third party can use the on-chain record for any verification purpose — even though the hash remains permanently on-chain. Destruction of the settlement key effectively renders the anchor forensically useless to all parties other than the patient themselves.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAC 9.4 KEY MANAGEMENT -->
+  <div class="kicker" style="margin-top:36px;">TOE · 9.4 · Key Management &amp; Rotation</div>
+  <h3 class="sub">The Patient's Key Is the System's Off Switch</h3>
+
+  <div class="code-block">
+<span class="c">// Master key generation — patient-device only</span>
+master_key = <span class="k">Ed25519.generate</span>()           <span class="c">// never leaves device</span>
+master_gen  = 1                                  <span class="c">// generation counter</span>
+
+<span class="c">// Deriving a lease key for a specific provider session</span>
+lease_key = <span class="k">HKDF</span>(
+  ikm    : master_key,
+  info   : grantee_id + purpose + valid_until + master_gen,
+  length : 32
+)
+<span class="c">// lease_key is scoped, time-bound, and generation-pinned</span>
+<span class="c">// cannot be re-derived after master key rotation</span>
+
+<span class="c">// ── SOVEREIGN ANONYMITY MIXER ─────────────────────────────</span>
+<span class="c">// Runs entirely on patient device. Nothing below this line</span>
+<span class="c">// is transmitted before the mixer completes.</span>
+
+pre_image = {                                    <span class="c">// retained in Patient Store</span>
+  record_type   : <span class="s">"ProtocolRecord"</span>,
+  protocol_ref  : <span class="v">protocol_hash</span>,
+  provider_id   : <span class="v">provider_sovereign_id</span>
+}
+<span class="c">// strip all attributable fields</span>
+stripped = <span class="k">strip_attribution</span>(pre_image)        <span class="c">// no dates, no IDs, no patient ref</span>
+
+<span class="c">// inject quantum-random nonce</span>
+mixer_nonce = <span class="k">QRNG.generate</span>(32)               <span class="c">// unpredictable, unrepeatable</span>
+
+<span class="c">// produce mixed payload hash — what hits Bitcoin</span>
+mixed_hash = <span class="k">SHA256</span>(stripped + mixer_nonce)    <span class="c">// unattributable without pre_image</span>
+
+<span class="c">// quantum-random delay before broadcast</span>
+<span class="c">// each stage write uses independent QRNG delay</span>
+<span class="c">// breaks temporal pattern analysis across a care journey</span>
+qrng_delay = <span class="k">QRNG.delay_ms</span>(min: 0, max: 86400000)
+<span class="k">await</span> <span class="n">sleep</span>(qrng_delay)
+
+<span class="c">// broadcast — mixed_hash is the OP_RETURN payload</span>
+btc_txid = <span class="k">bitcoin.broadcast_op_return</span>(mixed_hash)
+<span class="c">// on-chain: permanently immutable, permanently unattributable</span>
+<span class="c">// off-chain (Patient Store only): pre_image + btc_txid link</span>
+<span class="c">// ─────────────────────────────────────────────────────────</span>
+
+<span class="c">// Master key rotation — invalidates ALL prior leases</span>
+master_key = <span class="k">Ed25519.generate</span>()           <span class="c">// new key pair</span>
+master_gen += 1                                  <span class="c">// generation increments</span>
+store = <span class="k">re_encrypt</span>(store, old_key, new_key)  <span class="c">// patient store re-wrapped</span>
+<span class="c">// all prior lease_keys now fail — generation mismatch</span>
+<span class="c">// no server call, no revocation list — math is the mechanism</span>
+
+<span class="c">// Master key destruction — full erasure</span>
+<span class="k">secure_erase</span>(master_key)                       <span class="c">// key is gone</span>
+<span class="c">// Patient Store is now encrypted noise</span>
+<span class="c">// pre_images are gone — on-chain records are permanently orphaned</span>
+<span class="c">// No SASCOSM recovery. No TR4NSFORM backup. No exceptions.</span>
+  </div>
+
+  <!-- TOE 9.5 ANTI-SURVEILLANCE -->
+  <div class="kicker" style="margin-top:36px;">TOE · 9.5 · Structural Anti-Surveillance Architecture</div>
+  <h3 class="sub">Threats Neutralised by Key Architecture, Not Policy</h3>
+
+  <div class="callout callout-rose">
+    <strong>The Threat Model:</strong> Governments demanding bulk data access. Insurers feeding health history into actuarial pricing. Corporations building shadow health profiles. Providers retaining data after treatment ends. Blockchain forensic analysts attempting to de-anonymise on-chain health records. Nation-state actors correlating care journey timing patterns. All are neutralised by the same layered architecture: no key, no access to the mutable store — and no pre-image, no attribution of any on-chain record. The infrastructure holds no keys. There is no database to subpoena. The blockchain holds only permanently unattributable hashes. There is nothing to steal that means anything.
+  </div>
+
+  <table class="t" style="margin-top:20px;">
+    <thead>
+      <tr><th>Threat</th><th>SMILE Response</th><th>Mechanism</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label">Government bulk access order</td>
+        <td>No central database exists. Each patient holds their own encrypted store. The blockchain holds only unattributable hashes.</td>
+        <td class="muted">Distributed custody + mixer. No server to serve a warrant to. No on-chain data to seize.</td>
+      </tr>
+      <tr>
+        <td class="label">Blockchain forensic de-anonymisation</td>
+        <td>On-chain OP_RETURN contains only a mixed-payload hash: no patient identity, no clinical content, no event date, no provider attribution. QRNG delays break temporal pattern analysis across stage writes.</td>
+        <td class="muted">On-device anonymity mixer + QRNG timing. Attribution requires patient's pre-image — which only the patient holds.</td>
+      </tr>
+      <tr>
+        <td class="label">Care journey sequence analysis</td>
+        <td>Each stage write uses an independent QRNG delay. Writes from the same care journey are temporally uncorrelated on-chain. An analyst cannot determine how many writes belong to one patient or one pathway.</td>
+        <td class="muted">Per-write quantum-random delay. Zero inter-write temporal correlation.</td>
+      </tr>
+      <tr>
+        <td class="label">Insurer actuarial pricing feed</td>
+        <td>Schema structurally cannot output pricing-relevant data. No actuarial fields exist in any schema. On-chain records contain nothing clinical.</td>
+        <td class="muted">Architecture not policy. Cannot be unlocked by contractual clause or court order.</td>
+      </tr>
+      <tr>
+        <td class="label">Provider retaining data after treatment</td>
+        <td>Lease key has hard cryptographic expiry. Cached data is undecryptable after expiry or master key rotation.</td>
+        <td class="muted">Mathematical expiry — not contractual obligation.</td>
+      </tr>
+      <tr>
+        <td class="label">Cross-provider patient profiling</td>
+        <td>Alias-first identity — different SovereignID handle per provider context. No global ID to correlate across providers.</td>
+        <td class="muted">Unlinkability by key derivation design.</td>
+      </tr>
+      <tr>
+        <td class="label">Platform operator (SASCOSM) access</td>
+        <td>SASCOSM holds no master keys, no pre-images, and never sees pre-mix data. The mixer runs on the patient's device — SASCOSM is architecturally excluded from the attribution chain.</td>
+        <td class="muted">On-device processing. SASCOSM is downstream of the mixer — permanently blind to attribution.</td>
+      </tr>
+      <tr>
+        <td class="label">Master key destruction consequences</td>
+        <td>Patient Store becomes permanently unrecoverable encrypted noise. All pre-images are destroyed. All on-chain OP_RETURN records become permanently orphaned — valid hashes with no living attribution chain. The patient's entire health data history is cryptographically erased.</td>
+        <td class="muted">Full erasure. No recovery. No exceptions. The most complete right to be forgotten in any health system.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- TOE 9.6 GOVERNANCE -->
+  <div id="governance" class="kicker" style="margin-top:44px;">TOE · 9.6 · Governance, Jurisdiction &amp; Build Roadmap</div>
+  <h3 class="sub">Legal Structure for a Keyless Infrastructure</h3>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card card-accent">
+      <span class="tag accent">IP Holding</span>
+      <h4>Singapore GBC</h4>
+      <p>SMILE schema specifications, key derivation standards, and protocol definitions are held by the SASCOSM Singapore entity. Singapore's data protection framework (PDPA) aligns with patient mutability rights and is respected by UAE and Thai counterparts.</p>
+    </div>
+    <div class="card card-teal">
+      <span class="tag teal">Operating Entity</span>
+      <h4>TR4NSFORM — Thailand</h4>
+      <p>Clinical implementation runs under TR4NSFORM's Thai medical licence. CodexCare workflow rail deployed against Thai medical records regulation. Patient Store architecture is designed to be compliant with PDPA and GDPR simultaneously — the right to erasure is not just respected, it is enforced by key destruction.</p>
+    </div>
+    <div class="card card-violet">
+      <span class="tag violet">Capital &amp; Royalty Trust</span>
+      <h4>SASCOSM — Dubai DMCC</h4>
+      <p>Licensing rights and royalty flows from SMILE deployments. The key-gated architecture means licensing is about schema and tooling — not data custody. SASCOSM never holds patient data at any layer of the business.</p>
+    </div>
+  </div>
+
+  <table class="t">
+    <thead><tr><th>Phase</th><th>Timeline</th><th>Deliverable</th><th>Stack Integration</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="label">Phase 0 · Keys</td>
+        <td style="color:var(--teal);font-weight:600;">0–6 weeks</td>
+        <td>Master key generation UX. Lease key derivation library. Patient Store encryption spec v2. ConsentReceipt structure. Rotation mechanism design.</td>
+        <td class="muted">SovereignID alias derivation</td>
+      </tr>
+      <tr>
+        <td class="label">Phase 1 · Store</td>
+        <td style="color:var(--teal);font-weight:600;">6–14 weeks</td>
+        <td>Patient Store local implementation. Read/write/delete flows. QR summary generator. First HealthRecords from TR4NSFORM proposals accepted into test stores.</td>
+        <td class="muted">CodexCare write-back flow, SCV event signal</td>
+      </tr>
+      <tr>
+        <td class="label">Phase 2 · Lease</td>
+        <td style="color:var(--accent);font-weight:600;">14–22 weeks</td>
+        <td>LeaseKey issuance UX. Cryptographic expiry enforcement. Provider-side SMILE reader (view-only, no copy). Consent log dashboard for patient. Master key rotation flow.</td>
+        <td class="muted">TR4NSFORM clinic integration, SCX trust seeding</td>
+      </tr>
+      <tr>
+        <td class="label">Phase 3 · Settlement</td>
+        <td style="color:var(--accent);font-weight:600;">22–30 weeks</td>
+        <td>Settlement key derivation. OP_RETURN anchoring (opt-in with explicit patient confirmation). SIP v2 settlement proof verification. MYRA OS self-sovereign Bitcoin node integration.</td>
+        <td class="muted">SIP v2, SCV, MYRA OS, BAF</td>
+      </tr>
+      <tr>
+        <td class="label">Phase 4 · Network</td>
+        <td style="color:var(--muted);font-weight:600;">6–12 months</td>
+        <td>Multi-hub deployment. Cohort analytics pipeline (patient-consented, aggregated). Outcomes data for SCX provider trust engine. Lightning Network payment rails via settlement key integration.</td>
+        <td class="muted">Full 14-component stack</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- CLOSING COVENANT -->
+  <div class="kicker" style="margin-top:52px;">TOE · 9.9 · The Closing Covenant</div>
+  <h3 class="sub">The Architecture Is the Promise</h3>
+
+  <div class="manifesto" style="border-color:rgba(8,145,178,0.22);background:linear-gradient(180deg,rgba(8,145,178,0.04),rgba(246,247,249,0));">
+    <div class="manifesto-label" style="color:var(--teal);">The Covenant of Mutable Sovereign Medicine</div>
+    <p>Sovereignty is not a chain you own but cannot break. It is a key you hold and can burn. SMILE v2 builds this distinction into every layer of the architecture. The patient can create any record, edit any record, and destroy any record — including the entire store. The infrastructure supports this unconditionally. There is no override. There is no recovery. There is no backdoor. The key is the system.</p>
+    <p>We corrected our v1 error because it matters. Telling a patient that their data is permanently chained — even if it is their chain — is not sovereignty. <strong>It is a well-intentioned prison.</strong> The right model is simple and absolute: you hold the key, you control the data, you can destroy both whenever you choose. And when you choose to write anything to immutable infrastructure, your device runs it through an anonymity mixer first — stripping every attributable field, injecting an unpredictable nonce, and broadcasting after a quantum-random delay. What lands on Bitcoin is permanently immutable. It is also permanently meaningless to anyone who does not hold your pre-image. <em>The immutability is Bitcoin's. The attribution is yours. These are separate properties — and keeping them separate is the world-first breakthrough at the heart of SMILE.</em></p>
+    <p>This same logic propagates through every component in the sovereign stack. SCV does not read clinical data — it reads key signals. SIP does not touch patient records — it handles opt-in settlement proofs that passed through the mixer. SCX does not know who you are — it sees anonymised cohort signals you chose to contribute. <em>The key hierarchy is the architecture. The mixer is the guardian. The architecture is the promise. The promise is enforced by mathematics, not by trust.</em></p>
+    <p><strong>We are Satoshi. The key is ours. The medicine is ours. The data is ours. And what is ours cannot be stolen.</strong></p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-chips">
+      <span class="footer-chip">SASCOSM Platinum</span>
+      <span class="footer-chip">TR4NSFORM</span>
+      <span class="footer-chip">N0mad Sovereign Lifestyle</span>
+      <span class="footer-chip">SovereignID</span>
+      <span class="footer-chip">SCV · Care Vault</span>
+      <span class="footer-chip">SIP v2 · Settlement</span>
+      <span class="footer-chip">SCX · Care Exchange</span>
+      <span class="footer-chip">XDeed · Property Layer</span>
+      <span class="footer-chip">BAF · Bitcoin Adoption Framework</span>
+      <span class="footer-chip">Digi-Carta</span>
+    </div>
+    <p>
+      <strong>SMILE Ledger — Sovereign Medical Integrated Ledger Environment · White Paper v2.0</strong><br>
+      SASCOSM Sovereign IP · Not for public distribution without written consent · 3·6·9 TIC·TAC·TOE<br>
+      Architecture: Key-Gated Mutable Store · Sovereign Cipher Key · On-Device Anonymity Mixer · QRNG Temporal Decorrelation<br>
+      Identity Rail: SovereignID · Zero-PII · Offline-First · Context-Scoped Aliases<br>
+      <em style="color:var(--teal);">"The message travels. The key does not. The key is the cipher. The patient is sovereign."</em>
+    </p>
+  </div>
+
+</div><!-- /wrap -->
+</body>
+</html>

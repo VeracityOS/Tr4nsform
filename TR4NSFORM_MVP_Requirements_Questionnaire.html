@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · MVP Requirements Questionnaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --void-deep:    #080910;
+  --void:         #0D0F1C;
+  --void-surface: #131525;
+  --void-raised:  #1A1C30;
+  --void-float:   #20223A;
+  --text:         #F0F4FF;
+  --text-2:       rgba(240,244,255,0.72);
+  --text-muted:   rgba(240,244,255,0.45);
+  --text-subtle:  rgba(240,244,255,0.22);
+  --bio:          #2ED8B8;
+  --bio-bright:   #4EFAD8;
+  --bio-dim:      #1A8C78;
+  --bio-glass:    rgba(46,216,184,0.12);
+  --bio-glow:     0 0 24px rgba(46,216,184,0.4);
+  --neural:       #9D7AFF;
+  --neural-glass: rgba(157,122,255,0.12);
+  --neural-glow:  0 0 24px rgba(157,122,255,0.35);
+  --vital:        #E8C46A;
+  --vital-glass:  rgba(232,196,106,0.10);
+  --vital-glow:   0 0 20px rgba(232,196,106,0.3);
+  --regen:        #3EDB90;
+  --regen-glass:  rgba(62,219,144,0.10);
+  --signal:       #4AB4F5;
+  --signal-glass: rgba(74,180,245,0.10);
+  --border:       rgba(255,255,255,0.08);
+  --border-mid:   rgba(255,255,255,0.14);
+  --glass:        rgba(255,255,255,0.04);
+  --glass-hover:  rgba(255,255,255,0.07);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  line-height:1.7;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(46,216,184,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(157,122,255,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(232,196,106,0.03) 0%, transparent 50%);
+}
+
+.container{
+  max-width:860px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1;
+}
+
+/* ── Header ── */
+.hero{text-align:center;padding:60px 0 48px;}
+.hero-badge{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:400;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--bio);
+  border:1px solid rgba(46,216,184,0.25);
+  border-radius:100px;padding:6px 20px;margin-bottom:20px;
+  background:var(--bio-glass);
+}
+.hero h1{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(28px,5vw,42px);
+  letter-spacing:-0.5px;line-height:1.2;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--text),var(--bio));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{color:var(--text-2);font-size:16px;max-width:560px;margin:0 auto;}
+
+/* ── Progress ── */
+.progress-bar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(13,15,28,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);padding:14px 0;margin-bottom:32px;
+}
+.progress-inner{
+  max-width:860px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:12px;
+}
+.progress-track{
+  flex:1;height:6px;border-radius:3px;background:var(--void-raised);overflow:hidden;
+}
+.progress-fill{
+  height:100%;width:0%;border-radius:3px;
+  background:linear-gradient(90deg,var(--bio-dim),var(--bio),var(--bio-bright));
+  transition:width 0.4s ease;
+}
+.progress-label{
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bio);
+  min-width:44px;text-align:right;
+}
+
+/* ── Section ── */
+.section{margin-bottom:40px;}
+.section-header{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+}
+.section-num{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:14px;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bio-glass);color:var(--bio);border:1px solid rgba(46,216,184,0.2);
+  flex-shrink:0;
+}
+.section-num.answered{background:var(--bio);color:var(--void);border-color:var(--bio);}
+.section-title{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:18px;letter-spacing:-0.3px;
+}
+
+/* ── Card ── */
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px;
+  backdrop-filter:blur(8px);
+  transition:border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover{border-color:var(--border-mid);}
+.card.active{border-color:rgba(46,216,184,0.3);box-shadow:var(--bio-glow);}
+
+.card-context{
+  font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:20px;
+  padding-bottom:16px;border-bottom:1px solid var(--border);
+}
+.card-context strong{color:var(--text-2);font-weight:500;}
+
+.question-label{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:15px;
+  color:var(--text);margin-bottom:16px;display:block;
+}
+
+/* ── Options (radio/checkbox styled) ── */
+.options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.option-label{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 16px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--border);background:var(--glass);
+  transition:all 0.2s;
+}
+.option-label:hover{background:var(--glass-hover);border-color:var(--border-mid);}
+.option-label input{display:none;}
+.option-radio{
+  width:18px;height:18px;border-radius:50%;flex-shrink:0;margin-top:1px;
+  border:2px solid var(--text-subtle);transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.option-label input:checked ~ .option-radio{
+  border-color:var(--bio);
+}
+.option-label input:checked ~ .option-radio::after{
+  content:'';width:8px;height:8px;border-radius:50%;background:var(--bio);
+}
+.option-label input:checked ~ .option-text .opt-title{color:var(--bio-bright);}
+.option-label input[type="checkbox"] ~ .option-radio{border-radius:4px;}
+.option-label input[type="checkbox"]:checked ~ .option-radio::after{
+  content:'';width:10px;height:10px;border-radius:2px;background:var(--bio);
+}
+.opt-title{font-weight:500;font-size:14px;color:var(--text);transition:color 0.2s;}
+.opt-desc{font-size:12px;color:var(--text-muted);margin-top:2px;}
+
+/* ── Text input / textarea ── */
+.text-input,.text-area{
+  width:100%;
+  background:var(--void-surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px 16px;
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;
+  line-height:1.6;
+  transition:border-color 0.3s, box-shadow 0.3s;
+  resize:vertical;
+}
+.text-input:focus,.text-area:focus{
+  outline:none;
+  border-color:rgba(46,216,184,0.4);
+  box-shadow:0 0 0 3px rgba(46,216,184,0.08);
+}
+.text-input::placeholder,.text-area::placeholder{color:var(--text-subtle);}
+.text-area{min-height:90px;}
+
+.field-group{margin-bottom:16px;}
+.field-label{
+  font-size:12px;font-weight:500;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ── Divider ── */
+.divider{
+  border:none;border-top:1px solid var(--border);margin:48px 0;
+}
+
+/* ── Summary section ── */
+.summary-section{
+  background:linear-gradient(135deg,rgba(46,216,184,0.06),rgba(157,122,255,0.04));
+  border:1px solid rgba(46,216,184,0.15);
+  border-radius:16px;padding:32px;margin-top:48px;
+}
+.summary-section h2{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:22px;
+  margin-bottom:8px;color:var(--bio-bright);
+}
+.summary-section p{color:var(--text-2);font-size:14px;margin-bottom:24px;}
+
+/* ── Buttons ── */
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;}
+.btn{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:14px;
+  padding:12px 28px;border-radius:10px;cursor:pointer;
+  border:none;transition:all 0.25s;letter-spacing:0.3px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--bio-dim),var(--bio));
+  color:var(--void);
+}
+.btn-primary:hover{
+  background:linear-gradient(135deg,var(--bio),var(--bio-bright));
+  box-shadow:var(--bio-glow);
+}
+.btn-secondary{
+  background:var(--glass);color:var(--text);border:1px solid var(--border-mid);
+}
+.btn-secondary:hover{background:var(--glass-hover);}
+
+/* ── Tag chips ── */
+.tag{
+  display:inline-block;font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;margin-right:6px;margin-bottom:4px;
+}
+.tag-bio{background:var(--bio-glass);color:var(--bio);border:1px solid rgba(46,216,184,0.2);}
+.tag-neural{background:var(--neural-glass);color:var(--neural);border:1px solid rgba(157,122,255,0.2);}
+.tag-vital{background:var(--vital-glass);color:var(--vital);border:1px solid rgba(232,196,106,0.2);}
+.tag-signal{background:var(--signal-glass);color:var(--signal);border:1px solid rgba(74,180,245,0.2);}
+.tag-regen{background:var(--regen-glass);color:var(--regen);border:1px solid rgba(62,219,144,0.2);}
+
+/* ── Summary output ── */
+#summaryOutput{
+  background:var(--void-surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-top:16px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--text-2);line-height:1.8;white-space:pre-wrap;display:none;
+}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--bio);color:var(--void);
+  font-family:'Syne',sans-serif;font-weight:600;font-size:14px;
+  padding:14px 24px;border-radius:12px;
+  box-shadow:var(--bio-glow);
+  transform:translateY(80px);opacity:0;
+  transition:all 0.4s ease;z-index:999;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:600px){
+  .container{padding:24px 16px 60px;}
+  .card{padding:20px;}
+  .hero{padding:40px 0 32px;}
+  .btn-row{flex-direction:column;}
+  .btn{width:100%;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px;color:var(--text-2);">MVP Scope</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label" id="progressLabel">0%</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">Requirements Phase</div>
+    <h1>TR4NSFORM MVP<br/>Scope Questionnaire</h1>
+    <p>Answer these 8 questions to lock down the MVP scope. Your responses will generate a summary brief ready for development handoff.</p>
+  </div>
+
+  <!-- Q1 -->
+  <div class="section" data-q="1">
+    <div class="section-header">
+      <div class="section-num" id="num1">1</div>
+      <div class="section-title">MVP Scope — What ships first?</div>
+    </div>
+    <div class="card" id="card1">
+      <div class="card-context">
+        <span class="tag tag-bio">Scope</span>
+        <span class="tag tag-vital">Priority</span><br/><br/>
+        The <strong>Dynamic Peptide Builder</strong> alone is a full multi-step app (goal selection → data sources → protocol building → dosage calc → payment → consent). The protocol codexes (brain, gut, sensu) are rich clinical content. Deciding what's in V1 vs. later shapes everything.
+      </div>
+      <span class="question-label">What should be in the MVP?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="checkbox" name="q1" value="peptide_builder" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Peptide Builder (full interactive flow)</div>
+            <div class="opt-desc">Multi-step configurator with dosage calc and ordering</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="q1" value="product_catalog" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Product Catalog (107 SKU browsing)</div>
+            <div class="opt-desc">Browsable, filterable product schedule with pricing tiers</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="q1" value="protocols_interactive" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Protocol Codexes (interactive / structured)</div>
+            <div class="opt-desc">Brain, Gut, Sensu protocols as navigable interactive content</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="q1" value="protocols_static" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Protocol Codexes (static reference pages only)</div>
+            <div class="opt-desc">Content published as-is, no interactive features in V1</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Additional notes</div>
+        <textarea class="text-area" name="q1_notes" placeholder="Any other features or priorities for V1..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="section" data-q="2">
+    <div class="section-header">
+      <div class="section-num" id="num2">2</div>
+      <div class="section-title">Frontend Architecture</div>
+    </div>
+    <div class="card" id="card2">
+      <div class="card-context">
+        <span class="tag tag-signal">Tech</span><br/><br/>
+        The Stack Diagram references <strong>Webflow</strong> as the front-end, but the <strong>V4 UI Codex</strong> defines a full custom component library with its own design tokens. These are different development paths.
+      </div>
+      <span class="question-label">What frontend approach for the MVP?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q2" value="webflow" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Webflow (visual builder)</div>
+            <div class="opt-desc">Faster to launch, limited custom interactivity, needs custom code embeds for the builder</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q2" value="custom" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Custom frontend (React / Next.js / etc.)</div>
+            <div class="opt-desc">Full control, implements V4 UI Codex directly, more dev effort</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q2" value="hybrid" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Hybrid — Webflow for marketing, custom app for builder</div>
+            <div class="opt-desc">Marketing/content pages in Webflow, peptide builder as a separate custom app</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Preferred framework or stack?</div>
+        <input type="text" class="text-input" name="q2_notes" placeholder="e.g. Next.js, Astro, SvelteKit, plain Webflow..." oninput="updateProgress()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="section" data-q="3">
+    <div class="section-header">
+      <div class="section-num" id="num3">3</div>
+      <div class="section-title">Payments & Auth</div>
+    </div>
+    <div class="card" id="card3">
+      <div class="card-context">
+        <span class="tag tag-vital">Payments</span>
+        <span class="tag tag-neural">Auth</span><br/><br/>
+        The <strong>BTCPay Webflow Auth Codex</strong> specifies LNURL-Auth (Lightning wallet login, no passwords) with BTCPay Server for payments. This is a sovereign-first approach. The question is whether fiat payment rails are also needed for MVP.
+      </div>
+      <span class="question-label">What payment and auth approach for MVP?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q3" value="btcpay_only" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">BTCPay + LNURL-Auth only (sovereign stack)</div>
+            <div class="opt-desc">Bitcoin/Lightning payments, wallet-based login, no fiat</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q3" value="btcpay_plus_fiat" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">BTCPay + fiat rails (Stripe / stablecoin bridge)</div>
+            <div class="opt-desc">Primary sovereign stack plus card/bank payments for accessibility</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q3" value="fiat_first" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Fiat-first, add BTCPay later</div>
+            <div class="opt-desc">Standard payment processor for MVP, Bitcoin added post-launch</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">BTCPay deployment preference</div>
+        <div class="options">
+          <label class="option-label">
+            <input type="radio" name="q3b" value="self_hosted" onchange="updateProgress()"/>
+            <span class="option-radio"></span>
+            <div class="option-text"><div class="opt-title">Self-hosted (Docker, full control)</div></div>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q3b" value="managed" onchange="updateProgress()"/>
+            <span class="option-radio"></span>
+            <div class="option-text"><div class="opt-title">Managed / third-party hosted</div></div>
+          </label>
+          <label class="option-label">
+            <input type="radio" name="q3b" value="tbd" onchange="updateProgress()"/>
+            <span class="option-radio"></span>
+            <div class="option-text"><div class="opt-title">To be decided later</div></div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="section" data-q="4">
+    <div class="section-header">
+      <div class="section-num" id="num4">4</div>
+      <div class="section-title">SMILE Ledger — Data Sovereignty</div>
+    </div>
+    <div class="card" id="card4">
+      <div class="card-context">
+        <span class="tag tag-neural">Infrastructure</span>
+        <span class="tag tag-regen">Data</span><br/><br/>
+        The <strong>SMILE Ledger</strong> whitepaper defines a key-gated, patient-controlled medical data store with 3 key types and 14 ecosystem components. This is a significant infrastructure build — potentially its own product.
+      </div>
+      <span class="question-label">Where does the SMILE Ledger sit in the MVP timeline?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q4" value="mvp" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">In MVP — core requirement</div>
+            <div class="opt-desc">Patient data sovereignty is non-negotiable for launch</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q4" value="simplified" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Simplified version for MVP</div>
+            <div class="opt-desc">Basic patient data store with key ownership, full ledger architecture post-MVP</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q4" value="post_mvp" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Post-MVP — Phase 2 or 3</div>
+            <div class="opt-desc">Use a standard secure database for MVP, build sovereign ledger separately</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Notes on data requirements</div>
+        <textarea class="text-area" name="q4_notes" placeholder="Any compliance, jurisdiction, or data handling constraints..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="section" data-q="5">
+    <div class="section-header">
+      <div class="section-num" id="num5">5</div>
+      <div class="section-title">Target User — Who is V1 for?</div>
+    </div>
+    <div class="card" id="card5">
+      <div class="card-context">
+        <span class="tag tag-bio">Users</span>
+        <span class="tag tag-vital">Business</span><br/><br/>
+        The Full Service Model identifies two primary journeys: <strong>sovereign individuals</strong> (direct B2C patients/clients) and <strong>partners</strong> (clinics, retreats, resellers — B2B). Each requires different features, pricing logic, and onboarding.
+      </div>
+      <span class="question-label">Who is the primary V1 user?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q5" value="b2c" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Sovereign individual (B2C)</div>
+            <div class="opt-desc">Direct patient/client browsing protocols and ordering peptides</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q5" value="b2b" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Partner / clinic / reseller (B2B)</div>
+            <div class="opt-desc">Operators ordering at partner pricing, managing patients</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q5" value="both" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Both simultaneously</div>
+            <div class="opt-desc">Dual pricing tiers (retail + partner 50% discount) from day one</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Expected user volume at launch?</div>
+        <input type="text" class="text-input" name="q5_notes" placeholder="e.g. 10 partners, 100 individuals, invite-only beta..." oninput="updateProgress()"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="section" data-q="6">
+    <div class="section-header">
+      <div class="section-num" id="num6">6</div>
+      <div class="section-title">Regulatory & Prescription Handling</div>
+    </div>
+    <div class="card" id="card6">
+      <div class="card-context">
+        <span class="tag tag-signal">Compliance</span><br/><br/>
+        The product schedule includes Rx status flags and safety contraindications (e.g. myocarditis protocol blocking GHRP-2/6/Hexarelin). Some products are marked as requiring prescriptions. This has legal and UX implications.
+      </div>
+      <span class="question-label">How should Rx / prescription items be handled in the app?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q6" value="gated" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Gated — require uploaded Rx or clinician approval</div>
+            <div class="opt-desc">Rx items locked until prescription is verified in-app</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q6" value="flagged" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Flagged with consent — show warning, user accepts responsibility</div>
+            <div class="opt-desc">Display Rx status clearly with consent checkboxes, no hard block</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q6" value="exclude" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Exclude Rx items from MVP entirely</div>
+            <div class="opt-desc">Only non-Rx products available in V1, add Rx workflow later</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q6" value="partner_only" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Rx items available to partners/clinics only</div>
+            <div class="opt-desc">B2B partners can order Rx items, B2C users see non-Rx only</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Jurisdiction / regulatory notes</div>
+        <textarea class="text-area" name="q6_notes" placeholder="Which country/countries? Any specific regulatory frameworks to comply with..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="section" data-q="7">
+    <div class="section-header">
+      <div class="section-num" id="num7">7</div>
+      <div class="section-title">Order & Fulfillment Complexity</div>
+    </div>
+    <div class="card" id="card7">
+      <div class="card-context">
+        <span class="tag tag-vital">Operations</span>
+        <span class="tag tag-regen">Logistics</span><br/><br/>
+        The Full Service Model defines a full commercial chain: <strong>order states</strong> (draft → paid → fulfilled), <strong>invoice ledger</strong>, <strong>stock control</strong> (reserved → consigned → sold), <strong>reconciliation queues</strong>, and <strong>partner stock tracking</strong>. This is enterprise-grade ops.
+      </div>
+      <span class="question-label">How much order/fulfillment logic in MVP?</span>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q7" value="simple" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Simple — order placed, manually fulfilled</div>
+            <div class="opt-desc">Order form generates a record, fulfillment handled offline/manually</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q7" value="tracked" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Tracked — order states + basic stock visibility</div>
+            <div class="opt-desc">Order lifecycle tracked in-app, simple inventory counts</div>
+          </div>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q7" value="full" onchange="updateProgress()"/>
+          <span class="option-radio"></span>
+          <div class="option-text">
+            <div class="opt-title">Full commercial chain as specified</div>
+            <div class="opt-desc">Complete quote-to-cash with reconciliation, partner stock, invoice ledger</div>
+          </div>
+        </label>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Current fulfillment process</div>
+        <textarea class="text-area" name="q7_notes" placeholder="How are orders fulfilled today? Any existing systems (spreadsheet, ERP, manual)..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="section" data-q="8">
+    <div class="section-header">
+      <div class="section-num" id="num8">8</div>
+      <div class="section-title">Timeline & Constraints</div>
+    </div>
+    <div class="card" id="card8">
+      <div class="card-context">
+        <span class="tag tag-bio">Timeline</span>
+        <span class="tag tag-signal">Resources</span><br/><br/>
+        Understanding deadlines, budget, and team capacity determines how aggressively we scope the MVP.
+      </div>
+      <span class="question-label">What are the key constraints?</span>
+      <div class="field-group">
+        <div class="field-label">Target launch date</div>
+        <input type="text" class="text-input" name="q8_date" placeholder="e.g. Q2 2026, June 2026, ASAP, no hard deadline..." oninput="updateProgress()"/>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Budget range</div>
+        <input type="text" class="text-input" name="q8_budget" placeholder="e.g. $5K–$10K, $20K+, sweat equity, phased budget..." oninput="updateProgress()"/>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Development team / resources</div>
+        <input type="text" class="text-input" name="q8_team" placeholder="e.g. 1 dev + AI, agency, in-house team of 3..." oninput="updateProgress()"/>
+      </div>
+      <div class="field-group">
+        <div class="field-label">Any other constraints or priorities?</div>
+        <textarea class="text-area" name="q8_notes" placeholder="Hard requirements, blockers, dependencies, must-haves..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- Summary -->
+  <div class="summary-section">
+    <h2>Generate Requirements Brief</h2>
+    <p>When you're ready, generate a summary of your answers to share with your development team or bring back into the next session.</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="generateSummary()">Generate Summary</button>
+      <button class="btn btn-secondary" onclick="copySummary()">Copy to Clipboard</button>
+      <button class="btn btn-secondary" onclick="downloadSummary()">Download as .txt</button>
+    </div>
+    <div id="summaryOutput"></div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+const TOTAL_QUESTIONS = 8;
+
+function getAnswered() {
+  const answered = new Set();
+  // Q1: checkboxes
+  if (document.querySelectorAll('input[name="q1"]:checked').length > 0 ||
+      document.querySelector('textarea[name="q1_notes"]')?.value.trim()) answered.add(1);
+  // Q2-Q7: radios
+  for (let i = 2; i <= 7; i++) {
+    const name = 'q' + i;
+    if (document.querySelector(`input[name="${name}"]:checked`)) answered.add(i);
+  }
+  // Q3b sub-question counts toward Q3
+  // Q8: any text field filled
+  const q8Fields = ['q8_date','q8_budget','q8_team','q8_notes'];
+  if (q8Fields.some(f => {
+    const el = document.querySelector(`[name="${f}"]`);
+    return el && el.value.trim();
+  })) answered.add(8);
+  return answered;
+}
+
+function updateProgress() {
+  const answered = getAnswered();
+  const pct = Math.round((answered.size / TOTAL_QUESTIONS) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '%';
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const num = document.getElementById('num' + i);
+    if (num) {
+      if (answered.has(i)) num.classList.add('answered');
+      else num.classList.remove('answered');
+    }
+  }
+}
+
+function getVal(name) {
+  const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+  if (checked.length === 0) return '(not answered)';
+  return Array.from(checked).map(c => {
+    const title = c.closest('.option-label')?.querySelector('.opt-title');
+    return title ? title.textContent : c.value;
+  }).join(', ');
+}
+
+function getTextVal(name) {
+  const el = document.querySelector(`[name="${name}"]`);
+  return el && el.value.trim() ? el.value.trim() : '';
+}
+
+function generateSummary() {
+  const lines = [];
+  lines.push('═══════════════════════════════════════════════');
+  lines.push('  TR4NSFORM — MVP REQUIREMENTS BRIEF');
+  lines.push('  Generated: ' + new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'}));
+  lines.push('═══════════════════════════════════════════════');
+  lines.push('');
+
+  lines.push('1. MVP SCOPE');
+  lines.push('   Selected: ' + getVal('q1'));
+  if (getTextVal('q1_notes')) lines.push('   Notes: ' + getTextVal('q1_notes'));
+  lines.push('');
+
+  lines.push('2. FRONTEND ARCHITECTURE');
+  lines.push('   Approach: ' + getVal('q2'));
+  if (getTextVal('q2_notes')) lines.push('   Stack: ' + getTextVal('q2_notes'));
+  lines.push('');
+
+  lines.push('3. PAYMENTS & AUTH');
+  lines.push('   Payment Model: ' + getVal('q3'));
+  lines.push('   BTCPay Deploy: ' + getVal('q3b'));
+  lines.push('');
+
+  lines.push('4. SMILE LEDGER');
+  lines.push('   Timeline: ' + getVal('q4'));
+  if (getTextVal('q4_notes')) lines.push('   Notes: ' + getTextVal('q4_notes'));
+  lines.push('');
+
+  lines.push('5. TARGET USER');
+  lines.push('   Primary: ' + getVal('q5'));
+  if (getTextVal('q5_notes')) lines.push('   Volume: ' + getTextVal('q5_notes'));
+  lines.push('');
+
+  lines.push('6. Rx / REGULATORY');
+  lines.push('   Approach: ' + getVal('q6'));
+  if (getTextVal('q6_notes')) lines.push('   Jurisdiction: ' + getTextVal('q6_notes'));
+  lines.push('');
+
+  lines.push('7. ORDER & FULFILLMENT');
+  lines.push('   Complexity: ' + getVal('q7'));
+  if (getTextVal('q7_notes')) lines.push('   Current process: ' + getTextVal('q7_notes'));
+  lines.push('');
+
+  lines.push('8. TIMELINE & CONSTRAINTS');
+  if (getTextVal('q8_date'))   lines.push('   Target launch: ' + getTextVal('q8_date'));
+  if (getTextVal('q8_budget')) lines.push('   Budget: ' + getTextVal('q8_budget'));
+  if (getTextVal('q8_team'))   lines.push('   Team: ' + getTextVal('q8_team'));
+  if (getTextVal('q8_notes'))  lines.push('   Other: ' + getTextVal('q8_notes'));
+  lines.push('');
+  lines.push('═══════════════════════════════════════════════');
+
+  const output = document.getElementById('summaryOutput');
+  output.textContent = lines.join('\n');
+  output.style.display = 'block';
+  output.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function copySummary() {
+  const output = document.getElementById('summaryOutput');
+  if (!output.textContent) { generateSummary(); }
+  navigator.clipboard.writeText(output.textContent).then(() => showToast('Copied to clipboard'));
+}
+
+function downloadSummary() {
+  const output = document.getElementById('summaryOutput');
+  if (!output.textContent) { generateSummary(); }
+  const blob = new Blob([output.textContent], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'TR4NSFORM_MVP_Requirements_Brief.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Downloaded');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BTCPay + Webflow · Permissionless Auth Codex · SASCOSM</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --platinum: #E8E8F0;
+    --platinum-dim: #B0B0C8;
+    --emerald: #00F5A0;
+    --emerald-dim: #00C880;
+    --emerald-glow: rgba(0,245,160,0.15);
+    --blue-jade: #00C8FF;
+    --blue-jade-dim: #0099CC;
+    --blue-jade-glow: rgba(0,200,255,0.12);
+    --gold: #FFD700;
+    --gold-dim: #C8A800;
+    --void: #050810;
+    --void-2: #080D18;
+    --void-3: #0C1220;
+    --void-4: #101828;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-hover: rgba(255,255,255,0.07);
+    --warning: #FF6B35;
+    --danger: #FF3366;
+    --code-bg: #060B14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--platinum);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── STARFIELD ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 45%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 90%, rgba(0,245,160,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 60%, rgba(0,200,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── GRID OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,160,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,160,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    position: relative;
+    z-index: 10;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(5,8,16,0.85);
+    backdrop-filter: blur(20px);
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-logo-img {
+    height: 40px;
+    width: auto;
+    opacity: 0.9;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, transparent, var(--emerald), transparent);
+  }
+
+  .header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--emerald);
+    text-transform: uppercase;
+  }
+
+  .header-subtitle {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--platinum-dim);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-meta {
+    text-align: right;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--platinum-dim);
+    text-transform: uppercase;
+  }
+
+  .header-meta span {
+    display: block;
+    color: var(--blue-jade);
+    margin-top: 2px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 2;
+    padding: 80px 48px 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .codex-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid rgba(0,245,160,0.3);
+    border-radius: 2px;
+    background: rgba(0,245,160,0.05);
+    margin-bottom: 32px;
+  }
+
+  .codex-badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--emerald);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--emerald); }
+    50% { opacity: 0.5; box-shadow: none; }
+  }
+
+  .codex-badge-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--emerald);
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--platinum);
+    margin-bottom: 16px;
+  }
+
+  .hero-title .accent-emerald { color: var(--emerald); }
+  .hero-title .accent-blue { color: var(--blue-jade); }
+
+  .hero-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--platinum-dim);
+    max-width: 680px;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    padding: 4px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .tag-emerald {
+    background: rgba(0,245,160,0.08);
+    border: 1px solid rgba(0,245,160,0.25);
+    color: var(--emerald);
+  }
+
+  .tag-blue {
+    background: rgba(0,200,255,0.08);
+    border: 1px solid rgba(0,200,255,0.25);
+    color: var(--blue-jade);
+  }
+
+  .tag-gold {
+    background: rgba(255,215,0,0.08);
+    border: 1px solid rgba(255,215,0,0.25);
+    color: var(--gold);
+  }
+
+  .tag-dim {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--platinum-dim);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  /* ── TABLE OF CONTENTS ── */
+  .toc {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-left: 3px solid var(--emerald);
+    border-radius: 4px;
+    padding: 32px 40px;
+    margin-bottom: 64px;
+  }
+
+  .toc-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--emerald);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .toc-item:hover { background: var(--glass-hover); }
+
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--emerald);
+    min-width: 24px;
+  }
+
+  .toc-label {
+    font-size: 13px;
+    color: var(--platinum-dim);
+    transition: color 0.2s;
+  }
+
+  .toc-item:hover .toc-label { color: var(--platinum); }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 72px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .section-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--emerald);
+    letter-spacing: 0.2em;
+    padding: 4px 10px;
+    border: 1px solid rgba(0,245,160,0.3);
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 700;
+    color: var(--platinum);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── GLASS CARD ── */
+  .card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,245,160,0.3), transparent);
+  }
+
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--blue-jade);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .card p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--platinum-dim);
+    margin-bottom: 12px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .card strong { color: var(--platinum); font-weight: 600; }
+
+  /* ── ARCH DIAGRAM ── */
+  .arch-diagram {
+    background: var(--code-bg);
+    border: 1px solid rgba(0,245,160,0.15);
+    border-radius: 4px;
+    padding: 40px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+
+  .arch-diagram svg {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* ── FLOW STEPS ── */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 20px;
+    position: relative;
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    width: 2px;
+    height: calc(100% - 12px);
+    background: linear-gradient(to bottom, var(--emerald-dim), transparent);
+  }
+
+  .flow-step-num {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--emerald);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--emerald);
+    background: rgba(0,245,160,0.08);
+    position: relative;
+    z-index: 1;
+    margin-top: 4px;
+  }
+
+  .flow-step-body {
+    flex: 1;
+    padding-bottom: 28px;
+  }
+
+  .flow-step-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--platinum);
+    margin-bottom: 6px;
+  }
+
+  .flow-step-desc {
+    font-size: 13px;
+    color: var(--platinum-dim);
+    line-height: 1.7;
+  }
+
+  .flow-step-desc code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--blue-jade);
+    background: rgba(0,200,255,0.08);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    margin: 24px 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(0,245,160,0.12);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: rgba(0,245,160,0.06);
+    border-bottom: 1px solid rgba(0,245,160,0.1);
+  }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--emerald);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .code-filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--platinum-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .code-block pre {
+    background: var(--code-bg);
+    padding: 28px;
+    overflow-x: auto;
+    margin: 0;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--platinum);
+  }
+
+  .kw { color: #FF79C6; }
+  .fn { color: #50FA7B; }
+  .str { color: #F1FA8C; }
+  .cmt { color: #6272A4; font-style: italic; }
+  .num { color: #BD93F9; }
+  .var { color: #8BE9FD; }
+  .op { color: var(--platinum-dim); }
+  .prop { color: #FFB86C; }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 13px;
+  }
+
+  .data-table thead tr {
+    background: rgba(0,245,160,0.06);
+    border-bottom: 1px solid rgba(0,245,160,0.2);
+  }
+
+  .data-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--emerald);
+    text-transform: uppercase;
+  }
+
+  .data-table td {
+    padding: 12px 16px;
+    color: var(--platinum-dim);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .data-table td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--blue-jade);
+  }
+
+  .check { color: var(--emerald); }
+  .cross { color: var(--danger); }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    display: flex;
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: 4px;
+    margin: 24px 0;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .callout-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .callout-body strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .callout-note {
+    background: rgba(0,200,255,0.06);
+    border: 1px solid rgba(0,200,255,0.2);
+    color: var(--blue-jade);
+  }
+
+  .callout-note .callout-body { color: #a8d8ea; }
+
+  .callout-warn {
+    background: rgba(255,107,53,0.06);
+    border: 1px solid rgba(255,107,53,0.25);
+    color: var(--warning);
+  }
+
+  .callout-warn .callout-body { color: #f0c8a8; }
+
+  .callout-success {
+    background: rgba(0,245,160,0.05);
+    border: 1px solid rgba(0,245,160,0.2);
+    color: var(--emerald);
+  }
+
+  .callout-success .callout-body { color: #a8f0d8; }
+
+  /* ── STACK TABLE ── */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .stack-item {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 20px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .stack-item:hover {
+    border-color: rgba(0,245,160,0.25);
+    background: var(--glass-hover);
+  }
+
+  .stack-layer {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--emerald);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stack-tool {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--platinum);
+    margin-bottom: 6px;
+  }
+
+  .stack-desc {
+    font-size: 12px;
+    color: var(--platinum-dim);
+    line-height: 1.6;
+  }
+
+  /* ── PRIVACY PROPS ── */
+  .privacy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .privacy-prop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+  }
+
+  .privacy-prop-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .privacy-prop-text {
+    font-size: 13px;
+    color: var(--platinum-dim);
+  }
+
+  .privacy-prop-text strong { color: var(--emerald); font-weight: 600; display: block; font-size: 12px; }
+
+  /* ── ENV CONFIG ── */
+  .env-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 24px 0;
+  }
+
+  .env-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--blue-jade);
+    background: rgba(0,200,255,0.05);
+    border-bottom: 1px solid rgba(0,200,255,0.15);
+    text-transform: uppercase;
+  }
+
+  .env-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+
+  .env-table td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+  }
+
+  .env-table td:nth-child(2) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--platinum-dim);
+  }
+
+  .env-table td:last-child {
+    font-size: 12px;
+    color: var(--platinum-dim);
+  }
+
+  .req-badge {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .req-yes { background: rgba(0,245,160,0.1); color: var(--emerald); border: 1px solid rgba(0,245,160,0.3); }
+  .req-opt { background: rgba(255,215,0,0.08); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
+
+  /* ── SECTION DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0 48px;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--glass-border));
+  }
+
+  .divider-line.rev {
+    background: linear-gradient(to left, transparent, var(--glass-border));
+  }
+
+  .divider-glyph {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    color: rgba(0,245,160,0.3);
+    letter-spacing: 0.3em;
+  }
+
+  /* ── EXTENSIONS ── */
+  .ext-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .ext-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .ext-card:hover { border-color: rgba(0,200,255,0.3); }
+
+  .ext-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue-jade), var(--emerald));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .ext-card:hover::after { opacity: 0.5; }
+
+  .ext-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .ext-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--platinum);
+    margin-bottom: 8px;
+  }
+
+  .ext-desc {
+    font-size: 12px;
+    color: var(--platinum-dim);
+    line-height: 1.65;
+  }
+
+  /* ── WALLET TABLE ── */
+  .wallet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .wallet-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .wallet-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--platinum);
+    margin-bottom: 8px;
+  }
+
+  .wallet-caps {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .wcap {
+    font-size: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 2px;
+    border: 1px solid rgba(0,245,160,0.2);
+    color: var(--emerald);
+    background: rgba(0,245,160,0.05);
+  }
+
+  .wcap-blue {
+    border-color: rgba(0,200,255,0.2);
+    color: var(--blue-jade);
+    background: rgba(0,200,255,0.05);
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    position: relative;
+    z-index: 10;
+    padding: 32px 48px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(5,8,16,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 20px;
+  }
+
+  .footer-logo-img {
+    height: 36px;
+    width: auto;
+    opacity: 0.85;
+  }
+
+  .footer-meta {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+
+  .footer-meta strong {
+    display: block;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+
+  .footer-classification {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: rgba(0,245,160,0.4);
+    text-transform: uppercase;
+  }
+
+  /* ── INLINE CODE ── */
+  p code, li code, td code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--blue-jade);
+    background: rgba(0,200,255,0.07);
+    padding: 1px 6px;
+    border-radius: 2px;
+    border: 1px solid rgba(0,200,255,0.15);
+  }
+
+  ul {
+    padding-left: 20px;
+    margin: 12px 0;
+  }
+
+  li {
+    font-size: 13px;
+    color: var(--platinum-dim);
+    line-height: 1.8;
+    margin-bottom: 4px;
+  }
+
+  li strong { color: var(--platinum); }
+
+  /* ── SCROLL NAV ── */
+  .scroll-nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+  }
+
+  .scroll-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0,245,160,0.2);
+    border: 1px solid rgba(0,245,160,0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .scroll-dot:hover, .scroll-dot.active {
+    background: var(--emerald);
+    transform: scale(1.5);
+  }
+
+  @media (max-width: 768px) {
+    .site-header, .hero, .main, .site-footer { padding-left: 20px; padding-right: 20px; }
+    .scroll-nav { display: none; }
+    .toc-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SCROLL NAV -->
+<nav class="scroll-nav" id="scrollNav">
+  <div class="scroll-dot active" onclick="scrollToSection('overview')" title="Overview"></div>
+  <div class="scroll-dot" onclick="scrollToSection('architecture')" title="Architecture"></div>
+  <div class="scroll-dot" onclick="scrollToSection('btcpay')" title="BTCPay Setup"></div>
+  <div class="scroll-dot" onclick="scrollToSection('middleware')" title="Middleware"></div>
+  <div class="scroll-dot" onclick="scrollToSection('docker')" title="Docker"></div>
+  <div class="scroll-dot" onclick="scrollToSection('webflow')" title="Webflow"></div>
+  <div class="scroll-dot" onclick="scrollToSection('wallets')" title="Wallets"></div>
+  <div class="scroll-dot" onclick="scrollToSection('privacy')" title="Privacy"></div>
+  <div class="scroll-dot" onclick="scrollToSection('extensions')" title="Extensions"></div>
+</nav>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-brand">
+    <img src="https://raw.githubusercontent.com/SASCOSM/assets/main/TR4NSFORM-Light.png"
+         alt="TR4NSFORM" class="header-logo-img"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+    <div style="display:none; font-family:'Orbitron',sans-serif; font-size:16px; font-weight:900; letter-spacing:0.1em; color:var(--platinum);">TR4NSFORM</div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Engineering Codex</div>
+      <div class="header-subtitle">SASCOSM Sovereign Stack · v1.0</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    Classification: Internal Technical
+    <span>SASCOSM · Architecture Division</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="codex-badge">
+    <div class="codex-badge-dot"></div>
+    <span class="codex-badge-text">Engineering Reference · LNURL-Auth Protocol</span>
+  </div>
+  <h1 class="hero-title">
+    <span class="accent-emerald">BTCPay</span> + <span class="accent-blue">Webflow</span><br/>
+    Permissionless Wallet Auth
+  </h1>
+  <p class="hero-subtitle">
+    A complete implementation guide for sovereign, passwordless, KYC-free user authentication and wallet registration — using Lightning Network identity as the sole user primitive. Zero email. Zero password. Zero custodial dependency.
+  </p>
+  <div class="hero-tags">
+    <span class="tag tag-emerald">LNURL-Auth</span>
+    <span class="tag tag-blue">BTCPay Server</span>
+    <span class="tag tag-blue">Webflow</span>
+    <span class="tag tag-gold">Node.js Middleware</span>
+    <span class="tag tag-dim">JWT Sessions</span>
+    <span class="tag tag-dim">SQLite / Redis</span>
+    <span class="tag tag-emerald">Permissionless</span>
+    <span class="tag tag-emerald">Anonymous</span>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <div class="toc-grid">
+      <a href="#overview" class="toc-item"><span class="toc-num">01</span><span class="toc-label">Protocol Overview</span></a>
+      <a href="#architecture" class="toc-item"><span class="toc-num">02</span><span class="toc-label">Architecture &amp; Stack</span></a>
+      <a href="#btcpay" class="toc-item"><span class="toc-num">03</span><span class="toc-label">BTCPay Server Setup</span></a>
+      <a href="#middleware" class="toc-item"><span class="toc-num">04</span><span class="toc-label">Auth Middleware (Node.js)</span></a>
+      <a href="#docker" class="toc-item"><span class="toc-num">05</span><span class="toc-label">Docker Deployment</span></a>
+      <a href="#webflow" class="toc-item"><span class="toc-num">06</span><span class="toc-label">Webflow Integration</span></a>
+      <a href="#wallets" class="toc-item"><span class="toc-num">07</span><span class="toc-label">Compatible Wallets</span></a>
+      <a href="#privacy" class="toc-item"><span class="toc-num">08</span><span class="toc-label">Privacy Properties</span></a>
+      <a href="#extensions" class="toc-item"><span class="toc-num">09</span><span class="toc-label">Optional Extensions</span></a>
+    </div>
+  </nav>
+
+  <!-- SECTION 01 -->
+  <section class="section" id="overview">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Protocol Overview</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">What is LNURL-Auth?</div>
+      <p>LNURL-Auth is a Lightning Network authentication protocol where the user's wallet <strong>is their identity</strong>. The user never provides an email, phone number, or password. Their Lightning node deterministically derives a unique keypair per domain — meaning the same wallet generates a different identity on every site, making cross-site tracking impossible by design.</p>
+      <p>BTCPay Server includes native LNURL-Auth support. When combined with a lightweight middleware layer, it becomes the backbone of a fully sovereign user authentication system for any web frontend including Webflow.</p>
+    </div>
+
+    <div class="callout callout-success">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-body">
+        <strong>Sovereign Design Principle</strong>
+        The Lightning keypair is derived client-side in the wallet. The server never sees a private key, password, or PII. The identity proof is a cryptographic signature over a random challenge — indistinguishable from noise to any observer.
+      </div>
+    </div>
+
+    <h3 style="font-family:'Exo 2',sans-serif; font-size:15px; font-weight:600; color:var(--platinum); margin:28px 0 16px;">Authentication Flow</h3>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">Frontend Requests Challenge</div>
+          <div class="flow-step-desc">Webflow JS calls <code>GET /api/lnauth/init</code> on your middleware. The server generates a random 32-byte nonce (<code>k1</code>), encodes it as a LNURL-auth string (bech32), and returns a QR code as a data URI.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">QR Rendered to User</div>
+          <div class="flow-step-desc">Webflow displays the QR code. The user scans it with any LNURL-Auth compatible Lightning wallet (Phoenix, Breez, Zeus, Alby, etc.).</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">Wallet Derives Domain-Scoped Keypair</div>
+          <div class="flow-step-desc">The wallet derives a unique keypair for your domain from the user's Lightning seed. It signs the <code>k1</code> challenge with the derived private key and POSTs <code>sig</code> + <code>key</code> to your callback URL.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">Middleware Verifies Signature</div>
+          <div class="flow-step-desc">The middleware verifies the secp256k1 ECDSA signature against the public key and <code>k1</code>. On success, it marks the challenge as used, upserts the user's profile record keyed by <code>lnkey</code>, and stores the session.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">5</div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">Frontend Polls for JWT</div>
+          <div class="flow-step-desc">Webflow JS polls <code>GET /api/lnauth/verify?k1=...</code> every 2 seconds. Once the wallet callback completes, the endpoint returns a signed JWT. Webflow stores it in <code>localStorage</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">6</div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">User Authenticated — Wallet Registration Available</div>
+          <div class="flow-step-desc">With the JWT, the user can optionally register additional wallet data (on-chain Bitcoin address, alias) via <code>POST /api/profile/register</code>. All fields are optional and pseudonymous.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 02 -->
+  <section class="section" id="architecture">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Architecture &amp; Stack</h2>
+    </div>
+
+    <!-- SVG Architecture Diagram -->
+    <div class="arch-diagram">
+      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" width="900" height="380">
+        <defs>
+          <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#00F5A0;stop-opacity:0.8"/>
+            <stop offset="100%" style="stop-color:#00C880;stop-opacity:0.5"/>
+          </linearGradient>
+          <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#00C8FF;stop-opacity:0.8"/>
+            <stop offset="100%" style="stop-color:#0099CC;stop-opacity:0.5"/>
+          </linearGradient>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:0.8"/>
+            <stop offset="100%" style="stop-color:#C8A800;stop-opacity:0.5"/>
+          </linearGradient>
+          <marker id="arrowE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#00F5A0" opacity="0.7"/>
+          </marker>
+          <marker id="arrowB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#00C8FF" opacity="0.7"/>
+          </marker>
+          <marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#FFD700" opacity="0.7"/>
+          </marker>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background grid -->
+        <rect width="900" height="380" fill="#060B14" rx="4"/>
+        <line x1="0" y1="190" x2="900" y2="190" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+        <line x1="450" y1="0" x2="450" y2="380" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+
+        <!-- USER WALLET -->
+        <rect x="30" y="130" width="160" height="120" rx="4" fill="rgba(255,215,0,0.05)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+        <text x="110" y="158" font-family="Orbitron,sans-serif" font-size="9" fill="#FFD700" text-anchor="middle" letter-spacing="2" font-weight="700">USER</text>
+        <text x="110" y="173" font-family="Orbitron,sans-serif" font-size="9" fill="#FFD700" text-anchor="middle" letter-spacing="2" font-weight="700">WALLET</text>
+        <text x="110" y="196" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,215,0,0.6)" text-anchor="middle">Phoenix / Breez</text>
+        <text x="110" y="210" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,215,0,0.6)" text-anchor="middle">Zeus / Alby</text>
+        <text x="110" y="230" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,215,0,0.4)" text-anchor="middle">LNURL-Auth</text>
+
+        <!-- WEBFLOW FRONTEND -->
+        <rect x="240" y="70" width="160" height="100" rx="4" fill="rgba(0,200,255,0.05)" stroke="rgba(0,200,255,0.3)" stroke-width="1"/>
+        <text x="320" y="100" font-family="Orbitron,sans-serif" font-size="9" fill="#00C8FF" text-anchor="middle" letter-spacing="2" font-weight="700">WEBFLOW</text>
+        <text x="320" y="115" font-family="Orbitron,sans-serif" font-size="9" fill="#00C8FF" text-anchor="middle" letter-spacing="2" font-weight="700">FRONTEND</text>
+        <text x="320" y="136" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,200,255,0.6)" text-anchor="middle">QR Render</text>
+        <text x="320" y="150" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,200,255,0.6)" text-anchor="middle">JWT Storage</text>
+        <text x="320" y="164" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,200,255,0.6)" text-anchor="middle">Profile UI</text>
+
+        <!-- AUTH MIDDLEWARE -->
+        <rect x="490" y="130" width="180" height="120" rx="4" fill="rgba(0,245,160,0.05)" stroke="rgba(0,245,160,0.4)" stroke-width="1.5" filter="url(#glow)"/>
+        <text x="580" y="158" font-family="Orbitron,sans-serif" font-size="9" fill="#00F5A0" text-anchor="middle" letter-spacing="2" font-weight="700">AUTH</text>
+        <text x="580" y="173" font-family="Orbitron,sans-serif" font-size="9" fill="#00F5A0" text-anchor="middle" letter-spacing="2" font-weight="700">MIDDLEWARE</text>
+        <text x="580" y="196" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,245,160,0.6)" text-anchor="middle">Node.js / Express</text>
+        <text x="580" y="210" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,245,160,0.6)" text-anchor="middle">secp256k1 verify</text>
+        <text x="580" y="224" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,245,160,0.6)" text-anchor="middle">JWT issue</text>
+        <text x="580" y="238" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(0,245,160,0.4)" text-anchor="middle">:3000</text>
+
+        <!-- BTCPAY SERVER -->
+        <rect x="490" y="30" width="180" height="80" rx="4" fill="rgba(0,245,160,0.03)" stroke="rgba(0,245,160,0.2)" stroke-width="1"/>
+        <text x="580" y="60" font-family="Orbitron,sans-serif" font-size="9" fill="rgba(0,245,160,0.8)" text-anchor="middle" letter-spacing="2" font-weight="700">BTCPAY SERVER</text>
+        <text x="580" y="78" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(0,245,160,0.4)" text-anchor="middle">95.111.241.194</text>
+        <text x="580" y="96" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(0,245,160,0.35)" text-anchor="middle">LNURL-Auth native</text>
+
+        <!-- DATABASE -->
+        <rect x="720" y="130" width="150" height="120" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <text x="795" y="158" font-family="Orbitron,sans-serif" font-size="9" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="2" font-weight="700">PROFILE</text>
+        <text x="795" y="173" font-family="Orbitron,sans-serif" font-size="9" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="2" font-weight="700">STORE</text>
+        <text x="795" y="196" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">SQLite / Redis</text>
+        <text x="795" y="210" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.25)" text-anchor="middle">lnkey → profile</text>
+        <text x="795" y="224" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.25)" text-anchor="middle">challenges</text>
+        <text x="795" y="238" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.25)" text-anchor="middle">sessions</text>
+
+        <!-- ARROWS: Wallet → Webflow (scan QR) -->
+        <path d="M 200 160 Q 220 140 240 120" stroke="rgba(255,215,0,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrowG)" stroke-dasharray="4 3"/>
+        <text x="205" y="138" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,215,0,0.4)">scan QR</text>
+
+        <!-- ARROWS: Webflow → Middleware (init / poll) -->
+        <line x1="400" y1="120" x2="488" y2="165" stroke="rgba(0,200,255,0.5)" stroke-width="1.5" marker-end="url(#arrowB)"/>
+        <text x="420" y="148" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(0,200,255,0.5)">init / verify</text>
+
+        <!-- ARROWS: Wallet → Middleware (callback) -->
+        <path d="M 200 195 Q 340 240 488 215" stroke="rgba(255,215,0,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrowE)"/>
+        <text x="300" y="255" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,215,0,0.4)">callback sig+key</text>
+
+        <!-- ARROWS: Middleware → DB -->
+        <line x1="671" y1="190" x2="718" y2="190" stroke="rgba(0,245,160,0.4)" stroke-width="1.5" marker-end="url(#arrowE)"/>
+        <text x="676" y="182" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(0,245,160,0.4)">upsert</text>
+
+        <!-- ARROWS: BTCPay → Middleware (optional reference) -->
+        <line x1="580" y1="110" x2="580" y2="128" stroke="rgba(0,245,160,0.25)" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arrowE)"/>
+        <text x="585" y="122" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(0,245,160,0.3)">ref</text>
+
+        <!-- ARROWS: Middleware → Webflow (JWT) -->
+        <path d="M 490 160 Q 430 120 402 120" stroke="rgba(0,245,160,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arrowB)" stroke-dasharray="4 2"/>
+        <text x="425" y="134" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(0,245,160,0.5)">JWT</text>
+
+        <!-- LEGEND -->
+        <line x1="30" y1="340" x2="70" y2="340" stroke="rgba(0,245,160,0.6)" stroke-width="1.5"/>
+        <text x="76" y="344" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.35)">Auth flow</text>
+        <line x1="160" y1="340" x2="200" y2="340" stroke="rgba(0,200,255,0.6)" stroke-width="1.5"/>
+        <text x="206" y="344" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.35)">Frontend calls</text>
+        <line x1="310" y1="340" x2="350" y2="340" stroke="rgba(255,215,0,0.6)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="356" y="344" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,0.35)">Wallet actions</text>
+      </svg>
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="stack-layer">Auth Protocol</div>
+        <div class="stack-tool">LNURL-Auth</div>
+        <div class="stack-desc">Lightning wallet signs a server challenge. Domain-scoped keypair derived from seed. No PII transmitted.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-layer">Auth Server</div>
+        <div class="stack-tool">BTCPay Server</div>
+        <div class="stack-desc">Native LNURL-Auth support at <code>95.111.241.194</code>. Used for reference or direct routing.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-layer">Middleware</div>
+        <div class="stack-tool">Node.js / Express</div>
+        <div class="stack-desc">Custom challenge generation, secp256k1 signature verification, JWT issuance, profile management.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-layer">Frontend</div>
+        <div class="stack-tool">Webflow + Custom Code</div>
+        <div class="stack-desc">QR display, wallet link, JWT storage in <code>localStorage</code>, profile UI, registration form.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-layer">Session Layer</div>
+        <div class="stack-tool">JWT (7-day)</div>
+        <div class="stack-desc">Signed with <code>HS256</code>. Payload contains <code>lnkey</code> only. Stored client-side.</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-layer">Profile Store</div>
+        <div class="stack-tool">SQLite or Redis</div>
+        <div class="stack-desc">Three tables: <code>challenges</code>, <code>sessions</code>, <code>profiles</code>. Primary key is the Lightning domain public key.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 03 -->
+  <section class="section" id="btcpay">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">BTCPay Server Setup</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Enable LNURL-Auth</div>
+      <p>Your BTCPay instance at <strong>95.111.241.194</strong> includes native LNURL-Auth. Navigate to:</p>
+      <p><code>Server Settings → Services → Lightning → LNURL-Auth → Enable</code></p>
+      <p>Once enabled, the LNURL-Auth callback is available at:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">ENDPOINT</span>
+        <span class="code-filename">BTCPay LNURL-Auth callback</span>
+      </div>
+      <pre><code>https://95.111.241.194/lnauth/login</code></pre>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠</div>
+      <div class="callout-body">
+        <strong>Use Middleware for Custom Profiles</strong>
+        BTCPay's native LNURL-Auth handles authentication only — it does not manage custom profile records, BTC address binding, or alias registration. You must deploy the middleware layer in Section 04 to support wallet profile features. BTCPay can be used as a reference point or for Lightning payment integration.
+      </div>
+    </div>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ</div>
+      <div class="callout-body">
+        <strong>MYRA OS Integration Path</strong>
+        For unified Lightning identity across the full sovereign stack, route the LNURL-Auth callback through your LNbits instance running on the MYRA OS Docker stack. This allows the same <code>lnkey</code> to authenticate across BTCPay, BUMP, the SMILE Ledger, and any other SASCOSM service surface.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 04 -->
+  <section class="section" id="middleware">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Auth Middleware (Node.js)</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Project Initialisation</div>
+      <p>Create the project directory and <code>package.json</code>. All dependencies are pinned to stable versions.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">BASH</span>
+        <span class="code-filename">Terminal</span>
+      </div>
+      <pre><code><span class="cmt"># Create project</span>
+mkdir -p ~/sascosm-auth <span class="op">&&</span> cd ~/sascosm-auth
+
+cat <span class="op">&gt;</span> package.json <span class="op">&lt;&lt;</span> <span class="str">'EOF'</span>
+{
+  <span class="str">"name"</span>: <span class="str">"sascosm-lnauth"</span>,
+  <span class="str">"version"</span>: <span class="str">"1.0.0"</span>,
+  <span class="str">"dependencies"</span>: {
+    <span class="str">"express"</span>: <span class="str">"^4.18.2"</span>,
+    <span class="str">"cors"</span>: <span class="str">"^2.8.5"</span>,
+    <span class="str">"jsonwebtoken"</span>: <span class="str">"^9.0.0"</span>,
+    <span class="str">"better-sqlite3"</span>: <span class="str">"^9.4.3"</span>,
+    <span class="str">"bech32"</span>: <span class="str">"^2.0.0"</span>,
+    <span class="str">"secp256k1"</span>: <span class="str">"^5.0.0"</span>,
+    <span class="str">"dotenv"</span>: <span class="str">"^16.0.0"</span>,
+    <span class="str">"qrcode"</span>: <span class="str">"^1.5.3"</span>
+  }
+}
+EOF</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JAVASCRIPT</span>
+        <span class="code-filename">server.js</span>
+      </div>
+      <pre><code>cat <span class="op">&gt;</span> server.js <span class="op">&lt;&lt;</span> <span class="str">'EOF'</span>
+<span class="fn">require</span>(<span class="str">"dotenv"</span>).<span class="fn">config</span>();
+<span class="kw">const</span> <span class="var">express</span>    = <span class="fn">require</span>(<span class="str">"express"</span>);
+<span class="kw">const</span> <span class="var">cors</span>       = <span class="fn">require</span>(<span class="str">"cors"</span>);
+<span class="kw">const</span> <span class="var">jwt</span>        = <span class="fn">require</span>(<span class="str">"jsonwebtoken"</span>);
+<span class="kw">const</span> <span class="var">Database</span>   = <span class="fn">require</span>(<span class="str">"better-sqlite3"</span>);
+<span class="kw">const</span> { <span class="var">bech32</span> } = <span class="fn">require</span>(<span class="str">"bech32"</span>);
+<span class="kw">const</span> <span class="var">secp256k1</span>  = <span class="fn">require</span>(<span class="str">"secp256k1"</span>);
+<span class="kw">const</span> <span class="var">QRCode</span>     = <span class="fn">require</span>(<span class="str">"qrcode"</span>);
+<span class="kw">const</span> <span class="var">crypto</span>     = <span class="fn">require</span>(<span class="str">"crypto"</span>);
+
+<span class="kw">const</span> <span class="var">app</span>        = <span class="fn">express</span>();
+<span class="kw">const</span> <span class="var">db</span>         = <span class="kw">new</span> <span class="fn">Database</span>(<span class="str">"profiles.db"</span>);
+<span class="kw">const</span> <span class="var">JWT_SECRET</span> = <span class="var">process</span>.<span class="prop">env</span>.<span class="prop">JWT_SECRET</span>
+                    || <span class="var">crypto</span>.<span class="fn">randomBytes</span>(<span class="num">32</span>).<span class="fn">toString</span>(<span class="str">"hex"</span>);
+<span class="kw">const</span> <span class="var">BASE_URL</span>   = <span class="var">process</span>.<span class="prop">env</span>.<span class="prop">BASE_URL</span>
+                    || <span class="str">"https://auth.yourdomain.com"</span>;
+<span class="kw">const</span> <span class="var">PORT</span>       = <span class="var">process</span>.<span class="prop">env</span>.<span class="prop">PORT</span> || <span class="num">3000</span>;
+
+<span class="cmt">// ── CORS: allow Webflow origins ──────────────────────────────</span>
+<span class="var">app</span>.<span class="fn">use</span>(<span class="fn">cors</span>({ <span class="prop">origin</span>: [
+  <span class="str">"https://your-webflow-site.webflow.io"</span>,
+  <span class="str">"https://yourdomain.com"</span>
+]}));
+<span class="var">app</span>.<span class="fn">use</span>(<span class="var">express</span>.<span class="fn">json</span>());
+
+<span class="cmt">// ── DATABASE INIT ─────────────────────────────────────────────</span>
+<span class="var">db</span>.<span class="fn">exec</span>(<span class="str">`
+  CREATE TABLE IF NOT EXISTS challenges (
+    k1         TEXT    PRIMARY KEY,
+    created_at INTEGER,
+    used       INTEGER DEFAULT 0
+  );
+  CREATE TABLE IF NOT EXISTS profiles (
+    lnkey       TEXT PRIMARY KEY,
+    btc_address TEXT,
+    alias       TEXT,
+    metadata    TEXT,
+    created_at  INTEGER,
+    last_seen   INTEGER
+  );
+  CREATE TABLE IF NOT EXISTS sessions (
+    k1        TEXT PRIMARY KEY,
+    lnkey     TEXT,
+    authed_at INTEGER
+  );
+`</span>);
+
+<span class="cmt">// ── ROUTE: generate challenge ─────────────────────────────────</span>
+<span class="var">app</span>.<span class="fn">get</span>(<span class="str">"/api/lnauth/init"</span>, <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) <span class="op">=&gt;</span> {
+  <span class="kw">const</span> <span class="var">k1</span>       = <span class="var">crypto</span>.<span class="fn">randomBytes</span>(<span class="num">32</span>).<span class="fn">toString</span>(<span class="str">"hex"</span>);
+  <span class="kw">const</span> <span class="var">callback</span> = <span class="str">`<span class="var">${BASE_URL}</span>/api/lnauth/callback`</span>;
+
+  <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"INSERT INTO challenges (k1, created_at) VALUES (?, ?)"</span>)
+    .<span class="fn">run</span>(<span class="var">k1</span>, <span class="var">Date</span>.<span class="fn">now</span>());
+
+  <span class="kw">const</span> <span class="var">lnurlAuthUrl</span> = <span class="str">`<span class="var">${callback}</span>?tag=login&k1=<span class="var">${k1}</span>`</span>;
+  <span class="kw">const</span> <span class="var">encoded</span>      = <span class="var">bech32</span>.<span class="fn">encode</span>(
+    <span class="str">"lnurl"</span>,
+    <span class="var">bech32</span>.<span class="fn">toWords</span>(<span class="var">Buffer</span>.<span class="fn">from</span>(<span class="var">lnurlAuthUrl</span>)),
+    <span class="num">1500</span>
+  );
+  <span class="kw">const</span> <span class="var">qr</span>           = <span class="kw">await</span> <span class="var">QRCode</span>.<span class="fn">toDataURL</span>(<span class="var">encoded</span>.<span class="fn">toUpperCase</span>());
+
+  <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">k1</span>, <span class="prop">lnurl</span>: <span class="var">encoded</span>.<span class="fn">toUpperCase</span>(), <span class="prop">qr</span> });
+});
+
+<span class="cmt">// ── ROUTE: wallet callback ────────────────────────────────────</span>
+<span class="var">app</span>.<span class="fn">get</span>(<span class="str">"/api/lnauth/callback"</span>, (<span class="var">req</span>, <span class="var">res</span>) <span class="op">=&gt;</span> {
+  <span class="kw">const</span> { <span class="var">k1</span>, <span class="var">sig</span>, <span class="var">key</span> } = <span class="var">req</span>.<span class="prop">query</span>;
+  <span class="kw">if</span> (!<span class="var">k1</span> || !<span class="var">sig</span> || !<span class="var">key</span>)
+    <span class="kw">return</span> <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"ERROR"</span>, <span class="prop">reason</span>: <span class="str">"Missing params"</span> });
+
+  <span class="kw">const</span> <span class="var">challenge</span> = <span class="var">db</span>
+    .<span class="fn">prepare</span>(<span class="str">"SELECT * FROM challenges WHERE k1 = ? AND used = 0"</span>)
+    .<span class="fn">get</span>(<span class="var">k1</span>);
+  <span class="kw">if</span> (!<span class="var">challenge</span>)
+    <span class="kw">return</span> <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"ERROR"</span>, <span class="prop">reason</span>: <span class="str">"Invalid or used challenge"</span> });
+
+  <span class="kw">try</span> {
+    <span class="kw">const</span> <span class="var">sigBuf</span>  = <span class="var">Buffer</span>.<span class="fn">from</span>(<span class="var">sig</span>,  <span class="str">"hex"</span>);
+    <span class="kw">const</span> <span class="var">keyBuf</span>  = <span class="var">Buffer</span>.<span class="fn">from</span>(<span class="var">key</span>,  <span class="str">"hex"</span>);
+    <span class="kw">const</span> <span class="var">msgBuf</span>  = <span class="var">Buffer</span>.<span class="fn">from</span>(<span class="var">k1</span>,   <span class="str">"hex"</span>);
+    <span class="kw">const</span> <span class="var">hash</span>    = <span class="var">crypto</span>.<span class="fn">createHash</span>(<span class="str">"sha256"</span>).<span class="fn">update</span>(<span class="var">msgBuf</span>).<span class="fn">digest</span>();
+    <span class="kw">const</span> <span class="var">valid</span>   = <span class="var">secp256k1</span>.<span class="fn">ecdsaVerify</span>(<span class="var">sigBuf</span>, <span class="var">hash</span>, <span class="var">keyBuf</span>);
+    <span class="kw">if</span> (!<span class="var">valid</span>)
+      <span class="kw">return</span> <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"ERROR"</span>, <span class="prop">reason</span>: <span class="str">"Invalid signature"</span> });
+  } <span class="kw">catch</span> (<span class="var">e</span>) {
+    <span class="kw">return</span> <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"ERROR"</span>, <span class="prop">reason</span>: <span class="str">"Verification failed"</span> });
+  }
+
+  <span class="cmt">// Mark used → store session → upsert profile</span>
+  <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"UPDATE challenges SET used = 1 WHERE k1 = ?"</span>).<span class="fn">run</span>(<span class="var">k1</span>);
+  <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"INSERT OR REPLACE INTO sessions (k1, lnkey, authed_at) VALUES (?, ?, ?)"</span>)
+    .<span class="fn">run</span>(<span class="var">k1</span>, <span class="var">key</span>, <span class="var">Date</span>.<span class="fn">now</span>());
+
+  <span class="kw">const</span> <span class="var">existing</span> = <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"SELECT * FROM profiles WHERE lnkey = ?"</span>).<span class="fn">get</span>(<span class="var">key</span>);
+  <span class="kw">if</span> (!<span class="var">existing</span>) {
+    <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"INSERT INTO profiles (lnkey, created_at, last_seen) VALUES (?, ?, ?)"</span>)
+      .<span class="fn">run</span>(<span class="var">key</span>, <span class="var">Date</span>.<span class="fn">now</span>(), <span class="var">Date</span>.<span class="fn">now</span>());
+  } <span class="kw">else</span> {
+    <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"UPDATE profiles SET last_seen = ? WHERE lnkey = ?"</span>)
+      .<span class="fn">run</span>(<span class="var">Date</span>.<span class="fn">now</span>(), <span class="var">key</span>);
+  }
+
+  <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"OK"</span> });
+});
+
+<span class="cmt">// ── ROUTE: poll for JWT ───────────────────────────────────────</span>
+<span class="var">app</span>.<span class="fn">get</span>(<span class="str">"/api/lnauth/verify"</span>, (<span class="var">req</span>, <span class="var">res</span>) <span class="op">=&gt;</span> {
+  <span class="kw">const</span> <span class="var">session</span> = <span class="var">db</span>
+    .<span class="fn">prepare</span>(<span class="str">"SELECT * FROM sessions WHERE k1 = ?"</span>)
+    .<span class="fn">get</span>(<span class="var">req</span>.<span class="prop">query</span>.<span class="prop">k1</span>);
+  <span class="kw">if</span> (!<span class="var">session</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"pending"</span> });
+
+  <span class="kw">const</span> <span class="var">token</span>   = <span class="var">jwt</span>.<span class="fn">sign</span>({ <span class="prop">lnkey</span>: <span class="var">session</span>.<span class="prop">lnkey</span> }, <span class="var">JWT_SECRET</span>,
+                             { <span class="prop">expiresIn</span>: <span class="str">"7d"</span> });
+  <span class="kw">const</span> <span class="var">profile</span>  = <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">"SELECT * FROM profiles WHERE lnkey = ?"</span>)
+                      .<span class="fn">get</span>(<span class="var">session</span>.<span class="prop">lnkey</span>);
+  <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"ok"</span>, <span class="prop">token</span>, <span class="prop">profile</span> });
+});
+
+<span class="cmt">// ── ROUTE: register wallet profile ───────────────────────────</span>
+<span class="var">app</span>.<span class="fn">post</span>(<span class="str">"/api/profile/register"</span>, (<span class="var">req</span>, <span class="var">res</span>) <span class="op">=&gt;</span> {
+  <span class="kw">const</span> <span class="var">auth</span> = <span class="var">req</span>.<span class="prop">headers</span>.<span class="prop">authorization</span>?.<span class="fn">split</span>(<span class="str">" "</span>)[<span class="num">1</span>];
+  <span class="kw">if</span> (!<span class="var">auth</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">401</span>).<span class="fn">json</span>({ <span class="prop">error</span>: <span class="str">"Unauthorized"</span> });
+
+  <span class="kw">let</span> <span class="var">payload</span>;
+  <span class="kw">try</span>   { <span class="var">payload</span> = <span class="var">jwt</span>.<span class="fn">verify</span>(<span class="var">auth</span>, <span class="var">JWT_SECRET</span>); }
+  <span class="kw">catch</span> { <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">401</span>).<span class="fn">json</span>({ <span class="prop">error</span>: <span class="str">"Invalid token"</span> }); }
+
+  <span class="kw">const</span> { <span class="var">btc_address</span>, <span class="var">alias</span>, <span class="var">metadata</span> } = <span class="var">req</span>.<span class="prop">body</span>;
+  <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">`
+    UPDATE profiles
+    SET btc_address = ?, alias = ?, metadata = ?
+    WHERE lnkey = ?
+  `</span>).<span class="fn">run</span>(
+    <span class="var">btc_address</span>  || <span class="kw">null</span>,
+    <span class="var">alias</span>        || <span class="kw">null</span>,
+    <span class="var">JSON</span>.<span class="fn">stringify</span>(<span class="var">metadata</span> || {}),
+    <span class="var">payload</span>.<span class="prop">lnkey</span>
+  );
+  <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">status</span>: <span class="str">"ok"</span> });
+});
+
+<span class="cmt">// ── ROUTE: get own profile ────────────────────────────────────</span>
+<span class="var">app</span>.<span class="fn">get</span>(<span class="str">"/api/profile/me"</span>, (<span class="var">req</span>, <span class="var">res</span>) <span class="op">=&gt;</span> {
+  <span class="kw">const</span> <span class="var">auth</span> = <span class="var">req</span>.<span class="prop">headers</span>.<span class="prop">authorization</span>?.<span class="fn">split</span>(<span class="str">" "</span>)[<span class="num">1</span>];
+  <span class="kw">if</span> (!<span class="var">auth</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">401</span>).<span class="fn">json</span>({ <span class="prop">error</span>: <span class="str">"Unauthorized"</span> });
+  <span class="kw">let</span> <span class="var">payload</span>;
+  <span class="kw">try</span>   { <span class="var">payload</span> = <span class="var">jwt</span>.<span class="fn">verify</span>(<span class="var">auth</span>, <span class="var">JWT_SECRET</span>); }
+  <span class="kw">catch</span> { <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">401</span>).<span class="fn">json</span>({ <span class="prop">error</span>: <span class="str">"Invalid token"</span> }); }
+
+  <span class="kw">const</span> <span class="var">profile</span> = <span class="var">db</span>.<span class="fn">prepare</span>(<span class="str">`
+    SELECT lnkey, btc_address, alias, metadata, created_at
+    FROM profiles WHERE lnkey = ?
+  `</span>).<span class="fn">get</span>(<span class="var">payload</span>.<span class="prop">lnkey</span>);
+  <span class="var">res</span>.<span class="fn">json</span>(<span class="var">profile</span>);
+});
+
+<span class="var">app</span>.<span class="fn">listen</span>(<span class="var">PORT</span>, () <span class="op">=&gt;</span>
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`[LNAUTH] Listening on :<span class="var">${PORT}</span>`</span>)
+);
+EOF</code></pre>
+    </div>
+
+    <h3 style="font-family:'Exo 2',sans-serif; font-size:15px; font-weight:600; color:var(--platinum); margin:32px 0 16px;">API Endpoint Reference</h3>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Method</th>
+          <th>Auth</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>/api/lnauth/init</td>
+          <td><span class="tag tag-blue" style="font-size:9px">GET</span></td>
+          <td>None</td>
+          <td style="color:var(--platinum-dim)">Generate k1 challenge + LNURL + QR data URI</td>
+        </tr>
+        <tr>
+          <td>/api/lnauth/callback</td>
+          <td><span class="tag tag-blue" style="font-size:9px">GET</span></td>
+          <td>None (wallet)</td>
+          <td style="color:var(--platinum-dim)">Receive sig+key from wallet, verify, store session</td>
+        </tr>
+        <tr>
+          <td>/api/lnauth/verify</td>
+          <td><span class="tag tag-blue" style="font-size:9px">GET</span></td>
+          <td>None</td>
+          <td style="color:var(--platinum-dim)">Frontend polls for JWT once wallet has signed</td>
+        </tr>
+        <tr>
+          <td>/api/profile/register</td>
+          <td><span class="tag tag-emerald" style="font-size:9px">POST</span></td>
+          <td>Bearer JWT</td>
+          <td style="color:var(--platinum-dim)">Register BTC address, alias, metadata to ln profile</td>
+        </tr>
+        <tr>
+          <td>/api/profile/me</td>
+          <td><span class="tag tag-blue" style="font-size:9px">GET</span></td>
+          <td>Bearer JWT</td>
+          <td style="color:var(--platinum-dim)">Return current user's profile record</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 05 -->
+  <section class="section" id="docker">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Docker Deployment</h2>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">YAML</span>
+        <span class="code-filename">docker-compose.yml</span>
+      </div>
+      <pre><code>cat <span class="op">&gt;</span> docker-compose.yml <span class="op">&lt;&lt;</span> <span class="str">'EOF'</span>
+version: <span class="str">"3.8"</span>
+services:
+  lnauth:
+    image: node:<span class="num">20</span>-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c <span class="str">"npm install && node server.js"</span>
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - BASE_URL=${BASE_URL}
+      - PORT=<span class="num">3000</span>
+    ports:
+      - <span class="str">"3000:3000"</span>
+    restart: unless-stopped
+    healthcheck:
+      test: [<span class="str">"CMD"</span>, <span class="str">"wget"</span>, <span class="str">"-qO-"</span>, <span class="str">"http://localhost:3000/api/lnauth/init"</span>]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+EOF</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">ENV</span>
+        <span class="code-filename">.env</span>
+      </div>
+      <pre><code>cat <span class="op">&gt;</span> .env <span class="op">&lt;&lt;</span> <span class="str">'EOF'</span>
+JWT_SECRET=<span class="var">$(</span>openssl rand -hex 32<span class="var">)</span>
+BASE_URL=https://auth.yourdomain.com
+PORT=<span class="num">3000</span>
+EOF</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">BASH</span>
+        <span class="code-filename">Start service</span>
+      </div>
+      <pre><code><span class="cmt"># Start</span>
+docker compose up -d
+
+<span class="cmt"># View logs</span>
+docker compose logs -f lnauth
+
+<span class="cmt"># Verify endpoint</span>
+curl http://localhost:3000/api/lnauth/init</code></pre>
+    </div>
+
+    <h3 style="font-family:'Exo 2',sans-serif; font-size:15px; font-weight:600; color:var(--platinum); margin:32px 0 16px;">Environment Variables</h3>
+
+    <table class="env-table">
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Example</th>
+          <th>Required</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>JWT_SECRET</td>
+          <td>openssl rand -hex 32</td>
+          <td><span class="req-badge req-yes">Required</span></td>
+          <td style="color:var(--platinum-dim); font-size:12px;">Never commit to source control. Rotate periodically.</td>
+        </tr>
+        <tr>
+          <td>BASE_URL</td>
+          <td>https://auth.yourdomain.com</td>
+          <td><span class="req-badge req-yes">Required</span></td>
+          <td style="color:var(--platinum-dim); font-size:12px;">Must be publicly reachable — wallets callback to this URL.</td>
+        </tr>
+        <tr>
+          <td>PORT</td>
+          <td>3000</td>
+          <td><span class="req-badge req-opt">Optional</span></td>
+          <td style="color:var(--platinum-dim); font-size:12px;">Defaults to 3000. Change if port is occupied.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠</div>
+      <div class="callout-body">
+        <strong>BASE_URL Must Be Publicly Accessible</strong>
+        Lightning wallets make the callback HTTP request from the user's mobile device or node. Your <code>BASE_URL</code> must be resolvable from the public internet. Use a reverse proxy (nginx, Caddy) with a valid TLS certificate. Self-signed certs will be rejected by most wallets.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 06 -->
+  <section class="section" id="webflow">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Webflow Integration</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Placement</div>
+      <p>Add the script embed to <strong>Page Settings → Custom Code → Before &lt;/body&gt; tag</strong> for pages requiring auth, or to the Site-Wide footer for global session restoration. The HTML elements should be added via a Webflow Embed block in your canvas.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">HTML</span>
+        <span class="code-filename">Canvas elements — Webflow Embed block</span>
+      </div>
+      <pre><code><span class="cmt">&lt;!-- Login Panel --&gt;</span>
+&lt;<span class="kw">div</span> <span class="prop">id</span>=<span class="str">"login-panel"</span>&gt;
+  &lt;<span class="kw">h3</span>&gt;Sovereign Login&lt;/<span class="kw">h3</span>&gt;
+  &lt;<span class="kw">p</span>&gt;Scan with any Lightning wallet — no email, no password&lt;/<span class="kw">p</span>&gt;
+  &lt;<span class="kw">img</span> <span class="prop">id</span>=<span class="str">"lnauth-qr"</span> <span class="prop">style</span>=<span class="str">"width:240px;"</span> /&gt;
+  &lt;<span class="kw">p</span> <span class="prop">id</span>=<span class="str">"lnauth-lnurl"</span> <span class="prop">style</span>=<span class="str">"font-size:11px; word-break:break-all;"</span>&gt;&lt;/<span class="kw">p</span>&gt;
+  &lt;<span class="kw">a</span> <span class="prop">id</span>=<span class="str">"lnauth-link"</span> <span class="prop">href</span>=<span class="str">"#"</span>&gt;Open in wallet app&lt;/<span class="kw">a</span>&gt;
+&lt;/<span class="kw">div</span>&gt;
+
+<span class="cmt">&lt;!-- Authenticated Profile Panel --&gt;</span>
+&lt;<span class="kw">div</span> <span class="prop">id</span>=<span class="str">"profile-panel"</span> <span class="prop">style</span>=<span class="str">"display:none"</span>&gt;
+  &lt;<span class="kw">p</span>&gt;⚡ Authenticated · &lt;<span class="kw">span</span> <span class="prop">id</span>=<span class="str">"wallet-key"</span>&gt;&lt;/<span class="kw">span</span>&gt;&lt;/<span class="kw">p</span>&gt;
+  &lt;<span class="kw">p</span> <span class="prop">id</span>=<span class="str">"profile-alias"</span>&gt;&lt;/<span class="kw">p</span>&gt;
+  &lt;<span class="kw">p</span> <span class="prop">id</span>=<span class="str">"profile-btc"</span>&gt;&lt;/<span class="kw">p</span>&gt;
+&lt;/<span class="kw">div</span>&gt;
+
+<span class="cmt">&lt;!-- Wallet Registration Panel (first login) --&gt;</span>
+&lt;<span class="kw">div</span> <span class="prop">id</span>=<span class="str">"register-panel"</span> <span class="prop">style</span>=<span class="str">"display:none"</span>&gt;
+  &lt;<span class="kw">h4</span>&gt;Register Your Wallet&lt;/<span class="kw">h4</span>&gt;
+  &lt;<span class="kw">input</span> <span class="prop">id</span>=<span class="str">"btc-address-input"</span>
+         <span class="prop">placeholder</span>=<span class="str">"Bitcoin on-chain address (optional)"</span> /&gt;
+  &lt;<span class="kw">input</span> <span class="prop">id</span>=<span class="str">"alias-input"</span>
+         <span class="prop">placeholder</span>=<span class="str">"Alias (optional)"</span> /&gt;
+  &lt;<span class="kw">button</span> <span class="prop">onclick</span>=<span class="str">"registerWallet()"</span>&gt;Register&lt;/<span class="kw">button</span>&gt;
+&lt;/<span class="kw">div</span>&gt;</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JAVASCRIPT</span>
+        <span class="code-filename">Page Settings → Before &lt;/body&gt;</span>
+      </div>
+      <pre><code>&lt;<span class="kw">script</span>&gt;
+<span class="kw">const</span> <span class="var">AUTH_SERVER</span> = <span class="str">"https://auth.yourdomain.com"</span>;
+
+<span class="kw">async function</span> <span class="fn">initLNAuth</span>() {
+  <span class="kw">const</span> <span class="var">res</span>                = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`<span class="var">${AUTH_SERVER}</span>/api/lnauth/init`</span>);
+  <span class="kw">const</span> { <span class="var">k1</span>, <span class="var">lnurl</span>, <span class="var">qr</span> } = <span class="kw">await</span> <span class="var">res</span>.<span class="fn">json</span>();
+
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"lnauth-qr"</span>).<span class="prop">src</span>           = <span class="var">qr</span>;
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"lnauth-lnurl"</span>).<span class="prop">textContent</span> = <span class="var">lnurl</span>;
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"lnauth-link"</span>).<span class="prop">href</span>        = <span class="str">`lightning:<span class="var">${lnurl}</span>`</span>;
+
+  <span class="cmt">// Poll for auth completion (2s interval)</span>
+  <span class="kw">const</span> <span class="var">poller</span> = <span class="fn">setInterval</span>(<span class="kw">async</span> () <span class="op">=&gt;</span> {
+    <span class="kw">const</span> <span class="var">check</span> = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`<span class="var">${AUTH_SERVER}</span>/api/lnauth/verify?k1=<span class="var">${k1}</span>`</span>);
+    <span class="kw">const</span> <span class="var">data</span>  = <span class="kw">await</span> <span class="var">check</span>.<span class="fn">json</span>();
+    <span class="kw">if</span> (<span class="var">data</span>.<span class="prop">status</span> === <span class="str">"ok"</span>) {
+      <span class="fn">clearInterval</span>(<span class="var">poller</span>);
+      <span class="var">localStorage</span>.<span class="fn">setItem</span>(<span class="str">"sascosm_token"</span>,   <span class="var">data</span>.<span class="prop">token</span>);
+      <span class="var">localStorage</span>.<span class="fn">setItem</span>(<span class="str">"sascosm_profile"</span>, <span class="var">JSON</span>.<span class="fn">stringify</span>(<span class="var">data</span>.<span class="prop">profile</span>));
+      <span class="fn">onAuthSuccess</span>(<span class="var">data</span>.<span class="prop">profile</span>);
+    }
+  }, <span class="num">2000</span>);
+}
+
+<span class="kw">function</span> <span class="fn">onAuthSuccess</span>(<span class="var">profile</span>) {
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"login-panel"</span>).<span class="prop">style</span>.<span class="prop">display</span>    = <span class="str">"none"</span>;
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"profile-panel"</span>).<span class="prop">style</span>.<span class="prop">display</span>  = <span class="str">"block"</span>;
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"wallet-key"</span>).<span class="prop">textContent</span>
+    = <span class="var">profile</span>.<span class="prop">lnkey</span>.<span class="fn">substring</span>(<span class="num">0</span>, <span class="num">16</span>) + <span class="str">"..."</span>;
+
+  <span class="kw">if</span> (<span class="var">profile</span>.<span class="prop">alias</span>)
+    <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"profile-alias"</span>).<span class="prop">textContent</span>
+      = <span class="str">"Alias: "</span> + <span class="var">profile</span>.<span class="prop">alias</span>;
+  <span class="kw">if</span> (<span class="var">profile</span>.<span class="prop">btc_address</span>)
+    <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"profile-btc"</span>).<span class="prop">textContent</span>
+      = <span class="str">"BTC: "</span> + <span class="var">profile</span>.<span class="prop">btc_address</span>.<span class="fn">substring</span>(<span class="num">0</span>, <span class="num">14</span>) + <span class="str">"..."</span>;
+
+  <span class="cmt">// First login — show registration form</span>
+  <span class="kw">if</span> (!<span class="var">profile</span>.<span class="prop">btc_address</span> <span class="op">&&</span> !<span class="var">profile</span>.<span class="prop">alias</span>)
+    <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"register-panel"</span>).<span class="prop">style</span>.<span class="prop">display</span> = <span class="str">"block"</span>;
+}
+
+<span class="kw">async function</span> <span class="fn">registerWallet</span>() {
+  <span class="kw">const</span> <span class="var">token</span>       = <span class="var">localStorage</span>.<span class="fn">getItem</span>(<span class="str">"sascosm_token"</span>);
+  <span class="kw">const</span> <span class="var">btc_address</span> = <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"btc-address-input"</span>).<span class="prop">value</span>;
+  <span class="kw">const</span> <span class="var">alias</span>       = <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"alias-input"</span>).<span class="prop">value</span>;
+
+  <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`<span class="var">${AUTH_SERVER}</span>/api/profile/register`</span>, {
+    <span class="prop">method</span>: <span class="str">"POST"</span>,
+    <span class="prop">headers</span>: {
+      <span class="str">"Authorization"</span>: <span class="str">`Bearer <span class="var">${token}</span>`</span>,
+      <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>
+    },
+    <span class="prop">body</span>: <span class="var">JSON</span>.<span class="fn">stringify</span>({ <span class="var">btc_address</span>, <span class="var">alias</span> })
+  });
+
+  <span class="var">document</span>.<span class="fn">getElementById</span>(<span class="str">"register-panel"</span>).<span class="prop">style</span>.<span class="prop">display</span> = <span class="str">"none"</span>;
+  alert(<span class="str">"Wallet registered to your sovereign profile."</span>);
+}
+
+<span class="cmt">// ── Auto-restore session on page load ─────────────────────────</span>
+<span class="kw">const</span> <span class="var">token</span> = <span class="var">localStorage</span>.<span class="fn">getItem</span>(<span class="str">"sascosm_token"</span>);
+<span class="kw">if</span> (<span class="var">token</span>) {
+  <span class="fn">fetch</span>(<span class="str">`<span class="var">${AUTH_SERVER}</span>/api/profile/me`</span>, {
+    <span class="prop">headers</span>: { <span class="str">"Authorization"</span>: <span class="str">`Bearer <span class="var">${token}</span>`</span> }
+  })
+  .<span class="fn">then</span>(<span class="var">r</span> <span class="op">=&gt;</span> <span class="var">r</span>.<span class="fn">json</span>())
+  .<span class="fn">then</span>(<span class="var">profile</span> <span class="op">=&gt;</span> {
+    <span class="kw">if</span> (<span class="var">profile</span>.<span class="prop">lnkey</span>) <span class="fn">onAuthSuccess</span>(<span class="var">profile</span>);
+    <span class="kw">else</span> <span class="fn">initLNAuth</span>(); <span class="cmt">// Token expired</span>
+  });
+} <span class="kw">else</span> {
+  <span class="fn">initLNAuth</span>();
+}
+&lt;/<span class="kw">script</span>&gt;</code></pre>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 07 -->
+  <section class="section" id="wallets">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Compatible Wallets</h2>
+    </div>
+
+    <div class="wallet-grid">
+      <div class="wallet-card">
+        <div class="wallet-name">Phoenix</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">Breez</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">Zeus</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">Alby</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Browser Ext</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">BlueWallet</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">Blixt</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">Muun</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+      <div class="wallet-card">
+        <div class="wallet-name">Wallet of Satoshi</div>
+        <div class="wallet-caps">
+          <span class="wcap">LNURL-Auth</span>
+          <span class="wcap-blue">Mobile</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-note">
+      <div class="callout-icon">ℹ</div>
+      <div class="callout-body">
+        <strong>Mobile Deep Link</strong>
+        The <code>lightning:LNURL...</code> href on the "Open in wallet" button triggers mobile OS wallet selection on iOS and Android, allowing users to tap-to-auth without scanning. This is the primary UX path on mobile Webflow pages.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 08 -->
+  <section class="section" id="privacy">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Privacy Properties</h2>
+    </div>
+
+    <div class="privacy-grid">
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>No Email Required</strong>
+          Zero PII collected at any point in the auth flow.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>No Password</strong>
+          Authentication is purely cryptographic. No credential to phish or leak.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>Domain-Scoped Key</strong>
+          Wallet derives a unique keypair per domain. The same user is unlinkable across sites.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>Pseudonymous by Default</strong>
+          Server stores only the Lightning public key. Alias and BTC address are opt-in.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>No IP Logging Required</strong>
+          The protocol has no dependency on IP address for identity or verification.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>Non-Custodial</strong>
+          No custody of keys, funds, or credentials at any layer.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>Tor Compatible</strong>
+          If middleware is exposed via onion address, fully air-gapped from clearnet identity.
+        </div>
+      </div>
+      <div class="privacy-prop">
+        <div class="privacy-prop-icon">✓</div>
+        <div class="privacy-prop-text">
+          <strong>No KYC Surface</strong>
+          Zero regulatory identity requirements in the default implementation.
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Exo 2',sans-serif; font-size:15px; font-weight:600; color:var(--platinum); margin:32px 0 16px;">Data Held Server-Side</h3>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Type</th>
+          <th>User Choice</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>lnkey</td>
+          <td style="color:var(--platinum-dim)">hex pubkey</td>
+          <td style="color:var(--platinum-dim)">Mandatory (auth)</td>
+          <td style="color:var(--platinum-dim)">Domain-scoped. Not linkable to other sites. Not a real identity.</td>
+        </tr>
+        <tr>
+          <td>btc_address</td>
+          <td style="color:var(--platinum-dim)">string</td>
+          <td style="color:var(--platinum-dim)">Opt-in</td>
+          <td style="color:var(--platinum-dim)">User provides during registration. Can be omitted entirely.</td>
+        </tr>
+        <tr>
+          <td>alias</td>
+          <td style="color:var(--platinum-dim)">string</td>
+          <td style="color:var(--platinum-dim)">Opt-in</td>
+          <td style="color:var(--platinum-dim)">User-chosen pseudonym. No real name collected.</td>
+        </tr>
+        <tr>
+          <td>metadata</td>
+          <td style="color:var(--platinum-dim)">JSON blob</td>
+          <td style="color:var(--platinum-dim)">Opt-in</td>
+          <td style="color:var(--platinum-dim)">Arbitrary profile data. Application-defined.</td>
+        </tr>
+        <tr>
+          <td>created_at / last_seen</td>
+          <td style="color:var(--platinum-dim)">timestamp</td>
+          <td style="color:var(--platinum-dim)">System</td>
+          <td style="color:var(--platinum-dim)">Unix ms. No timezone or geolocation inferred.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-glyph">◆</div><div class="divider-line rev"></div></div>
+
+  <!-- SECTION 09 -->
+  <section class="section" id="extensions">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Optional Extensions</h2>
+    </div>
+
+    <div class="ext-grid">
+      <div class="ext-card">
+        <div class="ext-icon">🔐</div>
+        <div class="ext-title">On-Chain Address Verification</div>
+        <div class="ext-desc">Before binding a Bitcoin address to a Lightning profile, require the user to sign a message with the private key of the on-chain address. Standard Bitcoin message signing — verifiable server-side with <code>bitcoinjs-message</code>.</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-icon">✊</div>
+        <div class="ext-title">BUMP Device Binding</div>
+        <div class="ext-desc">If the user has a BUMP KeyRing, Chain, or Band, bind the passive NFC device ID to the same profile record keyed by <code>lnkey</code>. Allows NFC proximity payments to resolve to a known sovereign profile.</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-icon">🗄</div>
+        <div class="ext-title">Webflow CMS Gating</div>
+        <div class="ext-desc">Once <code>sascosm_token</code> is set in localStorage, use Webflow Logic or a thin JS guard to show/hide CMS Collection content. Gate premium content, member pages, or protocol documentation behind Lightning identity.</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-icon">⚡</div>
+        <div class="ext-title">MYRA OS Node Identity</div>
+        <div class="ext-desc">Route the LNURL-Auth callback through your LNbits instance on the MYRA OS Docker stack. Creates a unified <code>lnkey</code> identity across BTCPay, BUMP, the SMILE Ledger, and all SASCOSM service surfaces.</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-icon">🧅</div>
+        <div class="ext-title">Tor Onion Exposure</div>
+        <div class="ext-desc">Expose the middleware via an onion address. Wallets that route via Tor will complete authentication without any clearnet IP exposure. Combine with the BTCPay Tor service already running on your stack.</div>
+      </div>
+      <div class="ext-card">
+        <div class="ext-icon">🌐</div>
+        <div class="ext-title">Redis Session Store</div>
+        <div class="ext-desc">Replace SQLite with Redis for horizontally scalable session management. Set TTL on challenge keys (5 min) and session keys (7 days) to match JWT expiry. Use <code>ioredis</code> as a drop-in replacement for the <code>better-sqlite3</code> calls.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div style="font-family:'Orbitron',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.3em; color:rgba(0,245,160,0.4); text-transform:uppercase;">
+    SASCOSM · Engineering Codex
+  </div>
+  <div class="footer-meta">
+    <strong>BTCPay + Webflow Permissionless Auth · v1.0</strong>
+    SASCOSM Architecture Division · Phuket, Thailand
+    <br/>Internal Technical Reference · March 2026
+  </div>
+  <img src="https://raw.githubusercontent.com/SASCOSM/assets/main/SASCOSM-Platinum.png"
+       alt="SASCOSM" class="footer-logo-img"
+       onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=&quot;font-family:Orbitron,sans-serif;font-size:12px;font-weight:900;letter-spacing:0.15em;color:rgba(232,232,240,0.5);&quot;>SASCOSM</span>')"/>
+</footer>
+
+<script>
+  // Scroll nav dots
+  const sections = ['overview','architecture','btcpay','middleware','docker','webflow','wallets','privacy','extensions'];
+  const dots = document.querySelectorAll('.scroll-dot');
+
+  function scrollToSection(id) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target.id);
+        if (idx >= 0) {
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+</script>
+</body>
+</html>

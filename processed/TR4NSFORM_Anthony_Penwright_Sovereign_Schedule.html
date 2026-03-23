@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta content="width=device-width,initial-scale=1" name="viewport">
+<title>TR4NSFORM — Anthony Penwright Sovereign Protocol Schedule</title>
+<style>
+  :root {
+    --bg:#f5f7fa;--panel:#ffffff;--panel-2:#f0f3f7;--text:#203040;--muted:#5f6f80;
+    --line:#d8e0e8;--shadow:0 18px 50px rgba(23,38,56,.08);
+    --rx:#2f6f45;--rxbg:#e8f6ee;--nonrx:#8a5b11;--nonrxbg:#fff4e2;
+    --rfkbg:#eef2f6;--rfktxt:#6a7681;
+    --cardiac:#b22222;--cardiacbg:#fff0f0;
+    --mito:#7b3f00;--mitobg:#fff8f0;
+    --hormone:#006699;--hormonebg:#e8f4ff;
+    --longevity:#4b006e;--longevitybg:#f8f0ff;
+    --metabolic:#1a6e1a;--metabolicbg:#f0fff0;
+    --nasal:#005580;--nasalbg:#e0f2ff;
+    --oral:#604020;--oralbg:#fff8ee;
+    --warn:#cc0000;--warnbg:#fff0f0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:linear-gradient(180deg,#f7f9fc 0%,#eef3f8 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;}
+  .wrap{max-width:1440px;margin:0 auto;padding:32px 24px 56px;}
+  .hero{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(247,250,253,.98));border:1px solid rgba(130,146,163,.22);box-shadow:var(--shadow);border-radius:28px;padding:28px;overflow:hidden;}
+  .brand-tile{display:inline-flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:22px;}
+  .brand-tile img{height:68px;width:auto;object-fit:contain;display:block;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#edf2f7;color:#5f6f80;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;}
+  h1{margin:14px 0 10px;font-size:40px;line-height:1.02;letter-spacing:-.03em;}
+  .lead{max-width:980px;font-size:16px;line-height:1.7;color:var(--muted);margin:0;}
+  .dedication{margin:20px 0;padding:18px 24px;background:linear-gradient(135deg,rgba(240,248,255,.9),rgba(248,240,255,.8));border:1px solid rgba(100,100,200,.2);border-left:4px solid #6644aa;border-radius:4px;font-style:italic;color:#334;font-size:15px;line-height:1.7;}
+  .dedication strong{color:#220;font-style:normal;}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;}
+  .stat .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;}
+  .stat .v{margin-top:10px;font-size:28px;font-weight:800;}
+  .stat .s{margin-top:8px;color:var(--muted);font-size:13px;}
+  .warn-box{margin:16px 0;background:var(--warnbg);border:1px solid rgba(180,0,0,.25);border-left:4px solid var(--warn);border-radius:4px;padding:14px 20px;font-size:13px;color:#440000;line-height:1.6;}
+  .warn-box strong{color:#880000;}
+  .controls{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--shadow);}
+  .controls input,.controls select{background:#fff;border:1px solid var(--line);color:var(--text);border-radius:14px;padding:12px 14px;font-size:14px;}
+  .controls input{min-width:280px;flex:1 1 360px;}
+  .controls .note{color:var(--muted);font-size:13px;margin-left:auto;}
+  .table-wrap{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);}
+  table{width:100%;border-collapse:separate;border-spacing:0;}
+  thead th{position:sticky;top:0;z-index:1;background:#eff4f8;color:#415164;font-size:12px;letter-spacing:.11em;text-transform:uppercase;text-align:left;padding:14px 12px;border-bottom:1px solid var(--line);}
+  tbody td{padding:14px 12px;border-bottom:1px solid #edf1f5;vertical-align:top;font-size:14px;}
+  tbody tr:hover{background:#f8fbfd;}
+  .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .price-cell{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:800;font-size:15px;color:#1a5c1a;}
+  .retail-cell{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:#999;font-size:13px;text-decoration:line-through;}
+  .prod-name{font-weight:800;margin-bottom:4px;}
+  .prod-desc{color:var(--muted);font-size:13px;line-height:1.45;}
+  .badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
+  .rx{background:var(--rxbg);color:var(--rx);}
+  .nonrx{background:var(--nonrxbg);color:var(--nonrx);}
+  .rfk-ok{background:#e8f6ee;color:#2f6f45;font-weight:800;}
+  .rfk-muted{background:var(--rfkbg);color:var(--rfktxt);}
+  .section-divider td{padding:6px 12px;font-family:monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;border-bottom:2px solid;}
+  .sec-cardiac td{background:var(--cardiacbg);color:var(--cardiac);border-bottom-color:var(--cardiac);}
+  .sec-mito td{background:var(--mitobg);color:var(--mito);border-bottom-color:var(--mito);}
+  .sec-hormone td{background:var(--hormonebg);color:var(--hormone);border-bottom-color:var(--hormone);}
+  .sec-longevity td{background:var(--longevitybg);color:var(--longevity);border-bottom-color:var(--longevity);}
+  .sec-metabolic td{background:var(--metabolicbg);color:var(--metabolic);border-bottom-color:var(--metabolic);}
+  .sec-nasal td{background:var(--nasalbg);color:var(--nasal);border-bottom-color:var(--nasal);}
+  .sec-oral td{background:var(--oralbg);color:var(--oral);border-bottom-color:var(--oral);}
+  .sec-other td{background:#f8f8f8;color:#555;border-bottom-color:#aaa;}
+  .caution-row td{background:#fff8e0;}
+  .foot{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;box-shadow:var(--shadow);}
+  .legal{color:var(--muted);font-size:13px;line-height:1.65;max-width:980px;}
+  @media(max-width:1120px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:760px){.wrap{padding:16px 12px 40px;}h1{font-size:30px;}.stat-grid{grid-template-columns:1fr;}.controls input{min-width:100%;}.table-wrap{overflow:auto;}table{min-width:900px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="brand-tile">
+<img alt="TR4NSFORM" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABcAAAANACAYAAAAM084AAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEqWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpBdHRyaWI9J2h0dHA6Ly9ucy5hdHRyaWJ1dGlvbi5jb20vYWRzLzEuMC8nPgogIDxBdHRyaWI6QWRzPgogICA8cmRmOlNlcT4KICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0nUmVzb3VyY2UnPgogICAgIDxBdHRyaWI6Q3JlYXRlZD4yMDI0LTEyLTI5PC9BdHRyaWI6Q3JlYXRlZD4KICAgICA8QXR0cmliOkV4dElkPmZjYTlkOTA4LThmYTAtNDUzOC1hYzZiLTI1ODU2YTdkMzkxMTwvQXR0cmliOkV4dElkPgogICAgIDxBdHRyaWI6RmJJZD41MjUyNjU5MTQxNzk1ODA8L0F0dHJpYjpGYklkPgogICAgIDxBdHRyaWI6VG91Y2hUeXBlPjI8L0F0dHJpYjpUb3VjaFR5cGU+CiAgICA8L3JkZjpsaT4KICAgPC9yZGY6U2VxPgogIDwvQXR0cmliOkFkcz4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6ZGM9J2h0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvJz4KICA8ZGM6dGl0bGU+CiAgIDxyZGY6QWx0PgogICAgPHJkZjpsaSB4bWw6bGFuZz0neC1kZWZhdWx0Jz5UUjROU0ZPUk0gVFI0TlNGT1JNLk1FIC0gMjwvcmRmOmxpPgogICA8L3JkZjpBbHQ+CiAgPC9kYzp0aXRsZT4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6cGRmPSdodHRwOi8vbnMuYWRvYmUuY29tL3BkZi8xLjMvJz4KICA8cGRmOkF1dGhvcj5TaW1vbiBQZW53cmlnaHQ8L3BkZjpBdXRob3I+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOnhtcD0naHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyc+CiAgPHhtcDpDcmVhdG9yVG9vbD5DYW52YSAoUmVuZGVyZXIpIGRvYz1EQUdhcERtcXVJcyB1c2VyPVVBRkhrYlVTdDhzPC94bXA6Q3JlYXRvclRvb2w+CiA8L3JkZjpEZXNjcmlwdGlvbj4KPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KPD94cGFja2V0IGVuZD0ncic/PuxJ7lAAALtKSURBVHic7NhBDQAgEMAwwL..." alt="TR4NSFORM">
+</div>
+<div class="eyebrow">Sovereign Protocol Schedule · Personal · USD</div>
+<h1>Anthony Penwright<br>Sovereign Protocol Schedule</h1>
+<div class="dedication">
+<strong>Dedicated to Anthony Penwright —</strong> father of Odin, and the inspiration behind the Thor Protocol. This is your Sensu Bean — every system addressed, every power level restored, vaccine damage reversed at the molecular level. <em>Rise. Transform. Ascend.</em>
+</div>
+<p class="lead">Personal protocol schedule — 50% sovereign partner pricing applied to all lines. Products ordered by immediate impact priority for vaccine damage reversal, myocarditis repair, and God Mode activation. Injectable vials first → nasal delivery → oral/capsules.</p>
+<div class="stat-grid">
+<div class="stat"><div class="k">Total SKUs</div><div class="v">107</div><div class="s">Complete catalog</div></div>
+<div class="stat"><div class="k">Your Discount</div><div class="v">50%</div><div class="s">Off retail price — all lines</div></div>
+<div class="stat"><div class="k">Priority Sections</div><div class="v">7</div><div class="s">Ordered by impact</div></div>
+<div class="stat"><div class="k">Format Priority</div><div class="v">Inj → Nasal → Oral</div><div class="s">Maximum potency first</div></div>
+</div>
+<div class="warn-box">
+⚠️ <strong>MYOCARDITIS PROTOCOL — PERMANENT CONTRAINDICATIONS:</strong> GHRP-2, GHRP-6, and Hexarelin are flagged below as CAUTION lines. These GH secretagogues increase cortisol, prolactin, and cardiac workload — contraindicated with active myocarditis. Only Ipamorelin (clean GH pulse, no cardiac stimulation) is cleared for GH axis use. High-dose caffeine (&gt;100mg) also contraindicated. All other products in this schedule are cardiac-safe at therapeutic doses.
+</div>
+</section>
+
+<section class="controls">
+<input id="search" placeholder="Search product name or description..." type="search">
+<select id="secFilter">
+<option value="All">All sections</option>
+<option value="CARDIAC">🫀 Cardiac &amp; Organ Repair</option>
+<option value="MITOCHONDRIAL">⚡ Mitochondrial &amp; Energy</option>
+<option value="HORMONE">🧬 Hormone &amp; GH Axis</option>
+<option value="LONGEVITY">🔬 Longevity &amp; Neuro</option>
+<option value="METABOLIC">⚖️ Metabolic &amp; Weight</option>
+<option value="NASAL">👃 Nasal Delivery</option>
+<option value="ORAL">💊 Oral &amp; Capsules</option>
+</select>
+<select id="rfkFilter">
+<option value="All">All RFK status</option>
+<option value="Yes">RFK ✓ Only</option>
+</select>
+<div class="note">All prices shown at 50% discount from retail reference.</div>
+</section>
+
+<section class="table-wrap">
+<table id="catalogTable">
+<thead>
+<tr>
+<th>#</th>
+<th>Product</th>
+<th>Category</th>
+<th>Section / Priority</th>
+<th class="retail-cell">Retail USD</th>
+<th class="price-cell">Your Price (50% off)</th>
+<th>Rx</th>
+<th>RFK</th>
+</tr>
+</thead>
+<tbody>
+<tr class="section-divider sec-cardiac" data-section="CARDIAC"><td colspan="8">🫀  SECTION A — CARDIAC &amp; ORGAN REPAIR (IMMEDIATE PRIORITY — Day 1 Protocol)</td></tr>
+<tr data-section="CARDIAC" data-name="Thymosin Beta-4 (TB-500) Myocarditis repair · systemic tissue regeneration · cardiac progenitor activation" data-rfk="Yes" class="">
+<td class="num">1</td>
+<td><div class="prod-name">Thymosin Beta-4 (TB-500)</div><div class="prod-desc">Myocarditis repair · systemic tissue regeneration · cardiac progenitor activation</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$120</td>
+<td class="price-cell">$60</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="BPC-157 (inj) Gut &amp; organ inflammation · cardiac protection · angiogenesis" data-rfk="Yes" class="">
+<td class="num">2</td>
+<td><div class="prod-name">BPC-157 (inj)</div><div class="prod-desc">Gut &amp; organ inflammation · cardiac protection · angiogenesis</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="GHK-Cu Cardiac NF-κB suppression · 31% anti-aging gene activation · gene expression reset" data-rfk="Yes" class="">
+<td class="num">3</td>
+<td><div class="prod-name">GHK-Cu</div><div class="prod-desc">Cardiac NF-κB suppression · 31% anti-aging gene activation · gene expression reset</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="GHK Collagen &amp; tissue regeneration · endothelial repair" data-rfk="Yes" class="">
+<td class="num">4</td>
+<td><div class="prod-name">GHK</div><div class="prod-desc">Collagen &amp; tissue regeneration · endothelial repair</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$85</td>
+<td class="price-cell">$42</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="KPV 10mg Direct IκBα stabilisation · organ-level NF-κB suppression · anti-inflammatory" data-rfk="Yes" class="">
+<td class="num">5</td>
+<td><div class="prod-name">KPV 10mg</div><div class="prod-desc">Direct IκBα stabilisation · organ-level NF-κB suppression · anti-inflammatory</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="SS-31 (Elamipretide) Cardiac mitochondria · cardiolipin stabilisation · electron transport chain repair" data-rfk="Yes" class="">
+<td class="num">6</td>
+<td><div class="prod-name">SS-31 (Elamipretide)</div><div class="prod-desc">Cardiac mitochondria · cardiolipin stabilisation · electron transport chain repair</div></td>
+<td>Longevity / Neuro</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$120</td>
+<td class="price-cell">$60</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="Thymosin Alpha-1 T-cell regulatory reset · vaccine-induced Th2 correction · immune rebalance" data-rfk="Yes" class="">
+<td class="num">7</td>
+<td><div class="prod-name">Thymosin Alpha-1</div><div class="prod-desc">T-cell regulatory reset · vaccine-induced Th2 correction · immune rebalance</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$115</td>
+<td class="price-cell">$57</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="Cardiogen 20mg Cardiac peptide complex · cardiac muscle regeneration" data-rfk="No" class="">
+<td class="num">8</td>
+<td><div class="prod-name">Cardiogen 20mg</div><div class="prod-desc">Cardiac peptide complex · cardiac muscle regeneration</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="LL-37 Antimicrobial immune support · innate immune restoration" data-rfk="Yes" class="">
+<td class="num">9</td>
+<td><div class="prod-name">LL-37</div><div class="prod-desc">Antimicrobial immune support · innate immune restoration</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$80</td>
+<td class="price-cell">$40</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="ARA-290 Neuropathic &amp; anti-inflammatory · tissue protection" data-rfk="No" class="">
+<td class="num">10</td>
+<td><div class="prod-name">ARA-290</div><div class="prod-desc">Neuropathic &amp; anti-inflammatory · tissue protection</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="CARDIAC" data-name="VIP 10mg Vasoactive intestinal peptide · vasodilation · anti-inflammatory" data-rfk="No" class="">
+<td class="num">11</td>
+<td><div class="prod-name">VIP 10mg</div><div class="prod-desc">Vasoactive intestinal peptide · vasodilation · anti-inflammatory</div></td>
+<td>Repair / Recovery</td>
+<td>🫀 Cardiac Priority</td>
+<td class="retail-cell">$140</td>
+<td class="price-cell">$70</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr class="section-divider sec-mito" data-section="MITOCHONDRIAL"><td colspan="8">⚡  SECTION B — MITOCHONDRIAL &amp; ENERGY RESTORATION</td></tr>
+<tr data-section="MITOCHONDRIAL" data-name="MOTS-c Mitochondrial biogenesis · AMPK pathway · Complex I repair" data-rfk="Yes" class="">
+<td class="num">12</td>
+<td><div class="prod-name">MOTS-c</div><div class="prod-desc">Mitochondrial biogenesis · AMPK pathway · Complex I repair</div></td>
+<td>Longevity / Neuro</td>
+<td>⚡ Mitochondria</td>
+<td class="retail-cell">$60</td>
+<td class="price-cell">$30</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="MITOCHONDRIAL" data-name="NAD+ inj NAD+ IV/IM · cellular energy restoration" data-rfk="Yes" class="">
+<td class="num">13</td>
+<td><div class="prod-name">NAD+ inj</div><div class="prod-desc">NAD+ IV/IM · cellular energy restoration</div></td>
+<td>Longevity / Neuro</td>
+<td>⚡ Mitochondria</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="MITOCHONDRIAL" data-name="NAD+ 100mg inj NAD+ cellular energy · mitochondrial restoration" data-rfk="Yes" class="">
+<td class="num">14</td>
+<td><div class="prod-name">NAD+ 100mg inj</div><div class="prod-desc">NAD+ cellular energy · mitochondrial restoration</div></td>
+<td>Longevity / Neuro</td>
+<td>⚡ Mitochondria</td>
+<td class="retail-cell">$60</td>
+<td class="price-cell">$30</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="MITOCHONDRIAL" data-name="Humanin 10mg Mitochondrial/longevity peptide · neuroprotection" data-rfk="No" class="">
+<td class="num">15</td>
+<td><div class="prod-name">Humanin 10mg</div><div class="prod-desc">Mitochondrial/longevity peptide · neuroprotection</div></td>
+<td>Longevity / Neuro</td>
+<td>⚡ Mitochondria</td>
+<td class="retail-cell">$280</td>
+<td class="price-cell">$140</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="MITOCHONDRIAL" data-name="AICAR 50mg AMPK/metabolic activator · mitochondrial function" data-rfk="No" class="">
+<td class="num">16</td>
+<td><div class="prod-name">AICAR 50mg</div><div class="prod-desc">AMPK/metabolic activator · mitochondrial function</div></td>
+<td>Longevity / Neuro</td>
+<td>⚡ Mitochondria</td>
+<td class="retail-cell">$140</td>
+<td class="price-cell">$70</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="MITOCHONDRIAL" data-name="L-Carnitine 600mg vial Mitochondrial fatty acid transport · metabolic support" data-rfk="No" class="">
+<td class="num">17</td>
+<td><div class="prod-name">L-Carnitine 600mg vial</div><div class="prod-desc">Mitochondrial fatty acid transport · metabolic support</div></td>
+<td>Metabolic / Weight</td>
+<td>⚡ Mitochondria</td>
+<td class="retail-cell">$50</td>
+<td class="price-cell">$25</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr class="section-divider sec-hormone" data-section="HORMONE"><td colspan="8">🧬  SECTION C — HORMONE &amp; GH AXIS RESTORATION</td></tr>
+<tr data-section="HORMONE" data-name="CJC-1295 GH pulse support · clean GH axis (no cardiac stimulation)" data-rfk="Yes" class="">
+<td class="num">18</td>
+<td><div class="prod-name">CJC-1295</div><div class="prod-desc">GH pulse support · clean GH axis (no cardiac stimulation)</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Ipamorelin GH releasing peptide · cardiac-safe · no cortisol/prolactin elevation" data-rfk="Yes" class="">
+<td class="num">19</td>
+<td><div class="prod-name">Ipamorelin</div><div class="prod-desc">GH releasing peptide · cardiac-safe · no cortisol/prolactin elevation</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Kisspeptin-10 Hormone axis activation · LH → testosterone restoration · Leydig cell support" data-rfk="Yes" class="">
+<td class="num">20</td>
+<td><div class="prod-name">Kisspeptin-10</div><div class="prod-desc">Hormone axis activation · LH → testosterone restoration · Leydig cell support</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="AOD-9604 HGH fat-loss fragment · β3-adrenergic · no cardiac effect" data-rfk="Yes" class="">
+<td class="num">21</td>
+<td><div class="prod-name">AOD-9604</div><div class="prod-desc">HGH fat-loss fragment · β3-adrenergic · no cardiac effect</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$65</td>
+<td class="price-cell">$32</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="PT-141 (inj) Libido support · melanocortin-driven mood &amp; energy" data-rfk="Yes" class="">
+<td class="num">22</td>
+<td><div class="prod-name">PT-141 (inj)</div><div class="prod-desc">Libido support · melanocortin-driven mood &amp; energy</div></td>
+<td>Other</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$50</td>
+<td class="price-cell">$25</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Melanotan II Tanning &amp; libido · mood enhancement" data-rfk="Yes" class="">
+<td class="num">23</td>
+<td><div class="prod-name">Melanotan II</div><div class="prod-desc">Tanning &amp; libido · mood enhancement</div></td>
+<td>Other</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="HGH 191AA 6–36 IU Somatropin vials · full GH restoration" data-rfk="Yes" class="">
+<td class="num">24</td>
+<td><div class="prod-name">HGH 191AA 6–36 IU</div><div class="prod-desc">Somatropin vials · full GH restoration</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$170</td>
+<td class="price-cell">$85</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Tesamorelin Visceral fat reduction · GH secretagogue" data-rfk="Yes" class="">
+<td class="num">25</td>
+<td><div class="prod-name">Tesamorelin</div><div class="prod-desc">Visceral fat reduction · GH secretagogue</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$120</td>
+<td class="price-cell">$60</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Tesamorelin 2mg Lower-dose GHRH vial" data-rfk="No" class="">
+<td class="num">26</td>
+<td><div class="prod-name">Tesamorelin 2mg</div><div class="prod-desc">Lower-dose GHRH vial</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Tesamorelin 5mg Mid-dose GHRH vial" data-rfk="No" class="">
+<td class="num">27</td>
+<td><div class="prod-name">Tesamorelin 5mg</div><div class="prod-desc">Mid-dose GHRH vial</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Sermorelin 5mg GHRH analogue vial" data-rfk="No" class="">
+<td class="num">28</td>
+<td><div class="prod-name">Sermorelin 5mg</div><div class="prod-desc">GHRH analogue vial</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="Sermorelin 10mg Higher-dose GHRH" data-rfk="No" class="">
+<td class="num">29</td>
+<td><div class="prod-name">Sermorelin 10mg</div><div class="prod-desc">Higher-dose GHRH</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="HGH Fragment 176-191 5mg Fat-loss fragment vial" data-rfk="No" class="">
+<td class="num">30</td>
+<td><div class="prod-name">HGH Fragment 176-191 5mg</div><div class="prod-desc">Fat-loss fragment vial</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="HGH Fragment 17-23 10mg Experimental GH fragment" data-rfk="No" class="">
+<td class="num">31</td>
+<td><div class="prod-name">HGH Fragment 17-23 10mg</div><div class="prod-desc">Experimental GH fragment</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="MGF 2mg Mechano-growth factor · muscle repair" data-rfk="No" class="">
+<td class="num">32</td>
+<td><div class="prod-name">MGF 2mg</div><div class="prod-desc">Mechano-growth factor · muscle repair</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="PEG-MGF 2mg Longer-acting MGF · sustained muscle repair" data-rfk="No" class="">
+<td class="num">33</td>
+<td><div class="prod-name">PEG-MGF 2mg</div><div class="prod-desc">Longer-acting MGF · sustained muscle repair</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="GDF-8 1mg Myostatin inhibitor · lean mass" data-rfk="No" class="">
+<td class="num">34</td>
+<td><div class="prod-name">GDF-8 1mg</div><div class="prod-desc">Myostatin inhibitor · lean mass</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$340</td>
+<td class="price-cell">$170</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="HORMONE" data-name="LGD-4033 Lean mass SARM" data-rfk="No" class="">
+<td class="num">35</td>
+<td><div class="prod-name">LGD-4033</div><div class="prod-desc">Lean mass SARM</div></td>
+<td>Performance / Hormonal</td>
+<td>🧬 Hormone/GH</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr class="section-divider sec-longevity" data-section="LONGEVITY"><td colspan="8">🔬  SECTION D — LONGEVITY, NEURO &amp; REPAIR</td></tr>
+<tr data-section="LONGEVITY" data-name="Epithalon Longevity &amp; telomeres · pineal restoration · telomerase activation" data-rfk="Yes" class="">
+<td class="num">36</td>
+<td><div class="prod-name">Epithalon</div><div class="prod-desc">Longevity &amp; telomeres · pineal restoration · telomerase activation</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$205</td>
+<td class="price-cell">$102</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="N-Acetyl Epitalon Amidate Extended epitalon analogue · enhanced bioavailability" data-rfk="No" class="">
+<td class="num">37</td>
+<td><div class="prod-name">N-Acetyl Epitalon Amidate</div><div class="prod-desc">Extended epitalon analogue · enhanced bioavailability</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$200</td>
+<td class="price-cell">$100</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="DSIP Deep sleep support · delta-wave architecture · nocturnal cortisol reduction" data-rfk="Yes" class="">
+<td class="num">38</td>
+<td><div class="prod-name">DSIP</div><div class="prod-desc">Deep sleep support · delta-wave architecture · nocturnal cortisol reduction</div></td>
+<td>Other</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$55</td>
+<td class="price-cell">$27</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="Cerebrolysin Neuro-repair therapy · BDNF/NGF upregulation" data-rfk="No" class="">
+<td class="num">39</td>
+<td><div class="prod-name">Cerebrolysin</div><div class="prod-desc">Neuro-repair therapy · BDNF/NGF upregulation</div></td>
+<td>Repair / Recovery</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$240</td>
+<td class="price-cell">$120</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="FOXO4-DRI Senolytic longevity · senescent cell clearance" data-rfk="No" class="">
+<td class="num">40</td>
+<td><div class="prod-name">FOXO4-DRI</div><div class="prod-desc">Senolytic longevity · senescent cell clearance</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$260</td>
+<td class="price-cell">$130</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="FOXO4 10mg Senolytic research peptide" data-rfk="No" class="">
+<td class="num">41</td>
+<td><div class="prod-name">FOXO4 10mg</div><div class="prod-desc">Senolytic research peptide</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="Pinealon 5–20mg Neurotrophic peptide · pineal/brain support" data-rfk="No" class="">
+<td class="num">42</td>
+<td><div class="prod-name">Pinealon 5–20mg</div><div class="prod-desc">Neurotrophic peptide · pineal/brain support</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="Vilon 20mg Thymic-derived peptide · immune-thymic support" data-rfk="No" class="">
+<td class="num">43</td>
+<td><div class="prod-name">Vilon 20mg</div><div class="prod-desc">Thymic-derived peptide · immune-thymic support</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="Crystagen 20mg Immune/hematologic peptide" data-rfk="No" class="">
+<td class="num">44</td>
+<td><div class="prod-name">Crystagen 20mg</div><div class="prod-desc">Immune/hematologic peptide</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="Cortagen 20mg Cortex-support peptide · cognitive support" data-rfk="No" class="">
+<td class="num">45</td>
+<td><div class="prod-name">Cortagen 20mg</div><div class="prod-desc">Cortex-support peptide · cognitive support</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="P21 (P021) 5mg Cognitive/Alzheimer's research · BDNF-related" data-rfk="No" class="">
+<td class="num">46</td>
+<td><div class="prod-name">P21 (P021) 5mg</div><div class="prod-desc">Cognitive/Alzheimer's research · BDNF-related</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$200</td>
+<td class="price-cell">$100</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="Orexin A/B 5–10mg Sleep/wake peptide · hypothalamic regulation" data-rfk="No" class="">
+<td class="num">47</td>
+<td><div class="prod-name">Orexin A/B 5–10mg</div><div class="prod-desc">Sleep/wake peptide · hypothalamic regulation</div></td>
+<td>Longevity / Neuro</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$200</td>
+<td class="price-cell">$100</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="BB10 Joint/tendon repair combo" data-rfk="No" class="">
+<td class="num">48</td>
+<td><div class="prod-name">BB10</div><div class="prod-desc">Joint/tendon repair combo</div></td>
+<td>Repair / Recovery</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="BB20 High-dose repair combo" data-rfk="No" class="">
+<td class="num">49</td>
+<td><div class="prod-name">BB20</div><div class="prod-desc">High-dose repair combo</div></td>
+<td>Repair / Recovery</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$140</td>
+<td class="price-cell">$70</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="BBG70 Skin + tendon + repair stack" data-rfk="No" class="">
+<td class="num">50</td>
+<td><div class="prod-name">BBG70</div><div class="prod-desc">Skin + tendon + repair stack</div></td>
+<td>Repair / Recovery</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$170</td>
+<td class="price-cell">$85</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="KLOW80 Advanced injury/skin protocol" data-rfk="No" class="">
+<td class="num">51</td>
+<td><div class="prod-name">KLOW80</div><div class="prod-desc">Advanced injury/skin protocol</div></td>
+<td>Repair / Recovery</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$210</td>
+<td class="price-cell">$105</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="LONGEVITY" data-name="PNC27 5–10mg Onco-support peptide" data-rfk="No" class="">
+<td class="num">52</td>
+<td><div class="prod-name">PNC27 5–10mg</div><div class="prod-desc">Onco-support peptide</div></td>
+<td>Other</td>
+<td>🔬 Longevity/Neuro</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr class="section-divider sec-other" data-section="CAUTION"><td colspan="8">⚠️  GH SECRETAGOGUES — MYOCARDITIS CAUTION LINES (Consult Clinician Before Use)</td></tr>
+<tr data-section="CAUTION" data-name="GHRP-2 5–15mg ⚠️ CAUTION — Contraindicated with myocarditis. GH secretagogue (2nd gen) — elevates cortisol &amp; cardiac load" data-rfk="No" class="caution-row">
+<td class="num">53</td>
+<td><div class="prod-name">GHRP-2 5–15mg</div><div class="prod-desc">⚠️ CAUTION — Contraindicated with myocarditis. GH secretagogue (2nd gen) — elevates cortisol &amp; cardiac load</div></td>
+<td>Performance / Hormonal</td>
+<td>⚠️ Caution/Consult</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="CAUTION" data-name="GHRP-6 5–10mg ⚠️ CAUTION — Contraindicated with myocarditis. GH secretagogue (6) — elevates cortisol &amp; cardiac load" data-rfk="No" class="caution-row">
+<td class="num">54</td>
+<td><div class="prod-name">GHRP-6 5–10mg</div><div class="prod-desc">⚠️ CAUTION — Contraindicated with myocarditis. GH secretagogue (6) — elevates cortisol &amp; cardiac load</div></td>
+<td>Performance / Hormonal</td>
+<td>⚠️ Caution/Consult</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="CAUTION" data-name="Hexarelin 5mg ⚠️ CAUTION — Contraindicated with myocarditis. Potent GHRP — strongest cardiac stimulation risk" data-rfk="No" class="caution-row">
+<td class="num">55</td>
+<td><div class="prod-name">Hexarelin 5mg</div><div class="prod-desc">⚠️ CAUTION — Contraindicated with myocarditis. Potent GHRP — strongest cardiac stimulation risk</div></td>
+<td>Performance / Hormonal</td>
+<td>⚠️ Caution/Consult</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr class="section-divider sec-metabolic" data-section="METABOLIC"><td colspan="8">⚖️  SECTION E — METABOLIC, WEIGHT &amp; AESTHETICS</td></tr>
+<tr data-section="METABOLIC" data-name="Semaglutide GLP-1 metabolic · weight &amp; insulin" data-rfk="Yes" class="">
+<td class="num">56</td>
+<td><div class="prod-name">Semaglutide</div><div class="prod-desc">GLP-1 metabolic · weight &amp; insulin</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$170</td>
+<td class="price-cell">$85</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Semaglutide 5mg (vials) GLP-1 lower-dose starter" data-rfk="No" class="">
+<td class="num">57</td>
+<td><div class="prod-name">Semaglutide 5mg (vials)</div><div class="prod-desc">GLP-1 lower-dose starter</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$140</td>
+<td class="price-cell">$70</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Semaglutide 10mg (vials) GLP-1 standard strength" data-rfk="Yes" class="">
+<td class="num">58</td>
+<td><div class="prod-name">Semaglutide 10mg (vials)</div><div class="prod-desc">GLP-1 standard strength</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$200</td>
+<td class="price-cell">$100</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Semaglutide 15mg (vials) GLP-1 escalated dose" data-rfk="No" class="">
+<td class="num">59</td>
+<td><div class="prod-name">Semaglutide 15mg (vials)</div><div class="prod-desc">GLP-1 escalated dose</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$250</td>
+<td class="price-cell">$125</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Semaglutide 20mg (vials) GLP-1 clinic dose" data-rfk="No" class="">
+<td class="num">60</td>
+<td><div class="prod-name">Semaglutide 20mg (vials)</div><div class="prod-desc">GLP-1 clinic dose</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$310</td>
+<td class="price-cell">$155</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Semaglutide 30mg (vials) GLP-1 obesity protocol" data-rfk="No" class="">
+<td class="num">61</td>
+<td><div class="prod-name">Semaglutide 30mg (vials)</div><div class="prod-desc">GLP-1 obesity protocol</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$360</td>
+<td class="price-cell">$180</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 5mg Dual agonist metabolic" data-rfk="No" class="">
+<td class="num">62</td>
+<td><div class="prod-name">Tirzepatide 5mg</div><div class="prod-desc">Dual agonist metabolic</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$190</td>
+<td class="price-cell">$95</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 10mg Dual agonist titration" data-rfk="Yes" class="">
+<td class="num">63</td>
+<td><div class="prod-name">Tirzepatide 10mg</div><div class="prod-desc">Dual agonist titration</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$250</td>
+<td class="price-cell">$125</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 15mg Dual agonist mid-tier" data-rfk="No" class="">
+<td class="num">64</td>
+<td><div class="prod-name">Tirzepatide 15mg</div><div class="prod-desc">Dual agonist mid-tier</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$280</td>
+<td class="price-cell">$140</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 20mg Dual agonist high-dose" data-rfk="No" class="">
+<td class="num">65</td>
+<td><div class="prod-name">Tirzepatide 20mg</div><div class="prod-desc">Dual agonist high-dose</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$340</td>
+<td class="price-cell">$170</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 30mg Dual agonist obesity" data-rfk="No" class="">
+<td class="num">66</td>
+<td><div class="prod-name">Tirzepatide 30mg</div><div class="prod-desc">Dual agonist obesity</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$390</td>
+<td class="price-cell">$195</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 40mg Dual agonist escalation" data-rfk="No" class="">
+<td class="num">67</td>
+<td><div class="prod-name">Tirzepatide 40mg</div><div class="prod-desc">Dual agonist escalation</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$440</td>
+<td class="price-cell">$220</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tirzepatide 50–120mg (bulk) Specialist compounding only" data-rfk="No" class="">
+<td class="num">68</td>
+<td><div class="prod-name">Tirzepatide 50–120mg (bulk)</div><div class="prod-desc">Specialist compounding only</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$560</td>
+<td class="price-cell">$280</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Retatrutide 4mg Triple-agonist metabolic" data-rfk="No" class="">
+<td class="num">69</td>
+<td><div class="prod-name">Retatrutide 4mg</div><div class="prod-desc">Triple-agonist metabolic</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$180</td>
+<td class="price-cell">$90</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Retatrutide 5mg Triple agonist starter" data-rfk="No" class="">
+<td class="num">70</td>
+<td><div class="prod-name">Retatrutide 5mg</div><div class="prod-desc">Triple agonist starter</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Retatrutide 6mg Triple-agonist metabolic" data-rfk="No" class="">
+<td class="num">71</td>
+<td><div class="prod-name">Retatrutide 6mg</div><div class="prod-desc">Triple-agonist metabolic</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Retatrutide 10mg Triple agonist mid" data-rfk="Yes" class="">
+<td class="num">72</td>
+<td><div class="prod-name">Retatrutide 10mg</div><div class="prod-desc">Triple agonist mid</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$280</td>
+<td class="price-cell">$140</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Retatrutide 15mg Triple agonist escalated" data-rfk="No" class="">
+<td class="num">73</td>
+<td><div class="prod-name">Retatrutide 15mg</div><div class="prod-desc">Triple agonist escalated</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$340</td>
+<td class="price-cell">$170</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Retatrutide 20–60mg High-dose obesity / trials" data-rfk="No" class="">
+<td class="num">74</td>
+<td><div class="prod-name">Retatrutide 20–60mg</div><div class="prod-desc">High-dose obesity / trials</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$450</td>
+<td class="price-cell">$225</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Cagrilintide 5mg Amylin analogue, appetite" data-rfk="No" class="">
+<td class="num">75</td>
+<td><div class="prod-name">Cagrilintide 5mg</div><div class="prod-desc">Amylin analogue, appetite</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$170</td>
+<td class="price-cell">$85</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Cagrilintide 10mg Amylin analogue higher dose" data-rfk="No" class="">
+<td class="num">76</td>
+<td><div class="prod-name">Cagrilintide 10mg</div><div class="prod-desc">Amylin analogue higher dose</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$230</td>
+<td class="price-cell">$115</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="CS10 Combo GLP-1/amylin vial" data-rfk="No" class="">
+<td class="num">77</td>
+<td><div class="prod-name">CS10</div><div class="prod-desc">Combo GLP-1/amylin vial</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$280</td>
+<td class="price-cell">$140</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="RC10 Triple agonist + amylin stack" data-rfk="No" class="">
+<td class="num">78</td>
+<td><div class="prod-name">RC10</div><div class="prod-desc">Triple agonist + amylin stack</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$340</td>
+<td class="price-cell">$170</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Dulaglutide 5–10mg Long-acting GLP-1 analogue" data-rfk="No" class="">
+<td class="num">79</td>
+<td><div class="prod-name">Dulaglutide 5–10mg</div><div class="prod-desc">Long-acting GLP-1 analogue</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Liraglutide 5–30mg Daily GLP-1 vial" data-rfk="No" class="">
+<td class="num">80</td>
+<td><div class="prod-name">Liraglutide 5–30mg</div><div class="prod-desc">Daily GLP-1 vial</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$200</td>
+<td class="price-cell">$100</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="GP GLP-1 5mg Generic GLP-1 research vial" data-rfk="No" class="">
+<td class="num">81</td>
+<td><div class="prod-name">GP GLP-1 5mg</div><div class="prod-desc">Generic GLP-1 research vial</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$170</td>
+<td class="price-cell">$85</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Survodutide Advanced metabolic" data-rfk="No" class="">
+<td class="num">82</td>
+<td><div class="prod-name">Survodutide</div><div class="prod-desc">Advanced metabolic</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Tesofensine Appetite suppression" data-rfk="No" class="">
+<td class="num">83</td>
+<td><div class="prod-name">Tesofensine</div><div class="prod-desc">Appetite suppression</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$180</td>
+<td class="price-cell">$90</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="5-Amino-1MQ Metabolic rate support · NNMT inhibitor · NAD+ restoration" data-rfk="No" class="">
+<td class="num">84</td>
+<td><div class="prod-name">5-Amino-1MQ</div><div class="prod-desc">Metabolic rate support · NNMT inhibitor · NAD+ restoration</div></td>
+<td>Other</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$210</td>
+<td class="price-cell">$105</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Adipotide (FTTP) 5mg Experimental fat-loss peptide" data-rfk="No" class="">
+<td class="num">85</td>
+<td><div class="prod-name">Adipotide (FTTP) 5mg</div><div class="prod-desc">Experimental fat-loss peptide</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$220</td>
+<td class="price-cell">$110</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Lipo-C / Lipo-B / Lipo-Mino mixes Lipotropic injectable blends" data-rfk="Yes" class="">
+<td class="num">86</td>
+<td><div class="prod-name">Lipo-C / Lipo-B / Lipo-Mino mixes</div><div class="prod-desc">Lipotropic injectable blends</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="SUPER Human Blend Amino acid performance blend" data-rfk="Yes" class="">
+<td class="num">87</td>
+<td><div class="prod-name">SUPER Human Blend</div><div class="prod-desc">Amino acid performance blend</div></td>
+<td>Performance / Hormonal</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$140</td>
+<td class="price-cell">$70</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="GAZ immune blend Glutathione/VC/Zn immune drip" data-rfk="Yes" class="">
+<td class="num">88</td>
+<td><div class="prod-name">GAZ immune blend</div><div class="prod-desc">Glutathione/VC/Zn immune drip</div></td>
+<td>Other</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="SHRED / Super Shred blends Lipo + carnitine + stim blends" data-rfk="Yes" class="">
+<td class="num">89</td>
+<td><div class="prod-name">SHRED / Super Shred blends</div><div class="prod-desc">Lipo + carnitine + stim blends</div></td>
+<td>Metabolic / Weight</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$130</td>
+<td class="price-cell">$65</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Hyaluronic Acid 5mg Skin/dermal filler vial" data-rfk="No" class="">
+<td class="num">90</td>
+<td><div class="prod-name">Hyaluronic Acid 5mg</div><div class="prod-desc">Skin/dermal filler vial</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Botulinum toxin 100 IU Botox-equivalent vial" data-rfk="No" class="">
+<td class="num">91</td>
+<td><div class="prod-name">Botulinum toxin 100 IU</div><div class="prod-desc">Botox-equivalent vial</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$340</td>
+<td class="price-cell">$170</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="METABOLIC" data-name="Healthy Hair Skin Nails blend Nutrient beauty blend" data-rfk="Yes" class="">
+<td class="num">92</td>
+<td><div class="prod-name">Healthy Hair Skin Nails blend</div><div class="prod-desc">Nutrient beauty blend</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>⚖️ Metabolic</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr class="section-divider sec-nasal" data-section="NASAL"><td colspan="8">👃  SECTION F — NASAL DELIVERY (Oxytocin Priority)</td></tr>
+<tr data-section="NASAL" data-name="Oxytocin nasal Immediate cortisol suppression · vagal tone · vasodilation · mood · anti-inflammatory" data-rfk="Yes" class="">
+<td class="num">93</td>
+<td><div class="prod-name">Oxytocin nasal</div><div class="prod-desc">Immediate cortisol suppression · vagal tone · vasodilation · mood · anti-inflammatory</div></td>
+<td>Nasal / Neuromodulation</td>
+<td>👃 Nasal</td>
+<td class="retail-cell">$35</td>
+<td class="price-cell">$17</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="NASAL" data-name="Semax nasal Cognitive focus · BDNF/NGF upregulation · dopamine sensitisation" data-rfk="Yes" class="">
+<td class="num">94</td>
+<td><div class="prod-name">Semax nasal</div><div class="prod-desc">Cognitive focus · BDNF/NGF upregulation · dopamine sensitisation</div></td>
+<td>Nasal / Neuromodulation</td>
+<td>👃 Nasal</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="NASAL" data-name="Selank nasal Calm &amp; anxiolytic · GABA modulation · no cardiac effect" data-rfk="Yes" class="">
+<td class="num">95</td>
+<td><div class="prod-name">Selank nasal</div><div class="prod-desc">Calm &amp; anxiolytic · GABA modulation · no cardiac effect</div></td>
+<td>Nasal / Neuromodulation</td>
+<td>👃 Nasal</td>
+<td class="retail-cell">$110</td>
+<td class="price-cell">$55</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="NASAL" data-name="PE-22-28 nasal Mood modulation · serotonin pathway" data-rfk="Yes" class="">
+<td class="num">96</td>
+<td><div class="prod-name">PE-22-28 nasal</div><div class="prod-desc">Mood modulation · serotonin pathway</div></td>
+<td>Nasal / Neuromodulation</td>
+<td>👃 Nasal</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr class="section-divider sec-oral" data-section="ORAL"><td colspan="8">💊  SECTION G — ORAL / CAPSULE OPTIONS</td></tr>
+<tr data-section="ORAL" data-name="BPC-157 (oral) Gut repair capsules · organ inflammation · serotonin site restoration" data-rfk="Yes" class="">
+<td class="num">97</td>
+<td><div class="prod-name">BPC-157 (oral)</div><div class="prod-desc">Gut repair capsules · organ inflammation · serotonin site restoration</div></td>
+<td>Repair / Recovery</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="SS-31 oral Mitochondrial support capsules · cardiac mitochondria" data-rfk="Yes" class="">
+<td class="num">98</td>
+<td><div class="prod-name">SS-31 oral</div><div class="prod-desc">Mitochondrial support capsules · cardiac mitochondria</div></td>
+<td>Longevity / Neuro</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$80</td>
+<td class="price-cell">$40</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="Dihexa (oral) Cognitive enhancement · HGF/c-Met · synaptogenesis · Saiyan neural upgrade" data-rfk="Yes" class="">
+<td class="num">99</td>
+<td><div class="prod-name">Dihexa (oral)</div><div class="prod-desc">Cognitive enhancement · HGF/c-Met · synaptogenesis · Saiyan neural upgrade</div></td>
+<td>Other</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$160</td>
+<td class="price-cell">$80</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="MK-677 GH oral secretagogue · appetite · IGF-1" data-rfk="Yes" class="">
+<td class="num">100</td>
+<td><div class="prod-name">MK-677</div><div class="prod-desc">GH oral secretagogue · appetite · IGF-1</div></td>
+<td>Performance / Hormonal</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$120</td>
+<td class="price-cell">$60</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="NMN NAD+ longevity · oral mitochondrial support" data-rfk="Yes" class="">
+<td class="num">101</td>
+<td><div class="prod-name">NMN</div><div class="prod-desc">NAD+ longevity · oral mitochondrial support</div></td>
+<td>Longevity / Neuro</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$100</td>
+<td class="price-cell">$50</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="DHH-B Stress/anxiety calming · oral" data-rfk="Yes" class="">
+<td class="num">102</td>
+<td><div class="prod-name">DHH-B</div><div class="prod-desc">Stress/anxiety calming · oral</div></td>
+<td>Other</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$60</td>
+<td class="price-cell">$30</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="Noopept Focus &amp; memory · oral nootropic" data-rfk="Yes" class="">
+<td class="num">103</td>
+<td><div class="prod-name">Noopept</div><div class="prod-desc">Focus &amp; memory · oral nootropic</div></td>
+<td>Other</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$30</td>
+<td class="price-cell">$15</td>
+<td><span class="badge rx">Rx Only</span></td>
+<td><span class="badge rfk-ok">RFK ✓</span></td>
+</tr>
+<tr data-section="ORAL" data-name="Snap-8 Anti-wrinkle cosmetic peptide · topical/oral" data-rfk="No" class="">
+<td class="num">104</td>
+<td><div class="prod-name">Snap-8</div><div class="prod-desc">Anti-wrinkle cosmetic peptide · topical/oral</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="ORAL" data-name="Matrixyl 10mg Collagen cosmetic peptide · oral/topical" data-rfk="No" class="">
+<td class="num">105</td>
+<td><div class="prod-name">Matrixyl 10mg</div><div class="prod-desc">Collagen cosmetic peptide · oral/topical</div></td>
+<td>Aesthetics / Cosmetic</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$70</td>
+<td class="price-cell">$35</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="ORAL" data-name="Lemon Bottle 10ml Cosmetic fat-dissolve brand" data-rfk="No" class="">
+<td class="num">106</td>
+<td><div class="prod-name">Lemon Bottle 10ml</div><div class="prod-desc">Cosmetic fat-dissolve brand</div></td>
+<td>Metabolic / Weight</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr>
+<tr data-section="ORAL" data-name="LIPO Lab 10ml Branded fat-dissolve" data-rfk="No" class="">
+<td class="num">107</td>
+<td><div class="prod-name">LIPO Lab 10ml</div><div class="prod-desc">Branded fat-dissolve</div></td>
+<td>Metabolic / Weight</td>
+<td>💊 Oral</td>
+<td class="retail-cell">$90</td>
+<td class="price-cell">$45</td>
+<td><span class="badge nonrx">Non-Rx</span></td>
+<td><span class="badge rfk-muted">—</span></td>
+</tr></tbody>
+</table>
+</section>
+
+<section class="foot">
+<div class="legal">
+<strong>TR4NSFORM Sovereign Partner Schedule — Anthony Penwright — March 2026.</strong><br>
+All prices shown at 50% sovereign discount from retail reference pricing. "Rx Only" is a commercial distribution flag, not jurisdiction-specific legal opinion. "RFK ✓" is mapped from the TR4NSFORM Product Catalogue source. These compounds are provided for research, educational, and wellness optimisation purposes only. Always consult a qualified healthcare professional — particularly with active myocarditis or cardiovascular conditions. TR4NSFORM APAC PTE LTD and SASCOSM assume no liability.
+</div>
+</section>
+</div>
+
+<script>
+const search = document.getElementById('search');
+const secFilter = document.getElementById('secFilter');
+const rfkFilter = document.getElementById('rfkFilter');
+const rows = Array.from(document.querySelectorAll('#catalogTable tbody tr'));
+
+function applyFilters() {
+  const q = search.value.toLowerCase().trim();
+  const sec = secFilter.value;
+  const rfk = rfkFilter.value;
+  rows.forEach(row => {
+    if (row.classList.contains('section-divider')) {
+      row.style.display = (sec === 'All' || row.dataset.section === sec) ? '' : 'none';
+      return;
+    }
+    const hay = (row.dataset.name || '').toLowerCase();
+    const okQ = !q || hay.includes(q);
+    const okSec = sec === 'All' || row.dataset.section === sec;
+    const okRfk = rfk === 'All' || row.dataset.rfk === rfk;
+    row.style.display = (okQ && okSec && okRfk) ? '' : 'none';
+  });
+}
+
+search.addEventListener('input', applyFilters);
+secFilter.addEventListener('change', applyFilters);
+rfkFilter.addEventListener('change', applyFilters);
+</script>
+</body></html>
