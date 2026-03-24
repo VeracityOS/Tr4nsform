@@ -524,12 +524,18 @@ body::after {
 /* ═══════════════════════════════════════════
    PROTOCOL OUTPUT (Step 4)
    ═══════════════════════════════════════════ */
+/* Protocol grid — 2-col on desktop */
+.protocol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
 .protocol-card {
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: var(--r);
-  padding: 28px;
-  margin-bottom: 16px;
+  padding: 16px 16px 14px;
   position: relative;
   overflow: hidden;
 }
@@ -537,22 +543,28 @@ body::after {
   content: '';
   position: absolute;
   top: 0; left: 0;
-  width: 4px;
+  width: 3px;
   height: 100%;
 }
 .protocol-card[data-type="primary"]::before { background: var(--bio); }
 .protocol-card[data-type="support"]::before { background: var(--neural); }
 .protocol-card[data-type="optional"]::before { background: var(--vital); }
 
+.proto-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
 .proto-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  font-size: 8px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 4px;
   display: inline-block;
-  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 .protocol-card[data-type="primary"] .proto-badge { color: var(--bio); background: var(--bio-glass); }
 .protocol-card[data-type="support"] .proto-badge { color: var(--neural); background: var(--neural-glass); }
@@ -561,33 +573,31 @@ body::after {
 .proto-name {
   font-family: 'Syne', sans-serif;
   font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 4px;
+  font-size: 15px;
 }
 .proto-category {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  line-height: 1.3;
 }
 .proto-details {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
+  display: flex;
+  gap: 16px;
+  padding-top: 10px;
   border-top: 1px solid var(--border);
 }
 .proto-detail-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  font-size: 8px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .proto-detail-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text);
 }
@@ -596,11 +606,11 @@ body::after {
   background: var(--signal-glass);
   border: 1px solid rgba(74,180,245,0.15);
   border-radius: var(--r-sm);
-  padding: 16px 20px;
-  margin-top: 24px;
-  font-size: 13px;
+  padding: 12px 16px;
+  margin-top: 8px;
+  font-size: 12px;
   color: var(--text-2);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 .protocol-note strong { color: var(--signal); }
 
@@ -848,8 +858,8 @@ body::after {
 @media (max-width: 640px) {
   .panel-title { font-size: 22px; }
   .goal-grid { grid-template-columns: repeat(2, 1fr); }
+  .protocol-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
-  .proto-details { grid-template-columns: 1fr 1fr; }
   .payment-options { flex-direction: column; }
   .btn-row { flex-direction: column; }
   .btn { width: 100%; text-align: center; }
@@ -1140,88 +1150,50 @@ body::after {
       <p class="panel-subtitle">Based on your goals and safety assessment, here is your recommended non-Rx peptide protocol.</p>
     </div>
 
-    <div class="protocol-card" data-type="primary">
-      <div class="proto-badge">Primary</div>
-      <div class="proto-name">BPC-157</div>
-      <div class="proto-category">Recovery · Gut Regeneration · Tissue Repair</div>
-      <div class="proto-details">
-        <div>
-          <div class="proto-detail-label">Format</div>
-          <div class="proto-detail-value">Capsule</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Suggested Use</div>
-          <div class="proto-detail-value">500mcg / day</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Duration</div>
-          <div class="proto-detail-value">30-day cycle</div>
+    <div class="protocol-grid">
+      <div class="protocol-card" data-type="primary">
+        <div class="proto-top"><div class="proto-badge">Primary</div><div class="proto-name">BPC-157</div></div>
+        <div class="proto-category">Recovery · Gut Regeneration · Tissue Repair</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Capsule</div></div>
+          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">500mcg/d</div></div>
+          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">30 days</div></div>
         </div>
       </div>
-    </div>
 
-    <div class="protocol-card" data-type="primary">
-      <div class="proto-badge">Primary</div>
-      <div class="proto-name">Epithalon</div>
-      <div class="proto-category">Longevity · Telomere Support · Anti-Ageing</div>
-      <div class="proto-details">
-        <div>
-          <div class="proto-detail-label">Format</div>
-          <div class="proto-detail-value">Nasal Spray</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Suggested Use</div>
-          <div class="proto-detail-value">5mg / day</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Duration</div>
-          <div class="proto-detail-value">20-day cycle</div>
+      <div class="protocol-card" data-type="primary">
+        <div class="proto-top"><div class="proto-badge">Primary</div><div class="proto-name">Epithalon</div></div>
+        <div class="proto-category">Longevity · Telomere Support · Anti-Ageing</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Nasal Spray</div></div>
+          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">5mg/d</div></div>
+          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">20 days</div></div>
         </div>
       </div>
-    </div>
 
-    <div class="protocol-card" data-type="support">
-      <div class="proto-badge">Support</div>
-      <div class="proto-name">KPV</div>
-      <div class="proto-category">Gut Barrier · Anti-Inflammatory · Mucosal Immunity</div>
-      <div class="proto-details">
-        <div>
-          <div class="proto-detail-label">Format</div>
-          <div class="proto-detail-value">Capsule</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Suggested Use</div>
-          <div class="proto-detail-value">200mcg / day</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Duration</div>
-          <div class="proto-detail-value">30-day cycle</div>
+      <div class="protocol-card" data-type="support">
+        <div class="proto-top"><div class="proto-badge">Support</div><div class="proto-name">KPV</div></div>
+        <div class="proto-category">Gut Barrier · Anti-Inflammatory · Mucosal Immunity</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Capsule</div></div>
+          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">200mcg/d</div></div>
+          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">30 days</div></div>
         </div>
       </div>
-    </div>
 
-    <div class="protocol-card" data-type="optional">
-      <div class="proto-badge">Optional Add-on</div>
-      <div class="proto-name">Dihexa</div>
-      <div class="proto-category">Cognitive · Neuroplasticity · Memory</div>
-      <div class="proto-details">
-        <div>
-          <div class="proto-detail-label">Format</div>
-          <div class="proto-detail-value">Capsule</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Suggested Use</div>
-          <div class="proto-detail-value">10mg / day</div>
-        </div>
-        <div>
-          <div class="proto-detail-label">Duration</div>
-          <div class="proto-detail-value">30-day cycle</div>
+      <div class="protocol-card" data-type="optional">
+        <div class="proto-top"><div class="proto-badge">Optional</div><div class="proto-name">Dihexa</div></div>
+        <div class="proto-category">Cognitive · Neuroplasticity · Memory</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Capsule</div></div>
+          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">10mg/d</div></div>
+          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">30 days</div></div>
         </div>
       </div>
     </div>
 
     <div class="protocol-note">
-      <strong>ℹ️ Disclaimer:</strong> This protocol output is for informational reference only. Dosage placeholders are shown where compliant. All orders are subject to admin review before fulfillment. TR4NSFORM does not provide medical advice.
+      <strong>ℹ️ Disclaimer:</strong> Protocol output is for informational reference only. All orders subject to admin review. TR4NSFORM does not provide medical advice.
     </div>
 
     <div class="btn-row">
