@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM — Own Your Biology. Build Your Protocol.</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -96,7 +97,9 @@
   margin-bottom: 16px;
 }
 .how-icon {
-  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: var(--bio);
   margin-bottom: 16px;
 }
 .how-card h3 {
@@ -143,7 +146,9 @@
   color: inherit;
 }
 .preview-card .p-icon {
-  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: var(--bio);
   margin-bottom: 12px;
 }
 .preview-card .p-name {
@@ -176,8 +181,14 @@
   text-align: center;
 }
 .trust-card .t-icon {
-  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: var(--bio);
   margin-bottom: 12px;
+}
+.wallet-icon {
+  width: 24px;
+  height: 24px;
 }
 .trust-card .t-label {
   font-family: 'Syne', sans-serif;
@@ -267,7 +278,7 @@
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
-      <button class="nav-toggle">&#9776;</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
     </div>
   </header>
 
@@ -275,7 +286,7 @@
        HERO
        ══════════════════════════════════════ -->
   <section class="hero">
-    <div class="hero-eyebrow">&#9670; Sovereign Peptide Platform</div>
+    <div class="hero-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Sovereign Peptide Platform</div>
     <h1>Own Your Biology.<br/>Build Your Protocol.</h1>
     <p class="hero-sub">
       Non-Rx, evidence-based, sovereign peptide protocols designed around your unique biology.
@@ -292,26 +303,26 @@
        ══════════════════════════════════════ -->
   <section class="how-it-works">
     <div style="text-align:center">
-      <div class="eyebrow">&#9670; How It Works</div>
+      <div class="eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> How It Works</div>
       <h2 style="font-size:28px; margin-bottom:8px;">Three Steps to Your Protocol</h2>
       <p style="color:var(--text-2); font-size:15px;">From goals to a fully personalised, safety-cleared peptide stack.</p>
     </div>
     <div class="how-grid">
       <div class="how-card">
         <div class="how-number">STEP 01</div>
-        <div class="how-icon">&#127919;</div>
+        <i data-lucide="target" class="how-icon"></i>
         <h3>Set Your Goals</h3>
         <p>Choose from 8 optimisation goals spanning body, mind and soul. Pick one or stack multiple.</p>
       </div>
       <div class="how-card">
         <div class="how-number">STEP 02</div>
-        <div class="how-icon">&#128737;</div>
+        <i data-lucide="shield-check" class="how-icon"></i>
         <h3>Safety Gate</h3>
         <p>Every protocol runs through our clinical safety gate &mdash; contraindication checks, interaction screening, and dosage validation.</p>
       </div>
       <div class="how-card">
         <div class="how-number">STEP 03</div>
-        <div class="how-icon">&#9889;</div>
+        <i data-lucide="sparkles" class="how-icon"></i>
         <h3>Your Protocol</h3>
         <p>Receive a personalised peptide stack with dosing, cycling, and optional boosts &mdash; ready to order.</p>
       </div>
@@ -323,68 +334,68 @@
        ══════════════════════════════════════ -->
   <section class="preview-section">
     <div style="text-align:center">
-      <div class="eyebrow">&#9670; Protocol Categories</div>
+      <div class="eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Protocol Categories</div>
       <h2 style="font-size:28px; margin-bottom:8px;">12 Optimisation Protocols</h2>
       <p style="color:var(--text-2); font-size:15px;">Each protocol is a complete stack covering peptides, botanicals, cannabinoids, hydrogen and lifestyle pillars.</p>
     </div>
     <div class="preview-grid">
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#127769;</div>
+        <i data-lucide="moon" class="p-icon"></i>
         <div class="p-name">Sleep</div>
         <div class="p-tagline">Architecture &amp; deep restoration</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#128524;</div>
+        <i data-lucide="cloud" class="p-icon"></i>
         <div class="p-name">Calm</div>
         <div class="p-tagline">Resilience &amp; nervous system</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#129504;</div>
+        <i data-lucide="brain" class="p-icon"></i>
         <div class="p-name">Brain</div>
         <div class="p-tagline">Cognition &amp; neuroplasticity</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#9889;</div>
+        <i data-lucide="zap" class="p-icon"></i>
         <div class="p-name">Energy</div>
         <div class="p-tagline">Mitochondrial vitality</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#129516;</div>
+        <i data-lucide="dna" class="p-icon"></i>
         <div class="p-name">Gut</div>
         <div class="p-tagline">Microbiome regeneration</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#128170;</div>
+        <i data-lucide="shield" class="p-icon"></i>
         <div class="p-name">Immunity</div>
         <div class="p-tagline">Immune fortification</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#129657;</div>
+        <i data-lucide="activity" class="p-icon"></i>
         <div class="p-name">Recovery</div>
         <div class="p-tagline">Injury &amp; tissue repair</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#9878;</div>
+        <i data-lucide="atom" class="p-icon"></i>
         <div class="p-name">Hormones</div>
         <div class="p-tagline">Endocrine balance</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#8734;</div>
+        <i data-lucide="infinity" class="p-icon"></i>
         <div class="p-name">Longevity</div>
         <div class="p-tagline">Anti-ageing &amp; telomeres</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#127942;</div>
+        <i data-lucide="trophy" class="p-icon"></i>
         <div class="p-name">Performance</div>
         <div class="p-tagline">Peak physical output</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#128293;</div>
+        <i data-lucide="flame" class="p-icon"></i>
         <div class="p-name">Metabolic</div>
         <div class="p-tagline">Metabolic optimisation</div>
       </a>
       <a href="protocol-detail.html" class="preview-card">
-        <div class="p-icon">&#128156;</div>
+        <i data-lucide="heart" class="p-icon"></i>
         <div class="p-name">Sensu</div>
         <div class="p-tagline">Intimacy &amp; vitality</div>
       </a>
@@ -396,28 +407,28 @@
        ══════════════════════════════════════ -->
   <section class="trust-section">
     <div style="text-align:center">
-      <div class="eyebrow">&#9670; Trust &amp; Sovereignty</div>
+      <div class="eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Trust &amp; Sovereignty</div>
       <h2 style="font-size:28px; margin-bottom:8px;">Built for Sovereignty</h2>
       <p style="color:var(--text-2); font-size:15px;">Your biology, your data, your control.</p>
     </div>
     <div class="trust-grid">
       <div class="trust-card">
-        <div class="t-icon">&#128154;</div>
+        <i data-lucide="pill" class="t-icon"></i>
         <div class="t-label">Non-Rx Only</div>
         <div class="t-desc">All compounds are non-prescription. No controlled substances, no legal grey areas.</div>
       </div>
       <div class="trust-card">
-        <div class="t-icon">&#128218;</div>
+        <i data-lucide="book-open" class="t-icon"></i>
         <div class="t-label">Evidence-Based</div>
         <div class="t-desc">Every protocol backed by peer-reviewed research and clinical-grade safety gates.</div>
       </div>
       <div class="trust-card">
-        <div class="t-icon">&#128274;</div>
+        <i data-lucide="lock" class="t-icon"></i>
         <div class="t-label">Encrypted Vault</div>
         <div class="t-desc">Health data stored in your personal encrypted vault. Zero-knowledge architecture.</div>
       </div>
       <div class="trust-card">
-        <div class="t-icon">&#128279;</div>
+        <i data-lucide="wallet" class="t-icon"></i>
         <div class="t-label">Wallet Auth</div>
         <div class="t-desc">Connect with your Web3 wallet. No passwords, no centralised accounts.</div>
       </div>
@@ -469,21 +480,21 @@
     <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
     <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <span class="wallet-icon">&#129418;</span>
+      <i data-lucide="hexagon" class="wallet-icon"></i>
       <div>
         <div class="wallet-name">MetaMask</div>
         <div class="wallet-desc">Browser extension wallet</div>
       </div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <span class="wallet-icon">&#128279;</span>
+      <i data-lucide="link" class="wallet-icon"></i>
       <div>
         <div class="wallet-name">WalletConnect</div>
         <div class="wallet-desc">Mobile wallet via QR</div>
       </div>
     </div>
     <div class="wallet-option" onclick="connectWallet('phantom')">
-      <span class="wallet-icon">&#128123;</span>
+      <i data-lucide="ghost" class="wallet-icon"></i>
       <div>
         <div class="wallet-name">Phantom</div>
         <div class="wallet-desc">Solana ecosystem wallet</div>
@@ -498,5 +509,6 @@
 
 <script src="js/nav.js"></script>
 <script src="js/components.js"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

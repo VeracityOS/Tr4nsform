@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM · ZKP Clinical Consultation</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -19,7 +20,7 @@
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
-      <button class="nav-toggle">☰</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
     </div>
   </header>
 
@@ -118,7 +119,7 @@
     </div>
 
     <div class="card" style="padding:32px;text-align:center;" id="zkpCard">
-      <div style="font-size:32px;margin-bottom:16px;" id="zkpIcon">&#x1F510;</div>
+      <div style="margin-bottom:16px;" id="zkpIcon"><i data-lucide="lock" style="width:32px;height:32px;color:var(--bio)"></i></div>
       <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;" id="zkpTitle">Generating zero-knowledge proof...</div>
 
       <!-- Progress bar -->
@@ -130,19 +131,19 @@
       <!-- Proof Steps -->
       <div style="text-align:left;max-width:400px;margin:0 auto;" id="proofSteps">
         <div class="zkp-step" id="zs-1" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text-muted);">
-          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span class="zkp-check" style="width:20px;text-align:center;display:flex;align-items:center;justify-content:center;"><i data-lucide="circle" style="width:14px;height:14px"></i></span>
           <span>Selecting health criteria</span>
         </div>
         <div class="zkp-step" id="zs-2" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text-muted);">
-          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span class="zkp-check" style="width:20px;text-align:center;display:flex;align-items:center;justify-content:center;"><i data-lucide="circle" style="width:14px;height:14px"></i></span>
           <span>Computing proof circuit</span>
         </div>
         <div class="zkp-step" id="zs-3" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text-muted);">
-          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span class="zkp-check" style="width:20px;text-align:center;display:flex;align-items:center;justify-content:center;"><i data-lucide="circle" style="width:14px;height:14px"></i></span>
           <span>Generating witnesses</span>
         </div>
         <div class="zkp-step" id="zs-4" style="display:flex;align-items:center;gap:12px;padding:10px 0;color:var(--text-muted);">
-          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span class="zkp-check" style="width:20px;text-align:center;display:flex;align-items:center;justify-content:center;"><i data-lucide="circle" style="width:14px;height:14px"></i></span>
           <span>Finalizing proof</span>
         </div>
       </div>
@@ -178,7 +179,7 @@
   <!-- ═══ STEP 3: Proof Transmitted ═══ -->
   <div class="step-panel" id="step-3">
     <div class="panel-header" style="text-align:center;">
-      <div style="font-size:48px;margin-bottom:16px;">&#x2705;</div>
+      <div style="margin-bottom:16px;"><i data-lucide="check-circle" style="width:48px;height:48px;color:var(--regen)"></i></div>
       <h2 class="panel-title">Proof Packet Sent Securely</h2>
       <p class="panel-subtitle" style="margin:0 auto;">Your zero-knowledge proof has been transmitted to the clinical review network.</p>
     </div>
@@ -219,7 +220,7 @@
   <!-- ═══ STEP 4: Consultation Status ═══ -->
   <div class="step-panel" id="step-4">
     <div class="panel-header" style="text-align:center;">
-      <div style="font-size:48px;margin-bottom:16px;">&#x1F9EC;</div>
+      <div style="margin-bottom:16px;"><i data-lucide="dna" style="width:48px;height:48px;color:var(--bio)"></i></div>
       <h2 class="panel-title">Consultation Status</h2>
     </div>
 
@@ -238,12 +239,12 @@
       <!-- Secure Channel Selection -->
       <div style="display:flex;gap:12px;margin-bottom:24px;">
         <div class="card card-clickable" style="flex:1;text-align:center;cursor:pointer;" onclick="this.style.borderColor='var(--bio)';this.style.background='var(--bio-glass)';this.nextElementSibling.style.borderColor='var(--border)';this.nextElementSibling.style.background='var(--glass)';">
-          <div style="font-size:24px;margin-bottom:8px;">&#x1F4AC;</div>
+          <div style="margin-bottom:8px;"><i data-lucide="message-circle" style="width:24px;height:24px;color:var(--bio)"></i></div>
           <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;">Signal</div>
           <div style="font-size:11px;color:var(--text-muted);">End-to-end encrypted</div>
         </div>
         <div class="card card-clickable" style="flex:1;text-align:center;cursor:pointer;" onclick="this.style.borderColor='var(--bio)';this.style.background='var(--bio-glass)';this.previousElementSibling.style.borderColor='var(--border)';this.previousElementSibling.style.background='var(--glass)';">
-          <div style="font-size:24px;margin-bottom:8px;">&#x1F4E7;</div>
+          <div style="margin-bottom:8px;"><i data-lucide="mail" style="width:24px;height:24px;color:var(--bio)"></i></div>
           <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;">ProtonMail</div>
           <div style="font-size:11px;color:var(--text-muted);">Encrypted email</div>
         </div>
@@ -270,11 +271,11 @@
   <div class="wallet-card">
     <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <div class="wallet-icon">🦊</div>
+      <div class="wallet-icon"><i data-lucide="hexagon" class="wallet-icon"></i></div>
       <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <div class="wallet-icon">🔗</div>
+      <div class="wallet-icon"><i data-lucide="link" class="wallet-icon"></i></div>
       <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
     </div>
     <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
@@ -355,14 +356,15 @@ function runZkpAnimation() {
   bar.style.width = '0%';
   pct.textContent = '0%';
   title.textContent = 'Generating zero-knowledge proof...';
-  icon.innerHTML = '&#x1F510;';
+  icon.innerHTML = '<i data-lucide="lock" style="width:32px;height:32px;color:var(--bio)"></i>';
   summary.style.display = 'none';
   buttons.style.display = 'none';
   steps.forEach(s => {
     const el = document.getElementById(s);
     el.style.color = 'var(--text-muted)';
-    el.querySelector('.zkp-check').innerHTML = '&#9675;';
+    el.querySelector('.zkp-check').innerHTML = '<i data-lucide="circle" style="width:14px;height:14px"></i>';
   });
+  lucide.createIcons();
 
   const milestones = [
     { pct: 25, step: 0, delay: 600 },
@@ -377,19 +379,22 @@ function runZkpAnimation() {
       pct.textContent = m.pct + '%';
       const stepEl = document.getElementById(steps[m.step]);
       stepEl.style.color = 'var(--bio)';
-      stepEl.querySelector('.zkp-check').innerHTML = '&#10003;';
+      stepEl.querySelector('.zkp-check').innerHTML = '<i data-lucide="check" style="width:14px;height:14px"></i>';
+      lucide.createIcons();
     }, m.delay);
   });
 
   // Complete
   setTimeout(() => {
     title.textContent = 'Proof generation complete';
-    icon.innerHTML = '&#x2705;';
+    icon.innerHTML = '<i data-lucide="check-circle" style="width:32px;height:32px;color:var(--regen)"></i>';
     summary.style.display = 'block';
     buttons.style.display = 'flex';
+    lucide.createIcons();
   }, 3600);
 }
 </script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>

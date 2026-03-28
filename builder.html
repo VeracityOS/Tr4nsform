@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM — Peptide Protocol Builder</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -275,7 +276,7 @@
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
-      <button class="nav-toggle">&#9776;</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
     </div>
   </header>
 
@@ -334,7 +335,7 @@
          ══════════════════════════════════════ -->
     <div class="step-panel visible" data-step="1">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 1 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 1 of 9</div>
         <h2 class="panel-title">What Do You Want to Optimise?</h2>
         <p class="panel-subtitle">Select one or more goals. We'll build a personalised peptide protocol around your priorities.</p>
       </div>
@@ -342,56 +343,56 @@
         <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Body</span>
-          <span class="icon">&#127769;</span>
+          <span class="icon"><i data-lucide="moon"></i></span>
           <span class="card-title">Deep Sleep</span>
           <span class="card-desc">Restore circadian rhythm and sleep architecture</span>
         </div>
         <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Body</span>
-          <span class="icon">&#9889;</span>
+          <span class="icon"><i data-lucide="zap"></i></span>
           <span class="card-title">Energy</span>
           <span class="card-desc">Mitochondrial function and cellular vitality</span>
         </div>
         <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Body</span>
-          <span class="icon">&#129657;</span>
+          <span class="icon"><i data-lucide="activity"></i></span>
           <span class="card-title">Recovery</span>
           <span class="card-desc">Tissue repair and injury acceleration</span>
         </div>
         <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Body</span>
-          <span class="icon">&#128170;</span>
+          <span class="icon"><i data-lucide="shield"></i></span>
           <span class="card-title">Immunity</span>
           <span class="card-desc">Immune fortification and resilience</span>
         </div>
         <div class="goal-card" data-cat="mind" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Mind</span>
-          <span class="icon">&#129504;</span>
+          <span class="icon"><i data-lucide="brain"></i></span>
           <span class="card-title">Brain Power</span>
           <span class="card-desc">Cognition, focus and neuroplasticity</span>
         </div>
         <div class="goal-card" data-cat="mind" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Mind</span>
-          <span class="icon">&#128524;</span>
+          <span class="icon"><i data-lucide="cloud"></i></span>
           <span class="card-title">Calm</span>
           <span class="card-desc">Stress resilience and nervous system regulation</span>
         </div>
         <div class="goal-card" data-cat="soul" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Soul</span>
-          <span class="icon">&#8734;</span>
+          <span class="icon"><i data-lucide="infinity"></i></span>
           <span class="card-title">Longevity</span>
           <span class="card-desc">Anti-ageing and cellular rejuvenation</span>
         </div>
         <div class="goal-card" data-cat="soul" onclick="toggleGoal(this)">
           <span class="check"></span>
           <span class="cat-label">Soul</span>
-          <span class="icon">&#128156;</span>
+          <span class="icon"><i data-lucide="heart"></i></span>
           <span class="card-title">Sensu</span>
           <span class="card-desc">Intimacy, libido and sensory vitality</span>
         </div>
@@ -407,7 +408,7 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="2">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 2 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 2 of 9</div>
         <h2 class="panel-title">Intake Questionnaire</h2>
         <p class="panel-subtitle">Help us personalise your protocol with some basic information.</p>
       </div>
@@ -480,7 +481,7 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="3">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 3 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 3 of 9</div>
         <h2 class="panel-title">Dosage Calculator</h2>
         <p class="panel-subtitle">Enter your body weight and select protocol intensity to calculate personalised dosing.</p>
       </div>
@@ -558,13 +559,13 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="4">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 4 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 4 of 9</div>
         <h2 class="panel-title">Safety Gate</h2>
         <p class="panel-subtitle">Your protocol has been screened against our clinical safety framework.</p>
       </div>
 
       <div class="gate-card">
-        <div class="gate-icon pass">&#128154;</div>
+        <div class="gate-icon pass"><i data-lucide="check-circle" style="color:var(--regen)"></i></div>
         <div>
           <div class="gate-title">Regulatory Status</div>
           <div class="gate-desc">All compounds in your protocol are non-prescription and legal in your jurisdiction. No controlled substances detected.</div>
@@ -572,7 +573,7 @@
         </div>
       </div>
       <div class="gate-card">
-        <div class="gate-icon pass">&#128154;</div>
+        <div class="gate-icon pass"><i data-lucide="check-circle" style="color:var(--regen)"></i></div>
         <div>
           <div class="gate-title">Drug Interactions</div>
           <div class="gate-desc">No known interactions detected between your current medications/supplements and the proposed peptide stack.</div>
@@ -580,7 +581,7 @@
         </div>
       </div>
       <div class="gate-card">
-        <div class="gate-icon pass">&#128154;</div>
+        <div class="gate-icon pass"><i data-lucide="check-circle" style="color:var(--regen)"></i></div>
         <div>
           <div class="gate-title">Contraindication Screen</div>
           <div class="gate-desc">No contraindications identified based on your reported health conditions and allergy profile.</div>
@@ -588,7 +589,7 @@
         </div>
       </div>
       <div class="gate-card">
-        <div class="gate-icon pass">&#128154;</div>
+        <div class="gate-icon pass"><i data-lucide="check-circle" style="color:var(--regen)"></i></div>
         <div>
           <div class="gate-title">Dosage Validation</div>
           <div class="gate-desc">All dosages fall within evidence-based therapeutic ranges for your body weight and selected intensity.</div>
@@ -597,7 +598,7 @@
       </div>
 
       <div class="safety-summary">
-        <span class="ss-icon">&#9989;</span>
+        <span class="ss-icon"><i data-lucide="shield-check" style="color:var(--regen)"></i></span>
         <div>
           <div class="ss-text">All Safety Checks Passed</div>
           <div class="ss-sub">Your protocol is cleared for review. 4/4 gates passed.</div>
@@ -615,7 +616,7 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="5">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 5 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 5 of 9</div>
         <h2 class="panel-title">Your Personalised Protocol</h2>
         <p class="panel-subtitle">Based on your goals, intake data, and safety clearance, here's your optimised stack.</p>
       </div>
@@ -708,7 +709,7 @@
       </div>
 
       <div class="protocol-note">
-        <strong>&#9432; Note:</strong> This protocol is personalised based on your responses. Dosages have been validated through the safety gate. Consult with a healthcare practitioner before beginning any new supplement regimen.
+        <strong><i data-lucide="info" style="width:16px;height:16px"></i> Note:</strong> This protocol is personalised based on your responses. Dosages have been validated through the safety gate. Consult with a healthcare practitioner before beginning any new supplement regimen.
       </div>
 
       <div class="btn-row">
@@ -722,14 +723,14 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="6">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 6 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 6 of 9</div>
         <h2 class="panel-title">Optimisation Boosts</h2>
         <p class="panel-subtitle">Enhance your protocol with complementary therapies. Select any to add to your stack.</p>
       </div>
 
       <div class="boost-grid">
         <div class="boost-card" data-price="49" onclick="toggleBoost(this)">
-          <span class="boost-icon">&#128308;</span>
+          <span class="boost-icon"><i data-lucide="sun" style="color:var(--danger)"></i></span>
           <div class="boost-info">
             <div class="boost-name">Red Light Therapy</div>
             <div class="boost-desc">660nm/850nm panel protocol. Mitochondrial support, collagen synthesis, inflammation reduction.</div>
@@ -738,7 +739,7 @@
           <div class="boost-check"></div>
         </div>
         <div class="boost-card" data-price="39" onclick="toggleBoost(this)">
-          <span class="boost-icon">&#128167;</span>
+          <span class="boost-icon"><i data-lucide="droplets" style="color:var(--signal)"></i></span>
           <div class="boost-info">
             <div class="boost-name">Hydrogen Water</div>
             <div class="boost-desc">Molecular hydrogen tablets. Selective antioxidant, crosses blood-brain barrier.</div>
@@ -747,7 +748,7 @@
           <div class="boost-check"></div>
         </div>
         <div class="boost-card" data-price="0" onclick="toggleBoost(this)">
-          <span class="boost-icon">&#128293;</span>
+          <span class="boost-icon"><i data-lucide="flame" style="color:var(--vital)"></i></span>
           <div class="boost-info">
             <div class="boost-name">Sauna Protocol</div>
             <div class="boost-desc">Heat shock protein activation, detox, cardiovascular conditioning. Guided protocol included.</div>
@@ -756,7 +757,7 @@
           <div class="boost-check"></div>
         </div>
         <div class="boost-card" data-price="0" onclick="toggleBoost(this)">
-          <span class="boost-icon">&#127788;</span>
+          <span class="boost-icon"><i data-lucide="wind" style="color:var(--bio)"></i></span>
           <div class="boost-info">
             <div class="boost-name">Breathwork</div>
             <div class="boost-desc">Wim Hof-inspired protocol. Autonomic nervous system training, cold tolerance, focus.</div>
@@ -782,7 +783,7 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="7">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 7 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 7 of 9</div>
         <h2 class="panel-title">Cycle Planner</h2>
         <p class="panel-subtitle">Review your 30-day dosing schedule. Click days to toggle between active, rest, and assessment.</p>
       </div>
@@ -813,7 +814,7 @@
       </div>
 
       <div class="protocol-note">
-        <strong>&#9432; Default Pattern:</strong> 5 days active, 2 days rest (weekends). Days 15 and 30 are assessment days for tracking progress and adjusting dosage.
+        <strong><i data-lucide="info" style="width:16px;height:16px"></i> Default Pattern:</strong> 5 days active, 2 days rest (weekends). Days 15 and 30 are assessment days for tracking progress and adjusting dosage.
       </div>
 
       <div class="btn-row">
@@ -827,7 +828,7 @@
          ══════════════════════════════════════ -->
     <div class="step-panel" data-step="8">
       <div class="panel-header">
-        <div class="panel-eyebrow">&#9670; Step 8 of 9</div>
+        <div class="panel-eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Step 8 of 9</div>
         <h2 class="panel-title">Consent &amp; Checkout</h2>
         <p class="panel-subtitle">Review and confirm before we lock in your protocol.</p>
       </div>
@@ -878,9 +879,9 @@
       </div>
 
       <div class="payment-options">
-        <div class="pay-btn active" onclick="selectPay(this)">&#128179; CARD</div>
-        <div class="pay-btn" onclick="selectPay(this)">&#128279; CRYPTO</div>
-        <div class="pay-btn" onclick="selectPay(this)">&#127891; APPLE PAY</div>
+        <div class="pay-btn active" onclick="selectPay(this)"><i data-lucide="credit-card"></i> CARD</div>
+        <div class="pay-btn" onclick="selectPay(this)"><i data-lucide="coins" style="width:16px;height:16px"></i> CRYPTO</div>
+        <div class="pay-btn" onclick="selectPay(this)"><i data-lucide="smartphone"></i> APPLE PAY</div>
       </div>
 
       <button class="btn btn-submit" id="submitBtn" onclick="submitOrder()" disabled>Confirm &amp; Subscribe</button>
@@ -904,7 +905,7 @@
 <!-- ── Success Overlay ── -->
 <div class="success-overlay" id="successOverlay">
   <div class="success-card">
-    <div class="success-icon">&#9889;</div>
+    <div class="success-icon"><i data-lucide="check-circle" style="width:48px;height:48px;color:var(--bio)"></i></div>
     <div class="success-title">Protocol Activated!</div>
     <div class="success-desc">
       Your personalised peptide protocol has been locked in. You'll receive your first shipment within 3-5 business days.
@@ -924,15 +925,15 @@
     <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
     <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <span class="wallet-icon">&#129418;</span>
+      <span class="wallet-icon"><i data-lucide="hexagon" class="wallet-icon"></i></span>
       <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <span class="wallet-icon">&#128279;</span>
+      <span class="wallet-icon"><i data-lucide="link" class="wallet-icon"></i></span>
       <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Mobile wallet via QR</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('phantom')">
-      <span class="wallet-icon">&#128123;</span>
+      <span class="wallet-icon"><i data-lucide="ghost" class="wallet-icon"></i></span>
       <div><div class="wallet-name">Phantom</div><div class="wallet-desc">Solana ecosystem wallet</div></div>
     </div>
     <button class="btn btn-ghost" style="width:100%; margin-top:12px;" onclick="closeWalletModal()">Cancel</button>
@@ -1222,5 +1223,6 @@ document.addEventListener('DOMContentLoaded', () => {
   calculateDosage();
 });
 </script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

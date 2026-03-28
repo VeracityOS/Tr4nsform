@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM — Protocol Library</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -57,8 +58,20 @@
   transform: translateY(-3px);
 }
 .lib-icon {
-  font-size: 36px;
   margin-bottom: 14px;
+}
+.lib-icon i {
+  width: 36px;
+  height: 36px;
+  color: var(--bio-bright, #00ffc8);
+}
+.eyebrow i {
+  vertical-align: middle;
+}
+.wallet-option .wallet-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--bio-bright, #00ffc8);
 }
 .lib-name {
   font-family: 'Syne', sans-serif;
@@ -119,13 +132,13 @@
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
-      <button class="nav-toggle">&#9776;</button>
+      <button class="nav-toggle"><i data-lucide="menu"></i></button>
     </div>
   </header>
 
   <!-- ── Page Header ── -->
   <div class="page-header">
-    <div class="eyebrow">&#9670; Evidence-Based Stacks</div>
+    <div class="eyebrow"><i data-lucide="diamond" style="width:12px;height:12px"></i> Evidence-Based Stacks</div>
     <h1 class="page-title">Protocol Library</h1>
     <p class="page-subtitle">Browse 12 sovereign peptide protocols. Each combines peptides, botanicals, cannabinoids, hydrogen therapy and lifestyle interventions into a complete optimisation stack.</p>
   </div>
@@ -146,7 +159,7 @@
 
     <!-- Sleep Architecture -->
     <div class="lib-card" data-category="body" data-name="sleep architecture">
-      <div class="lib-icon">&#127769;</div>
+      <div class="lib-icon"><i data-lucide="moon"></i></div>
       <div class="lib-name">Sleep Architecture</div>
       <div class="lib-desc">Rebuild deep sleep phases, optimise circadian rhythm, and restore overnight recovery. Targets GABA, melatonin pathways, and glymphatic clearance.</div>
       <div class="lib-pillars">
@@ -165,7 +178,7 @@
 
     <!-- Calm & Resilience -->
     <div class="lib-card" data-category="mind" data-name="calm resilience">
-      <div class="lib-icon">&#128524;</div>
+      <div class="lib-icon"><i data-lucide="cloud"></i></div>
       <div class="lib-name">Calm &amp; Resilience</div>
       <div class="lib-desc">Regulate the HPA axis, lower cortisol set-points, and build nervous system resilience. Adaptogenic botanicals meet anxiolytic peptides.</div>
       <div class="lib-pillars">
@@ -184,7 +197,7 @@
 
     <!-- Brain Power -->
     <div class="lib-card" data-category="mind" data-name="brain power">
-      <div class="lib-icon">&#129504;</div>
+      <div class="lib-icon"><i data-lucide="brain"></i></div>
       <div class="lib-name">Brain Power</div>
       <div class="lib-desc">Enhance cognition, neuroplasticity, and memory consolidation. BDNF-boosting peptides combined with nootropic botanicals and neuroprotective layers.</div>
       <div class="lib-pillars">
@@ -203,7 +216,7 @@
 
     <!-- Energy & Vitality -->
     <div class="lib-card" data-category="body" data-name="energy vitality">
-      <div class="lib-icon">&#9889;</div>
+      <div class="lib-icon"><i data-lucide="zap"></i></div>
       <div class="lib-name">Energy &amp; Vitality</div>
       <div class="lib-desc">Supercharge mitochondrial function, boost NAD+ pathways, and eliminate chronic fatigue. Cellular energy from the inside out.</div>
       <div class="lib-pillars">
@@ -222,7 +235,7 @@
 
     <!-- Gut Regeneration -->
     <div class="lib-card" data-category="body" data-name="gut regeneration">
-      <div class="lib-icon">&#129516;</div>
+      <div class="lib-icon"><i data-lucide="dna"></i></div>
       <div class="lib-name">Gut Regeneration</div>
       <div class="lib-desc">Restore intestinal lining integrity, rebalance the microbiome, and reduce systemic inflammation originating from the gut.</div>
       <div class="lib-pillars">
@@ -241,7 +254,7 @@
 
     <!-- Immune Fortification -->
     <div class="lib-card" data-category="body" data-name="immune fortification">
-      <div class="lib-icon">&#128170;</div>
+      <div class="lib-icon"><i data-lucide="shield"></i></div>
       <div class="lib-name">Immune Fortification</div>
       <div class="lib-desc">Strengthen innate and adaptive immunity, modulate inflammatory cascades, and build pathogen resilience without over-stimulation.</div>
       <div class="lib-pillars">
@@ -260,7 +273,7 @@
 
     <!-- Injury Recovery -->
     <div class="lib-card" data-category="body" data-name="injury recovery">
-      <div class="lib-icon">&#129657;</div>
+      <div class="lib-icon"><i data-lucide="activity"></i></div>
       <div class="lib-name">Injury Recovery</div>
       <div class="lib-desc">Accelerate tissue repair, reduce inflammation, and support collagen synthesis. Ideal for sports injuries, post-surgical recovery, and chronic tendon issues.</div>
       <div class="lib-pillars">
@@ -279,7 +292,7 @@
 
     <!-- Hormonal Balance -->
     <div class="lib-card" data-category="body" data-name="hormonal balance">
-      <div class="lib-icon">&#9878;</div>
+      <div class="lib-icon"><i data-lucide="atom"></i></div>
       <div class="lib-name">Hormonal Balance</div>
       <div class="lib-desc">Optimise endocrine signalling, support natural testosterone and growth hormone production, and restore hormonal equilibrium.</div>
       <div class="lib-pillars">
@@ -298,7 +311,7 @@
 
     <!-- Longevity & Anti-Ageing -->
     <div class="lib-card" data-category="soul" data-name="longevity anti-ageing">
-      <div class="lib-icon">&#8734;</div>
+      <div class="lib-icon"><i data-lucide="infinity"></i></div>
       <div class="lib-name">Longevity &amp; Anti-Ageing</div>
       <div class="lib-desc">Target cellular senescence, telomere maintenance, and epigenetic clocks. Slow biological ageing at the molecular level.</div>
       <div class="lib-pillars">
@@ -317,7 +330,7 @@
 
     <!-- Peak Performance -->
     <div class="lib-card" data-category="body" data-name="peak performance">
-      <div class="lib-icon">&#127942;</div>
+      <div class="lib-icon"><i data-lucide="trophy"></i></div>
       <div class="lib-name">Peak Performance</div>
       <div class="lib-desc">Maximise physical output, VO2 max, muscle protein synthesis, and recovery speed. Designed for athletes and high-performers.</div>
       <div class="lib-pillars">
@@ -336,7 +349,7 @@
 
     <!-- Metabolic Optimisation -->
     <div class="lib-card" data-category="body" data-name="metabolic optimisation">
-      <div class="lib-icon">&#128293;</div>
+      <div class="lib-icon"><i data-lucide="flame"></i></div>
       <div class="lib-name">Metabolic Optimisation</div>
       <div class="lib-desc">Recalibrate metabolic rate, improve insulin sensitivity, and support healthy body composition through peptide-driven metabolic pathways.</div>
       <div class="lib-pillars">
@@ -355,7 +368,7 @@
 
     <!-- Sensu Protocol -->
     <div class="lib-card" data-category="soul" data-name="sensu protocol">
-      <div class="lib-icon">&#128156;</div>
+      <div class="lib-icon"><i data-lucide="heart"></i></div>
       <div class="lib-name">Sensu Protocol</div>
       <div class="lib-desc">Enhance libido, sensory perception, and intimate vitality. A holistic approach combining vascular peptides with adaptogenic and cannabinoid support.</div>
       <div class="lib-pillars">
@@ -382,15 +395,15 @@
     <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
     <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <span class="wallet-icon">&#129418;</span>
+      <i data-lucide="hexagon" class="wallet-icon"></i>
       <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <span class="wallet-icon">&#128279;</span>
+      <i data-lucide="link" class="wallet-icon"></i>
       <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Mobile wallet via QR</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('phantom')">
-      <span class="wallet-icon">&#128123;</span>
+      <i data-lucide="ghost" class="wallet-icon"></i>
       <div><div class="wallet-name">Phantom</div><div class="wallet-desc">Solana ecosystem wallet</div></div>
     </div>
     <button class="btn btn-ghost" style="width:100%; margin-top:12px;" onclick="closeWalletModal()">Cancel</button>
@@ -426,5 +439,6 @@ function filterCategory(el, cat) {
   });
 }
 </script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

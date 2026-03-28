@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM · Order Tracking & Active Protocol</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -83,7 +84,7 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
-      <button class="nav-toggle">☰</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
     </div>
   </header>
 
@@ -110,12 +111,12 @@ input[type="range"]::-webkit-slider-thumb {
 
       <div class="pipeline">
         <div class="pip-node done">
-          <div class="pip-dot">&#10003;</div>
+          <div class="pip-dot"><i data-lucide="check" style="width:14px;height:14px"></i></div>
           <div class="pip-label">Draft</div>
         </div>
         <div class="pip-conn done"></div>
         <div class="pip-node done">
-          <div class="pip-dot">&#10003;</div>
+          <div class="pip-dot"><i data-lucide="check" style="width:14px;height:14px"></i></div>
           <div class="pip-label">Paid</div>
         </div>
         <div class="pip-conn done"></div>
@@ -168,7 +169,7 @@ input[type="range"]::-webkit-slider-thumb {
         <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;">Today's Dosing Schedule</div>
 
         <div class="dose-item">
-          <div class="dose-check done">&#10003;</div>
+          <div class="dose-check done"><i data-lucide="check" style="width:18px;height:18px"></i></div>
           <div style="flex:1;">
             <div style="font-weight:500;font-size:14px;">BPC-157</div>
             <div style="font-size:12px;color:var(--text-muted);">500mcg &middot; Morning</div>
@@ -177,7 +178,7 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
 
         <div class="dose-item">
-          <div class="dose-check pending">&#9675;</div>
+          <div class="dose-check pending"><i data-lucide="circle" style="width:18px;height:18px"></i></div>
           <div style="flex:1;">
             <div style="font-weight:500;font-size:14px;">Epithalon</div>
             <div style="font-size:12px;color:var(--text-muted);">5mg &middot; Evening</div>
@@ -186,7 +187,7 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
 
         <div class="dose-item">
-          <div class="dose-check done">&#10003;</div>
+          <div class="dose-check done"><i data-lucide="check" style="width:18px;height:18px"></i></div>
           <div style="flex:1;">
             <div style="font-weight:500;font-size:14px;">KPV</div>
             <div style="font-size:12px;color:var(--text-muted);">200mcg &middot; Morning</div>
@@ -300,11 +301,11 @@ input[type="range"]::-webkit-slider-thumb {
   <div class="wallet-card">
     <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <div class="wallet-icon">🦊</div>
+      <div class="wallet-icon"><i data-lucide="hexagon" class="wallet-icon"></i></div>
       <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <div class="wallet-icon">🔗</div>
+      <div class="wallet-icon"><i data-lucide="link" class="wallet-icon"></i></div>
       <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
     </div>
     <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
@@ -324,6 +325,7 @@ function selectSev(el, level) {
   el.classList.add('sel-' + level);
 }
 </script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>

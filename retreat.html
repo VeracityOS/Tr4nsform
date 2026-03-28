@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM · Retreat Builder</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -93,7 +94,7 @@
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
-      <button class="nav-toggle">☰</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
     </div>
   </header>
 
@@ -114,7 +115,7 @@
         <div class="grid-3">
 
           <div class="dest-card selected" onclick="selectDest(this,'kohsamui')">
-            <div class="dest-img">&#127796;</div>
+            <div class="dest-img"><i data-lucide="palm-tree" style="width:48px;height:48px"></i></div>
             <div class="dest-body">
               <div class="dest-name">Koh Samui</div>
               <div class="dest-loc">Thailand</div>
@@ -123,7 +124,7 @@
           </div>
 
           <div class="dest-card" onclick="selectDest(this,'bali')">
-            <div class="dest-img">&#127808;</div>
+            <div class="dest-img"><i data-lucide="leaf" style="width:48px;height:48px"></i></div>
             <div class="dest-body">
               <div class="dest-name">Bali</div>
               <div class="dest-loc">Indonesia</div>
@@ -132,7 +133,7 @@
           </div>
 
           <div class="dest-card" onclick="selectDest(this,'algarve')">
-            <div class="dest-img">&#9728;&#65039;</div>
+            <div class="dest-img"><i data-lucide="sun" style="width:48px;height:48px"></i></div>
             <div class="dest-body">
               <div class="dest-name">Algarve</div>
               <div class="dest-loc">Portugal</div>
@@ -149,21 +150,21 @@
         <div class="grid-3">
 
           <div class="room-card" onclick="selectRoom(this,'standard',150)">
-            <div class="room-icon">&#x1F6CF;</div>
+            <div class="room-icon"><i data-lucide="bed" style="width:32px;height:32px"></i></div>
             <div class="room-name">Standard</div>
             <div class="room-price">$150 / night</div>
             <div class="room-desc">Comfortable private room with ensuite, garden view, and daily housekeeping.</div>
           </div>
 
           <div class="room-card selected" onclick="selectRoom(this,'deluxe',250)">
-            <div class="room-icon">&#x2728;</div>
+            <div class="room-icon"><i data-lucide="sparkles" style="width:32px;height:32px"></i></div>
             <div class="room-name">Deluxe</div>
             <div class="room-price">$250 / night</div>
             <div class="room-desc">Spacious suite with balcony, premium amenities, ocean or jungle view, and in-room cold plunge.</div>
           </div>
 
           <div class="room-card" onclick="selectRoom(this,'villa',450)">
-            <div class="room-icon">&#x1F3E0;</div>
+            <div class="room-icon"><i data-lucide="home" style="width:32px;height:32px"></i></div>
             <div class="room-name">Villa</div>
             <div class="room-price">$450 / night</div>
             <div class="room-desc">Private villa with pool, dedicated treatment space, personal chef, and 24/7 concierge.</div>
@@ -177,7 +178,7 @@
         <h3 class="section-title">Protocol Bundles</h3>
 
         <div class="bundle-item selected" onclick="toggleBundle(this,'longevity',499)">
-          <div class="bundle-check">&#10003;</div>
+          <div class="bundle-check"><i data-lucide="check" style="width:12px;height:12px"></i></div>
           <div style="flex:1;">
             <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;">Longevity Reset</div>
             <div style="font-size:12px;color:var(--text-muted);">7-day protocol &middot; Epithalon, GHK-Cu, NAD+</div>
@@ -211,7 +212,7 @@
         <div style="display:flex;flex-direction:column;gap:16px;">
 
           <div class="prac-card">
-            <div class="prac-avatar">&#x1F468;&#x200D;&#x2695;&#xFE0F;</div>
+            <div class="prac-avatar"><i data-lucide="stethoscope" style="width:28px;height:28px"></i></div>
             <div>
               <div class="prac-name">Dr. Anand Mehta</div>
               <div class="prac-spec">Integrative Medicine &middot; Peptide Therapy</div>
@@ -221,7 +222,7 @@
           </div>
 
           <div class="prac-card">
-            <div class="prac-avatar">&#x1F469;&#x200D;&#x2695;&#xFE0F;</div>
+            <div class="prac-avatar"><i data-lucide="heart-pulse" style="width:28px;height:28px"></i></div>
             <div>
               <div class="prac-name">Dr. Sofia Andersson</div>
               <div class="prac-spec">Functional Medicine &middot; Gut Health</div>
@@ -231,7 +232,7 @@
           </div>
 
           <div class="prac-card">
-            <div class="prac-avatar">&#x1F468;&#x200D;&#x1F52C;</div>
+            <div class="prac-avatar"><i data-lucide="microscope" style="width:28px;height:28px"></i></div>
             <div>
               <div class="prac-name">Dr. James Whitfield</div>
               <div class="prac-spec">Neuroscience &middot; Cognitive Enhancement</div>
@@ -312,11 +313,11 @@
   <div class="wallet-card">
     <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <div class="wallet-icon">🦊</div>
+      <div class="wallet-icon"><i data-lucide="hexagon" class="wallet-icon"></i></div>
       <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <div class="wallet-icon">🔗</div>
+      <div class="wallet-icon"><i data-lucide="link" class="wallet-icon"></i></div>
       <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
     </div>
     <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
@@ -362,7 +363,8 @@ function toggleBundle(el, id, price) {
   const check = el.querySelector('.bundle-check');
   if (el.classList.contains('selected')) {
     bundles[id] = price;
-    check.innerHTML = '&#10003;';
+    check.innerHTML = '<i data-lucide="check" style="width:12px;height:12px"></i>';
+    lucide.createIcons();
   } else {
     delete bundles[id];
     check.innerHTML = '';
@@ -386,6 +388,7 @@ function updateSummary() {
   document.getElementById('sumDeposit').textContent = '$' + Math.round(total * 0.2).toLocaleString();
 }
 </script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>

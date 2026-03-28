@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TR4NSFORM · Membership Tiers</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <link rel="stylesheet" href="css/tokens.css"/>
 <link rel="stylesheet" href="css/components.css"/>
 <link rel="stylesheet" href="css/layout.css"/>
@@ -32,7 +33,7 @@
   display:flex; align-items:center; gap:10px;
 }
 .pricing-card .tier-features li:last-child { border-bottom:none; }
-.pricing-card .tier-features li::before { content:'✓'; color:var(--regen); font-weight:700; flex-shrink:0; }
+.pricing-card .tier-features li .li-check { color:var(--regen); flex-shrink:0; width:16px; height:16px; }
 
 /* Comparison table */
 .compare-table { width:100%; border-collapse:collapse; margin-bottom:48px; }
@@ -80,7 +81,7 @@
     <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
       <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
-      <button class="nav-toggle">☰</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
     </div>
   </header>
 
@@ -99,10 +100,10 @@
       <div class="tier-price">$0<span>/mo</span></div>
       <div class="tier-desc">Get started with sovereign protocol building.</div>
       <ul class="tier-features">
-        <li>Protocol Builder access</li>
-        <li>Safety Gate analysis</li>
-        <li>1 saved protocol</li>
-        <li>Community access</li>
+        <li><i data-lucide="check" class="li-check"></i>Protocol Builder access</li>
+        <li><i data-lucide="check" class="li-check"></i>Safety Gate analysis</li>
+        <li><i data-lucide="check" class="li-check"></i>1 saved protocol</li>
+        <li><i data-lucide="check" class="li-check"></i>Community access</li>
       </ul>
       <button class="btn btn-secondary" style="width:100%;" disabled>Current Plan</button>
     </div>
@@ -114,11 +115,11 @@
       <div class="tier-price">$29<span>/mo</span></div>
       <div class="tier-desc">Full vault access with biomarker tracking and priority consultation.</div>
       <ul class="tier-features">
-        <li>Everything in Free</li>
-        <li>Unlimited saved protocols</li>
-        <li>Biomarker tracking</li>
-        <li>Priority consultation</li>
-        <li>Vault export / IPFS sync</li>
+        <li><i data-lucide="check" class="li-check"></i>Everything in Free</li>
+        <li><i data-lucide="check" class="li-check"></i>Unlimited saved protocols</li>
+        <li><i data-lucide="check" class="li-check"></i>Biomarker tracking</li>
+        <li><i data-lucide="check" class="li-check"></i>Priority consultation</li>
+        <li><i data-lucide="check" class="li-check"></i>Vault export / IPFS sync</li>
       </ul>
       <button class="btn btn-primary" style="width:100%;" onclick="showToast('Upgrade flow coming soon');">Upgrade to Sovereign</button>
     </div>
@@ -129,11 +130,11 @@
       <div class="tier-price">$99<span>/mo</span></div>
       <div class="tier-desc">The complete sovereign health experience with concierge support.</div>
       <ul class="tier-features">
-        <li>Everything in Sovereign</li>
-        <li>Monthly protocol restock</li>
-        <li>Concierge support</li>
-        <li>Retreat discounts (15%)</li>
-        <li>Advanced analytics</li>
+        <li><i data-lucide="check" class="li-check"></i>Everything in Sovereign</li>
+        <li><i data-lucide="check" class="li-check"></i>Monthly protocol restock</li>
+        <li><i data-lucide="check" class="li-check"></i>Concierge support</li>
+        <li><i data-lucide="check" class="li-check"></i>Retreat discounts (15%)</li>
+        <li><i data-lucide="check" class="li-check"></i>Advanced analytics</li>
       </ul>
       <button class="btn btn-neural" style="width:100%;" onclick="showToast('Upgrade flow coming soon');">Upgrade to Protocol</button>
     </div>
@@ -156,15 +157,15 @@
         <tbody>
           <tr>
             <td>Protocol Builder</td>
-            <td style="color:var(--regen);">&#10003;</td>
-            <td style="color:var(--regen);">&#10003;</td>
-            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
           </tr>
           <tr>
             <td>Safety Gate</td>
-            <td style="color:var(--regen);">&#10003;</td>
-            <td style="color:var(--regen);">&#10003;</td>
-            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
           </tr>
           <tr>
             <td>Saved Protocols</td>
@@ -174,39 +175,39 @@
           </tr>
           <tr>
             <td>Biomarker Tracking</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--regen);">&#10003;</td>
-            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
           </tr>
           <tr>
             <td>Clinical Consultation</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
             <td>Priority</td>
             <td>Concierge</td>
           </tr>
           <tr>
             <td>Vault Export / IPFS</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--regen);">&#10003;</td>
-            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
           </tr>
           <tr>
             <td>Monthly Restock</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
           </tr>
           <tr>
             <td>Retreat Discounts</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
             <td>15%</td>
           </tr>
           <tr>
             <td>Advanced Analytics</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--text-subtle);">&#x2715;</td>
-            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--text-subtle);"><i data-lucide="x" style="width:16px;height:16px"></i></td>
+            <td style="color:var(--regen);"><i data-lucide="check" style="width:16px;height:16px"></i></td>
           </tr>
         </tbody>
       </table>
@@ -222,7 +223,7 @@
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">
           <span>Can I cancel my membership at any time?</span>
-          <span class="arrow">&#x25BC;</span>
+          <span class="arrow"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></span>
         </div>
         <div class="faq-a">Yes, all memberships are month-to-month with no lock-in contracts. You can cancel directly from your Vault settings. Your data remains yours even after cancellation.</div>
       </div>
@@ -230,7 +231,7 @@
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">
           <span>What payment methods do you accept?</span>
-          <span class="arrow">&#x25BC;</span>
+          <span class="arrow"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></span>
         </div>
         <div class="faq-a">We accept Bitcoin (via BTCPay Server), major credit cards, and select stablecoins (USDC, USDT). All payments are processed through privacy-preserving channels.</div>
       </div>
@@ -238,7 +239,7 @@
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">
           <span>What happens to my vault data if I downgrade?</span>
-          <span class="arrow">&#x25BC;</span>
+          <span class="arrow"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></span>
         </div>
         <div class="faq-a">Your data is stored locally in your sovereign vault and never on our servers. Downgrading limits features but never deletes your data. You can always export before any change.</div>
       </div>
@@ -246,7 +247,7 @@
       <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-q">
           <span>How does the monthly restock work?</span>
-          <span class="arrow">&#x25BC;</span>
+          <span class="arrow"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></span>
         </div>
         <div class="faq-a">Protocol tier members receive an automatic restock of their active protocol each month. You set your preferred protocol, and we ship before your current cycle ends. You can pause or swap protocols at any time.</div>
       </div>
@@ -261,11 +262,11 @@
   <div class="wallet-card">
     <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
     <div class="wallet-option" onclick="connectWallet('metamask')">
-      <div class="wallet-icon">🦊</div>
+      <div class="wallet-icon"><i data-lucide="hexagon" class="wallet-icon"></i></div>
       <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
     </div>
     <div class="wallet-option" onclick="connectWallet('walletconnect')">
-      <div class="wallet-icon">🔗</div>
+      <div class="wallet-icon"><i data-lucide="link" class="wallet-icon"></i></div>
       <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
     </div>
     <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
@@ -277,6 +278,7 @@
 
 <script src="js/nav.js"></script>
 <script src="js/components.js"></script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>
