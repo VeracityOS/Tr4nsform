@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════
+   TR4NSFORM DESIGN SYSTEM TOKENS
+   ═══════════════════════════════════════════ */
+:root {
+  /* ── Void / Dark Base ── */
+  --void-deep:    #080910;
+  --void:         #0D0F1C;
+  --void-surface: #131525;
+  --void-raised:  #1A1C30;
+  --void-float:   #20223A;
+
+  /* ── Text ── */
+  --text:         #F0F4FF;
+  --text-2:       rgba(240,244,255,0.72);
+  --text-muted:   rgba(240,244,255,0.45);
+  --text-subtle:  rgba(240,244,255,0.22);
+
+  /* ── Bio (Teal/Cyan) ── */
+  --bio:          #2ED8B8;
+  --bio-bright:   #4EFAD8;
+  --bio-dim:      #1A8C78;
+  --bio-glass:    rgba(46,216,184,0.12);
+  --bio-glow:     0 0 24px rgba(46,216,184,0.4);
+
+  /* ── Neural (Purple) ── */
+  --neural:       #9D7AFF;
+  --neural-bright:#BDA4FF;
+  --neural-dim:   #6B52B3;
+  --neural-glass: rgba(157,122,255,0.12);
+  --neural-glow:  0 0 24px rgba(157,122,255,0.35);
+
+  /* ── Vital (Gold) ── */
+  --vital:        #E8C46A;
+  --vital-bright: #FFDC8A;
+  --vital-dim:    #B89A4A;
+  --vital-glass:  rgba(232,196,106,0.10);
+  --vital-glow:   0 0 20px rgba(232,196,106,0.3);
+
+  /* ── Regen (Green) ── */
+  --regen:        #3EDB90;
+  --regen-bright: #62F5AC;
+  --regen-dim:    #2A9E64;
+  --regen-glass:  rgba(62,219,144,0.10);
+
+  /* ── Signal (Blue) ── */
+  --signal:       #4AB4F5;
+  --signal-bright:#72CCFF;
+  --signal-glass: rgba(74,180,245,0.10);
+
+  /* ── Danger (Red) ── */
+  --danger:       #FF5C5C;
+  --danger-bright:#FF8A8A;
+  --danger-glass: rgba(255,92,92,0.12);
+
+  /* ── Borders & Glass ── */
+  --border:       rgba(255,255,255,0.08);
+  --border-mid:   rgba(255,255,255,0.14);
+  --border-bright:rgba(255,255,255,0.22);
+  --glass:        rgba(255,255,255,0.04);
+  --glass-hover:  rgba(255,255,255,0.07);
+
+  /* ── Radii ── */
+  --r: 16px;
+  --r-sm: 10px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* ── Spacing ── */
+  --sp-xs: 4px;
+  --sp-sm: 8px;
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 40px;
+  --sp-2xl: 64px;
+}
+
+/* ═══════════════════════════════════════════
+   GLOBAL RESET & BASE
+   ═══════════════════════════════════════════ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Atmospheric background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(157,122,255,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 85% 100%, rgba(46,216,184,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(232,196,106,0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Noise texture ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--bio);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+a:hover { color: var(--bio-bright); }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,196,106,0.5); }
+  50% { opacity: .6; box-shadow: 0 0 0 6px rgba(232,196,106,0); }
+}
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 20px rgba(46,216,184,0.2); }
+  50% { box-shadow: 0 0 40px rgba(46,216,184,0.4); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Utility ── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  border: 0;
+}
+.text-bio { color: var(--bio); }
+.text-neural { color: var(--neural); }
+.text-vital { color: var(--vital); }
+.text-regen { color: var(--regen); }
+.text-signal { color: var(--signal); }
+.text-danger { color: var(--danger); }
+.text-muted { color: var(--text-muted); }
+.text-2 { color: var(--text-2); }
+.mono { font-family: 'JetBrains Mono', monospace; }

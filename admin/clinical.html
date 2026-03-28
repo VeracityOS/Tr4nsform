@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Clinician Verification Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+<style>
+  .zkp-card { background:var(--glass); border:1px solid var(--border); border-radius:var(--r); padding:20px; margin-bottom:12px; transition:all 0.3s; }
+  .zkp-card:hover { border-color:var(--border-mid); background:var(--glass-hover); }
+  .zkp-card .proof-hash { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--neural); word-break:break-all; }
+  .verify-step { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .verify-step:last-child { border-bottom:none; }
+  .verify-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .verify-icon.pass { background:var(--regen-glass); color:var(--regen); }
+  .verify-icon.pending { background:var(--glass); color:var(--text-muted); }
+  .notice-box { background:var(--neural-glass); border:1px solid rgba(157,122,255,0.2); border-radius:var(--r); padding:20px 24px; display:flex; align-items:flex-start; gap:14px; margin-bottom:32px; }
+  .notice-box .notice-icon { font-size:20px; flex-shrink:0; margin-top:2px; }
+  .notice-box .notice-text { font-size:13px; color:var(--text-2); line-height:1.6; }
+  .notice-box .notice-text strong { color:var(--neural); }
+</style>
+</head>
+<body data-portal="admin">
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Admin Console</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);">admin@tr4nsform.io</span>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">&#128274; Clinical Verification</div>
+    <h1 class="page-title">Clinician Verification Dashboard</h1>
+    <p class="page-subtitle">Review and verify zero-knowledge proof packages for protocol eligibility.</p>
+  </div>
+
+  <!-- ZKP Notice -->
+  <div class="notice-box">
+    <div class="notice-icon">&#128274;</div>
+    <div class="notice-text">
+      <strong>Zero-knowledge verification:</strong> No personal health data is accessible or stored. Proof packages cryptographically verify eligibility without revealing underlying health information. All verification is performed on-chain with tamper-proof audit trails.
+    </div>
+  </div>
+
+  <div class="grid-2" style="gap:32px;">
+    <!-- Left: Verification Queue -->
+    <div>
+      <h2 class="section-title">&#128203; Verification Queue</h2>
+
+      <div class="zkp-card" id="proof1" onclick="showVerification('Brain Power','CONFIRMED','proof1')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span class="mono" style="font-size:12px;color:var(--text-2);">Protocol: <strong style="color:var(--text);">Brain Power</strong></span>
+          <span class="badge badge-vital">Pending</span>
+        </div>
+        <div class="proof-hash">0x4a7f...c2e8d91b3f0a6e5d7c8b4a2f1e9d3c7b5a8f2e6d</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+          <span style="font-size:11px;color:var(--text-muted);">Received: 2026-03-28 09:42 UTC</span>
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showVerification('Brain Power','CONFIRMED','proof1')">Verify Proof</button>
+        </div>
+      </div>
+
+      <div class="zkp-card" id="proof2" onclick="showVerification('Gut Regeneration','CONFIRMED','proof2')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span class="mono" style="font-size:12px;color:var(--text-2);">Protocol: <strong style="color:var(--text);">Gut Regeneration</strong></span>
+          <span class="badge badge-vital">Pending</span>
+        </div>
+        <div class="proof-hash">0x8b2e...a1f4d73c9e0b5a8d2f6c4e7b1a3d9f5c8e2a7b4d</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+          <span style="font-size:11px;color:var(--text-muted);">Received: 2026-03-28 08:15 UTC</span>
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showVerification('Gut Regeneration','CONFIRMED','proof2')">Verify Proof</button>
+        </div>
+      </div>
+
+      <div class="zkp-card" id="proof3" onclick="showVerification('Sleep Stack','FAILED','proof3')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span class="mono" style="font-size:12px;color:var(--text-2);">Protocol: <strong style="color:var(--text);">Sleep Stack</strong></span>
+          <span class="badge badge-vital">Pending</span>
+        </div>
+        <div class="proof-hash">0x3d9f...e5c8b2a4f7d1a6e3c9b5f8d2a7c4e1b3f9a6d8c5</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+          <span style="font-size:11px;color:var(--text-muted);">Received: 2026-03-28 07:33 UTC</span>
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showVerification('Sleep Stack','FAILED','proof3')">Verify Proof</button>
+        </div>
+      </div>
+
+      <div class="zkp-card" id="proof4" onclick="showVerification('Immune Shield','CONFIRMED','proof4')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span class="mono" style="font-size:12px;color:var(--text-2);">Protocol: <strong style="color:var(--text);">Immune Shield</strong></span>
+          <span class="badge badge-bio">Verified</span>
+        </div>
+        <div class="proof-hash">0x7c4e...b1f3a9d6e8c2a5f7d4b9e1c3a8f6d2b5e7a4c9f1</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+          <span style="font-size:11px;color:var(--text-muted);">Verified: 2026-03-27 16:20 UTC</span>
+          <span class="badge badge-regen" style="font-size:9px;">&#10003; Passed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Verification Detail Panel -->
+    <div>
+      <h2 class="section-title">&#128269; Verification Detail</h2>
+      <div class="card" id="verifyPanel" style="padding:32px;">
+        <div class="empty-state">
+          <div class="icon">&#128274;</div>
+          <h3>Select a proof to verify</h3>
+          <p>Click on a proof package from the queue to review and verify eligibility.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+<script>
+function showVerification(protocol, result, cardId) {
+  const panel = document.getElementById('verifyPanel');
+  const isConfirmed = result === 'CONFIRMED';
+  const color = isConfirmed ? 'regen' : 'danger';
+  const icon = isConfirmed ? '&#10003;' : '&#10007;';
+  const label = isConfirmed ? 'Eligibility CONFIRMED' : 'Eligibility FAILED';
+
+  panel.innerHTML = `
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:36px;margin-bottom:12px;">${isConfirmed ? '&#9989;' : '&#10060;'}</div>
+      <h3 style="font-family:'Syne',sans-serif;font-size:20px;margin-bottom:4px;">Protocol: ${protocol}</h3>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--${color});font-weight:600;">${label}</div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;margin-bottom:16px;">Proof Verification Steps</div>
+
+      <div class="verify-step">
+        <div class="verify-icon pass">&#10003;</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Proof Structure Valid</div>
+          <div style="font-size:11px;color:var(--text-muted);">ZKP envelope format and signature verified</div>
+        </div>
+      </div>
+
+      <div class="verify-step">
+        <div class="verify-icon pass">&#10003;</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Credential Authority Confirmed</div>
+          <div style="font-size:11px;color:var(--text-muted);">Issuing authority matches trusted registry</div>
+        </div>
+      </div>
+
+      <div class="verify-step">
+        <div class="verify-icon ${isConfirmed ? 'pass' : ''}" ${!isConfirmed ? 'style="background:var(--danger-glass);color:var(--danger);"' : ''}>${isConfirmed ? '&#10003;' : '&#10007;'}</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Eligibility Criteria ${isConfirmed ? 'Met' : 'Not Met'}</div>
+          <div style="font-size:11px;color:var(--text-muted);">${isConfirmed ? 'All protocol prerequisites satisfied' : 'Contraindication flag detected in proof'}</div>
+        </div>
+      </div>
+    </div>
+
+    ${isConfirmed ? `
+    <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="showToast('Consultation booking link generated','bio')">Generate Consultation Booking Link</button>
+    ` : `
+    <div style="background:var(--danger-glass);border:1px solid rgba(255,92,92,0.2);border-radius:var(--r-sm);padding:14px 18px;font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:16px;">
+      <strong style="color:var(--danger);">Verification Failed:</strong> The proof package indicates a contraindication for this protocol. The client should consult with a practitioner for alternative recommendations.
+    </div>
+    `}
+
+    <div style="background:var(--neural-glass);border:1px solid rgba(157,122,255,0.15);border-radius:var(--r-sm);padding:12px 16px;font-size:11px;color:var(--text-muted);line-height:1.5;">
+      &#128274; <strong style="color:var(--neural);">Privacy notice:</strong> No personal health data was accessed during this verification. Only cryptographic proof validity was assessed.
+    </div>
+  `;
+
+  // Update the card badge
+  const card = document.getElementById(cardId);
+  if (card) {
+    const badge = card.querySelector('.badge');
+    if (badge && badge.classList.contains('badge-vital')) {
+      badge.className = isConfirmed ? 'badge badge-bio' : 'badge badge-danger';
+      badge.textContent = isConfirmed ? 'Verified' : 'Failed';
+    }
+  }
+}
+</script>
+</body>
+</html>

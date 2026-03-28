@@ -3,1394 +3,500 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>TR4NSFORM · Dynamic Peptide Builder — MVP Mockup</title>
+<title>TR4NSFORM — Own Your Biology. Build Your Protocol.</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
 <style>
-/* ═══════════════════════════════════════════
-   TR4NSFORM DESIGN SYSTEM TOKENS
-   ═══════════════════════════════════════════ */
-:root {
-  --void-deep:    #080910;
-  --void:         #0D0F1C;
-  --void-surface: #131525;
-  --void-raised:  #1A1C30;
-  --void-float:   #20223A;
-
-  --text:         #F0F4FF;
-  --text-2:       rgba(240,244,255,0.72);
-  --text-muted:   rgba(240,244,255,0.45);
-  --text-subtle:  rgba(240,244,255,0.22);
-
-  --bio:          #2ED8B8;
-  --bio-bright:   #4EFAD8;
-  --bio-dim:      #1A8C78;
-  --bio-glass:    rgba(46,216,184,0.12);
-  --bio-glow:     0 0 24px rgba(46,216,184,0.4);
-
-  --neural:       #9D7AFF;
-  --neural-bright:#BDA4FF;
-  --neural-glass: rgba(157,122,255,0.12);
-  --neural-glow:  0 0 24px rgba(157,122,255,0.35);
-
-  --vital:        #E8C46A;
-  --vital-bright: #FFDC8A;
-  --vital-glass:  rgba(232,196,106,0.10);
-  --vital-glow:   0 0 20px rgba(232,196,106,0.3);
-
-  --regen:        #3EDB90;
-  --regen-bright: #62F5AC;
-  --regen-glass:  rgba(62,219,144,0.10);
-
-  --signal:       #4AB4F5;
-  --signal-glass: rgba(74,180,245,0.10);
-
-  --border:       rgba(255,255,255,0.08);
-  --border-mid:   rgba(255,255,255,0.14);
-  --glass:        rgba(255,255,255,0.04);
-  --glass-hover:  rgba(255,255,255,0.07);
-
-  --danger:       #FF5C5C;
-  --danger-glass: rgba(255,92,92,0.12);
-
-  --r: 16px;
-  --r-sm: 10px;
-  --r-lg: 20px;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-
-body {
-  background: var(--void);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ── Atmospheric background ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 0%, rgba(157,122,255,0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 35% at 85% 100%, rgba(46,216,184,0.06) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(232,196,106,0.03) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── Noise texture ── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-}
-
-/* ═══════════════════════════════════════════
-   LAYOUT
-   ═══════════════════════════════════════════ */
-.app-shell {
-  position: relative;
-  z-index: 1;
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 24px 100px;
-}
-
-/* ── Top Bar ── */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 0 20px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 40px;
-}
-.logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-}
-.logo .four { color: var(--bio); }
-.topbar-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.topbar-env {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border: 1px solid rgba(232,196,106,0.3);
-  border-radius: 999px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  color: var(--vital);
-  background: var(--vital-glass);
-}
-.topbar-env::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--vital);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(232,196,106,0.5); }
-  50% { opacity:.6; box-shadow: 0 0 0 6px rgba(232,196,106,0); }
-}
-
-/* ═══════════════════════════════════════════
-   STEP PROGRESS BAR
-   ═══════════════════════════════════════════ */
-.progress-bar {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  margin-bottom: 48px;
-  padding: 0 8px;
-}
-.step-node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  position: relative;
-  cursor: pointer;
-}
-.step-dot {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--border-mid);
-  background: var(--void-surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-muted);
-  transition: all 0.4s ease;
-  position: relative;
-  z-index: 2;
-}
-.step-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  margin-top: 8px;
-  text-transform: uppercase;
-  transition: color 0.3s;
+/* ── Landing Page Styles ── */
+.hero {
   text-align: center;
-}
-.step-node.active .step-dot {
-  border-color: var(--bio);
-  background: var(--bio-glass);
-  color: var(--bio-bright);
-  box-shadow: var(--bio-glow);
-}
-.step-node.active .step-label { color: var(--bio); }
-.step-node.completed .step-dot {
-  border-color: var(--bio-dim);
-  background: var(--bio-dim);
-  color: var(--void);
-}
-.step-node.completed .step-label { color: var(--text-2); }
-
-/* Connector lines between dots */
-.step-connector {
-  flex: 1;
-  height: 2px;
-  background: var(--border);
+  padding: 80px 0 64px;
   position: relative;
-  top: -14px;
-  margin: 0 -4px;
-  z-index: 1;
 }
-.step-connector.done {
-  background: var(--bio-dim);
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(46,216,184,0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
-
-/* ═══════════════════════════════════════════
-   STEP PANELS
-   ═══════════════════════════════════════════ */
-.step-panel {
-  display: none;
-  animation: fadeUp 0.5s ease forwards;
-}
-.step-panel.visible { display: block; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.panel-header {
-  margin-bottom: 24px;
-}
-.panel-eyebrow {
+.hero-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 12px;
+  padding: 6px 16px;
   border: 1px solid var(--border-mid);
   border-radius: 999px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.18em;
   color: var(--bio);
   background: var(--bio-glass);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   text-transform: uppercase;
 }
-.panel-title {
+.hero h1 {
   font-family: 'Syne', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 8px;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--text) 0%, var(--bio-bright) 50%, var(--neural-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.panel-subtitle {
+.hero-sub {
+  font-size: 18px;
   color: var(--text-2);
-  font-size: 15px;
   max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
 }
-
-/* ═══════════════════════════════════════════
-   GOAL CARDS (Step 1)
-   ═══════════════════════════════════════════ */
-.goal-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 32px;
-}
-.goal-card {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 16px 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+.hero-ctas {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.goal-card:hover {
-  background: var(--glass-hover);
-  border-color: var(--border-mid);
-  transform: translateY(-2px);
-}
-.goal-card.selected {
-  border-color: var(--bio);
-  background: var(--bio-glass);
-  box-shadow: var(--bio-glow), inset 0 0 0 1px rgba(46,216,184,0.15);
-}
-.goal-card .icon {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-.goal-card .card-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  margin-bottom: 4px;
-  line-height: 1.3;
-}
-.goal-card .card-desc {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.goal-card .check {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  border: 2px solid var(--border-mid);
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 10px;
-  transition: all 0.3s;
-}
-.goal-card.selected .check {
-  background: var(--bio);
-  border-color: var(--bio);
-  color: var(--void);
-}
-
-/* Category colors */
-.goal-card[data-cat="mind"] { --card-accent: var(--neural); }
-.goal-card[data-cat="mind"].selected {
-  border-color: var(--neural);
-  background: var(--neural-glass);
-  box-shadow: var(--neural-glow);
-}
-.goal-card[data-cat="mind"].selected .check { background: var(--neural); border-color: var(--neural); }
-
-.goal-card[data-cat="body"] { --card-accent: var(--bio); }
-
-.goal-card[data-cat="soul"] { --card-accent: var(--vital); }
-.goal-card[data-cat="soul"].selected {
-  border-color: var(--vital);
-  background: var(--vital-glass);
-  box-shadow: var(--vital-glow);
-}
-.goal-card[data-cat="soul"].selected .check { background: var(--vital); border-color: var(--vital); }
-
-.cat-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  display: inline-block;
-}
-.goal-card[data-cat="mind"] .cat-label { color: var(--neural); background: var(--neural-glass); }
-.goal-card[data-cat="body"] .cat-label { color: var(--bio); background: var(--bio-glass); }
-.goal-card[data-cat="soul"] .cat-label { color: var(--vital); background: var(--vital-glass); }
-
-/* ═══════════════════════════════════════════
-   INTAKE FORM (Step 2)
-   ═══════════════════════════════════════════ */
-.form-section {
-  margin-bottom: 28px;
-}
-.form-label {
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  margin-bottom: 10px;
-  display: block;
-}
-.form-sublabel {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-.form-input, .form-select, .form-textarea {
-  width: 100%;
-  padding: 14px 18px;
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--bio);
-  box-shadow: 0 0 0 3px var(--bio-glass);
-}
-.form-input::placeholder, .form-textarea::placeholder {
-  color: var(--text-subtle);
-}
-.form-textarea { min-height: 100px; resize: vertical; }
-.form-select {
-  appearance: none;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(240,244,255,0.45)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-}
-.form-select option { background: var(--void-raised); color: var(--text); }
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 16px;
-}
-
-.chip-group {
-  display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-}
-.chip {
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: var(--glass);
-  color: var(--text-2);
-}
-.chip:hover { background: var(--glass-hover); border-color: var(--border-mid); }
-.chip.selected {
-  border-color: var(--bio);
-  background: var(--bio-glass);
-  color: var(--bio-bright);
 }
 
-/* ═══════════════════════════════════════════
-   SAFETY GATE (Step 3)
-   ═══════════════════════════════════════════ */
-.gate-card {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 24px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+/* ── How It Works ── */
+.how-it-works {
+  padding: 64px 0;
 }
-.gate-icon {
-  width: 42px; height: 42px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-.gate-icon.pass { background: var(--regen-glass); }
-.gate-icon.warn { background: var(--vital-glass); }
-.gate-icon.block { background: var(--danger-glass); }
-.gate-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-.gate-desc {
-  font-size: 13px;
-  color: var(--text-2);
-  line-height: 1.5;
-}
-.gate-status {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 999px;
-  margin-top: 8px;
-  display: inline-block;
-}
-.gate-status.pass { color: var(--regen); background: var(--regen-glass); }
-.gate-status.warn { color: var(--vital); background: var(--vital-glass); }
-.gate-status.block { color: var(--danger); background: var(--danger-glass); }
-
-.safety-summary {
-  background: var(--regen-glass);
-  border: 1px solid rgba(62,219,144,0.2);
-  border-radius: var(--r);
-  padding: 20px 24px;
-  margin-top: 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.safety-summary .ss-icon { font-size: 24px; }
-.safety-summary .ss-text {
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--regen-bright);
-}
-.safety-summary .ss-sub { font-size: 13px; color: var(--text-2); margin-top: 2px; font-family: 'DM Sans', sans-serif; font-weight: 300; }
-
-/* ═══════════════════════════════════════════
-   PROTOCOL OUTPUT (Step 4)
-   ═══════════════════════════════════════════ */
-/* Protocol grid — 2-col on desktop */
-.protocol-grid {
+.how-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.protocol-card {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 16px 16px 14px;
-  position: relative;
-  overflow: hidden;
-}
-.protocol-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px;
-  height: 100%;
-}
-.protocol-card[data-type="primary"]::before { background: var(--bio); }
-.protocol-card[data-type="support"]::before { background: var(--neural); }
-.protocol-card[data-type="optional"]::before { background: var(--vital); }
-
-.proto-top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-.proto-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 4px;
-  display: inline-block;
-  flex-shrink: 0;
-}
-.protocol-card[data-type="primary"] .proto-badge { color: var(--bio); background: var(--bio-glass); }
-.protocol-card[data-type="support"] .proto-badge { color: var(--neural); background: var(--neural-glass); }
-.protocol-card[data-type="optional"] .proto-badge { color: var(--vital); background: var(--vital-glass); }
-
-.proto-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-}
-.proto-category {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  line-height: 1.3;
-}
-.proto-details {
-  display: flex;
-  gap: 16px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-}
-.proto-detail-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 2px;
-}
-.proto-detail-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.protocol-note {
-  background: var(--signal-glass);
-  border: 1px solid rgba(74,180,245,0.15);
-  border-radius: var(--r-sm);
-  padding: 12px 16px;
-  margin-top: 8px;
-  font-size: 12px;
-  color: var(--text-2);
-  line-height: 1.5;
-}
-.protocol-note strong { color: var(--signal); }
-
-/* ═══════════════════════════════════════════
-   CONSENT (Step 5)
-   ═══════════════════════════════════════════ */
-.consent-item {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 20px 24px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.consent-item:hover {
-  background: var(--glass-hover);
-}
-.consent-item.accepted {
-  border-color: var(--bio);
-  background: var(--bio-glass);
-}
-.consent-check {
-  width: 24px; height: 24px;
-  border-radius: 6px;
-  border: 2px solid var(--border-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  flex-shrink: 0;
-  margin-top: 2px;
-  transition: all 0.3s;
-}
-.consent-item.accepted .consent-check {
-  background: var(--bio);
-  border-color: var(--bio);
-  color: var(--void);
-}
-.consent-text {
-  font-size: 14px;
-  color: var(--text-2);
-  line-height: 1.6;
-}
-.consent-text strong { color: var(--text); font-weight: 500; }
-
-/* ═══════════════════════════════════════════
-   CHECKOUT SUMMARY (Step 5 bottom)
-   ═══════════════════════════════════════════ */
-.checkout-summary {
-  background: var(--void-raised);
-  border: 1px solid var(--border-mid);
-  border-radius: var(--r-lg);
-  padding: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
   margin-top: 32px;
 }
-.checkout-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-.checkout-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-}
-.checkout-line:last-of-type { border-bottom: none; }
-.checkout-line .label { color: var(--text-2); }
-.checkout-line .value {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-}
-.checkout-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0 0;
-  margin-top: 8px;
-  border-top: 2px solid var(--border-mid);
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-}
-.checkout-total .value { color: var(--bio-bright); }
-
-.payment-options {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
-.pay-btn {
-  flex: 1;
-  padding: 14px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border);
+.how-card {
   background: var(--glass);
-  color: var(--text-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s;
+}
+.how-card:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+  transform: translateY(-2px);
+}
+.how-number {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--bio);
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+.how-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+.how-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.how-card p {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.how-connector {
+  display: none;
+}
+
+/* ── Protocol Preview Grid ── */
+.preview-section {
+  padding: 64px 0;
+}
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 32px;
+}
+.preview-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 20px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
-.pay-btn:hover { background: var(--glass-hover); border-color: var(--border-mid); }
-.pay-btn.active {
-  border-color: var(--vital);
-  background: var(--vital-glass);
-  color: var(--vital-bright);
+.preview-card:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+  transform: translateY(-3px);
+  color: inherit;
 }
-
-/* ═══════════════════════════════════════════
-   BUTTONS
-   ═══════════════════════════════════════════ */
-.btn-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 40px;
-  gap: 16px;
+.preview-card .p-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
 }
-.btn {
-  padding: 14px 32px;
-  border-radius: var(--r-sm);
+.preview-card .p-name {
   font-family: 'Syne', sans-serif;
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  outline: none;
+  margin-bottom: 4px;
 }
-.btn-primary {
-  background: var(--bio);
-  color: var(--void-deep);
-  box-shadow: 0 0 20px rgba(46,216,184,0.25);
-}
-.btn-primary:hover {
-  background: var(--bio-bright);
-  box-shadow: 0 0 30px rgba(46,216,184,0.4);
-  transform: translateY(-1px);
-}
-.btn-primary:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-.btn-secondary {
-  background: var(--glass);
-  color: var(--text-2);
-  border: 1px solid var(--border);
-}
-.btn-secondary:hover {
-  background: var(--glass-hover);
-  border-color: var(--border-mid);
-}
-.btn-ghost {
-  background: transparent;
+.preview-card .p-tagline {
+  font-size: 12px;
   color: var(--text-muted);
-  padding: 14px 16px;
-}
-.btn-ghost:hover { color: var(--text); }
-
-.btn-submit {
-  background: linear-gradient(135deg, var(--bio), var(--bio-dim));
-  color: var(--void-deep);
-  width: 100%;
-  padding: 18px;
-  font-size: 16px;
-  margin-top: 20px;
-  box-shadow: 0 0 30px rgba(46,216,184,0.3);
-}
-.btn-submit:hover {
-  box-shadow: 0 0 40px rgba(46,216,184,0.5);
-  transform: translateY(-2px);
-}
-.btn-submit:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  line-height: 1.4;
 }
 
-/* ═══════════════════════════════════════════
-   SUCCESS OVERLAY
-   ═══════════════════════════════════════════ */
-.success-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(8,9,16,0.92);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
+/* ── Trust Signals ── */
+.trust-section {
+  padding: 64px 0;
 }
-.success-overlay.visible { display: flex; }
-.success-card {
-  background: var(--void-raised);
-  border: 1px solid var(--bio);
-  border-radius: var(--r-lg);
-  padding: 48px;
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.trust-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 20px;
   text-align: center;
-  max-width: 500px;
-  box-shadow: 0 0 60px rgba(46,216,184,0.15);
-  animation: fadeUp 0.5s ease;
 }
-.success-icon { font-size: 48px; margin-bottom: 20px; }
-.success-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 24px;
+.trust-card .t-icon {
+  font-size: 28px;
   margin-bottom: 12px;
 }
-.success-desc {
-  color: var(--text-2);
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 24px;
+.trust-card .t-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
 }
-.success-ref {
-  font-family: 'JetBrains Mono', monospace;
+.trust-card .t-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Footer ── */
+.landing-footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0 24px;
+  margin-top: 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footer-brand .logo {
+  margin-bottom: 12px;
+}
+.footer-brand p {
   font-size: 13px;
-  color: var(--bio);
-  padding: 10px 20px;
-  background: var(--bio-glass);
-  border-radius: var(--r-sm);
-  display: inline-block;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 280px;
 }
-
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════ */
-@media (max-width: 900px) {
-  .goal-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 640px) {
-  .panel-title { font-size: 22px; }
-  .goal-grid { grid-template-columns: repeat(2, 1fr); }
-  .protocol-grid { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .payment-options { flex-direction: column; }
-  .btn-row { flex-direction: column; }
-  .btn { width: 100%; text-align: center; }
-  .progress-bar { padding: 0; }
-  .step-label { font-size: 7px; }
-  .step-dot { width: 30px; height: 30px; font-size: 11px; }
-}
-
-/* ═══════════════════════════════════════════
-   MOCKUP BADGE
-   ═══════════════════════════════════════════ */
-.mockup-badge {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 8px 16px;
-  background: var(--void-raised);
-  border: 1px solid var(--border-mid);
-  border-radius: 999px;
+.footer-col h4 {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   color: var(--text-muted);
-  z-index: 99;
+  margin-bottom: 16px;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 10px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-col a:hover { color: var(--bio); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero h1 { font-size: 36px; }
+  .preview-grid { grid-template-columns: repeat(3, 1fr); }
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .hero h1 { font-size: 28px; }
+  .hero-sub { font-size: 15px; }
+  .how-grid { grid-template-columns: 1fr; }
+  .preview-grid { grid-template-columns: repeat(2, 1fr); }
+  .trust-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 }
 </style>
 </head>
-<body>
+<body data-portal="b2c">
+<div class="app-shell app-shell--wide">
 
-<div class="app-shell">
-
-  <!-- ─── TOP BAR ─── -->
+  <!-- ── Navigation ── -->
   <header class="topbar">
-    <div class="logo">TR<span class="four">4</span>NSFORM</div>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <span class="topbar-tag">Dynamic Peptide Builder</span>
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
       <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
+      <button class="nav-toggle">&#9776;</button>
     </div>
   </header>
 
-  <!-- ─── PROGRESS BAR ─── -->
-  <nav class="progress-bar" id="progressBar">
-    <div class="step-node active" data-step="1" onclick="goToStep(1)">
-      <div class="step-dot">01</div>
-      <div class="step-label">Goals</div>
-    </div>
-    <div class="step-connector" id="conn1"></div>
-    <div class="step-node" data-step="2" onclick="goToStep(2)">
-      <div class="step-dot">02</div>
-      <div class="step-label">Intake</div>
-    </div>
-    <div class="step-connector" id="conn2"></div>
-    <div class="step-node" data-step="3" onclick="goToStep(3)">
-      <div class="step-dot">03</div>
-      <div class="step-label">Safety</div>
-    </div>
-    <div class="step-connector" id="conn3"></div>
-    <div class="step-node" data-step="4" onclick="goToStep(4)">
-      <div class="step-dot">04</div>
-      <div class="step-label">Protocol</div>
-    </div>
-    <div class="step-connector" id="conn4"></div>
-    <div class="step-node" data-step="5" onclick="goToStep(5)">
-      <div class="step-dot">05</div>
-      <div class="step-label">Consent</div>
-    </div>
-  </nav>
-
-  <!-- ═══════════════════════════════════════
-       STEP 1 — GOAL SELECTION
-       ═══════════════════════════════════════ -->
-  <section class="step-panel visible" id="step1">
-    <div class="panel-header">
-      <div class="panel-eyebrow">◆ Step 01 · Goal Selection</div>
-      <h2 class="panel-title">What do you want to achieve?</h2>
-      <p class="panel-subtitle">Select one or more goals. Your choices shape the protocol recommendation engine.</p>
-    </div>
-
-    <div class="goal-grid">
-      <div class="goal-card" data-cat="mind" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Mind</div>
-        <div class="icon">🧠</div>
-        <div class="card-title">Cognitive Enhancement</div>
-        <div class="card-desc">Sharpen focus, memory recall, and neuroplasticity pathways.</div>
-      </div>
-      <div class="goal-card" data-cat="mind" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Mind</div>
-        <div class="icon">😴</div>
-        <div class="card-title">Sleep Architecture</div>
-        <div class="card-desc">Optimise deep sleep cycles, HGH release, and circadian rhythm.</div>
-      </div>
-      <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Body</div>
-        <div class="icon">💪</div>
-        <div class="card-title">Muscle Recovery</div>
-        <div class="card-desc">Accelerate tissue repair, reduce inflammation, and improve recovery windows.</div>
-      </div>
-      <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Body</div>
-        <div class="icon">🦴</div>
-        <div class="card-title">Joint & Tissue Repair</div>
-        <div class="card-desc">Support collagen synthesis, tendon health, and cartilage regeneration.</div>
-      </div>
-      <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Body</div>
-        <div class="icon">🔥</div>
-        <div class="card-title">Fat Metabolism</div>
-        <div class="card-desc">Enhance lipolysis pathways and metabolic efficiency markers.</div>
-      </div>
-      <div class="goal-card" data-cat="soul" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Soul</div>
-        <div class="icon">🧬</div>
-        <div class="card-title">Longevity & Anti-Ageing</div>
-        <div class="card-desc">Target telomere support, cellular senescence, and oxidative resilience.</div>
-      </div>
-      <div class="goal-card" data-cat="soul" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Soul</div>
-        <div class="icon">🌿</div>
-        <div class="card-title">Gut Regeneration</div>
-        <div class="card-desc">Restore intestinal barrier, microbiome signaling, and mucosal immunity.</div>
-      </div>
-      <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
-        <div class="check"></div>
-        <div class="cat-label">Body</div>
-        <div class="icon">⚡</div>
-        <div class="card-title">Energy & Vitality</div>
-        <div class="card-desc">Boost mitochondrial output, stamina, and sustained daily performance.</div>
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <div></div>
-      <button class="btn btn-primary" id="btn1" disabled onclick="nextStep()">Continue to Intake →</button>
+  <!-- ══════════════════════════════════════
+       HERO
+       ══════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-eyebrow">&#9670; Sovereign Peptide Platform</div>
+    <h1>Own Your Biology.<br/>Build Your Protocol.</h1>
+    <p class="hero-sub">
+      Non-Rx, evidence-based, sovereign peptide protocols designed around your unique biology.
+      No gatekeepers. No compromises. Your data, your vault, your transformation.
+    </p>
+    <div class="hero-ctas">
+      <a href="protocols.html" class="btn btn-primary btn-lg">Browse Protocols</a>
+      <a href="builder.html" class="btn btn-secondary btn-lg">Start Builder</a>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       STEP 2 — INTAKE QUESTIONNAIRE
-       ═══════════════════════════════════════ -->
-  <section class="step-panel" id="step2">
-    <div class="panel-header">
-      <div class="panel-eyebrow">◆ Step 02 · Intake Questionnaire</div>
-      <h2 class="panel-title">Tell us about yourself</h2>
-      <p class="panel-subtitle">This information helps the safety gate assess contraindications and tailor your protocol.</p>
+  <!-- ══════════════════════════════════════
+       HOW IT WORKS
+       ══════════════════════════════════════ -->
+  <section class="how-it-works">
+    <div style="text-align:center">
+      <div class="eyebrow">&#9670; How It Works</div>
+      <h2 style="font-size:28px; margin-bottom:8px;">Three Steps to Your Protocol</h2>
+      <p style="color:var(--text-2); font-size:15px;">From goals to a fully personalised, safety-cleared peptide stack.</p>
     </div>
-
-    <div class="form-section">
-      <label class="form-label">Basic Information</label>
-      <div class="form-row" style="margin-bottom:16px;">
-        <input class="form-input" type="text" placeholder="Full name" />
-        <input class="form-input" type="email" placeholder="Email address" />
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-number">STEP 01</div>
+        <div class="how-icon">&#127919;</div>
+        <h3>Set Your Goals</h3>
+        <p>Choose from 8 optimisation goals spanning body, mind and soul. Pick one or stack multiple.</p>
       </div>
-      <div class="form-row">
-        <div>
-          <label class="form-label" style="font-size:12px;">Age Range</label>
-          <select class="form-select">
-            <option value="">Select range…</option>
-            <option>18–25</option>
-            <option>26–35</option>
-            <option>36–45</option>
-            <option>46–55</option>
-            <option>56–65</option>
-            <option>65+</option>
-          </select>
-        </div>
-        <div>
-          <label class="form-label" style="font-size:12px;">Biological Sex</label>
-          <select class="form-select">
-            <option value="">Select…</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Prefer not to say</option>
-          </select>
-        </div>
+      <div class="how-card">
+        <div class="how-number">STEP 02</div>
+        <div class="how-icon">&#128737;</div>
+        <h3>Safety Gate</h3>
+        <p>Every protocol runs through our clinical safety gate &mdash; contraindication checks, interaction screening, and dosage validation.</p>
       </div>
-    </div>
-
-    <div class="form-section">
-      <label class="form-label">Current Health Conditions</label>
-      <p class="form-sublabel">Select all that apply. This triggers safety gating logic.</p>
-      <div class="chip-group">
-        <span class="chip" onclick="toggleChip(this)">None</span>
-        <span class="chip" onclick="toggleChip(this)">Cardiovascular</span>
-        <span class="chip" onclick="toggleChip(this)">Diabetes</span>
-        <span class="chip" onclick="toggleChip(this)">Thyroid Disorder</span>
-        <span class="chip" onclick="toggleChip(this)">Autoimmune</span>
-        <span class="chip" onclick="toggleChip(this)">Kidney/Liver</span>
-        <span class="chip" onclick="toggleChip(this)">Cancer History</span>
-        <span class="chip" onclick="toggleChip(this)">Neurological</span>
-        <span class="chip" onclick="toggleChip(this)">Pregnant/Nursing</span>
+      <div class="how-card">
+        <div class="how-number">STEP 03</div>
+        <div class="how-icon">&#9889;</div>
+        <h3>Your Protocol</h3>
+        <p>Receive a personalised peptide stack with dosing, cycling, and optional boosts &mdash; ready to order.</p>
       </div>
-    </div>
-
-    <div class="form-section">
-      <label class="form-label">Current Medications or Supplements</label>
-      <textarea class="form-textarea" placeholder="List any current medications, supplements, or peptides you are already using…"></textarea>
-    </div>
-
-    <div class="form-section">
-      <label class="form-label">Previous Peptide Experience</label>
-      <div class="chip-group">
-        <span class="chip" onclick="toggleChip(this)">None — first time</span>
-        <span class="chip" onclick="toggleChip(this)">Some experience</span>
-        <span class="chip" onclick="toggleChip(this)">Advanced user</span>
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="prevStep()">← Back</button>
-      <button class="btn btn-primary" onclick="nextStep()">Run Safety Check →</button>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       STEP 3 — SAFETY GATE
-       ═══════════════════════════════════════ -->
-  <section class="step-panel" id="step3">
-    <div class="panel-header">
-      <div class="panel-eyebrow">◆ Step 03 · Safety Gate</div>
-      <h2 class="panel-title">Contraindication Assessment</h2>
-      <p class="panel-subtitle">Your intake responses are evaluated against known safety profiles. Items flagged below may require manual review.</p>
+  <!-- ══════════════════════════════════════
+       PROTOCOL PREVIEW GRID
+       ══════════════════════════════════════ -->
+  <section class="preview-section">
+    <div style="text-align:center">
+      <div class="eyebrow">&#9670; Protocol Categories</div>
+      <h2 style="font-size:28px; margin-bottom:8px;">12 Optimisation Protocols</h2>
+      <p style="color:var(--text-2); font-size:15px;">Each protocol is a complete stack covering peptides, botanicals, cannabinoids, hydrogen and lifestyle pillars.</p>
     </div>
-
-    <div class="gate-card">
-      <div class="gate-icon pass">✓</div>
-      <div>
-        <div class="gate-title">Age & Demographics</div>
-        <div class="gate-desc">No age-related contraindications detected for selected non-Rx peptides.</div>
-        <span class="gate-status pass">Cleared</span>
-      </div>
-    </div>
-
-    <div class="gate-card">
-      <div class="gate-icon pass">✓</div>
-      <div>
-        <div class="gate-title">Health Conditions</div>
-        <div class="gate-desc">No flagged conditions conflict with the current goal set.</div>
-        <span class="gate-status pass">Cleared</span>
-      </div>
-    </div>
-
-    <div class="gate-card">
-      <div class="gate-icon warn">⚠</div>
-      <div>
-        <div class="gate-title">Combination Check</div>
-        <div class="gate-desc">Your selected goals may produce a multi-peptide stack. An admin reviewer will validate the combination before fulfillment proceeds.</div>
-        <span class="gate-status warn">Flagged for Review</span>
-      </div>
-    </div>
-
-    <div class="gate-card">
-      <div class="gate-icon pass">✓</div>
-      <div>
-        <div class="gate-title">Regulatory Gate</div>
-        <div class="gate-desc">All recommended items fall within Non-Rx scope. No prescription-only substances are included.</div>
-        <span class="gate-status pass">Non-Rx Confirmed</span>
-      </div>
-    </div>
-
-    <div class="safety-summary">
-      <div class="ss-icon">🛡️</div>
-      <div>
-        <div class="ss-text">Safety Gate Passed — Proceed to Protocol</div>
-        <div class="ss-sub">1 item flagged for admin review. This will not block your submission.</div>
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="prevStep()">← Back</button>
-      <button class="btn btn-primary" onclick="nextStep()">View Protocol →</button>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       STEP 4 — PROTOCOL OUTPUT
-       ═══════════════════════════════════════ -->
-  <section class="step-panel" id="step4">
-    <div class="panel-header">
-      <div class="panel-eyebrow">◆ Step 04 · Protocol Output</div>
-      <h2 class="panel-title">Your Sovereign Protocol</h2>
-      <p class="panel-subtitle">Based on your goals and safety assessment, here is your recommended non-Rx peptide protocol.</p>
-    </div>
-
-    <div class="protocol-grid">
-      <div class="protocol-card" data-type="primary">
-        <div class="proto-top"><div class="proto-badge">Primary</div><div class="proto-name">BPC-157</div></div>
-        <div class="proto-category">Recovery · Gut Regeneration · Tissue Repair</div>
-        <div class="proto-details">
-          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Capsule</div></div>
-          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">500mcg/d</div></div>
-          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">30 days</div></div>
-        </div>
-      </div>
-
-      <div class="protocol-card" data-type="primary">
-        <div class="proto-top"><div class="proto-badge">Primary</div><div class="proto-name">Epithalon</div></div>
-        <div class="proto-category">Longevity · Telomere Support · Anti-Ageing</div>
-        <div class="proto-details">
-          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Nasal Spray</div></div>
-          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">5mg/d</div></div>
-          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">20 days</div></div>
-        </div>
-      </div>
-
-      <div class="protocol-card" data-type="support">
-        <div class="proto-top"><div class="proto-badge">Support</div><div class="proto-name">KPV</div></div>
-        <div class="proto-category">Gut Barrier · Anti-Inflammatory · Mucosal Immunity</div>
-        <div class="proto-details">
-          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Capsule</div></div>
-          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">200mcg/d</div></div>
-          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">30 days</div></div>
-        </div>
-      </div>
-
-      <div class="protocol-card" data-type="optional">
-        <div class="proto-top"><div class="proto-badge">Optional</div><div class="proto-name">Dihexa</div></div>
-        <div class="proto-category">Cognitive · Neuroplasticity · Memory</div>
-        <div class="proto-details">
-          <div><div class="proto-detail-label">Format</div><div class="proto-detail-value">Capsule</div></div>
-          <div><div class="proto-detail-label">Dose</div><div class="proto-detail-value">10mg/d</div></div>
-          <div><div class="proto-detail-label">Cycle</div><div class="proto-detail-value">30 days</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="protocol-note">
-      <strong>ℹ️ Disclaimer:</strong> Protocol output is for informational reference only. All orders subject to admin review. TR4NSFORM does not provide medical advice.
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="prevStep()">← Back</button>
-      <button class="btn btn-primary" onclick="nextStep()">Accept & Continue →</button>
+    <div class="preview-grid">
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#127769;</div>
+        <div class="p-name">Sleep</div>
+        <div class="p-tagline">Architecture &amp; deep restoration</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#128524;</div>
+        <div class="p-name">Calm</div>
+        <div class="p-tagline">Resilience &amp; nervous system</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#129504;</div>
+        <div class="p-name">Brain</div>
+        <div class="p-tagline">Cognition &amp; neuroplasticity</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#9889;</div>
+        <div class="p-name">Energy</div>
+        <div class="p-tagline">Mitochondrial vitality</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#129516;</div>
+        <div class="p-name">Gut</div>
+        <div class="p-tagline">Microbiome regeneration</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#128170;</div>
+        <div class="p-name">Immunity</div>
+        <div class="p-tagline">Immune fortification</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#129657;</div>
+        <div class="p-name">Recovery</div>
+        <div class="p-tagline">Injury &amp; tissue repair</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#9878;</div>
+        <div class="p-name">Hormones</div>
+        <div class="p-tagline">Endocrine balance</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#8734;</div>
+        <div class="p-name">Longevity</div>
+        <div class="p-tagline">Anti-ageing &amp; telomeres</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#127942;</div>
+        <div class="p-name">Performance</div>
+        <div class="p-tagline">Peak physical output</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#128293;</div>
+        <div class="p-name">Metabolic</div>
+        <div class="p-tagline">Metabolic optimisation</div>
+      </a>
+      <a href="protocol-detail.html" class="preview-card">
+        <div class="p-icon">&#128156;</div>
+        <div class="p-name">Sensu</div>
+        <div class="p-tagline">Intimacy &amp; vitality</div>
+      </a>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       STEP 5 — CONSENT & CHECKOUT
-       ═══════════════════════════════════════ -->
-  <section class="step-panel" id="step5">
-    <div class="panel-header">
-      <div class="panel-eyebrow">◆ Step 05 · Consent & Checkout</div>
-      <h2 class="panel-title">Confirm & Submit</h2>
-      <p class="panel-subtitle">Review the acknowledgements below, then proceed to payment.</p>
+  <!-- ══════════════════════════════════════
+       TRUST SIGNALS
+       ══════════════════════════════════════ -->
+  <section class="trust-section">
+    <div style="text-align:center">
+      <div class="eyebrow">&#9670; Trust &amp; Sovereignty</div>
+      <h2 style="font-size:28px; margin-bottom:8px;">Built for Sovereignty</h2>
+      <p style="color:var(--text-2); font-size:15px;">Your biology, your data, your control.</p>
     </div>
-
-    <div class="consent-item" onclick="toggleConsent(this)">
-      <div class="consent-check"></div>
-      <div class="consent-text">
-        <strong>Sovereign Responsibility:</strong> I understand that TR4NSFORM provides non-prescription peptide products and educational protocols. I accept full sovereign responsibility for my health decisions.
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="t-icon">&#128154;</div>
+        <div class="t-label">Non-Rx Only</div>
+        <div class="t-desc">All compounds are non-prescription. No controlled substances, no legal grey areas.</div>
       </div>
-    </div>
-
-    <div class="consent-item" onclick="toggleConsent(this)">
-      <div class="consent-check"></div>
-      <div class="consent-text">
-        <strong>Non-Medical Disclaimer:</strong> I acknowledge that the protocol output is not a medical prescription, diagnosis, or treatment plan. I am encouraged to consult a qualified healthcare provider.
+      <div class="trust-card">
+        <div class="t-icon">&#128218;</div>
+        <div class="t-label">Evidence-Based</div>
+        <div class="t-desc">Every protocol backed by peer-reviewed research and clinical-grade safety gates.</div>
       </div>
-    </div>
-
-    <div class="consent-item" onclick="toggleConsent(this)">
-      <div class="consent-check"></div>
-      <div class="consent-text">
-        <strong>Data & Consent Logging:</strong> I consent to TR4NSFORM storing my intake responses, protocol result, and order details in a secure record for traceability and support purposes.
+      <div class="trust-card">
+        <div class="t-icon">&#128274;</div>
+        <div class="t-label">Encrypted Vault</div>
+        <div class="t-desc">Health data stored in your personal encrypted vault. Zero-knowledge architecture.</div>
       </div>
-    </div>
-
-    <div class="consent-item" onclick="toggleConsent(this)">
-      <div class="consent-check"></div>
-      <div class="consent-text">
-        <strong>Manual Fulfillment:</strong> I understand that all orders are reviewed by the TR4NSFORM team before dispatch. Order timelines are subject to review and approval.
+      <div class="trust-card">
+        <div class="t-icon">&#128279;</div>
+        <div class="t-label">Wallet Auth</div>
+        <div class="t-desc">Connect with your Web3 wallet. No passwords, no centralised accounts.</div>
       </div>
-    </div>
-
-    <!-- Checkout Summary -->
-    <div class="checkout-summary">
-      <div class="checkout-title">Order Summary</div>
-      <div class="checkout-line">
-        <span class="label">BPC-157 — 30-day Capsule</span>
-        <span class="value">$89.00</span>
-      </div>
-      <div class="checkout-line">
-        <span class="label">Epithalon — 20-day Nasal Spray</span>
-        <span class="value">$119.00</span>
-      </div>
-      <div class="checkout-line">
-        <span class="label">KPV — 30-day Capsule</span>
-        <span class="value">$69.00</span>
-      </div>
-      <div class="checkout-total">
-        <span>Total</span>
-        <span class="value">$277.00</span>
-      </div>
-
-      <div style="margin-top:24px;">
-        <label class="form-label" style="font-size:12px;margin-bottom:10px;">Payment Method</label>
-        <div class="payment-options">
-          <div class="pay-btn active" onclick="selectPay(this)">₿ Bitcoin / Lightning</div>
-          <div class="pay-btn" onclick="selectPay(this)">💳 Card / Fiat</div>
-          <div class="pay-btn" onclick="selectPay(this)">🪙 Stablecoin</div>
-        </div>
-      </div>
-
-      <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitOrder()">
-        Submit Order for Review
-      </button>
-    </div>
-
-    <div class="btn-row" style="margin-top:24px;">
-      <button class="btn btn-ghost" onclick="prevStep()">← Back to Protocol</button>
-      <div></div>
     </div>
   </section>
 
-</div>
-
-<!-- ─── SUCCESS OVERLAY ─── -->
-<div class="success-overlay" id="successOverlay">
-  <div class="success-card">
-    <div class="success-icon">🛡️</div>
-    <div class="success-title">Order Submitted</div>
-    <div class="success-desc">
-      Your sovereign protocol has been submitted for admin review. You'll receive a confirmation once the team has validated your order and initiated fulfillment.
+  <!-- ══════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════ -->
+  <footer class="landing-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">TR<span class="four">4</span>NSFORM</div>
+        <p>Sovereign peptide protocols for the self-optimising human. Non-Rx, evidence-based, encrypted.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="protocols.html">Protocols</a>
+        <a href="builder.html">Builder</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="consultation.html">Consultation</a>
+      </div>
+      <div class="footer-col">
+        <h4>Science</h4>
+        <a href="#">Research Library</a>
+        <a href="#">Safety Framework</a>
+        <a href="#">Peptide Database</a>
+        <a href="#">Clinical Partners</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Disclaimer</a>
+        <a href="#">Contact</a>
+      </div>
     </div>
-    <div class="success-ref">REF: TR4-MVP-2026-0001</div>
-    <br/><br/>
-    <button class="btn btn-secondary" onclick="location.reload()">Start New Protocol</button>
+    <div class="footer-bottom">
+      <span>&copy; 2026 TR4NSFORM. All rights reserved.</span>
+      <span class="mono" style="font-size:11px; color:var(--text-subtle);">v0.1.0-mvp</span>
+    </div>
+  </footer>
+
+</div><!-- .app-shell -->
+
+<!-- ── Wallet Connect Modal ── -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
+    <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <span class="wallet-icon">&#129418;</span>
+      <div>
+        <div class="wallet-name">MetaMask</div>
+        <div class="wallet-desc">Browser extension wallet</div>
+      </div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <span class="wallet-icon">&#128279;</span>
+      <div>
+        <div class="wallet-name">WalletConnect</div>
+        <div class="wallet-desc">Mobile wallet via QR</div>
+      </div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('phantom')">
+      <span class="wallet-icon">&#128123;</span>
+      <div>
+        <div class="wallet-name">Phantom</div>
+        <div class="wallet-desc">Solana ecosystem wallet</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%; margin-top:12px;" onclick="closeWalletModal()">Cancel</button>
   </div>
 </div>
 
-<!-- ─── MOCKUP BADGE ─── -->
-<div class="mockup-badge">TR4NSFORM · MVP MOCKUP · v0.1</div>
+<!-- ── Mockup Badge ── -->
+<div class="mockup-badge">MVP MOCKUP &middot; NOT PRODUCTION</div>
 
-<script>
-/* ═══════════════════════════════════════════
-   INTERACTIVE LOGIC
-   ═══════════════════════════════════════════ */
-let currentStep = 1;
-const totalSteps = 5;
-
-function goToStep(step) {
-  if (step < 1 || step > totalSteps) return;
-  // Allow clicking back to completed or current step
-  if (step > currentStep) return;
-
-  currentStep = step;
-  updateUI();
-}
-
-function nextStep() {
-  if (currentStep < totalSteps) {
-    currentStep++;
-    updateUI();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-function prevStep() {
-  if (currentStep > 1) {
-    currentStep--;
-    updateUI();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-function updateUI() {
-  // Panels
-  for (let i = 1; i <= totalSteps; i++) {
-    const panel = document.getElementById('step' + i);
-    panel.classList.toggle('visible', i === currentStep);
-  }
-
-  // Progress nodes
-  const nodes = document.querySelectorAll('.step-node');
-  nodes.forEach(n => {
-    const s = parseInt(n.dataset.step);
-    n.classList.remove('active', 'completed');
-    if (s === currentStep) n.classList.add('active');
-    else if (s < currentStep) n.classList.add('completed');
-  });
-
-  // Connectors
-  for (let i = 1; i < totalSteps; i++) {
-    const conn = document.getElementById('conn' + i);
-    conn.classList.toggle('done', i < currentStep);
-  }
-}
-
-/* Goal card selection */
-function toggleGoal(el) {
-  el.classList.toggle('selected');
-  const check = el.querySelector('.check');
-  check.textContent = el.classList.contains('selected') ? '✓' : '';
-
-  const selected = document.querySelectorAll('.goal-card.selected').length;
-  document.getElementById('btn1').disabled = selected === 0;
-}
-
-/* Chip selection */
-function toggleChip(el) {
-  el.classList.toggle('selected');
-}
-
-/* Consent toggles */
-function toggleConsent(el) {
-  el.classList.toggle('accepted');
-  const check = el.querySelector('.consent-check');
-  check.textContent = el.classList.contains('accepted') ? '✓' : '';
-
-  const total = document.querySelectorAll('.consent-item').length;
-  const accepted = document.querySelectorAll('.consent-item.accepted').length;
-  document.getElementById('btnSubmit').disabled = accepted < total;
-}
-
-/* Payment method */
-function selectPay(el) {
-  document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-/* Submit */
-function submitOrder() {
-  document.getElementById('successOverlay').classList.add('visible');
-}
-</script>
-
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
 </body>
 </html>

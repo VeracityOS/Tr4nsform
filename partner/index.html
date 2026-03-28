@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Partner Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+</head>
+<body data-portal="partner">
+<div class="app-shell">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Partner Portal</span>
+      <button class="wallet-btn connected"><span class="dot"></span>Partner: Sukhumvit Clinic</button>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="page-header" style="text-align:center;padding:40px 0 24px;">
+    <div class="eyebrow" style="margin:0 auto 16px;">&#9878; Partnership Programme</div>
+    <h1 class="page-title" style="font-size:38px;margin-bottom:12px;">Partner with TR<span class="text-bio">4</span>NSFORM</h1>
+    <p class="page-subtitle" style="margin:0 auto;max-width:580px;">Join our sovereign peptide ecosystem as a clinic, retreat, or reseller partner. White-label protocols, consignment stock, and full operational support.</p>
+  </div>
+
+  <!-- Partnership Type Cards -->
+  <section class="section">
+    <div class="grid-3">
+      <div class="card card-clickable card--bio" style="text-align:center;padding:32px 24px;">
+        <div style="font-size:36px;margin-bottom:16px;">&#127973;</div>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:8px;">Clinic Partner</h3>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:16px;">Integrate TR4NSFORM protocols into your clinical practice. Prescribe, dispense, and monitor patient outcomes with full regulatory compliance.</p>
+        <ul style="text-align:left;font-size:12px;color:var(--text-muted);list-style:none;line-height:2;">
+          <li>&#10003; Direct dispensing license</li>
+          <li>&#10003; Clinical decision support</li>
+          <li>&#10003; Patient outcome tracking</li>
+          <li>&#10003; Net 14 settlement terms</li>
+        </ul>
+      </div>
+      <div class="card card-clickable card--neural" style="text-align:center;padding:32px 24px;">
+        <div style="font-size:36px;margin-bottom:16px;">&#127796;</div>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:8px;">Retreat Partner</h3>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:16px;">Offer sovereign peptide retreats at your venue. Full protocol delivery, practitioner support, and guest management platform.</p>
+        <ul style="text-align:left;font-size:12px;color:var(--text-muted);list-style:none;line-height:2;">
+          <li>&#10003; Retreat protocol bundles</li>
+          <li>&#10003; On-site practitioner network</li>
+          <li>&#10003; Guest intake &amp; tracking</li>
+          <li>&#10003; Revenue share model</li>
+        </ul>
+      </div>
+      <div class="card card-clickable card--vital" style="text-align:center;padding:32px 24px;">
+        <div style="font-size:36px;margin-bottom:16px;">&#128230;</div>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:8px;">Reseller</h3>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:16px;">Distribute TR4NSFORM products through your retail or e-commerce channels. Consignment and wholesale pricing available.</p>
+        <ul style="text-align:left;font-size:12px;color:var(--text-muted);list-style:none;line-height:2;">
+          <li>&#10003; Wholesale pricing tiers</li>
+          <li>&#10003; Consignment stock options</li>
+          <li>&#10003; Branded marketing materials</li>
+          <li>&#10003; Net 30/60 payment terms</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner Onboarding Form -->
+  <section class="section">
+    <div style="max-width:640px;margin:0 auto;">
+      <h2 class="section-title" style="justify-content:center;">Apply for Partnership</h2>
+      <p style="text-align:center;color:var(--text-2);font-size:14px;margin-bottom:32px;">Complete the form below and our partnerships team will review your application within 48 hours.</p>
+
+      <div class="card" style="padding:32px;">
+        <div class="form-section">
+          <label class="form-label">Business Name</label>
+          <input class="form-input" type="text" placeholder="e.g. Sukhumvit Wellness Clinic"/>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Territory / Region</label>
+          <select class="form-select">
+            <option value="">Select region...</option>
+            <option>Southeast Asia</option>
+            <option>Europe</option>
+            <option>Middle East</option>
+            <option>North America</option>
+            <option>Oceania</option>
+            <option>Latin America</option>
+            <option>Africa</option>
+          </select>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Partnership Type</label>
+          <select class="form-select">
+            <option value="">Select type...</option>
+            <option>Clinic Partner</option>
+            <option>Retreat Partner</option>
+            <option>Reseller</option>
+          </select>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Services Offered</label>
+          <p class="form-sublabel">Select all that apply</p>
+          <div class="chip-group">
+            <span class="chip" onclick="toggleChip(this)">Consultation</span>
+            <span class="chip" onclick="toggleChip(this)">Dispensing</span>
+            <span class="chip" onclick="toggleChip(this)">Protocol Delivery</span>
+            <span class="chip" onclick="toggleChip(this)">Retreat Hosting</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Invoicing Terms</label>
+          <select class="form-select">
+            <option value="">Select terms...</option>
+            <option>Net 14</option>
+            <option>Net 30</option>
+            <option>Net 60</option>
+          </select>
+        </div>
+
+        <div class="form-section">
+          <label class="form-label">Contact Email</label>
+          <input class="form-input" type="email" placeholder="partner@clinic.com"/>
+        </div>
+
+        <button class="btn btn-submit" onclick="showToast('Partnership application submitted successfully!','bio')">Apply for Partnership</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+</body>
+</html>

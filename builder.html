@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM — Peptide Protocol Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* ── Builder-specific Styles ── */
+.builder-shell {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* Dosage Calculator */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.calc-result {
+  background: var(--bio-glass);
+  border: 1px solid rgba(46,216,184,0.25);
+  border-radius: var(--r);
+  padding: 24px;
+  text-align: center;
+  margin-top: 16px;
+}
+.calc-result .calc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.calc-result .calc-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--bio-bright);
+}
+.calc-result .calc-unit {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.syringe-visual {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  text-align: center;
+  margin-top: 16px;
+}
+.syringe-bar {
+  width: 200px;
+  height: 24px;
+  background: var(--void-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+  margin: 16px auto;
+  overflow: hidden;
+  position: relative;
+}
+.syringe-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--bio), var(--bio-bright));
+  border-radius: 12px;
+  transition: width 0.5s ease;
+}
+.syringe-markers {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin: 0 auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* Boost Cards */
+.boost-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.boost-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.boost-card:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+}
+.boost-card.selected {
+  border-color: var(--vital);
+  background: var(--vital-glass);
+}
+.boost-icon { font-size: 28px; flex-shrink: 0; }
+.boost-info { flex: 1; }
+.boost-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.boost-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.boost-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--vital-bright);
+}
+.boost-check {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.boost-card.selected .boost-check {
+  background: var(--vital);
+  border-color: var(--vital);
+  color: var(--void);
+}
+.boost-total {
+  background: var(--void-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--r);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+}
+.boost-total .bt-value {
+  color: var(--vital-bright);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+}
+
+/* Cycle Planner */
+.cycle-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.cycle-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+}
+.legend-dot.active { background: var(--regen); }
+.legend-dot.rest { background: var(--void-float); border: 1px solid var(--border-mid); }
+.legend-dot.assess { background: var(--vital); }
+.cycle-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.cycle-day-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 6px 0;
+}
+.cycle-day {
+  aspect-ratio: 1;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.cycle-day.active-day {
+  background: var(--regen-glass);
+  border-color: rgba(62,219,144,0.25);
+  color: var(--regen-bright);
+}
+.cycle-day.rest-day {
+  background: var(--glass);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+.cycle-day.assess-day {
+  background: var(--vital-glass);
+  border-color: rgba(232,196,106,0.3);
+  color: var(--vital-bright);
+}
+.cycle-day:hover {
+  transform: scale(1.1);
+  border-color: var(--border-bright);
+}
+
+/* Intensity selector */
+.intensity-group {
+  display: flex;
+  gap: 8px;
+}
+.intensity-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--glass);
+  color: var(--text-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.intensity-btn:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+}
+.intensity-btn.active {
+  border-color: var(--bio);
+  background: var(--bio-glass);
+  color: var(--bio-bright);
+}
+</style>
+</head>
+<body data-portal="b2c">
+<div class="app-shell">
+
+  <!-- ── Navigation ── -->
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="builder-shell">
+
+    <!-- ── Progress Bar (9 steps) ── -->
+    <div class="progress-bar" id="progressBar">
+      <div class="step-node active" onclick="goToStep(1)">
+        <div class="step-dot">1</div>
+        <div class="step-label">Goals</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(2)">
+        <div class="step-dot">2</div>
+        <div class="step-label">Intake</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(3)">
+        <div class="step-dot">3</div>
+        <div class="step-label">Dosage</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(4)">
+        <div class="step-dot">4</div>
+        <div class="step-label">Safety</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(5)">
+        <div class="step-dot">5</div>
+        <div class="step-label">Protocol</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(6)">
+        <div class="step-dot">6</div>
+        <div class="step-label">Boosts</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(7)">
+        <div class="step-dot">7</div>
+        <div class="step-label">Cycle</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(8)">
+        <div class="step-dot">8</div>
+        <div class="step-label">Checkout</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-node" onclick="goToStep(9)">
+        <div class="step-dot">9</div>
+        <div class="step-label">Done</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 1 — Goal Selection
+         ══════════════════════════════════════ -->
+    <div class="step-panel visible" data-step="1">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 1 of 9</div>
+        <h2 class="panel-title">What Do You Want to Optimise?</h2>
+        <p class="panel-subtitle">Select one or more goals. We'll build a personalised peptide protocol around your priorities.</p>
+      </div>
+      <div class="goal-grid">
+        <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Body</span>
+          <span class="icon">&#127769;</span>
+          <span class="card-title">Deep Sleep</span>
+          <span class="card-desc">Restore circadian rhythm and sleep architecture</span>
+        </div>
+        <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Body</span>
+          <span class="icon">&#9889;</span>
+          <span class="card-title">Energy</span>
+          <span class="card-desc">Mitochondrial function and cellular vitality</span>
+        </div>
+        <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Body</span>
+          <span class="icon">&#129657;</span>
+          <span class="card-title">Recovery</span>
+          <span class="card-desc">Tissue repair and injury acceleration</span>
+        </div>
+        <div class="goal-card" data-cat="body" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Body</span>
+          <span class="icon">&#128170;</span>
+          <span class="card-title">Immunity</span>
+          <span class="card-desc">Immune fortification and resilience</span>
+        </div>
+        <div class="goal-card" data-cat="mind" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Mind</span>
+          <span class="icon">&#129504;</span>
+          <span class="card-title">Brain Power</span>
+          <span class="card-desc">Cognition, focus and neuroplasticity</span>
+        </div>
+        <div class="goal-card" data-cat="mind" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Mind</span>
+          <span class="icon">&#128524;</span>
+          <span class="card-title">Calm</span>
+          <span class="card-desc">Stress resilience and nervous system regulation</span>
+        </div>
+        <div class="goal-card" data-cat="soul" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Soul</span>
+          <span class="icon">&#8734;</span>
+          <span class="card-title">Longevity</span>
+          <span class="card-desc">Anti-ageing and cellular rejuvenation</span>
+        </div>
+        <div class="goal-card" data-cat="soul" onclick="toggleGoal(this)">
+          <span class="check"></span>
+          <span class="cat-label">Soul</span>
+          <span class="icon">&#128156;</span>
+          <span class="card-title">Sensu</span>
+          <span class="card-desc">Intimacy, libido and sensory vitality</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <div></div>
+        <button class="btn btn-primary" onclick="nextStep()" id="step1Next" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 2 — Intake Questionnaire
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="2">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 2 of 9</div>
+        <h2 class="panel-title">Intake Questionnaire</h2>
+        <p class="panel-subtitle">Help us personalise your protocol with some basic information.</p>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Age Range</label>
+        <select class="form-select">
+          <option value="">Select age range...</option>
+          <option>18-25</option>
+          <option>26-35</option>
+          <option>36-45</option>
+          <option>46-55</option>
+          <option>56-65</option>
+          <option>65+</option>
+        </select>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Biological Sex</label>
+        <div class="form-row">
+          <select class="form-select">
+            <option value="">Select...</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Current Medications or Supplements</label>
+        <p class="form-sublabel">List anything you're currently taking. This helps our safety gate flag interactions.</p>
+        <textarea class="form-textarea" placeholder="e.g. Vitamin D3, Magnesium, Ashwagandha..."></textarea>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Known Allergies or Sensitivities</label>
+        <textarea class="form-textarea" placeholder="e.g. Shellfish, latex, penicillin..."></textarea>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Health Conditions</label>
+        <p class="form-sublabel">Select all that apply.</p>
+        <div class="chip-group">
+          <span class="chip" onclick="toggleChip(this)">None</span>
+          <span class="chip" onclick="toggleChip(this)">Diabetes</span>
+          <span class="chip" onclick="toggleChip(this)">Hypertension</span>
+          <span class="chip" onclick="toggleChip(this)">Thyroid</span>
+          <span class="chip" onclick="toggleChip(this)">Autoimmune</span>
+          <span class="chip" onclick="toggleChip(this)">Heart Condition</span>
+          <span class="chip" onclick="toggleChip(this)">Cancer History</span>
+          <span class="chip" onclick="toggleChip(this)">Kidney/Liver</span>
+          <span class="chip" onclick="toggleChip(this)">Mental Health</span>
+          <span class="chip" onclick="toggleChip(this)">Other</span>
+        </div>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Experience with Peptides</label>
+        <select class="form-select">
+          <option value="">Select experience level...</option>
+          <option>Complete beginner</option>
+          <option>Some research, never used</option>
+          <option>Used 1-2 peptides before</option>
+          <option>Experienced user</option>
+        </select>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 3 — Data Sources + Dosage Calc
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="3">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 3 of 9</div>
+        <h2 class="panel-title">Dosage Calculator</h2>
+        <p class="panel-subtitle">Enter your body weight and select protocol intensity to calculate personalised dosing.</p>
+      </div>
+
+      <div class="calc-grid">
+        <div class="form-section">
+          <label class="form-label">Body Weight</label>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="number" class="form-input" id="bodyWeight" placeholder="75" oninput="calculateDosage()" style="flex:1;"/>
+            <select class="form-select" id="weightUnit" onchange="calculateDosage()" style="width:80px;">
+              <option value="kg">kg</option>
+              <option value="lbs">lbs</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-section">
+          <label class="form-label">Vial Strength</label>
+          <select class="form-select" id="vialStrength" onchange="calculateDosage()">
+            <option value="5">5 mg vial</option>
+            <option value="10" selected>10 mg vial</option>
+            <option value="20">20 mg vial</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Protocol Intensity</label>
+        <p class="form-sublabel">Higher intensity = higher dose per kg. Choose based on experience level.</p>
+        <div class="intensity-group">
+          <button class="intensity-btn" data-intensity="conservative" onclick="selectIntensity(this)">Conservative</button>
+          <button class="intensity-btn active" data-intensity="standard" onclick="selectIntensity(this)">Standard</button>
+          <button class="intensity-btn" data-intensity="aggressive" onclick="selectIntensity(this)">Aggressive</button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Reconstitution Ratio</label>
+        <p class="form-sublabel">Bacteriostatic water added to vial (mL).</p>
+        <select class="form-select" id="reconRatio" onchange="calculateDosage()">
+          <option value="1">1 mL BAC water</option>
+          <option value="2" selected>2 mL BAC water</option>
+          <option value="3">3 mL BAC water</option>
+          <option value="5">5 mL BAC water</option>
+        </select>
+      </div>
+
+      <div class="calc-result" id="calcResult">
+        <div class="calc-label">Calculated Injection Volume</div>
+        <div class="calc-value" id="calcVolume">--</div>
+        <div class="calc-unit">mL per injection (IU marks on syringe below)</div>
+      </div>
+
+      <div class="syringe-visual">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">Syringe Visual</div>
+        <div class="syringe-bar">
+          <div class="syringe-fill" id="syringeFill" style="width:0%"></div>
+        </div>
+        <div class="syringe-markers">
+          <span>0</span>
+          <span>0.25</span>
+          <span>0.50</span>
+          <span>0.75</span>
+          <span>1.0mL</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 4 — Safety Gate
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="4">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 4 of 9</div>
+        <h2 class="panel-title">Safety Gate</h2>
+        <p class="panel-subtitle">Your protocol has been screened against our clinical safety framework.</p>
+      </div>
+
+      <div class="gate-card">
+        <div class="gate-icon pass">&#128154;</div>
+        <div>
+          <div class="gate-title">Regulatory Status</div>
+          <div class="gate-desc">All compounds in your protocol are non-prescription and legal in your jurisdiction. No controlled substances detected.</div>
+          <span class="gate-status pass">Pass</span>
+        </div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-icon pass">&#128154;</div>
+        <div>
+          <div class="gate-title">Drug Interactions</div>
+          <div class="gate-desc">No known interactions detected between your current medications/supplements and the proposed peptide stack.</div>
+          <span class="gate-status pass">Pass</span>
+        </div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-icon pass">&#128154;</div>
+        <div>
+          <div class="gate-title">Contraindication Screen</div>
+          <div class="gate-desc">No contraindications identified based on your reported health conditions and allergy profile.</div>
+          <span class="gate-status pass">Pass</span>
+        </div>
+      </div>
+      <div class="gate-card">
+        <div class="gate-icon pass">&#128154;</div>
+        <div>
+          <div class="gate-title">Dosage Validation</div>
+          <div class="gate-desc">All dosages fall within evidence-based therapeutic ranges for your body weight and selected intensity.</div>
+          <span class="gate-status pass">Pass</span>
+        </div>
+      </div>
+
+      <div class="safety-summary">
+        <span class="ss-icon">&#9989;</span>
+        <div>
+          <div class="ss-text">All Safety Checks Passed</div>
+          <div class="ss-sub">Your protocol is cleared for review. 4/4 gates passed.</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">View Protocol &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 5 — Protocol Output
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="5">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 5 of 9</div>
+        <h2 class="panel-title">Your Personalised Protocol</h2>
+        <p class="panel-subtitle">Based on your goals, intake data, and safety clearance, here's your optimised stack.</p>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="protocol-card" data-type="primary">
+          <div class="proto-top">
+            <span class="proto-badge">Primary</span>
+            <span class="proto-name">Semax</span>
+          </div>
+          <div class="proto-category">Cognitive enhancement, BDNF upregulation, neuroprotection</div>
+          <div class="proto-details">
+            <div>
+              <div class="proto-detail-label">Dose</div>
+              <div class="proto-detail-value">300-600 mcg</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Route</div>
+              <div class="proto-detail-value">Intranasal</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Frequency</div>
+              <div class="proto-detail-value">Daily AM</div>
+            </div>
+          </div>
+        </div>
+        <div class="protocol-card" data-type="primary">
+          <div class="proto-top">
+            <span class="proto-badge">Primary</span>
+            <span class="proto-name">Selank</span>
+          </div>
+          <div class="proto-category">Anxiolytic, memory consolidation, GABA modulation</div>
+          <div class="proto-details">
+            <div>
+              <div class="proto-detail-label">Dose</div>
+              <div class="proto-detail-value">250-500 mcg</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Route</div>
+              <div class="proto-detail-value">Intranasal</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Frequency</div>
+              <div class="proto-detail-value">Daily PM</div>
+            </div>
+          </div>
+        </div>
+        <div class="protocol-card" data-type="support">
+          <div class="proto-top">
+            <span class="proto-badge">Support</span>
+            <span class="proto-name">BPC-157</span>
+          </div>
+          <div class="proto-category">Gut-brain axis repair, neuroprotective, anti-inflammatory</div>
+          <div class="proto-details">
+            <div>
+              <div class="proto-detail-label">Dose</div>
+              <div class="proto-detail-value">250 mcg</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Route</div>
+              <div class="proto-detail-value">Subcutaneous</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Frequency</div>
+              <div class="proto-detail-value">2x daily</div>
+            </div>
+          </div>
+        </div>
+        <div class="protocol-card" data-type="optional">
+          <div class="proto-top">
+            <span class="proto-badge">Optional</span>
+            <span class="proto-name">Epithalon</span>
+          </div>
+          <div class="proto-category">Telomerase activation, pineal function, circadian regulation</div>
+          <div class="proto-details">
+            <div>
+              <div class="proto-detail-label">Dose</div>
+              <div class="proto-detail-value">5 mg</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Route</div>
+              <div class="proto-detail-value">Subcutaneous</div>
+            </div>
+            <div>
+              <div class="proto-detail-label">Frequency</div>
+              <div class="proto-detail-value">10-day cycle</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="protocol-note">
+        <strong>&#9432; Note:</strong> This protocol is personalised based on your responses. Dosages have been validated through the safety gate. Consult with a healthcare practitioner before beginning any new supplement regimen.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Add Boosts &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 6 — Optimisation Boosts
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="6">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 6 of 9</div>
+        <h2 class="panel-title">Optimisation Boosts</h2>
+        <p class="panel-subtitle">Enhance your protocol with complementary therapies. Select any to add to your stack.</p>
+      </div>
+
+      <div class="boost-grid">
+        <div class="boost-card" data-price="49" onclick="toggleBoost(this)">
+          <span class="boost-icon">&#128308;</span>
+          <div class="boost-info">
+            <div class="boost-name">Red Light Therapy</div>
+            <div class="boost-desc">660nm/850nm panel protocol. Mitochondrial support, collagen synthesis, inflammation reduction.</div>
+            <div class="boost-price">$49/mo</div>
+          </div>
+          <div class="boost-check"></div>
+        </div>
+        <div class="boost-card" data-price="39" onclick="toggleBoost(this)">
+          <span class="boost-icon">&#128167;</span>
+          <div class="boost-info">
+            <div class="boost-name">Hydrogen Water</div>
+            <div class="boost-desc">Molecular hydrogen tablets. Selective antioxidant, crosses blood-brain barrier.</div>
+            <div class="boost-price">$39/mo</div>
+          </div>
+          <div class="boost-check"></div>
+        </div>
+        <div class="boost-card" data-price="0" onclick="toggleBoost(this)">
+          <span class="boost-icon">&#128293;</span>
+          <div class="boost-info">
+            <div class="boost-name">Sauna Protocol</div>
+            <div class="boost-desc">Heat shock protein activation, detox, cardiovascular conditioning. Guided protocol included.</div>
+            <div class="boost-price">FREE</div>
+          </div>
+          <div class="boost-check"></div>
+        </div>
+        <div class="boost-card" data-price="0" onclick="toggleBoost(this)">
+          <span class="boost-icon">&#127788;</span>
+          <div class="boost-info">
+            <div class="boost-name">Breathwork</div>
+            <div class="boost-desc">Wim Hof-inspired protocol. Autonomic nervous system training, cold tolerance, focus.</div>
+            <div class="boost-price">FREE</div>
+          </div>
+          <div class="boost-check"></div>
+        </div>
+      </div>
+
+      <div class="boost-total">
+        <span>Boost Add-ons</span>
+        <span class="bt-value" id="boostTotal">$0/mo</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Plan Cycle &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 7 — Cycle Planner
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="7">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 7 of 9</div>
+        <h2 class="panel-title">Cycle Planner</h2>
+        <p class="panel-subtitle">Review your 30-day dosing schedule. Click days to toggle between active, rest, and assessment.</p>
+      </div>
+
+      <div class="cycle-controls">
+        <div class="form-section" style="margin-bottom:0;">
+          <label class="form-label" style="margin-bottom:6px;">Start Date</label>
+          <input type="date" class="form-input" id="cycleStart" style="width:200px;" onchange="generateCycle()"/>
+        </div>
+      </div>
+
+      <div class="cycle-legend">
+        <div class="legend-item"><div class="legend-dot active"></div> Active (dosing)</div>
+        <div class="legend-item"><div class="legend-dot rest"></div> Rest</div>
+        <div class="legend-item"><div class="legend-dot assess"></div> Assessment</div>
+      </div>
+
+      <div class="cycle-grid" id="cycleGrid">
+        <!-- Day headers -->
+        <div class="cycle-day-header">Mon</div>
+        <div class="cycle-day-header">Tue</div>
+        <div class="cycle-day-header">Wed</div>
+        <div class="cycle-day-header">Thu</div>
+        <div class="cycle-day-header">Fri</div>
+        <div class="cycle-day-header">Sat</div>
+        <div class="cycle-day-header">Sun</div>
+        <!-- Days populated by JS -->
+      </div>
+
+      <div class="protocol-note">
+        <strong>&#9432; Default Pattern:</strong> 5 days active, 2 days rest (weekends). Days 15 and 30 are assessment days for tracking progress and adjusting dosage.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Checkout &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 8 — Consent & Checkout
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="8">
+      <div class="panel-header">
+        <div class="panel-eyebrow">&#9670; Step 8 of 9</div>
+        <h2 class="panel-title">Consent &amp; Checkout</h2>
+        <p class="panel-subtitle">Review and confirm before we lock in your protocol.</p>
+      </div>
+
+      <div class="consent-item" onclick="toggleConsent(this)">
+        <div class="consent-check"></div>
+        <div class="consent-text">
+          <strong>Sovereign Disclaimer:</strong> I understand that TR4NSFORM provides non-prescription, evidence-based peptide protocols. These are not medical advice and do not replace professional healthcare consultation.
+        </div>
+      </div>
+      <div class="consent-item" onclick="toggleConsent(this)">
+        <div class="consent-check"></div>
+        <div class="consent-text">
+          <strong>Data Sovereignty:</strong> I consent to my health data being stored in my personal encrypted vault. I retain full ownership and can delete all data at any time.
+        </div>
+      </div>
+      <div class="consent-item" onclick="toggleConsent(this)">
+        <div class="consent-check"></div>
+        <div class="consent-text">
+          <strong>Protocol Acknowledgement:</strong> I have reviewed my personalised protocol, understand the dosing schedule, and will follow the recommended cycling and safety guidelines.
+        </div>
+      </div>
+      <div class="consent-item" onclick="toggleConsent(this)">
+        <div class="consent-check"></div>
+        <div class="consent-text">
+          <strong>Terms &amp; Conditions:</strong> I agree to the TR4NSFORM Terms of Service and Privacy Policy.
+        </div>
+      </div>
+
+      <div class="checkout-summary">
+        <div class="checkout-title">Order Summary</div>
+        <div class="checkout-line">
+          <span class="label">Protocol (Core Tier)</span>
+          <span class="value">$169.00</span>
+        </div>
+        <div class="checkout-line">
+          <span class="label">Optimisation Boosts</span>
+          <span class="value" id="checkoutBoosts">$0.00</span>
+        </div>
+        <div class="checkout-line">
+          <span class="label">Platform Fee</span>
+          <span class="value">$9.00</span>
+        </div>
+        <div class="checkout-total">
+          <span>Total (Monthly)</span>
+          <span class="value" id="checkoutTotal">$178.00</span>
+        </div>
+      </div>
+
+      <div class="payment-options">
+        <div class="pay-btn active" onclick="selectPay(this)">&#128179; CARD</div>
+        <div class="pay-btn" onclick="selectPay(this)">&#128279; CRYPTO</div>
+        <div class="pay-btn" onclick="selectPay(this)">&#127891; APPLE PAY</div>
+      </div>
+
+      <button class="btn btn-submit" id="submitBtn" onclick="submitOrder()" disabled>Confirm &amp; Subscribe</button>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-ghost" onclick="prevStep()">&larr; Back</button>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 9 — Success (handled by overlay)
+         ══════════════════════════════════════ -->
+    <div class="step-panel" data-step="9">
+      <!-- Empty — success overlay covers this -->
+    </div>
+
+  </div><!-- .builder-shell -->
+</div><!-- .app-shell -->
+
+<!-- ── Success Overlay ── -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="success-icon">&#9889;</div>
+    <div class="success-title">Protocol Activated!</div>
+    <div class="success-desc">
+      Your personalised peptide protocol has been locked in. You'll receive your first shipment within 3-5 business days.
+      Track your progress from the dashboard.
+    </div>
+    <div class="success-ref" id="orderRef">TR4-2026-0000</div>
+    <div style="margin-top:24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Wallet Connect Modal ── -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
+    <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <span class="wallet-icon">&#129418;</span>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <span class="wallet-icon">&#128279;</span>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Mobile wallet via QR</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('phantom')">
+      <span class="wallet-icon">&#128123;</span>
+      <div><div class="wallet-name">Phantom</div><div class="wallet-desc">Solana ecosystem wallet</div></div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%; margin-top:12px;" onclick="closeWalletModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Mockup Badge ── -->
+<div class="mockup-badge">MVP MOCKUP &middot; NOT PRODUCTION</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+/* ═══════════════════════════════════════════
+   TR4NSFORM — 9-STEP BUILDER LOGIC
+   ═══════════════════════════════════════════ */
+
+let currentStep = 1;
+const totalSteps = 9;
+let selectedGoals = [];
+let selectedBoosts = [];
+let intensity = 'standard';
+
+/* ── Step Navigation ── */
+function goToStep(step) {
+  if (step < 1 || step > totalSteps) return;
+  currentStep = step;
+  updateUI();
+}
+
+function nextStep() {
+  if (currentStep < totalSteps) {
+    currentStep++;
+    updateUI();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    currentStep--;
+    updateUI();
+  }
+}
+
+function updateUI() {
+  // Update panels
+  document.querySelectorAll('.step-panel').forEach(p => {
+    p.classList.remove('visible');
+    if (parseInt(p.dataset.step) === currentStep) {
+      p.classList.add('visible');
+    }
+  });
+
+  // Update progress bar
+  const nodes = document.querySelectorAll('.step-node');
+  const connectors = document.querySelectorAll('.step-connector');
+  nodes.forEach((node, i) => {
+    const stepNum = i + 1;
+    node.classList.remove('active', 'completed');
+    if (stepNum === currentStep) {
+      node.classList.add('active');
+    } else if (stepNum < currentStep) {
+      node.classList.add('completed');
+    }
+  });
+  connectors.forEach((conn, i) => {
+    conn.classList.toggle('done', i + 1 < currentStep);
+  });
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Step-specific logic
+  if (currentStep === 7) generateCycle();
+  if (currentStep === 8) updateCheckout();
+  if (currentStep === 9) showSuccess();
+}
+
+/* ── Goal Selection ── */
+function toggleGoal(el) {
+  el.classList.toggle('selected');
+  const check = el.querySelector('.check');
+  check.textContent = el.classList.contains('selected') ? '\u2713' : '';
+
+  selectedGoals = [];
+  document.querySelectorAll('.goal-card.selected').forEach(g => {
+    selectedGoals.push(g.querySelector('.card-title').textContent);
+  });
+
+  const nextBtn = document.getElementById('step1Next');
+  if (nextBtn) nextBtn.disabled = selectedGoals.length === 0;
+}
+
+/* ── Intensity Selection ── */
+function selectIntensity(el) {
+  document.querySelectorAll('.intensity-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  intensity = el.dataset.intensity;
+  calculateDosage();
+}
+
+/* ── Dosage Calculator ── */
+function calculateDosage() {
+  const weightInput = document.getElementById('bodyWeight');
+  const unitSelect = document.getElementById('weightUnit');
+  const vialSelect = document.getElementById('vialStrength');
+  const reconSelect = document.getElementById('reconRatio');
+
+  if (!weightInput || !weightInput.value) {
+    document.getElementById('calcVolume').textContent = '--';
+    document.getElementById('syringeFill').style.width = '0%';
+    return;
+  }
+
+  let weightKg = parseFloat(weightInput.value);
+  if (unitSelect.value === 'lbs') weightKg = weightKg * 0.4536;
+
+  // Coefficient per intensity
+  const coefficients = {
+    conservative: 2.5,
+    standard: 5.0,
+    aggressive: 7.5
+  };
+  const coeff = coefficients[intensity] || 5.0;
+
+  // Dose in mcg
+  const doseMcg = weightKg * coeff;
+
+  // Concentration: vial mg / recon mL = mg/mL, convert to mcg/mL
+  const vialMg = parseFloat(vialSelect.value);
+  const reconMl = parseFloat(reconSelect.value);
+  const concMcgPerMl = (vialMg * 1000) / reconMl;
+
+  // Volume = dose / concentration
+  const volumeMl = doseMcg / concMcgPerMl;
+
+  document.getElementById('calcVolume').textContent = volumeMl.toFixed(3);
+
+  // Syringe fill (max 1.0 mL)
+  const fillPct = Math.min((volumeMl / 1.0) * 100, 100);
+  document.getElementById('syringeFill').style.width = fillPct + '%';
+}
+
+/* ── Boost Toggling ── */
+function toggleBoost(el) {
+  el.classList.toggle('selected');
+  const check = el.querySelector('.boost-check');
+  check.textContent = el.classList.contains('selected') ? '\u2713' : '';
+
+  // Calculate total
+  let total = 0;
+  document.querySelectorAll('.boost-card.selected').forEach(b => {
+    total += parseInt(b.dataset.price) || 0;
+  });
+  document.getElementById('boostTotal').textContent = total > 0 ? '$' + total + '/mo' : '$0/mo';
+}
+
+/* ── Cycle Planner ── */
+function generateCycle() {
+  const grid = document.getElementById('cycleGrid');
+  if (!grid) return;
+
+  // Keep headers
+  const headers = grid.querySelectorAll('.cycle-day-header');
+
+  // Clear existing days
+  grid.querySelectorAll('.cycle-day').forEach(d => d.remove());
+
+  // Get start date
+  const startInput = document.getElementById('cycleStart');
+  let startDate = startInput && startInput.value ? new Date(startInput.value) : new Date();
+
+  // Set default date
+  if (!startInput.value) {
+    const y = startDate.getFullYear();
+    const m = String(startDate.getMonth() + 1).padStart(2, '0');
+    const d = String(startDate.getDate()).padStart(2, '0');
+    startInput.value = y + '-' + m + '-' + d;
+  }
+
+  // Find what day of week start is (0=Sun, adjust for Mon start)
+  let startDow = startDate.getDay(); // 0=Sun
+  startDow = startDow === 0 ? 6 : startDow - 1; // Convert to Mon=0
+
+  // Add empty padding
+  for (let i = 0; i < startDow; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cycle-day';
+    empty.style.opacity = '0';
+    empty.style.cursor = 'default';
+    grid.appendChild(empty);
+  }
+
+  // Generate 30 days
+  for (let d = 1; d <= 30; d++) {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'cycle-day';
+    dayEl.textContent = d;
+    dayEl.dataset.day = d;
+
+    // Default pattern: weekdays active, weekends rest, day 15 & 30 assessment
+    const actualDate = new Date(startDate);
+    actualDate.setDate(startDate.getDate() + (d - 1));
+    const dow = actualDate.getDay(); // 0=Sun, 6=Sat
+
+    if (d === 15 || d === 30) {
+      dayEl.classList.add('assess-day');
+    } else if (dow === 0 || dow === 6) {
+      dayEl.classList.add('rest-day');
+    } else {
+      dayEl.classList.add('active-day');
+    }
+
+    dayEl.onclick = function() { cycleDayClick(this); };
+    grid.appendChild(dayEl);
+  }
+}
+
+function cycleDayClick(el) {
+  // Cycle through: active -> rest -> assess -> active
+  if (el.classList.contains('active-day')) {
+    el.classList.remove('active-day');
+    el.classList.add('rest-day');
+  } else if (el.classList.contains('rest-day')) {
+    el.classList.remove('rest-day');
+    el.classList.add('assess-day');
+  } else if (el.classList.contains('assess-day')) {
+    el.classList.remove('assess-day');
+    el.classList.add('active-day');
+  } else {
+    el.classList.add('active-day');
+  }
+}
+
+/* ── Checkout ── */
+function updateCheckout() {
+  let boostTotal = 0;
+  document.querySelectorAll('.boost-card.selected').forEach(b => {
+    boostTotal += parseInt(b.dataset.price) || 0;
+  });
+  const protocolPrice = 169;
+  const platformFee = 9;
+  const total = protocolPrice + boostTotal + platformFee;
+
+  document.getElementById('checkoutBoosts').textContent = '$' + boostTotal.toFixed(2);
+  document.getElementById('checkoutTotal').textContent = '$' + total.toFixed(2);
+
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+  const accepted = document.querySelectorAll('.consent-item.accepted').length;
+  const total = document.querySelectorAll('.consent-item').length;
+  const btn = document.getElementById('submitBtn');
+  if (btn) btn.disabled = accepted < total;
+}
+
+// Override toggleConsent to also update submit button
+const _origToggleConsent = toggleConsent;
+toggleConsent = function(el) {
+  _origToggleConsent(el);
+  updateSubmitBtn();
+};
+
+/* ── Submit Order ── */
+function submitOrder() {
+  const ref = generateRef('TR4');
+  document.getElementById('orderRef').textContent = ref;
+  nextStep();
+}
+
+/* ── Success ── */
+function showSuccess() {
+  document.getElementById('successOverlay').classList.add('visible');
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+  // Set default start date for cycle planner
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, '0');
+  const d = String(today.getDate()).padStart(2, '0');
+  const startInput = document.getElementById('cycleStart');
+  if (startInput) startInput.value = y + '-' + m + '-' + d;
+
+  // Initial dosage calc
+  calculateDosage();
+});
+</script>
+</body>
+</html>

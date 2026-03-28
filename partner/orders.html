@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Partner Ordering</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+<style>
+  .kanban { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
+  .kanban-col { background:var(--glass); border:1px solid var(--border); border-radius:var(--r); padding:16px; min-height:280px; }
+  .kanban-header { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .kanban-count { background:var(--void-raised); padding:2px 8px; border-radius:999px; font-size:10px; }
+  .kanban-card { background:var(--void-raised); border:1px solid var(--border); border-radius:var(--r-sm); padding:14px; margin-bottom:10px; transition:all 0.3s; cursor:default; }
+  .kanban-card:hover { border-color:var(--border-mid); background:var(--void-float); }
+  .kanban-card .order-id { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--bio); margin-bottom:6px; }
+  .kanban-card .order-detail { font-size:12px; color:var(--text-2); line-height:1.6; }
+  .kanban-card .order-value { font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:500; color:var(--text); margin-top:8px; }
+  @media(max-width:900px){ .kanban{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:640px){ .kanban{grid-template-columns:1fr;} }
+</style>
+</head>
+<body data-portal="partner">
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Partner Portal</span>
+      <button class="wallet-btn connected"><span class="dot"></span>Partner: Sukhumvit Clinic</button>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">&#128230; Orders</div>
+    <h1 class="page-title">Partner Ordering</h1>
+    <p class="page-subtitle">Manage your order pipeline from draft through fulfillment.</p>
+  </div>
+
+  <!-- Order Pipeline (Kanban) -->
+  <section class="section">
+    <h2 class="section-title">&#128203; Order Pipeline</h2>
+    <div class="kanban">
+      <!-- Draft -->
+      <div class="kanban-col">
+        <div class="kanban-header">Draft <span class="kanban-count">2</span></div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0851</div>
+          <div class="order-detail">Brain Power Protocol x5<br/>Gut Regen Kit x3</div>
+          <div class="order-value">$4,720</div>
+        </div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0852</div>
+          <div class="order-detail">Sleep Stack x10</div>
+          <div class="order-value">$2,890</div>
+        </div>
+      </div>
+      <!-- Submitted -->
+      <div class="kanban-col">
+        <div class="kanban-header">Submitted <span class="kanban-count">2</span></div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0849</div>
+          <div class="order-detail">BPC-157 x50<br/>TB-500 x30</div>
+          <div class="order-value">$8,100</div>
+        </div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0848</div>
+          <div class="order-detail">Immune Shield x8</div>
+          <div class="order-value">$3,360</div>
+        </div>
+      </div>
+      <!-- Approved -->
+      <div class="kanban-col">
+        <div class="kanban-header">Approved <span class="kanban-count">1</span></div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0846</div>
+          <div class="order-detail">Longevity Core x4<br/>NAD+ Complex x12</div>
+          <div class="order-value">$6,480</div>
+        </div>
+      </div>
+      <!-- Fulfilled -->
+      <div class="kanban-col">
+        <div class="kanban-header">Fulfilled <span class="kanban-count">2</span></div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0842</div>
+          <div class="order-detail">GHK-Cu x20<br/>KPV x15</div>
+          <div class="order-value">$4,150</div>
+        </div>
+        <div class="kanban-card">
+          <div class="order-id">ORD-2026-0839</div>
+          <div class="order-detail">BPC-157 x100</div>
+          <div class="order-value">$12,400</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- New Order Form -->
+  <section class="section">
+    <h2 class="section-title">&#10010; New Order</h2>
+    <div class="card" style="max-width:640px;padding:32px;">
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-section">
+          <label class="form-label">Product</label>
+          <select class="form-select" id="productSelect" onchange="calcOrder()">
+            <option value="124">BPC-157 (5mg vial) — $124</option>
+            <option value="180">TB-500 (10mg vial) — $180</option>
+            <option value="210">SS-31 (Elamipretide, 5mg) — $210</option>
+            <option value="95">KPV (Anti-inflammatory, 2mg) — $95</option>
+            <option value="145">GHK-Cu (Copper peptide, 5mg) — $145</option>
+            <option value="78">DSIP (Sleep peptide, 2mg) — $78</option>
+          </select>
+        </div>
+        <div class="form-section">
+          <label class="form-label">Quantity</label>
+          <input class="form-input" type="number" id="qtyInput" value="10" min="1" oninput="calcOrder()"/>
+        </div>
+      </div>
+
+      <div style="background:var(--void-surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+          <span style="color:var(--text-muted);">Retail Value</span>
+          <span class="mono" id="retailValue">$1,240.00</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+          <span style="color:var(--text-muted);">Partner Discount</span>
+          <span class="mono text-regen" id="discountPct">-15%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);font-family:'Syne',sans-serif;font-weight:700;">
+          <span>Expected Payment</span>
+          <span class="text-bio" id="netPayment">$1,054.00</span>
+        </div>
+      </div>
+
+      <button class="btn btn-submit" onclick="showToast('Order added to draft pipeline','bio')">Add to Draft</button>
+    </div>
+  </section>
+
+  <!-- Order History -->
+  <section class="section">
+    <h2 class="section-title">&#128196; Order History</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Retail Value</th>
+            <th>Discount</th>
+            <th>Net Payment</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0842</td>
+            <td class="mono" style="font-size:12px;">2026-03-22</td>
+            <td>GHK-Cu x20, KPV x15</td>
+            <td class="mono">$4,325</td>
+            <td class="mono text-regen">15%</td>
+            <td class="mono">$3,676</td>
+            <td><span class="badge badge-bio">Fulfilled</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0839</td>
+            <td class="mono" style="font-size:12px;">2026-03-18</td>
+            <td>BPC-157 x100</td>
+            <td class="mono">$12,400</td>
+            <td class="mono text-regen">18%</td>
+            <td class="mono">$10,168</td>
+            <td><span class="badge badge-bio">Fulfilled</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0831</td>
+            <td class="mono" style="font-size:12px;">2026-03-10</td>
+            <td>Sleep Stack x25</td>
+            <td class="mono">$7,225</td>
+            <td class="mono text-regen">15%</td>
+            <td class="mono">$6,141</td>
+            <td><span class="badge badge-bio">Fulfilled</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0824</td>
+            <td class="mono" style="font-size:12px;">2026-03-04</td>
+            <td>Immune Shield x15, DSIP x20</td>
+            <td class="mono">$5,460</td>
+            <td class="mono text-regen">12%</td>
+            <td class="mono">$4,805</td>
+            <td><span class="badge badge-bio">Fulfilled</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0819</td>
+            <td class="mono" style="font-size:12px;">2026-02-26</td>
+            <td>Longevity Core x6</td>
+            <td class="mono">$9,720</td>
+            <td class="mono text-regen">15%</td>
+            <td class="mono">$8,262</td>
+            <td><span class="badge badge-bio">Fulfilled</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+<script>
+function calcOrder() {
+  const price = parseInt(document.getElementById('productSelect').value);
+  const qty = parseInt(document.getElementById('qtyInput').value) || 0;
+  const retail = price * qty;
+  const discount = 0.15;
+  const net = retail * (1 - discount);
+  document.getElementById('retailValue').textContent = '$' + retail.toLocaleString('en-US', {minimumFractionDigits:2});
+  document.getElementById('discountPct').textContent = '-15%';
+  document.getElementById('netPayment').textContent = '$' + net.toLocaleString('en-US', {minimumFractionDigits:2});
+}
+</script>
+</body>
+</html>

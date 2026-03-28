@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Order Tracking & Active Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* Pipeline dots */
+.pipeline { display:flex; align-items:center; gap:0; margin:20px 0; }
+.pip-node { display:flex; flex-direction:column; align-items:center; flex:1; position:relative; }
+.pip-dot {
+  width:32px; height:32px; border-radius:50%;
+  border:2px solid var(--border-mid); background:var(--void-surface);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:var(--text-muted); z-index:2;
+  transition:all 0.3s;
+}
+.pip-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.1em; color:var(--text-muted); margin-top:6px; text-transform:uppercase; }
+.pip-conn { flex:1; height:2px; background:var(--border); position:relative; top:-14px; margin:0 -4px; z-index:1; }
+.pip-node.done .pip-dot { border-color:var(--bio-dim); background:var(--bio-dim); color:var(--void); }
+.pip-node.done .pip-label { color:var(--text-2); }
+.pip-conn.done { background:var(--bio-dim); }
+.pip-node.current .pip-dot { border-color:var(--vital); background:var(--vital-glass); color:var(--vital); box-shadow:var(--vital-glow); }
+.pip-node.current .pip-label { color:var(--vital); }
+
+/* Progress ring */
+.progress-ring-wrap { position:relative; width:120px; height:120px; margin:0 auto 16px; }
+.progress-ring-wrap svg { transform:rotate(-90deg); }
+.progress-ring-bg { fill:none; stroke:var(--void-float); stroke-width:8; }
+.progress-ring-fill { fill:none; stroke:var(--bio); stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+
+/* Dosing item */
+.dose-item {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px; background:var(--glass); border:1px solid var(--border);
+  border-radius:var(--r-sm); margin-bottom:10px; transition:all 0.3s;
+}
+.dose-item:hover { background:var(--glass-hover); }
+.dose-check { font-size:18px; width:24px; text-align:center; }
+.dose-check.done { color:var(--regen); }
+.dose-check.pending { color:var(--text-subtle); }
+
+/* Severity chips */
+.sev-chip {
+  padding:8px 18px; border:1px solid var(--border); border-radius:999px;
+  font-size:13px; cursor:pointer; transition:all 0.3s;
+  background:var(--glass); color:var(--text-2);
+}
+.sev-chip:hover { background:var(--glass-hover); border-color:var(--border-mid); }
+.sev-chip.sel-mild { border-color:var(--vital); background:var(--vital-glass); color:var(--vital); }
+.sev-chip.sel-moderate { border-color:var(--neural); background:var(--neural-glass); color:var(--neural); }
+.sev-chip.sel-severe { border-color:var(--danger); background:var(--danger-glass); color:var(--danger); }
+
+/* Slider */
+.range-row { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+.range-label { width:120px; font-size:13px; color:var(--text-2); flex-shrink:0; }
+.range-val { width:32px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--bio); }
+input[type="range"] {
+  flex:1; -webkit-appearance:none; appearance:none; height:6px;
+  background:var(--void-float); border-radius:999px; outline:none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+  background:var(--bio); cursor:pointer; box-shadow:0 0 8px rgba(46,216,184,0.4);
+}
+
+/* Assessment card */
+.assess-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); }
+.assess-item:last-child { border-bottom:none; }
+</style>
+</head>
+<body data-portal="b2c">
+
+<div class="app-shell">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
+      <button class="nav-toggle">☰</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">Active Protocol</div>
+    <h1 class="page-title">Order Tracking & Protocol</h1>
+    <p class="page-subtitle">Monitor your order status, track daily dosing, and log your progress.</p>
+  </div>
+
+  <!-- ═══ ACTIVE ORDERS ═══ -->
+  <div class="section">
+    <h3 class="section-title">Active Orders</h3>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:8px;">
+        <div>
+          <div class="mono" style="font-size:14px;color:var(--bio);margin-bottom:4px;">TR4-2026-0847</div>
+          <div style="font-size:13px;color:var(--text-muted);">Placed Mar 14, 2026</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:13px;color:var(--text-muted);">BPC-157, Epithalon, Selank</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--text);">$347.00</div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pip-node done">
+          <div class="pip-dot">&#10003;</div>
+          <div class="pip-label">Draft</div>
+        </div>
+        <div class="pip-conn done"></div>
+        <div class="pip-node done">
+          <div class="pip-dot">&#10003;</div>
+          <div class="pip-label">Paid</div>
+        </div>
+        <div class="pip-conn done"></div>
+        <div class="pip-node current">
+          <div class="pip-dot">3</div>
+          <div class="pip-label">Review</div>
+        </div>
+        <div class="pip-conn"></div>
+        <div class="pip-node">
+          <div class="pip-dot">4</div>
+          <div class="pip-label">Shipping</div>
+        </div>
+        <div class="pip-conn"></div>
+        <div class="pip-node">
+          <div class="pip-dot">5</div>
+          <div class="pip-label">Complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ACTIVE PROTOCOL ═══ -->
+  <div class="section">
+    <h3 class="section-title">Active Protocol</h3>
+
+    <div class="grid-2" style="margin-bottom:24px;">
+
+      <!-- Protocol overview + ring -->
+      <div class="card" style="text-align:center;">
+        <h4 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">Brain Power Stack</h4>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">Day 14 of 30</div>
+
+        <div class="progress-ring-wrap">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="progress-ring-fill" cx="60" cy="60" r="52"
+              stroke-dasharray="326.73"
+              stroke-dashoffset="173.37"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:var(--bio);">47%</span>
+          </div>
+        </div>
+
+        <div style="font-size:12px;color:var(--text-muted);">16 days remaining</div>
+      </div>
+
+      <!-- Today's dosing -->
+      <div class="card">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;">Today's Dosing Schedule</div>
+
+        <div class="dose-item">
+          <div class="dose-check done">&#10003;</div>
+          <div style="flex:1;">
+            <div style="font-weight:500;font-size:14px;">BPC-157</div>
+            <div style="font-size:12px;color:var(--text-muted);">500mcg &middot; Morning</div>
+          </div>
+          <span class="badge badge-regen">Done</span>
+        </div>
+
+        <div class="dose-item">
+          <div class="dose-check pending">&#9675;</div>
+          <div style="flex:1;">
+            <div style="font-weight:500;font-size:14px;">Epithalon</div>
+            <div style="font-size:12px;color:var(--text-muted);">5mg &middot; Evening</div>
+          </div>
+          <span class="badge" style="color:var(--text-muted);background:var(--glass);">Pending</span>
+        </div>
+
+        <div class="dose-item">
+          <div class="dose-check done">&#10003;</div>
+          <div style="flex:1;">
+            <div style="font-weight:500;font-size:14px;">KPV</div>
+            <div style="font-size:12px;color:var(--text-muted);">200mcg &middot; Morning</div>
+          </div>
+          <span class="badge badge-regen">Done</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Log Side Effect -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Log Side Effect</div>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('sideEffectForm').style.display=document.getElementById('sideEffectForm').style.display==='none'?'block':'none';">Toggle</button>
+      </div>
+      <div id="sideEffectForm" style="display:none;">
+        <textarea class="form-textarea" placeholder="Describe any side effects you experienced..." style="min-height:80px;margin-bottom:12px;"></textarea>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span style="font-size:13px;color:var(--text-muted);margin-right:4px;">Severity:</span>
+          <span class="sev-chip" onclick="selectSev(this,'mild')">Mild</span>
+          <span class="sev-chip" onclick="selectSev(this,'moderate')">Moderate</span>
+          <span class="sev-chip" onclick="selectSev(this,'severe')">Severe</span>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showToast('Side effect logged');document.getElementById('sideEffectForm').style.display='none';">Submit</button>
+      </div>
+    </div>
+
+    <!-- Self Report -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;">Daily Self-Report</div>
+
+      <div class="range-row">
+        <span class="range-label">Energy Level</span>
+        <input type="range" min="1" max="10" value="7" oninput="this.nextElementSibling.textContent=this.value"/>
+        <span class="range-val">7</span>
+      </div>
+
+      <div class="range-row">
+        <span class="range-label">Sleep Quality</span>
+        <input type="range" min="1" max="10" value="6" oninput="this.nextElementSibling.textContent=this.value"/>
+        <span class="range-val">6</span>
+      </div>
+
+      <div class="range-row">
+        <span class="range-label">Overall Wellbeing</span>
+        <input type="range" min="1" max="10" value="8" oninput="this.nextElementSibling.textContent=this.value"/>
+        <span class="range-val">8</span>
+      </div>
+
+      <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="showToast('Self-report saved');">Save Report</button>
+    </div>
+
+  </div>
+
+  <!-- ═══ REORDER ═══ -->
+  <div class="section">
+    <div style="background:linear-gradient(135deg,var(--neural-glass),var(--bio-glass));border:1px solid var(--border-mid);border-radius:var(--r-lg);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;">Your cycle ends in 16 days</div>
+        <div style="font-size:14px;color:var(--text-2);">Reorder now to ensure continuity of your protocol.</div>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('Reorder started — redirecting to checkout');">Reorder Protocol</button>
+    </div>
+  </div>
+
+  <!-- ═══ ASSESSMENT ═══ -->
+  <div class="section">
+    <h3 class="section-title">Pre / Post Assessment</h3>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">Biomarker changes since protocol start (Day 1 vs Day 14)</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;margin-bottom:12px;color:var(--regen);">Improvements</div>
+        <div class="assess-item">
+          <span style="font-size:14px;">Testosterone</span>
+          <span class="mono" style="font-size:14px;color:var(--regen);">+12%</span>
+        </div>
+        <div class="assess-item">
+          <span style="font-size:14px;">CRP</span>
+          <span class="mono" style="font-size:14px;color:var(--regen);">-28%</span>
+        </div>
+        <div class="assess-item">
+          <span style="font-size:14px;">IGF-1</span>
+          <span class="mono" style="font-size:14px;color:var(--regen);">+8%</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;margin-bottom:12px;color:var(--vital);">Watch</div>
+        <div class="assess-item">
+          <span style="font-size:14px;">Cortisol</span>
+          <span class="mono" style="font-size:14px;color:var(--vital);">+3%</span>
+        </div>
+        <div class="assess-item">
+          <span style="font-size:14px;">Thyroid (TSH)</span>
+          <span class="mono" style="font-size:14px;color:var(--text-2);">0%</span>
+        </div>
+        <div class="assess-item">
+          <span style="font-size:14px;">Vitamin D</span>
+          <span class="mono" style="font-size:14px;color:var(--regen);">+5%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Wallet Modal -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <div class="wallet-icon">🦊</div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <div class="wallet-icon">🔗</div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+<!-- Mockup Badge -->
+<div class="mockup-badge">MVP MOCKUP &middot; TRACKING</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+function selectSev(el, level) {
+  document.querySelectorAll('.sev-chip').forEach(c => {
+    c.className = 'sev-chip';
+  });
+  el.classList.add('sel-' + level);
+}
+</script>
+
+</body>
+</html>

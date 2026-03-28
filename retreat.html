@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Retreat Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* Destination cards */
+.dest-card {
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r-lg);
+  overflow:hidden; cursor:pointer; transition:all 0.3s;
+}
+.dest-card:hover { background:var(--glass-hover); transform:translateY(-2px); }
+.dest-card.selected { border-color:var(--bio); box-shadow:var(--bio-glow); }
+.dest-img {
+  width:100%; height:160px; background:var(--void-float);
+  display:flex; align-items:center; justify-content:center;
+  font-size:48px; color:var(--text-subtle);
+}
+.dest-body { padding:20px; }
+.dest-name { font-family:'Syne',sans-serif; font-size:18px; font-weight:700; margin-bottom:4px; }
+.dest-loc { font-size:13px; color:var(--text-muted); margin-bottom:10px; }
+.dest-desc { font-size:13px; color:var(--text-2); line-height:1.6; }
+
+/* Room cards */
+.room-card {
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r);
+  padding:24px; cursor:pointer; transition:all 0.3s; text-align:center;
+}
+.room-card:hover { background:var(--glass-hover); transform:translateY(-2px); }
+.room-card.selected { border-color:var(--vital); background:var(--vital-glass); box-shadow:var(--vital-glow); }
+.room-icon { font-size:32px; margin-bottom:10px; }
+.room-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:4px; }
+.room-price { font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--vital); margin-bottom:8px; }
+.room-desc { font-size:12px; color:var(--text-muted); line-height:1.5; }
+
+/* Protocol bundle */
+.bundle-item {
+  display:flex; align-items:center; gap:16px; padding:16px 20px;
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r);
+  margin-bottom:10px; cursor:pointer; transition:all 0.3s;
+}
+.bundle-item:hover { background:var(--glass-hover); }
+.bundle-item.selected { border-color:var(--bio); background:var(--bio-glass); }
+.bundle-check {
+  width:22px; height:22px; border-radius:6px; border:2px solid var(--border-mid);
+  display:flex; align-items:center; justify-content:center; font-size:12px;
+  flex-shrink:0; transition:all 0.3s;
+}
+.bundle-item.selected .bundle-check { background:var(--bio); border-color:var(--bio); color:var(--void); }
+
+/* Practitioner */
+.prac-card {
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r);
+  padding:24px; display:flex; gap:20px; align-items:flex-start;
+}
+.prac-avatar {
+  width:64px; height:64px; border-radius:50%; background:var(--void-float);
+  display:flex; align-items:center; justify-content:center; font-size:28px;
+  flex-shrink:0; color:var(--text-subtle);
+}
+.prac-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:2px; }
+.prac-spec { font-size:12px; color:var(--bio); margin-bottom:6px; }
+.prac-bio { font-size:13px; color:var(--text-2); line-height:1.5; margin-bottom:8px; }
+.prac-rating { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--vital); }
+
+/* Booking summary */
+.booking-summary {
+  background:var(--void-raised); border:1px solid var(--border-mid); border-radius:var(--r-lg);
+  padding:28px; position:sticky; top:100px;
+}
+
+@media (max-width:1024px) {
+  .retreat-layout { grid-template-columns:1fr !important; }
+  .booking-summary { position:static; }
+}
+@media (max-width:640px) {
+  .prac-card { flex-direction:column; align-items:center; text-align:center; }
+}
+</style>
+</head>
+<body data-portal="b2c">
+
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
+      <button class="nav-toggle">☰</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">Immersive Experience</div>
+    <h1 class="page-title">Retreat Builder</h1>
+    <p class="page-subtitle">Combine your sovereign protocols with immersive healing experiences. Choose your destination, room, and practitioner-guided protocol bundles.</p>
+  </div>
+
+  <div class="retreat-layout" style="display:grid;grid-template-columns:1fr 360px;gap:32px;">
+
+    <!-- Main Content -->
+    <div>
+
+      <!-- ═══ DESTINATIONS ═══ -->
+      <div class="section">
+        <h3 class="section-title">Select Destination</h3>
+        <div class="grid-3">
+
+          <div class="dest-card selected" onclick="selectDest(this,'kohsamui')">
+            <div class="dest-img">&#127796;</div>
+            <div class="dest-body">
+              <div class="dest-name">Koh Samui</div>
+              <div class="dest-loc">Thailand</div>
+              <div class="dest-desc">Tropical beachfront wellness centre with traditional Thai medicine integration and ocean-view treatment rooms.</div>
+            </div>
+          </div>
+
+          <div class="dest-card" onclick="selectDest(this,'bali')">
+            <div class="dest-img">&#127808;</div>
+            <div class="dest-body">
+              <div class="dest-name">Bali</div>
+              <div class="dest-loc">Indonesia</div>
+              <div class="dest-desc">Jungle retreat in Ubud with Balinese healing traditions, rice paddy views, and holistic recovery protocols.</div>
+            </div>
+          </div>
+
+          <div class="dest-card" onclick="selectDest(this,'algarve')">
+            <div class="dest-img">&#9728;&#65039;</div>
+            <div class="dest-body">
+              <div class="dest-name">Algarve</div>
+              <div class="dest-loc">Portugal</div>
+              <div class="dest-desc">Cliff-top European wellness centre with Atlantic views, biohacking lab, and Mediterranean recovery cuisine.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ ROOM SELECTION ═══ -->
+      <div class="section">
+        <h3 class="section-title">Room Selection</h3>
+        <div class="grid-3">
+
+          <div class="room-card" onclick="selectRoom(this,'standard',150)">
+            <div class="room-icon">&#x1F6CF;</div>
+            <div class="room-name">Standard</div>
+            <div class="room-price">$150 / night</div>
+            <div class="room-desc">Comfortable private room with ensuite, garden view, and daily housekeeping.</div>
+          </div>
+
+          <div class="room-card selected" onclick="selectRoom(this,'deluxe',250)">
+            <div class="room-icon">&#x2728;</div>
+            <div class="room-name">Deluxe</div>
+            <div class="room-price">$250 / night</div>
+            <div class="room-desc">Spacious suite with balcony, premium amenities, ocean or jungle view, and in-room cold plunge.</div>
+          </div>
+
+          <div class="room-card" onclick="selectRoom(this,'villa',450)">
+            <div class="room-icon">&#x1F3E0;</div>
+            <div class="room-name">Villa</div>
+            <div class="room-price">$450 / night</div>
+            <div class="room-desc">Private villa with pool, dedicated treatment space, personal chef, and 24/7 concierge.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ PROTOCOL BUNDLES ═══ -->
+      <div class="section">
+        <h3 class="section-title">Protocol Bundles</h3>
+
+        <div class="bundle-item selected" onclick="toggleBundle(this,'longevity',499)">
+          <div class="bundle-check">&#10003;</div>
+          <div style="flex:1;">
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;">Longevity Reset</div>
+            <div style="font-size:12px;color:var(--text-muted);">7-day protocol &middot; Epithalon, GHK-Cu, NAD+</div>
+          </div>
+          <div class="mono" style="font-size:14px;color:var(--bio);flex-shrink:0;">$499</div>
+        </div>
+
+        <div class="bundle-item" onclick="toggleBundle(this,'gut',349)">
+          <div class="bundle-check"></div>
+          <div style="flex:1;">
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;">Gut Restore</div>
+            <div style="font-size:12px;color:var(--text-muted);">5-day protocol &middot; BPC-157, KPV, LL-37</div>
+          </div>
+          <div class="mono" style="font-size:14px;color:var(--bio);flex-shrink:0;">$349</div>
+        </div>
+
+        <div class="bundle-item" onclick="toggleBundle(this,'brain',249)">
+          <div class="bundle-check"></div>
+          <div style="flex:1;">
+            <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;">Brain Optimize</div>
+            <div style="font-size:12px;color:var(--text-muted);">3-day protocol &middot; Selank, Semax, Dihexa</div>
+          </div>
+          <div class="mono" style="font-size:14px;color:var(--bio);flex-shrink:0;">$249</div>
+        </div>
+
+      </div>
+
+      <!-- ═══ PRACTITIONERS ═══ -->
+      <div class="section">
+        <h3 class="section-title">Practitioner Profiles</h3>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <div class="prac-card">
+            <div class="prac-avatar">&#x1F468;&#x200D;&#x2695;&#xFE0F;</div>
+            <div>
+              <div class="prac-name">Dr. Anand Mehta</div>
+              <div class="prac-spec">Integrative Medicine &middot; Peptide Therapy</div>
+              <div class="prac-bio">15 years in integrative medicine. Specialises in longevity protocols and biomarker-driven treatment plans. Published researcher in peptide therapeutics.</div>
+              <div class="prac-rating">4.9 / 5.0 &middot; 127 reviews</div>
+            </div>
+          </div>
+
+          <div class="prac-card">
+            <div class="prac-avatar">&#x1F469;&#x200D;&#x2695;&#xFE0F;</div>
+            <div>
+              <div class="prac-name">Dr. Sofia Andersson</div>
+              <div class="prac-spec">Functional Medicine &middot; Gut Health</div>
+              <div class="prac-bio">Specialist in gut-brain axis restoration and immune modulation. Combines Western diagnostics with Eastern healing modalities.</div>
+              <div class="prac-rating">4.8 / 5.0 &middot; 94 reviews</div>
+            </div>
+          </div>
+
+          <div class="prac-card">
+            <div class="prac-avatar">&#x1F468;&#x200D;&#x1F52C;</div>
+            <div>
+              <div class="prac-name">Dr. James Whitfield</div>
+              <div class="prac-spec">Neuroscience &middot; Cognitive Enhancement</div>
+              <div class="prac-bio">Neurologist with expertise in cognitive peptide protocols and brain optimisation. Former research lead at a top neuroscience institute.</div>
+              <div class="prac-rating">4.7 / 5.0 &middot; 68 reviews</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══ BOOKING SUMMARY SIDEBAR ═══ -->
+    <aside>
+      <div class="booking-summary">
+        <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;">Booking Summary</h3>
+
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">Destination</span>
+            <span id="sumDest">Koh Samui, Thailand</span>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">Room</span>
+            <span id="sumRoom">Deluxe</span>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">Duration</span>
+            <span id="sumDuration">7 nights</span>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">Dates</span>
+            <span class="mono" style="font-size:12px;">Apr 15 - Apr 22</span>
+          </div>
+
+        </div>
+
+        <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:14px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px;margin-bottom:10px;color:var(--text-muted);">Cost Breakdown</div>
+
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;">
+            <span style="color:var(--text-2);">Room (7 nights)</span>
+            <span class="mono" style="font-size:13px;" id="sumRoomCost">$1,750</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;" id="sumBundleLine">
+            <span style="color:var(--text-2);">Protocol Bundles</span>
+            <span class="mono" style="font-size:13px;" id="sumBundleCost">$499</span>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:2px solid var(--border-mid);margin-bottom:8px;">
+          <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;">Total</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:22px;color:var(--bio-bright);" id="sumTotal">$2,249</span>
+        </div>
+
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;">
+          Deposit required: <span class="mono" style="color:var(--vital);" id="sumDeposit">$450</span> (20%)
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;" onclick="showToast('Reservation submitted — deposit payment pending');">Reserve with Deposit</button>
+
+        <div style="font-size:11px;color:var(--text-subtle);text-align:center;margin-top:12px;">Free cancellation up to 14 days before arrival</div>
+
+      </div>
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- Wallet Modal -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <div class="wallet-icon">🦊</div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <div class="wallet-icon">🔗</div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+<!-- Mockup Badge -->
+<div class="mockup-badge">MVP MOCKUP &middot; RETREAT</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+// State
+let selectedDest = 'kohsamui';
+let selectedRoomPrice = 250;
+let selectedRoomName = 'Deluxe';
+let nights = 7;
+let bundles = { longevity: 499 };
+
+const destNames = {
+  kohsamui: 'Koh Samui, Thailand',
+  bali: 'Bali, Indonesia',
+  algarve: 'Algarve, Portugal'
+};
+
+function selectDest(el, dest) {
+  document.querySelectorAll('.dest-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDest = dest;
+  updateSummary();
+}
+
+function selectRoom(el, name, price) {
+  document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRoomPrice = price;
+  selectedRoomName = name.charAt(0).toUpperCase() + name.slice(1);
+  updateSummary();
+}
+
+function toggleBundle(el, id, price) {
+  el.classList.toggle('selected');
+  const check = el.querySelector('.bundle-check');
+  if (el.classList.contains('selected')) {
+    bundles[id] = price;
+    check.innerHTML = '&#10003;';
+  } else {
+    delete bundles[id];
+    check.innerHTML = '';
+  }
+  updateSummary();
+}
+
+function updateSummary() {
+  document.getElementById('sumDest').textContent = destNames[selectedDest] || selectedDest;
+  document.getElementById('sumRoom').textContent = selectedRoomName;
+
+  const roomTotal = selectedRoomPrice * nights;
+  document.getElementById('sumRoomCost').textContent = '$' + roomTotal.toLocaleString();
+
+  const bundleTotal = Object.values(bundles).reduce((a, b) => a + b, 0);
+  document.getElementById('sumBundleCost').textContent = '$' + bundleTotal.toLocaleString();
+  document.getElementById('sumBundleLine').style.display = bundleTotal > 0 ? 'flex' : 'none';
+
+  const total = roomTotal + bundleTotal;
+  document.getElementById('sumTotal').textContent = '$' + total.toLocaleString();
+  document.getElementById('sumDeposit').textContent = '$' + Math.round(total * 0.2).toLocaleString();
+}
+</script>
+
+</body>
+</html>

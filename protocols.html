@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM — Protocol Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* ── Protocol Library Styles ── */
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.search-input {
+  flex: 1;
+  min-width: 240px;
+  padding: 14px 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.search-input:focus {
+  border-color: var(--bio);
+  box-shadow: 0 0 0 3px var(--bio-glass);
+}
+.search-input::placeholder { color: var(--text-subtle); }
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ── Library Card ── */
+.lib-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 28px 24px;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+.lib-card:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+  transform: translateY(-3px);
+}
+.lib-icon {
+  font-size: 36px;
+  margin-bottom: 14px;
+}
+.lib-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.lib-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
+}
+.lib-pillars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.lib-pillar {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.lib-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.lib-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bio-bright);
+}
+.lib-price span {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+</style>
+</head>
+<body data-portal="b2c">
+<div class="app-shell app-shell--wide">
+
+  <!-- ── Navigation ── -->
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="eyebrow">&#9670; Evidence-Based Stacks</div>
+    <h1 class="page-title">Protocol Library</h1>
+    <p class="page-subtitle">Browse 12 sovereign peptide protocols. Each combines peptides, botanicals, cannabinoids, hydrogen therapy and lifestyle interventions into a complete optimisation stack.</p>
+  </div>
+
+  <!-- ── Search & Filter ── -->
+  <div class="search-bar">
+    <input type="text" class="search-input" placeholder="Search protocols..." oninput="filterProtocols(this.value)"/>
+    <div class="filter-chips">
+      <span class="chip selected" onclick="filterCategory(this, 'all')">All</span>
+      <span class="chip" onclick="filterCategory(this, 'body')">Body</span>
+      <span class="chip" onclick="filterCategory(this, 'mind')">Mind</span>
+      <span class="chip" onclick="filterCategory(this, 'soul')">Soul</span>
+    </div>
+  </div>
+
+  <!-- ── Protocol Grid ── -->
+  <div class="grid-auto" id="protocolGrid">
+
+    <!-- Sleep Architecture -->
+    <div class="lib-card" data-category="body" data-name="sleep architecture">
+      <div class="lib-icon">&#127769;</div>
+      <div class="lib-name">Sleep Architecture</div>
+      <div class="lib-desc">Rebuild deep sleep phases, optimise circadian rhythm, and restore overnight recovery. Targets GABA, melatonin pathways, and glymphatic clearance.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$89<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Calm & Resilience -->
+    <div class="lib-card" data-category="mind" data-name="calm resilience">
+      <div class="lib-icon">&#128524;</div>
+      <div class="lib-name">Calm &amp; Resilience</div>
+      <div class="lib-desc">Regulate the HPA axis, lower cortisol set-points, and build nervous system resilience. Adaptogenic botanicals meet anxiolytic peptides.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$89<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Brain Power -->
+    <div class="lib-card" data-category="mind" data-name="brain power">
+      <div class="lib-icon">&#129504;</div>
+      <div class="lib-name">Brain Power</div>
+      <div class="lib-desc">Enhance cognition, neuroplasticity, and memory consolidation. BDNF-boosting peptides combined with nootropic botanicals and neuroprotective layers.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$109<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Energy & Vitality -->
+    <div class="lib-card" data-category="body" data-name="energy vitality">
+      <div class="lib-icon">&#9889;</div>
+      <div class="lib-name">Energy &amp; Vitality</div>
+      <div class="lib-desc">Supercharge mitochondrial function, boost NAD+ pathways, and eliminate chronic fatigue. Cellular energy from the inside out.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$99<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Gut Regeneration -->
+    <div class="lib-card" data-category="body" data-name="gut regeneration">
+      <div class="lib-icon">&#129516;</div>
+      <div class="lib-name">Gut Regeneration</div>
+      <div class="lib-desc">Restore intestinal lining integrity, rebalance the microbiome, and reduce systemic inflammation originating from the gut.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$99<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Immune Fortification -->
+    <div class="lib-card" data-category="body" data-name="immune fortification">
+      <div class="lib-icon">&#128170;</div>
+      <div class="lib-name">Immune Fortification</div>
+      <div class="lib-desc">Strengthen innate and adaptive immunity, modulate inflammatory cascades, and build pathogen resilience without over-stimulation.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$89<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Injury Recovery -->
+    <div class="lib-card" data-category="body" data-name="injury recovery">
+      <div class="lib-icon">&#129657;</div>
+      <div class="lib-name">Injury Recovery</div>
+      <div class="lib-desc">Accelerate tissue repair, reduce inflammation, and support collagen synthesis. Ideal for sports injuries, post-surgical recovery, and chronic tendon issues.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$119<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Hormonal Balance -->
+    <div class="lib-card" data-category="body" data-name="hormonal balance">
+      <div class="lib-icon">&#9878;</div>
+      <div class="lib-name">Hormonal Balance</div>
+      <div class="lib-desc">Optimise endocrine signalling, support natural testosterone and growth hormone production, and restore hormonal equilibrium.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$129<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Longevity & Anti-Ageing -->
+    <div class="lib-card" data-category="soul" data-name="longevity anti-ageing">
+      <div class="lib-icon">&#8734;</div>
+      <div class="lib-name">Longevity &amp; Anti-Ageing</div>
+      <div class="lib-desc">Target cellular senescence, telomere maintenance, and epigenetic clocks. Slow biological ageing at the molecular level.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$149<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Peak Performance -->
+    <div class="lib-card" data-category="body" data-name="peak performance">
+      <div class="lib-icon">&#127942;</div>
+      <div class="lib-name">Peak Performance</div>
+      <div class="lib-desc">Maximise physical output, VO2 max, muscle protein synthesis, and recovery speed. Designed for athletes and high-performers.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$139<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Metabolic Optimisation -->
+    <div class="lib-card" data-category="body" data-name="metabolic optimisation">
+      <div class="lib-icon">&#128293;</div>
+      <div class="lib-name">Metabolic Optimisation</div>
+      <div class="lib-desc">Recalibrate metabolic rate, improve insulin sensitivity, and support healthy body composition through peptide-driven metabolic pathways.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$109<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+    <!-- Sensu Protocol -->
+    <div class="lib-card" data-category="soul" data-name="sensu protocol">
+      <div class="lib-icon">&#128156;</div>
+      <div class="lib-name">Sensu Protocol</div>
+      <div class="lib-desc">Enhance libido, sensory perception, and intimate vitality. A holistic approach combining vascular peptides with adaptogenic and cannabinoid support.</div>
+      <div class="lib-pillars">
+        <span class="lib-pillar">Peptides</span>
+        <span class="lib-pillar">Botanicals</span>
+        <span class="lib-pillar">Cannabinoids</span>
+        <span class="lib-pillar">Hydrogen</span>
+        <span class="lib-pillar">Lifestyle</span>
+        <span class="lib-pillar">Tracking</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price"><span>From </span>$99<span>/mo</span></div>
+        <a href="protocol-detail.html" class="btn btn-primary btn-sm">View Protocol</a>
+      </div>
+    </div>
+
+  </div><!-- #protocolGrid -->
+
+</div><!-- .app-shell -->
+
+<!-- ── Wallet Connect Modal ── -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
+    <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <span class="wallet-icon">&#129418;</span>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <span class="wallet-icon">&#128279;</span>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Mobile wallet via QR</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('phantom')">
+      <span class="wallet-icon">&#128123;</span>
+      <div><div class="wallet-name">Phantom</div><div class="wallet-desc">Solana ecosystem wallet</div></div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%; margin-top:12px;" onclick="closeWalletModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Mockup Badge ── -->
+<div class="mockup-badge">MVP MOCKUP &middot; NOT PRODUCTION</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+/* ── Protocol Library Filtering ── */
+function filterProtocols(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('#protocolGrid .lib-card').forEach(card => {
+    const name = card.dataset.name || '';
+    card.style.display = (q === '' || name.includes(q)) ? '' : 'none';
+  });
+}
+
+function filterCategory(el, cat) {
+  // Toggle chip
+  document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  // Filter cards
+  document.querySelectorAll('#protocolGrid .lib-card').forEach(card => {
+    if (cat === 'all') {
+      card.style.display = '';
+    } else {
+      card.style.display = card.dataset.category === cat ? '' : 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

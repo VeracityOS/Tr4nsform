@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM — Brain Power Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* ── Protocol Detail Styles ── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--bio); }
+
+.proto-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.proto-header-icon {
+  font-size: 56px;
+  flex-shrink: 0;
+}
+.proto-header-info { flex: 1; }
+.proto-header-info h1 {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+.proto-header-info .proto-desc {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  max-width: 680px;
+}
+.proto-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Pillars ── */
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.pillar-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.pillar-card:hover {
+  border-color: var(--border-mid);
+}
+.pillar-header {
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pillar-icon { font-size: 24px; }
+.pillar-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  flex: 1;
+}
+.pillar-toggle {
+  color: var(--text-muted);
+  font-size: 14px;
+  transition: transform 0.3s;
+}
+.pillar-card.open .pillar-toggle { transform: rotate(180deg); }
+.pillar-body {
+  display: none;
+  padding: 0 20px 20px;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.pillar-card.open .pillar-body { display: block; }
+
+/* ── Stack Layers ── */
+.layer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+.layer-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.layer-card:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+}
+.layer-icon { font-size: 28px; margin-bottom: 10px; }
+.layer-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.layer-items {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Timeline ── */
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.phase-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.phase-card:nth-child(1)::before { background: var(--bio); }
+.phase-card:nth-child(2)::before { background: var(--neural); }
+.phase-card:nth-child(3)::before { background: var(--vital); }
+.phase-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.phase-card:nth-child(1) .phase-label { color: var(--bio); }
+.phase-card:nth-child(2) .phase-label { color: var(--neural); }
+.phase-card:nth-child(3) .phase-label { color: var(--vital); }
+.phase-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.phase-weeks {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.phase-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.phase-items {
+  margin-top: 12px;
+  list-style: none;
+}
+.phase-items li {
+  font-size: 12px;
+  color: var(--text-2);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+.phase-items li::before {
+  content: '\25B8';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+/* ── Pricing Tiers ── */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.tier-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s;
+  position: relative;
+}
+.tier-card:hover {
+  background: var(--glass-hover);
+  border-color: var(--border-mid);
+  transform: translateY(-2px);
+}
+.tier-card.featured {
+  border-color: var(--bio);
+  background: var(--bio-glass);
+}
+.tier-card.featured::after {
+  content: 'POPULAR';
+  position: absolute;
+  top: -1px; right: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  background: var(--bio);
+  color: var(--void-deep);
+  border-radius: 0 0 6px 6px;
+  font-weight: 500;
+}
+.tier-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.tier-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--bio-bright);
+  margin-bottom: 4px;
+}
+.tier-price span {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.tier-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.tier-features {
+  list-style: none;
+  flex: 1;
+  margin-bottom: 20px;
+}
+.tier-features li {
+  font-size: 13px;
+  color: var(--text-2);
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.tier-features li:last-child { border-bottom: none; }
+.tier-features li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--bio);
+  font-size: 12px;
+}
+
+/* ── CTAs ── */
+.detail-ctas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 48px 0;
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .tier-grid { grid-template-columns: repeat(2, 1fr); }
+  .layer-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .proto-header { flex-direction: column; }
+  .pillar-grid { grid-template-columns: 1fr; }
+  .phase-grid { grid-template-columns: 1fr; }
+  .layer-grid { grid-template-columns: repeat(2, 1fr); }
+  .tier-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body data-portal="b2c">
+<div class="app-shell">
+
+  <!-- ── Navigation ── -->
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn"><span class="dot"></span>Connect Wallet</button>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <!-- ── Back Link ── -->
+  <a href="protocols.html" class="back-link">&larr; Back to Protocol Library</a>
+
+  <!-- ══════════════════════════════════════
+       PROTOCOL HEADER
+       ══════════════════════════════════════ -->
+  <div class="proto-header">
+    <div class="proto-header-icon">&#129504;</div>
+    <div class="proto-header-info">
+      <div class="proto-tags" style="margin-bottom:12px;">
+        <span class="badge badge-neural">Mind</span>
+        <span class="badge badge-bio">Non-Rx</span>
+        <span class="badge badge-vital">9-Week Cycle</span>
+      </div>
+      <h1>Brain Power</h1>
+      <p class="proto-desc">
+        A comprehensive nootropic protocol designed to enhance cognition, boost neuroplasticity, and protect against cognitive decline. Combines BDNF-boosting peptides with nootropic botanicals, neuroprotective cannabinoids, and molecular hydrogen for optimal brain performance.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       6 PILLARS
+       ══════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">&#127919; The 6 Pillars</h2>
+    <div class="pillar-grid">
+      <div class="pillar-card open">
+        <div class="pillar-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="pillar-icon">&#128300;</span>
+          <span class="pillar-name">Peptides</span>
+          <span class="pillar-toggle">&#9660;</span>
+        </div>
+        <div class="pillar-body">
+          <strong>Semax</strong> &mdash; BDNF upregulation, cognitive enhancement, neuroprotection. 300-600mcg intranasal daily.<br/><br/>
+          <strong>Selank</strong> &mdash; Anxiolytic, memory consolidation, GABA modulation. 250-500mcg intranasal daily.<br/><br/>
+          <strong>Dihexa</strong> &mdash; HGF/c-Met pathway, synaptogenesis, memory formation. Oral, microdose protocol.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="pillar-icon">&#127807;</span>
+          <span class="pillar-name">Botanicals</span>
+          <span class="pillar-toggle">&#9660;</span>
+        </div>
+        <div class="pillar-body">
+          <strong>Lion's Mane</strong> &mdash; NGF stimulation, neurogenesis. 1000mg daily.<br/><br/>
+          <strong>Bacopa Monnieri</strong> &mdash; Memory consolidation, antioxidant neuroprotection. 300mg standardised extract.<br/><br/>
+          <strong>Ginkgo Biloba</strong> &mdash; Cerebral blood flow, cognitive support. 120mg EGb 761 extract.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="pillar-icon">&#127811;</span>
+          <span class="pillar-name">Cannabinoids</span>
+          <span class="pillar-toggle">&#9660;</span>
+        </div>
+        <div class="pillar-body">
+          <strong>CBD (Full Spectrum)</strong> &mdash; Neuroprotection, anti-inflammatory, anxiolytic. 25-50mg sublingual daily.<br/><br/>
+          <strong>CBG</strong> &mdash; Neuroprotective, neurogenesis support. 10-25mg daily.<br/><br/>
+          Cannabinoid layer targets neuroinflammation and supports the endocannabinoid system's role in synaptic plasticity.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="pillar-icon">&#128167;</span>
+          <span class="pillar-name">Hydrogen</span>
+          <span class="pillar-toggle">&#9660;</span>
+        </div>
+        <div class="pillar-body">
+          <strong>Molecular Hydrogen Water</strong> &mdash; Selective antioxidant, crosses blood-brain barrier, reduces oxidative stress in neural tissue. 1-2 tablets in 500ml water, 2x daily.<br/><br/>
+          <strong>H2 Inhalation</strong> &mdash; Optional boost. 2% H2 gas for 30-60 minutes, 3x weekly.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="pillar-icon">&#127939;</span>
+          <span class="pillar-name">Lifestyle</span>
+          <span class="pillar-toggle">&#9660;</span>
+        </div>
+        <div class="pillar-body">
+          <strong>Exercise</strong> &mdash; Zone 2 cardio 3x/week for BDNF. Resistance training 2x/week.<br/><br/>
+          <strong>Sleep</strong> &mdash; 7-9 hours. Optimise deep sleep for memory consolidation and glymphatic clearance.<br/><br/>
+          <strong>Meditation</strong> &mdash; 20 min/day focused attention or open monitoring for neuroplasticity.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="pillar-icon">&#128200;</span>
+          <span class="pillar-name">Tracking</span>
+          <span class="pillar-toggle">&#9660;</span>
+        </div>
+        <div class="pillar-body">
+          <strong>Cognitive Tests</strong> &mdash; Weekly Stroop, N-back, and reaction time benchmarks.<br/><br/>
+          <strong>Sleep Quality</strong> &mdash; Track deep sleep percentage via wearable.<br/><br/>
+          <strong>Subjective Journaling</strong> &mdash; Daily focus, clarity, and memory ratings (1-10 scale).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       STACK LAYERS
+       ══════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">&#128218; Stack Layers</h2>
+    <div class="layer-grid">
+      <div class="layer-card">
+        <div class="layer-icon">&#128300;</div>
+        <div class="layer-name">Peptides</div>
+        <div class="layer-items">Semax<br/>Selank<br/>Dihexa</div>
+      </div>
+      <div class="layer-card">
+        <div class="layer-icon">&#127807;</div>
+        <div class="layer-name">Botanicals</div>
+        <div class="layer-items">Lion's Mane<br/>Bacopa<br/>Ginkgo</div>
+      </div>
+      <div class="layer-card">
+        <div class="layer-icon">&#127811;</div>
+        <div class="layer-name">Cannabinoids</div>
+        <div class="layer-items">CBD Full Spectrum<br/>CBG Isolate</div>
+      </div>
+      <div class="layer-card">
+        <div class="layer-icon">&#128167;</div>
+        <div class="layer-name">Hydrogen</div>
+        <div class="layer-items">H2 Water Tabs<br/>H2 Inhalation</div>
+      </div>
+      <div class="layer-card">
+        <div class="layer-icon">&#127939;</div>
+        <div class="layer-name">Lifestyle</div>
+        <div class="layer-items">Zone 2 Cardio<br/>Sleep Protocol<br/>Meditation</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       3-PHASE TIMELINE
+       ══════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">&#128197; 3-Phase Timeline</h2>
+    <div class="phase-grid">
+      <div class="phase-card">
+        <div class="phase-label">PHASE 1</div>
+        <div class="phase-name">Foundation</div>
+        <div class="phase-weeks">Weeks 1 &ndash; 3</div>
+        <div class="phase-desc">Establish baseline, introduce core peptides at conservative doses, begin lifestyle protocols.</div>
+        <ul class="phase-items">
+          <li>Semax 300mcg/day (intranasal)</li>
+          <li>Selank 250mcg/day (intranasal)</li>
+          <li>Lion's Mane 500mg/day ramp-up</li>
+          <li>CBD 25mg/day sublingual</li>
+          <li>H2 water 1x daily</li>
+          <li>Cognitive baseline testing</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-label">PHASE 2</div>
+        <div class="phase-name">Activation</div>
+        <div class="phase-weeks">Weeks 4 &ndash; 6</div>
+        <div class="phase-desc">Increase to full therapeutic doses. Introduce additional compounds and boosters.</div>
+        <ul class="phase-items">
+          <li>Semax 600mcg/day</li>
+          <li>Selank 500mcg/day</li>
+          <li>Dihexa introduced (microdose)</li>
+          <li>Lion's Mane 1000mg + Bacopa 300mg</li>
+          <li>CBD 50mg + CBG 15mg</li>
+          <li>H2 water 2x daily + optional inhalation</li>
+        </ul>
+      </div>
+      <div class="phase-card">
+        <div class="phase-label">PHASE 3</div>
+        <div class="phase-name">Integration</div>
+        <div class="phase-weeks">Weeks 7 &ndash; 9</div>
+        <div class="phase-desc">Consolidate gains, taper select compounds, establish maintenance protocol.</div>
+        <ul class="phase-items">
+          <li>Semax 300-600mcg (personalised)</li>
+          <li>Selank taper to 250mcg</li>
+          <li>Dihexa cycling (5 on / 2 off)</li>
+          <li>Botanical maintenance doses</li>
+          <li>Cannabinoid maintenance</li>
+          <li>Full cognitive re-assessment</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PRICING TIERS
+       ══════════════════════════════════════ -->
+  <section class="section">
+    <h2 class="section-title">&#128176; Pricing Tiers</h2>
+    <div class="tier-grid">
+      <!-- Entry -->
+      <div class="tier-card">
+        <div class="tier-name">Entry</div>
+        <div class="tier-price">$89<span>/mo</span></div>
+        <div class="tier-desc">Core peptides only</div>
+        <ul class="tier-features">
+          <li>Semax (30-day supply)</li>
+          <li>Selank (30-day supply)</li>
+          <li>Dosing guide</li>
+          <li>Basic tracking template</li>
+          <li>Community access</li>
+        </ul>
+        <a href="builder.html" class="btn btn-secondary" style="width:100%; text-align:center;">Get Started</a>
+      </div>
+      <!-- Core -->
+      <div class="tier-card">
+        <div class="tier-name">Core</div>
+        <div class="tier-price">$169<span>/mo</span></div>
+        <div class="tier-desc">Peptides + botanicals</div>
+        <ul class="tier-features">
+          <li>Everything in Entry</li>
+          <li>Lion's Mane + Bacopa</li>
+          <li>Ginkgo Biloba</li>
+          <li>Personalised dosing</li>
+          <li>Weekly tracking dashboard</li>
+          <li>Email support</li>
+        </ul>
+        <a href="builder.html" class="btn btn-secondary" style="width:100%; text-align:center;">Get Started</a>
+      </div>
+      <!-- Full Protocol -->
+      <div class="tier-card featured">
+        <div class="tier-name">Full Protocol</div>
+        <div class="tier-price">$249<span>/mo</span></div>
+        <div class="tier-desc">Complete 5-layer stack</div>
+        <ul class="tier-features">
+          <li>Everything in Core</li>
+          <li>Dihexa (microdose)</li>
+          <li>CBD + CBG cannabinoid layer</li>
+          <li>Hydrogen water tablets</li>
+          <li>Lifestyle protocol guide</li>
+          <li>Priority support</li>
+          <li>Monthly consultation</li>
+        </ul>
+        <a href="builder.html" class="btn btn-primary" style="width:100%; text-align:center;">Start Protocol</a>
+      </div>
+      <!-- Apex -->
+      <div class="tier-card">
+        <div class="tier-name">Apex</div>
+        <div class="tier-price">$399<span>/mo</span></div>
+        <div class="tier-desc">Full stack + concierge</div>
+        <ul class="tier-features">
+          <li>Everything in Full Protocol</li>
+          <li>H2 inhalation device</li>
+          <li>Blood biomarker panel</li>
+          <li>Cognitive testing suite</li>
+          <li>Bi-weekly practitioner calls</li>
+          <li>Cycle auto-adjustment</li>
+          <li>Vault-encrypted health record</li>
+        </ul>
+        <a href="builder.html" class="btn btn-neural" style="width:100%; text-align:center;">Go Apex</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTAs ── -->
+  <div class="detail-ctas">
+    <a href="builder.html" class="btn btn-primary btn-lg">Start This Protocol</a>
+    <a href="consultation.html" class="btn btn-secondary btn-lg">Book Consultation</a>
+  </div>
+
+</div><!-- .app-shell -->
+
+<!-- ── Wallet Connect Modal ── -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif; font-size:20px; margin-bottom:6px;">Connect Wallet</h3>
+    <p style="color:var(--text-muted); font-size:13px; margin-bottom:24px;">Choose your preferred wallet to authenticate.</p>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <span class="wallet-icon">&#129418;</span>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <span class="wallet-icon">&#128279;</span>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Mobile wallet via QR</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('phantom')">
+      <span class="wallet-icon">&#128123;</span>
+      <div><div class="wallet-name">Phantom</div><div class="wallet-desc">Solana ecosystem wallet</div></div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%; margin-top:12px;" onclick="closeWalletModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Mockup Badge ── -->
+<div class="mockup-badge">MVP MOCKUP &middot; NOT PRODUCTION</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+</body>
+</html>

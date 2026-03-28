@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Stock Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+</head>
+<body data-portal="partner">
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Partner Portal</span>
+      <button class="wallet-btn connected"><span class="dot"></span>Partner: Sukhumvit Clinic</button>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">&#128230; Inventory</div>
+    <h1 class="page-title">Stock Management</h1>
+    <p class="page-subtitle">Track inventory, transfers, and consignment stock across your location.</p>
+  </div>
+
+  <!-- Inventory Table -->
+  <section class="section">
+    <h2 class="section-title">&#128202; Current Inventory</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Product</th>
+            <th>Batch</th>
+            <th>Qty On Hand</th>
+            <th>Reserved</th>
+            <th>Available</th>
+            <th>Expiry</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-BHB-001</td>
+            <td>BPC-157 (5mg vial)</td>
+            <td class="mono" style="font-size:11px;">B2026-0341</td>
+            <td class="mono">240</td>
+            <td class="mono">18</td>
+            <td class="mono text-regen">222</td>
+            <td class="mono" style="font-size:11px;">2027-03-15</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-TB5-002</td>
+            <td>TB-500 (10mg vial)</td>
+            <td class="mono" style="font-size:11px;">B2026-0298</td>
+            <td class="mono">180</td>
+            <td class="mono">24</td>
+            <td class="mono text-regen">156</td>
+            <td class="mono" style="font-size:11px;">2027-01-22</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-SS31-003</td>
+            <td>SS-31 (Elamipretide, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0315</td>
+            <td class="mono">95</td>
+            <td class="mono">12</td>
+            <td class="mono text-vital">83</td>
+            <td class="mono" style="font-size:11px;">2026-11-30</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-KPV-004</td>
+            <td>KPV (Anti-inflammatory, 2mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0287</td>
+            <td class="mono">120</td>
+            <td class="mono">8</td>
+            <td class="mono text-regen">112</td>
+            <td class="mono" style="font-size:11px;">2027-06-10</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-GHK-005</td>
+            <td>GHK-Cu (Copper peptide, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0322</td>
+            <td class="mono">65</td>
+            <td class="mono">5</td>
+            <td class="mono text-vital">60</td>
+            <td class="mono" style="font-size:11px;">2026-09-18</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-DSIP-006</td>
+            <td>DSIP (Sleep peptide, 2mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0339</td>
+            <td class="mono">42</td>
+            <td class="mono">6</td>
+            <td class="mono text-danger">36</td>
+            <td class="mono" style="font-size:11px;">2026-08-05</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-LL37-007</td>
+            <td>LL-37 (Antimicrobial, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0301</td>
+            <td class="mono">78</td>
+            <td class="mono">10</td>
+            <td class="mono text-regen">68</td>
+            <td class="mono" style="font-size:11px;">2027-02-28</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">PEP-NAD-008</td>
+            <td>NAD+ Precursor Complex</td>
+            <td class="mono" style="font-size:11px;">B2026-0355</td>
+            <td class="mono">27</td>
+            <td class="mono">4</td>
+            <td class="mono text-danger">23</td>
+            <td class="mono" style="font-size:11px;">2026-12-20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Stock Transfers -->
+  <section class="section">
+    <h2 class="section-title">&#128666; Recent Transfers</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Items</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-25</td>
+            <td>Central Warehouse</td>
+            <td>Sukhumvit Clinic</td>
+            <td>BPC-157 x50, TB-500 x30</td>
+            <td><span class="badge badge-bio">Received</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-20</td>
+            <td>Central Warehouse</td>
+            <td>Sukhumvit Clinic</td>
+            <td>KPV x40, GHK-Cu x25</td>
+            <td><span class="badge badge-bio">Received</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-18</td>
+            <td>Sukhumvit Clinic</td>
+            <td>Chiang Mai Retreat</td>
+            <td>SS-31 x10</td>
+            <td><span class="badge badge-signal">In Transit</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-12</td>
+            <td>Central Warehouse</td>
+            <td>Sukhumvit Clinic</td>
+            <td>DSIP x20, LL-37 x15</td>
+            <td><span class="badge badge-bio">Received</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Consignment Tracker -->
+  <section class="section">
+    <h2 class="section-title">&#128179; Consignment Tracker</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span class="badge badge-bio">Active</span>
+          <span class="mono" style="font-size:11px;color:var(--text-muted);">CON-2026-041</span>
+        </div>
+        <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;">BPC-157 Consignment</h4>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.8;">
+          <div>Qty: <span class="mono">100 vials</span></div>
+          <div>Retail Value: <span class="mono text-regen">$12,400</span></div>
+          <div>Sold: <span class="mono">67 vials</span></div>
+          <div>Remittance Due: <span class="mono text-vital">2026-04-01</span></div>
+        </div>
+        <div style="margin-top:12px;background:var(--void-surface);border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:67%;height:100%;background:var(--bio);border-radius:4px;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span class="badge badge-vital">Pending</span>
+          <span class="mono" style="font-size:11px;color:var(--text-muted);">CON-2026-039</span>
+        </div>
+        <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;">Sleep Stack Bundle</h4>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.8;">
+          <div>Qty: <span class="mono">50 bundles</span></div>
+          <div>Retail Value: <span class="mono text-regen">$8,900</span></div>
+          <div>Sold: <span class="mono">22 bundles</span></div>
+          <div>Remittance Due: <span class="mono text-vital">2026-04-15</span></div>
+        </div>
+        <div style="margin-top:12px;background:var(--void-surface);border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:44%;height:100%;background:var(--vital);border-radius:4px;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span class="badge badge-signal">New</span>
+          <span class="mono" style="font-size:11px;color:var(--text-muted);">CON-2026-044</span>
+        </div>
+        <h4 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;">Immune Protocol Kit</h4>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.8;">
+          <div>Qty: <span class="mono">30 kits</span></div>
+          <div>Retail Value: <span class="mono text-regen">$6,300</span></div>
+          <div>Sold: <span class="mono">0 kits</span></div>
+          <div>Remittance Due: <span class="mono text-vital">2026-05-01</span></div>
+        </div>
+        <div style="margin-top:12px;background:var(--void-surface);border-radius:4px;height:6px;overflow:hidden;">
+          <div style="width:0%;height:100%;background:var(--signal);border-radius:4px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Request Transfer Button -->
+  <div style="text-align:center;margin-bottom:48px;">
+    <button class="btn btn-primary btn-lg" onclick="document.getElementById('transferForm').style.display = document.getElementById('transferForm').style.display === 'block' ? 'none' : 'block'">Request Stock Transfer</button>
+  </div>
+
+  <!-- Transfer Form (hidden by default) -->
+  <div id="transferForm" style="display:none;max-width:600px;margin:0 auto 48px;">
+    <div class="card" style="padding:32px;">
+      <h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:24px;">New Transfer Request</h3>
+      <div class="form-section">
+        <label class="form-label">Transfer From</label>
+        <select class="form-select">
+          <option>Central Warehouse</option>
+          <option>Bangkok Hub</option>
+        </select>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Product</label>
+        <select class="form-select">
+          <option>BPC-157 (5mg vial)</option>
+          <option>TB-500 (10mg vial)</option>
+          <option>SS-31 (Elamipretide, 5mg)</option>
+          <option>KPV (Anti-inflammatory, 2mg)</option>
+          <option>GHK-Cu (Copper peptide, 5mg)</option>
+          <option>DSIP (Sleep peptide, 2mg)</option>
+        </select>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Quantity</label>
+        <input class="form-input" type="number" placeholder="Enter quantity" value="50"/>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Notes</label>
+        <textarea class="form-textarea" placeholder="Reason for transfer request..."></textarea>
+      </div>
+      <button class="btn btn-submit" onclick="showToast('Transfer request submitted','bio')">Submit Request</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+</body>
+</html>

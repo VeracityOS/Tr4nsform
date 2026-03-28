@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Inventory / Dispensing</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+<style>
+  .stock-good { color:var(--regen); }
+  .stock-low { color:var(--vital); }
+  .stock-critical { color:var(--danger); }
+  .stock-indicator { display:inline-flex; align-items:center; gap:6px; }
+  .stock-dot { width:8px; height:8px; border-radius:50%; }
+  .stock-dot.good { background:var(--regen); }
+  .stock-dot.low { background:var(--vital); animation:pulse 2s infinite; }
+  .stock-dot.critical { background:var(--danger); animation:pulse 1.5s infinite; }
+</style>
+</head>
+<body data-portal="admin">
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Admin Console</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);">admin@tr4nsform.io</span>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">&#128230; Inventory</div>
+    <h1 class="page-title">Inventory / Dispensing</h1>
+    <p class="page-subtitle">Central stock management, batch tracking, reservations, and shrinkage reporting.</p>
+  </div>
+
+  <!-- Action Buttons -->
+  <div style="display:flex;gap:12px;margin-bottom:32px;">
+    <button class="btn btn-primary" onclick="showToast('Add Stock form coming soon','bio')">Add Stock</button>
+    <button class="btn btn-secondary" onclick="showToast('Record Shrinkage form coming soon','vital')">Record Shrinkage</button>
+  </div>
+
+  <!-- Stock Master Table -->
+  <section class="section">
+    <h2 class="section-title">&#128202; Stock Master</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Product</th>
+            <th>Batch</th>
+            <th>Category</th>
+            <th>Qty</th>
+            <th>Reserved</th>
+            <th>Available</th>
+            <th>Min Stock</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-BHB-001</td>
+            <td>BPC-157 (5mg vial)</td>
+            <td class="mono" style="font-size:11px;">B2026-0341</td>
+            <td><span class="badge badge-bio">Healing</span></td>
+            <td class="mono">540</td>
+            <td class="mono">62</td>
+            <td class="mono">478</td>
+            <td class="mono">100</td>
+            <td><span class="stock-indicator"><span class="stock-dot good"></span><span class="mono stock-good" style="font-size:11px;">Good</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-TB5-002</td>
+            <td>TB-500 (10mg vial)</td>
+            <td class="mono" style="font-size:11px;">B2026-0298</td>
+            <td><span class="badge badge-bio">Healing</span></td>
+            <td class="mono">380</td>
+            <td class="mono">48</td>
+            <td class="mono">332</td>
+            <td class="mono">80</td>
+            <td><span class="stock-indicator"><span class="stock-dot good"></span><span class="mono stock-good" style="font-size:11px;">Good</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-SS31-003</td>
+            <td>SS-31 (Elamipretide, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0315</td>
+            <td><span class="badge badge-neural">Neuro</span></td>
+            <td class="mono">145</td>
+            <td class="mono">30</td>
+            <td class="mono">115</td>
+            <td class="mono">60</td>
+            <td><span class="stock-indicator"><span class="stock-dot good"></span><span class="mono stock-good" style="font-size:11px;">Good</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-KPV-004</td>
+            <td>KPV (Anti-inflammatory, 2mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0287</td>
+            <td><span class="badge badge-regen">Immune</span></td>
+            <td class="mono">220</td>
+            <td class="mono">18</td>
+            <td class="mono">202</td>
+            <td class="mono">50</td>
+            <td><span class="stock-indicator"><span class="stock-dot good"></span><span class="mono stock-good" style="font-size:11px;">Good</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-GHK-005</td>
+            <td>GHK-Cu (Copper peptide, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0322</td>
+            <td><span class="badge badge-vital">Regen</span></td>
+            <td class="mono">95</td>
+            <td class="mono">12</td>
+            <td class="mono">83</td>
+            <td class="mono">60</td>
+            <td><span class="stock-indicator"><span class="stock-dot low"></span><span class="mono stock-low" style="font-size:11px;">Low</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-DSIP-006</td>
+            <td>DSIP (Sleep peptide, 2mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0339</td>
+            <td><span class="badge badge-neural">Sleep</span></td>
+            <td class="mono">42</td>
+            <td class="mono">6</td>
+            <td class="mono">36</td>
+            <td class="mono">50</td>
+            <td><span class="stock-indicator"><span class="stock-dot critical"></span><span class="mono stock-critical" style="font-size:11px;">Critical</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-LL37-007</td>
+            <td>LL-37 (Antimicrobial, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0301</td>
+            <td><span class="badge badge-regen">Immune</span></td>
+            <td class="mono">178</td>
+            <td class="mono">22</td>
+            <td class="mono">156</td>
+            <td class="mono">40</td>
+            <td><span class="stock-indicator"><span class="stock-dot good"></span><span class="mono stock-good" style="font-size:11px;">Good</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-NAD-008</td>
+            <td>NAD+ Precursor Complex</td>
+            <td class="mono" style="font-size:11px;">B2026-0355</td>
+            <td><span class="badge badge-vital">Longevity</span></td>
+            <td class="mono">55</td>
+            <td class="mono">8</td>
+            <td class="mono">47</td>
+            <td class="mono">40</td>
+            <td><span class="stock-indicator"><span class="stock-dot low"></span><span class="mono stock-low" style="font-size:11px;">Low</span></span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">PEP-MTS-009</td>
+            <td>Mots-C (Mitochondrial, 5mg)</td>
+            <td class="mono" style="font-size:11px;">B2026-0361</td>
+            <td><span class="badge badge-vital">Longevity</span></td>
+            <td class="mono">310</td>
+            <td class="mono">35</td>
+            <td class="mono">275</td>
+            <td class="mono">70</td>
+            <td><span class="stock-indicator"><span class="stock-dot good"></span><span class="mono stock-good" style="font-size:11px;">Good</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Batch Tracking -->
+  <section class="section">
+    <h2 class="section-title">&#128196; Batch Tracking</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Batch ID</th>
+            <th>Product</th>
+            <th>Received</th>
+            <th>Expiry</th>
+            <th>Qty</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:11px;">B2026-0361</td>
+            <td>Mots-C (5mg)</td>
+            <td class="mono" style="font-size:12px;">2026-03-25</td>
+            <td class="mono" style="font-size:12px;">2027-09-25</td>
+            <td class="mono">310</td>
+            <td>Central Warehouse</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">B2026-0355</td>
+            <td>NAD+ Precursor</td>
+            <td class="mono" style="font-size:12px;">2026-03-20</td>
+            <td class="mono" style="font-size:12px;">2026-12-20</td>
+            <td class="mono">55</td>
+            <td>Central Warehouse</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">B2026-0341</td>
+            <td>BPC-157 (5mg)</td>
+            <td class="mono" style="font-size:12px;">2026-03-12</td>
+            <td class="mono" style="font-size:12px;">2027-03-15</td>
+            <td class="mono">540</td>
+            <td>Central + Sukhumvit</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">B2026-0339</td>
+            <td>DSIP (2mg)</td>
+            <td class="mono" style="font-size:12px;">2026-03-10</td>
+            <td class="mono" style="font-size:12px;color:var(--vital);">2026-08-05</td>
+            <td class="mono">42</td>
+            <td>Sukhumvit Clinic</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:11px;">B2026-0322</td>
+            <td>GHK-Cu (5mg)</td>
+            <td class="mono" style="font-size:12px;">2026-03-01</td>
+            <td class="mono" style="font-size:12px;color:var(--vital);">2026-09-18</td>
+            <td class="mono">95</td>
+            <td>Central Warehouse</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Reserve/Release -->
+  <section class="section">
+    <h2 class="section-title">&#128274; Pending Reservations</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Qty Reserved</th>
+            <th>Reserved Date</th>
+            <th>Expiry</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0851</td>
+            <td>BPC-157 (5mg)</td>
+            <td class="mono">24</td>
+            <td class="mono" style="font-size:12px;">2026-03-28</td>
+            <td class="mono" style="font-size:12px;">2026-04-04</td>
+            <td><span class="badge badge-signal">Reserved</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0849</td>
+            <td>TB-500 (10mg)</td>
+            <td class="mono">18</td>
+            <td class="mono" style="font-size:12px;">2026-03-28</td>
+            <td class="mono" style="font-size:12px;">2026-04-04</td>
+            <td><span class="badge badge-signal">Reserved</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0846</td>
+            <td>DSIP (2mg)</td>
+            <td class="mono">6</td>
+            <td class="mono" style="font-size:12px;">2026-03-27</td>
+            <td class="mono" style="font-size:12px;">2026-04-03</td>
+            <td><span class="badge badge-vital">Awaiting Payment</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">ORD-2026-0844</td>
+            <td>NAD+ Precursor</td>
+            <td class="mono">8</td>
+            <td class="mono" style="font-size:12px;">2026-03-27</td>
+            <td class="mono" style="font-size:12px;">2026-04-03</td>
+            <td><span class="badge badge-signal">Reserved</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Returns & Shrinkage -->
+  <section class="section">
+    <h2 class="section-title">&#128203; Returns &amp; Shrinkage</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Reason</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-26</td>
+            <td><span class="badge badge-vital">Shrinkage</span></td>
+            <td>GHK-Cu (5mg)</td>
+            <td class="mono">3</td>
+            <td style="font-size:13px;color:var(--text-2);">Temperature excursion during transit</td>
+            <td class="mono text-danger">-$435</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-22</td>
+            <td><span class="badge badge-signal">Return</span></td>
+            <td>Sleep Stack Bundle</td>
+            <td class="mono">1</td>
+            <td style="font-size:13px;color:var(--text-2);">Client protocol change</td>
+            <td class="mono text-danger">-$289</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-18</td>
+            <td><span class="badge badge-vital">Shrinkage</span></td>
+            <td>BPC-157 (5mg)</td>
+            <td class="mono">2</td>
+            <td style="font-size:13px;color:var(--text-2);">Breakage — handling damage</td>
+            <td class="mono text-danger">-$248</td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">2026-03-14</td>
+            <td><span class="badge badge-danger">Expired</span></td>
+            <td>KPV (2mg)</td>
+            <td class="mono">5</td>
+            <td style="font-size:13px;color:var(--text-2);">Batch expiry — disposed</td>
+            <td class="mono text-danger">-$475</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+</body>
+</html>

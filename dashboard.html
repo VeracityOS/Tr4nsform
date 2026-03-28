@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Sovereign Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+</head>
+<body data-portal="b2c">
+
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
+      <button class="nav-toggle">☰</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">Sovereign Vault</div>
+    <h1 class="page-title">Your Vault</h1>
+    <p class="page-subtitle">Sovereign health data, stored locally. Your keys, your data, your body.</p>
+  </div>
+
+  <div class="layout-sidebar">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <a class="sidebar-link active" href="#" onclick="switchVaultTab('overview',this)" data-tab="overview">Overview</a>
+        <a class="sidebar-link" href="#" onclick="switchVaultTab('biomarkers',this)" data-tab="biomarkers">Biomarkers</a>
+        <a class="sidebar-link" href="#" onclick="switchVaultTab('history',this)" data-tab="history">Protocol History</a>
+        <a class="sidebar-link" href="#" onclick="switchVaultTab('saved',this)" data-tab="saved">Saved Protocols</a>
+        <a class="sidebar-link" href="#" onclick="switchVaultTab('settings',this)" data-tab="settings">Settings</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+
+      <!-- ═══ OVERVIEW TAB ═══ -->
+      <div class="vault-panel visible" id="panel-overview">
+
+        <!-- Wallet Address -->
+        <div class="card" style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div class="stat-label">Connected Wallet</div>
+            <div class="mono" style="font-size:16px;color:var(--bio);">0x7a3B...f291</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText('0x7a3B9c4E1d2F6b8A0e5C3d7F9a1B4c6E8d2F91');showToast('Address copied');">Copy</button>
+        </div>
+
+        <!-- Profile Completeness -->
+        <div class="card" style="margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span class="form-label" style="margin-bottom:0;">Profile Completeness</span>
+            <span class="mono" style="font-size:13px;color:var(--bio);">65%</span>
+          </div>
+          <div style="width:100%;height:8px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+            <div style="width:65%;height:100%;background:linear-gradient(90deg,var(--bio-dim),var(--bio));border-radius:999px;transition:width 1s ease;"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Add biomarkers and complete your health profile for better recommendations.</p>
+        </div>
+
+        <!-- Stat Grid -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Active Protocols</div>
+            <div class="stat-value" style="color:var(--bio);">2</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completed Cycles</div>
+            <div class="stat-value">7</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Days on Protocol</div>
+            <div class="stat-value">142</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Vault Health</div>
+            <div class="stat-value" style="color:var(--regen);font-size:22px;">Good</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="section">
+          <h3 class="section-title">Recent Activity</h3>
+          <div class="timeline">
+            <div class="timeline-item active">
+              <div style="font-size:14px;font-weight:500;">Protocol submitted for clinical review</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Brain Power Stack &middot; 2 hours ago</div>
+            </div>
+            <div class="timeline-item completed">
+              <div style="font-size:14px;font-weight:500;">Safety gate passed</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Brain Power Stack &middot; 2 hours ago</div>
+            </div>
+            <div class="timeline-item completed">
+              <div style="font-size:14px;font-weight:500;">Biomarker updated</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Testosterone: 680 ng/dL &middot; 1 day ago</div>
+            </div>
+            <div class="timeline-item completed">
+              <div style="font-size:14px;font-weight:500;">Protocol cycle completed</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Gut Restore Protocol &middot; 3 days ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+          <h3 class="section-title">Quick Actions</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="builder.html" class="btn btn-primary btn-sm">New Builder</a>
+            <a href="tracking.html" class="btn btn-secondary btn-sm">View Protocols</a>
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Vault exported as JSON');">Export Vault</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══ BIOMARKERS TAB ═══ -->
+      <div class="vault-panel" id="panel-biomarkers" style="display:none;">
+
+        <div class="panel-header">
+          <h2 class="panel-title">Biomarker Tracking</h2>
+          <p class="panel-subtitle">Log your lab results to unlock personalised protocol recommendations.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <!-- Testosterone -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div class="form-label" style="margin-bottom:0;">Testosterone</div>
+                <div style="font-size:11px;color:var(--text-muted);">Normal: 300 - 1000 ng/dL</div>
+              </div>
+              <span class="badge badge-regen">Normal</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <input type="number" class="form-input" placeholder="680" value="680" style="max-width:140px;"/>
+              <span class="mono" style="font-size:12px;color:var(--text-muted);">ng/dL</span>
+            </div>
+            <div style="margin-top:10px;height:6px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+              <div style="width:54%;height:100%;background:var(--regen);border-radius:999px;"></div>
+            </div>
+          </div>
+
+          <!-- Cortisol -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div class="form-label" style="margin-bottom:0;">Cortisol</div>
+                <div style="font-size:11px;color:var(--text-muted);">Normal: 6 - 18 mcg/dL</div>
+              </div>
+              <span class="badge badge-vital">Elevated</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <input type="number" class="form-input" placeholder="22" value="22" style="max-width:140px;"/>
+              <span class="mono" style="font-size:12px;color:var(--text-muted);">mcg/dL</span>
+            </div>
+            <div style="margin-top:10px;height:6px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+              <div style="width:82%;height:100%;background:var(--vital);border-radius:999px;"></div>
+            </div>
+          </div>
+
+          <!-- CRP -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div class="form-label" style="margin-bottom:0;">CRP (C-Reactive Protein)</div>
+                <div style="font-size:11px;color:var(--text-muted);">Normal: 0 - 3 mg/L</div>
+              </div>
+              <span class="badge badge-danger">High</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <input type="number" class="form-input" placeholder="4.8" value="4.8" style="max-width:140px;"/>
+              <span class="mono" style="font-size:12px;color:var(--text-muted);">mg/L</span>
+            </div>
+            <div style="margin-top:10px;height:6px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+              <div style="width:90%;height:100%;background:var(--danger);border-radius:999px;"></div>
+            </div>
+          </div>
+
+          <!-- Vitamin D -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div class="form-label" style="margin-bottom:0;">Vitamin D</div>
+                <div style="font-size:11px;color:var(--text-muted);">Normal: 30 - 100 ng/mL</div>
+              </div>
+              <span class="badge badge-regen">Normal</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <input type="number" class="form-input" placeholder="52" value="52" style="max-width:140px;"/>
+              <span class="mono" style="font-size:12px;color:var(--text-muted);">ng/mL</span>
+            </div>
+            <div style="margin-top:10px;height:6px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+              <div style="width:52%;height:100%;background:var(--regen);border-radius:999px;"></div>
+            </div>
+          </div>
+
+          <!-- IGF-1 -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div class="form-label" style="margin-bottom:0;">IGF-1</div>
+                <div style="font-size:11px;color:var(--text-muted);">Normal: 100 - 300 ng/mL</div>
+              </div>
+              <span class="badge badge-regen">Normal</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <input type="number" class="form-input" placeholder="195" value="195" style="max-width:140px;"/>
+              <span class="mono" style="font-size:12px;color:var(--text-muted);">ng/mL</span>
+            </div>
+            <div style="margin-top:10px;height:6px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+              <div style="width:48%;height:100%;background:var(--regen);border-radius:999px;"></div>
+            </div>
+          </div>
+
+          <!-- Thyroid TSH -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <div>
+                <div class="form-label" style="margin-bottom:0;">Thyroid (TSH)</div>
+                <div style="font-size:11px;color:var(--text-muted);">Normal: 0.4 - 4.0 mIU/L</div>
+              </div>
+              <span class="badge badge-vital">Borderline</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <input type="number" class="form-input" placeholder="3.8" value="3.8" style="max-width:140px;"/>
+              <span class="mono" style="font-size:12px;color:var(--text-muted);">mIU/L</span>
+            </div>
+            <div style="margin-top:10px;height:6px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+              <div style="width:88%;height:100%;background:var(--vital);border-radius:999px;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-submit" onclick="showToast('Biomarkers saved to vault');" style="margin-top:24px;">Save Biomarkers</button>
+
+      </div>
+
+      <!-- ═══ PROTOCOL HISTORY TAB ═══ -->
+      <div class="vault-panel" id="panel-history" style="display:none;">
+
+        <div class="panel-header">
+          <h2 class="panel-title">Protocol History</h2>
+          <p class="panel-subtitle">All protocols you have run through TR4NSFORM.</p>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Protocol</th>
+                <th>Start Date</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text);font-weight:500;">Brain Power Stack</td>
+                <td class="mono" style="font-size:13px;">2026-03-14</td>
+                <td><span class="badge badge-bio">Active</span></td>
+                <td>14 / 30 days</td>
+                <td style="color:var(--vital);">--</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:500;">Gut Restore Protocol</td>
+                <td class="mono" style="font-size:13px;">2026-01-10</td>
+                <td><span class="badge badge-regen">Completed</span></td>
+                <td>30 days</td>
+                <td style="color:var(--vital);">4.5 / 5</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:500;">Longevity Reset</td>
+                <td class="mono" style="font-size:13px;">2025-10-05</td>
+                <td><span class="badge badge-regen">Completed</span></td>
+                <td>60 days</td>
+                <td style="color:var(--vital);">4.8 / 5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ═══ SAVED PROTOCOLS TAB ═══ -->
+      <div class="vault-panel" id="panel-saved" style="display:none;">
+
+        <div class="panel-header">
+          <h2 class="panel-title">Saved Protocols</h2>
+          <p class="panel-subtitle">Protocols stored in your local vault.</p>
+        </div>
+
+        <div class="grid-2">
+
+          <div class="card">
+            <div style="margin-bottom:12px;">
+              <span class="badge badge-bio">3 peptides</span>
+            </div>
+            <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">Brain Power Stack</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Created Mar 14, 2026</p>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-primary btn-sm" onclick="showToast('Protocol loaded into builder');">Load</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('QR code generated');">Share QR</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="margin-bottom:12px;">
+              <span class="badge badge-neural">4 peptides</span>
+            </div>
+            <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;">Gut Restore Protocol</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Created Jan 10, 2026</p>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-primary btn-sm" onclick="showToast('Protocol loaded into builder');">Load</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('QR code generated');">Share QR</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ═══ SETTINGS TAB ═══ -->
+      <div class="vault-panel" id="panel-settings" style="display:none;">
+
+        <div class="panel-header">
+          <h2 class="panel-title">Vault Settings</h2>
+          <p class="panel-subtitle">Manage your sovereign vault data.</p>
+        </div>
+
+        <!-- Export -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;">Export Vault</h3>
+          <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Download your entire vault as an encrypted JSON file. This includes all biomarkers, protocols, and activity history.</p>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Vault exported as encrypted JSON');">Export Vault JSON</button>
+        </div>
+
+        <!-- Import -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;">Import Vault</h3>
+          <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Restore a previously exported vault file. This will merge with your current vault data.</p>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <input type="file" accept=".json" class="form-input" style="max-width:300px;padding:10px 14px;"/>
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Vault import started');">Import</button>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="card" style="border-color:var(--danger);background:var(--danger-glass);">
+          <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;color:var(--danger);">Danger Zone</h3>
+          <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Permanently destroy your local vault. This action cannot be undone. All biomarkers, protocols, and history will be erased.</p>
+          <button class="btn btn-sm" style="background:var(--danger);color:var(--void-deep);" onclick="if(confirm('Are you sure? This cannot be undone.')){showToast('Vault destroyed','danger');}">Destroy Vault</button>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
+
+<!-- Wallet Modal -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <div class="wallet-icon">🦊</div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <div class="wallet-icon">🔗</div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+<!-- Mockup Badge -->
+<div class="mockup-badge">MVP MOCKUP &middot; VAULT</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+function switchVaultTab(tabId, el) {
+  // Update sidebar
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  if (el) el.classList.add('active');
+  // Show panel
+  document.querySelectorAll('.vault-panel').forEach(p => {
+    p.style.display = 'none';
+    p.classList.remove('visible');
+  });
+  const panel = document.getElementById('panel-' + tabId);
+  if (panel) {
+    panel.style.display = 'block';
+    panel.classList.add('visible');
+  }
+}
+</script>
+
+</body>
+</html>

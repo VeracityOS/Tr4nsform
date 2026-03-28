@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Membership Tiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* Pricing cards */
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:48px; }
+.pricing-card {
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:32px 28px; position:relative; transition:all 0.3s; display:flex; flex-direction:column;
+}
+.pricing-card:hover { background:var(--glass-hover); transform:translateY(-2px); }
+.pricing-card.featured { border-color:var(--bio); box-shadow:var(--bio-glow); }
+.pricing-card .tier-badge {
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  padding:4px 14px; border-radius:999px; font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+}
+.pricing-card .tier-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; margin-bottom:4px; }
+.pricing-card .tier-price { font-family:'Syne',sans-serif; font-size:36px; font-weight:800; margin-bottom:4px; }
+.pricing-card .tier-price span { font-size:14px; font-weight:400; color:var(--text-muted); }
+.pricing-card .tier-desc { font-size:13px; color:var(--text-muted); margin-bottom:24px; line-height:1.5; }
+.pricing-card .tier-features { list-style:none; margin-bottom:28px; flex:1; }
+.pricing-card .tier-features li {
+  padding:8px 0; font-size:13px; color:var(--text-2); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+}
+.pricing-card .tier-features li:last-child { border-bottom:none; }
+.pricing-card .tier-features li::before { content:'✓'; color:var(--regen); font-weight:700; flex-shrink:0; }
+
+/* Comparison table */
+.compare-table { width:100%; border-collapse:collapse; margin-bottom:48px; }
+.compare-table th {
+  font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-muted); text-align:center; padding:14px 16px;
+  border-bottom:2px solid var(--border-mid);
+}
+.compare-table th:first-child { text-align:left; }
+.compare-table td {
+  padding:14px 16px; border-bottom:1px solid var(--border); font-size:13px; color:var(--text-2); text-align:center;
+}
+.compare-table td:first-child { text-align:left; color:var(--text); font-weight:500; }
+.compare-table tr:hover td { background:var(--glass); }
+
+/* FAQ */
+.faq-item {
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r);
+  margin-bottom:10px; overflow:hidden; transition:all 0.3s;
+}
+.faq-q {
+  padding:18px 24px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+  font-family:'Syne',sans-serif; font-weight:600; font-size:15px; transition:all 0.3s;
+}
+.faq-q:hover { background:var(--glass-hover); }
+.faq-q .arrow { transition:transform 0.3s; color:var(--text-muted); }
+.faq-item.open .faq-q .arrow { transform:rotate(180deg); }
+.faq-a {
+  max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.3s;
+  font-size:14px; color:var(--text-2); line-height:1.7; padding:0 24px;
+}
+.faq-item.open .faq-a { max-height:300px; padding:0 24px 20px; }
+
+@media (max-width:900px) { .pricing-grid { grid-template-columns:1fr; max-width:420px; margin-left:auto; margin-right:auto; } }
+@media (max-width:640px) { .compare-table { font-size:12px; } .compare-table th, .compare-table td { padding:10px 8px; } }
+</style>
+</head>
+<body data-portal="b2c">
+
+<div class="app-shell">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
+      <button class="nav-toggle">☰</button>
+    </div>
+  </header>
+
+  <div class="page-header" style="text-align:center;">
+    <div class="eyebrow" style="margin:0 auto 16px;">Membership</div>
+    <h1 class="page-title">Membership Tiers</h1>
+    <p class="page-subtitle" style="margin:0 auto;">Your body, your sovereignty. Choose the level of access that matches your commitment to self-directed health.</p>
+  </div>
+
+  <!-- ═══ PRICING CARDS ═══ -->
+  <div class="pricing-grid">
+
+    <!-- Free -->
+    <div class="pricing-card" style="border-color:var(--border-mid);">
+      <div class="tier-name">Free</div>
+      <div class="tier-price">$0<span>/mo</span></div>
+      <div class="tier-desc">Get started with sovereign protocol building.</div>
+      <ul class="tier-features">
+        <li>Protocol Builder access</li>
+        <li>Safety Gate analysis</li>
+        <li>1 saved protocol</li>
+        <li>Community access</li>
+      </ul>
+      <button class="btn btn-secondary" style="width:100%;" disabled>Current Plan</button>
+    </div>
+
+    <!-- Sovereign -->
+    <div class="pricing-card featured">
+      <div class="tier-badge" style="background:var(--bio);color:var(--void-deep);">Recommended</div>
+      <div class="tier-name" style="color:var(--bio);">Sovereign</div>
+      <div class="tier-price">$29<span>/mo</span></div>
+      <div class="tier-desc">Full vault access with biomarker tracking and priority consultation.</div>
+      <ul class="tier-features">
+        <li>Everything in Free</li>
+        <li>Unlimited saved protocols</li>
+        <li>Biomarker tracking</li>
+        <li>Priority consultation</li>
+        <li>Vault export / IPFS sync</li>
+      </ul>
+      <button class="btn btn-primary" style="width:100%;" onclick="showToast('Upgrade flow coming soon');">Upgrade to Sovereign</button>
+    </div>
+
+    <!-- Protocol -->
+    <div class="pricing-card" style="border-color:var(--neural);">
+      <div class="tier-name" style="color:var(--neural);">Protocol</div>
+      <div class="tier-price">$99<span>/mo</span></div>
+      <div class="tier-desc">The complete sovereign health experience with concierge support.</div>
+      <ul class="tier-features">
+        <li>Everything in Sovereign</li>
+        <li>Monthly protocol restock</li>
+        <li>Concierge support</li>
+        <li>Retreat discounts (15%)</li>
+        <li>Advanced analytics</li>
+      </ul>
+      <button class="btn btn-neural" style="width:100%;" onclick="showToast('Upgrade flow coming soon');">Upgrade to Protocol</button>
+    </div>
+
+  </div>
+
+  <!-- ═══ COMPARISON TABLE ═══ -->
+  <div class="section">
+    <h3 class="section-title" style="justify-content:center;">Feature Comparison</h3>
+    <div style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th style="color:var(--bio);">Sovereign</th>
+            <th style="color:var(--neural);">Protocol</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Protocol Builder</td>
+            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+          </tr>
+          <tr>
+            <td>Safety Gate</td>
+            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+          </tr>
+          <tr>
+            <td>Saved Protocols</td>
+            <td>1</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Biomarker Tracking</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+          </tr>
+          <tr>
+            <td>Clinical Consultation</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td>Priority</td>
+            <td>Concierge</td>
+          </tr>
+          <tr>
+            <td>Vault Export / IPFS</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+          </tr>
+          <tr>
+            <td>Monthly Restock</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+          </tr>
+          <tr>
+            <td>Retreat Discounts</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td>15%</td>
+          </tr>
+          <tr>
+            <td>Advanced Analytics</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--text-subtle);">&#x2715;</td>
+            <td style="color:var(--regen);">&#10003;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ FAQ ═══ -->
+  <div class="section">
+    <h3 class="section-title" style="justify-content:center;">Frequently Asked Questions</h3>
+
+    <div style="max-width:700px;margin:0 auto;">
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">
+          <span>Can I cancel my membership at any time?</span>
+          <span class="arrow">&#x25BC;</span>
+        </div>
+        <div class="faq-a">Yes, all memberships are month-to-month with no lock-in contracts. You can cancel directly from your Vault settings. Your data remains yours even after cancellation.</div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">
+          <span>What payment methods do you accept?</span>
+          <span class="arrow">&#x25BC;</span>
+        </div>
+        <div class="faq-a">We accept Bitcoin (via BTCPay Server), major credit cards, and select stablecoins (USDC, USDT). All payments are processed through privacy-preserving channels.</div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">
+          <span>What happens to my vault data if I downgrade?</span>
+          <span class="arrow">&#x25BC;</span>
+        </div>
+        <div class="faq-a">Your data is stored locally in your sovereign vault and never on our servers. Downgrading limits features but never deletes your data. You can always export before any change.</div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-q">
+          <span>How does the monthly restock work?</span>
+          <span class="arrow">&#x25BC;</span>
+        </div>
+        <div class="faq-a">Protocol tier members receive an automatic restock of their active protocol each month. You set your preferred protocol, and we ship before your current cycle ends. You can pause or swap protocols at any time.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Wallet Modal -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <div class="wallet-icon">🦊</div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <div class="wallet-icon">🔗</div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+<!-- Mockup Badge -->
+<div class="mockup-badge">MVP MOCKUP &middot; MEMBERSHIP</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · ZKP Clinical Consultation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+</head>
+<body data-portal="b2c">
+
+<div class="app-shell">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
+      <button class="nav-toggle">☰</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">Zero-Knowledge Proof</div>
+    <h1 class="page-title">Clinical Consultation</h1>
+    <p class="page-subtitle">Request a clinical review of your protocol without revealing personal health data.</p>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="progress-bar">
+    <div class="step-node active" id="sn-1">
+      <div class="step-dot">1</div>
+      <div class="step-label">Select</div>
+    </div>
+    <div class="step-connector" id="sc-1"></div>
+    <div class="step-node" id="sn-2">
+      <div class="step-dot">2</div>
+      <div class="step-label">ZKP Proof</div>
+    </div>
+    <div class="step-connector" id="sc-2"></div>
+    <div class="step-node" id="sn-3">
+      <div class="step-dot">3</div>
+      <div class="step-label">Transmitted</div>
+    </div>
+    <div class="step-connector" id="sc-3"></div>
+    <div class="step-node" id="sn-4">
+      <div class="step-dot">4</div>
+      <div class="step-label">Status</div>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 1: Select Protocol ═══ -->
+  <div class="step-panel visible" id="step-1">
+    <div class="panel-header">
+      <div class="panel-eyebrow">Step 1</div>
+      <h2 class="panel-title">Select Protocol for Review</h2>
+      <p class="panel-subtitle">Choose an active or saved protocol to submit for clinical consultation.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px;">
+
+      <div class="card card-clickable card--bio" onclick="selectProtocol(this,'TR4-BRAIN-001')" id="proto-1">
+        <div class="proto-top">
+          <span class="proto-badge" style="color:var(--bio);background:var(--bio-glass);">ACTIVE</span>
+          <span class="proto-name">Brain Power Stack</span>
+        </div>
+        <div class="proto-category">BPC-157, Epithalon, Selank &middot; Day 14 of 30</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Protocol ID</div><div class="proto-detail-value">TR4-BRAIN-001</div></div>
+          <div><div class="proto-detail-label">Peptides</div><div class="proto-detail-value">3</div></div>
+          <div><div class="proto-detail-label">Safety</div><div class="proto-detail-value" style="color:var(--regen);">Passed</div></div>
+        </div>
+      </div>
+
+      <div class="card card-clickable card--neural" onclick="selectProtocol(this,'TR4-GUT-002')" id="proto-2">
+        <div class="proto-top">
+          <span class="proto-badge" style="color:var(--neural);background:var(--neural-glass);">SAVED</span>
+          <span class="proto-name">Gut Restore Protocol</span>
+        </div>
+        <div class="proto-category">BPC-157, KPV, Larazotide, LL-37 &middot; 30-day cycle</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Protocol ID</div><div class="proto-detail-value">TR4-GUT-002</div></div>
+          <div><div class="proto-detail-label">Peptides</div><div class="proto-detail-value">4</div></div>
+          <div><div class="proto-detail-label">Safety</div><div class="proto-detail-value" style="color:var(--regen);">Passed</div></div>
+        </div>
+      </div>
+
+      <div class="card card-clickable card--vital" onclick="selectProtocol(this,'TR4-LONG-003')" id="proto-3">
+        <div class="proto-top">
+          <span class="proto-badge" style="color:var(--vital);background:var(--vital-glass);">SAVED</span>
+          <span class="proto-name">Longevity Reset</span>
+        </div>
+        <div class="proto-category">Epithalon, FOXO4-DRI, GHK-Cu &middot; 60-day cycle</div>
+        <div class="proto-details">
+          <div><div class="proto-detail-label">Protocol ID</div><div class="proto-detail-value">TR4-LONG-003</div></div>
+          <div><div class="proto-detail-label">Peptides</div><div class="proto-detail-value">3</div></div>
+          <div><div class="proto-detail-label">Safety</div><div class="proto-detail-value" style="color:var(--regen);">Passed</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" id="btnStep1Next" disabled onclick="goStep(2)">Request Clinical Review</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 2: ZKP Proof Generation ═══ -->
+  <div class="step-panel" id="step-2">
+    <div class="panel-header">
+      <div class="panel-eyebrow">Step 2</div>
+      <h2 class="panel-title">Generating Zero-Knowledge Proof</h2>
+      <p class="panel-subtitle">Your health data never leaves your device. Only a cryptographic proof is created.</p>
+    </div>
+
+    <div class="card" style="padding:32px;text-align:center;" id="zkpCard">
+      <div style="font-size:32px;margin-bottom:16px;" id="zkpIcon">&#x1F510;</div>
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;" id="zkpTitle">Generating zero-knowledge proof...</div>
+
+      <!-- Progress bar -->
+      <div style="width:100%;max-width:400px;margin:0 auto 24px;height:8px;background:var(--void-float);border-radius:999px;overflow:hidden;">
+        <div id="zkpProgress" style="width:0%;height:100%;background:linear-gradient(90deg,var(--neural),var(--bio));border-radius:999px;transition:width 0.3s ease;"></div>
+      </div>
+      <div class="mono" style="font-size:13px;color:var(--text-muted);margin-bottom:24px;" id="zkpPercent">0%</div>
+
+      <!-- Proof Steps -->
+      <div style="text-align:left;max-width:400px;margin:0 auto;" id="proofSteps">
+        <div class="zkp-step" id="zs-1" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text-muted);">
+          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span>Selecting health criteria</span>
+        </div>
+        <div class="zkp-step" id="zs-2" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text-muted);">
+          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span>Computing proof circuit</span>
+        </div>
+        <div class="zkp-step" id="zs-3" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);color:var(--text-muted);">
+          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span>Generating witnesses</span>
+        </div>
+        <div class="zkp-step" id="zs-4" style="display:flex;align-items:center;gap:12px;padding:10px 0;color:var(--text-muted);">
+          <span class="zkp-check" style="width:20px;text-align:center;">&#9675;</span>
+          <span>Finalizing proof</span>
+        </div>
+      </div>
+
+      <!-- Proof Summary (hidden initially) -->
+      <div id="proofSummary" style="display:none;margin-top:24px;text-align:left;max-width:400px;margin-left:auto;margin-right:auto;">
+        <div style="background:var(--bio-glass);border:1px solid rgba(46,216,184,0.2);border-radius:var(--r-sm);padding:16px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;color:var(--bio);margin-bottom:12px;">Proof Generated Successfully</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;">
+              <span style="color:var(--text-muted);">proof_hash</span>
+              <span class="mono" style="font-size:12px;">0x8f2a...d4e1</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;">
+              <span style="color:var(--text-muted);">public_signals</span>
+              <span class="mono" style="font-size:12px;">3</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;">
+              <span style="color:var(--text-muted);">protocol_id</span>
+              <span class="mono" style="font-size:12px;" id="proofProtocolId">TR4-BRAIN-001</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" id="step2Buttons" style="display:none;">
+      <button class="btn btn-ghost" onclick="goStep(1)">Back</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Transmit Proof</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 3: Proof Transmitted ═══ -->
+  <div class="step-panel" id="step-3">
+    <div class="panel-header" style="text-align:center;">
+      <div style="font-size:48px;margin-bottom:16px;">&#x2705;</div>
+      <h2 class="panel-title">Proof Packet Sent Securely</h2>
+      <p class="panel-subtitle" style="margin:0 auto;">Your zero-knowledge proof has been transmitted to the clinical review network.</p>
+    </div>
+
+    <div style="max-width:500px;margin:0 auto;">
+      <div class="card" style="margin-bottom:20px;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">proof_hash</span>
+            <span class="mono" style="font-size:13px;">0x8f2a...d4e1</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">public_signals</span>
+            <span class="mono" style="font-size:13px;">3</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">protocol_id</span>
+            <span class="mono" style="font-size:13px;" id="txProtocolId">TR4-BRAIN-001</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span style="color:var(--text-muted);">payment_receipt_hash</span>
+            <span class="mono" style="font-size:13px;">0xbc91...3f7a</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--signal-glass);border:1px solid rgba(74,180,245,0.2);border-radius:var(--r);padding:16px 20px;text-align:center;">
+        <div style="font-size:14px;color:var(--signal);">No personal health information was transmitted.</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Only cryptographic proofs about eligibility criteria were shared.</div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn btn-primary" onclick="goStep(4)">View Consultation Status</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 4: Consultation Status ═══ -->
+  <div class="step-panel" id="step-4">
+    <div class="panel-header" style="text-align:center;">
+      <div style="font-size:48px;margin-bottom:16px;">&#x1F9EC;</div>
+      <h2 class="panel-title">Consultation Status</h2>
+    </div>
+
+    <div style="max-width:500px;margin:0 auto;">
+
+      <!-- Eligibility -->
+      <div style="background:var(--regen-glass);border:1px solid rgba(62,219,144,0.25);border-radius:var(--r-lg);padding:24px 28px;text-align:center;margin-bottom:24px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Protocol: Brain Power</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--regen-bright);">ELIGIBLE</div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <p style="font-size:14px;color:var(--text-2);line-height:1.7;">A consultation booking link will be delivered via your chosen secure channel. Select your preferred method below.</p>
+      </div>
+
+      <!-- Secure Channel Selection -->
+      <div style="display:flex;gap:12px;margin-bottom:24px;">
+        <div class="card card-clickable" style="flex:1;text-align:center;cursor:pointer;" onclick="this.style.borderColor='var(--bio)';this.style.background='var(--bio-glass)';this.nextElementSibling.style.borderColor='var(--border)';this.nextElementSibling.style.background='var(--glass)';">
+          <div style="font-size:24px;margin-bottom:8px;">&#x1F4AC;</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;">Signal</div>
+          <div style="font-size:11px;color:var(--text-muted);">End-to-end encrypted</div>
+        </div>
+        <div class="card card-clickable" style="flex:1;text-align:center;cursor:pointer;" onclick="this.style.borderColor='var(--bio)';this.style.background='var(--bio-glass)';this.previousElementSibling.style.borderColor='var(--border)';this.previousElementSibling.style.background='var(--glass)';">
+          <div style="font-size:24px;margin-bottom:8px;">&#x1F4E7;</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:14px;">ProtonMail</div>
+          <div style="font-size:11px;color:var(--text-muted);">Encrypted email</div>
+        </div>
+      </div>
+
+      <!-- Proof Destroyed Notice -->
+      <div style="background:var(--vital-glass);border:1px solid rgba(232,196,106,0.2);border-radius:var(--r);padding:14px 20px;text-align:center;">
+        <div style="font-size:13px;color:var(--vital);">Your proof has been destroyed after verification.</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">No residual data remains on the review network.</div>
+      </div>
+
+    </div>
+
+    <div class="btn-row" style="justify-content:center;gap:12px;">
+      <a href="dashboard.html" class="btn btn-secondary">Back to Vault</a>
+      <a href="tracking.html" class="btn btn-primary">View Protocol</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Wallet Modal -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <div class="wallet-icon">🦊</div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <div class="wallet-icon">🔗</div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+<!-- Mockup Badge -->
+<div class="mockup-badge">MVP MOCKUP &middot; ZKP CONSULTATION</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+let selectedProtocolId = null;
+let currentStep = 1;
+
+function selectProtocol(el, protocolId) {
+  document.querySelectorAll('.card-clickable').forEach(c => {
+    c.classList.remove('selected','active');
+  });
+  el.classList.add('selected','active');
+  selectedProtocolId = protocolId;
+  document.getElementById('btnStep1Next').disabled = false;
+}
+
+function goStep(step) {
+  // Hide all panels
+  document.querySelectorAll('.step-panel').forEach(p => {
+    p.classList.remove('visible');
+    p.style.display = 'none';
+  });
+
+  // Update step nodes
+  for (let i = 1; i <= 4; i++) {
+    const node = document.getElementById('sn-' + i);
+    node.classList.remove('active', 'completed');
+    if (i < step) node.classList.add('completed');
+    if (i === step) node.classList.add('active');
+
+    const conn = document.getElementById('sc-' + i);
+    if (conn) {
+      conn.classList.toggle('done', i < step);
+    }
+  }
+
+  // Show target panel
+  const panel = document.getElementById('step-' + step);
+  if (panel) {
+    panel.style.display = 'block';
+    panel.classList.add('visible');
+  }
+
+  currentStep = step;
+
+  // Run ZKP animation on step 2
+  if (step === 2) {
+    runZkpAnimation();
+  }
+
+  // Update protocol IDs
+  if (selectedProtocolId) {
+    const proofId = document.getElementById('proofProtocolId');
+    const txId = document.getElementById('txProtocolId');
+    if (proofId) proofId.textContent = selectedProtocolId;
+    if (txId) txId.textContent = selectedProtocolId;
+  }
+}
+
+function runZkpAnimation() {
+  const bar = document.getElementById('zkpProgress');
+  const pct = document.getElementById('zkpPercent');
+  const title = document.getElementById('zkpTitle');
+  const icon = document.getElementById('zkpIcon');
+  const summary = document.getElementById('proofSummary');
+  const buttons = document.getElementById('step2Buttons');
+  const steps = ['zs-1','zs-2','zs-3','zs-4'];
+
+  // Reset
+  bar.style.width = '0%';
+  pct.textContent = '0%';
+  title.textContent = 'Generating zero-knowledge proof...';
+  icon.innerHTML = '&#x1F510;';
+  summary.style.display = 'none';
+  buttons.style.display = 'none';
+  steps.forEach(s => {
+    const el = document.getElementById(s);
+    el.style.color = 'var(--text-muted)';
+    el.querySelector('.zkp-check').innerHTML = '&#9675;';
+  });
+
+  const milestones = [
+    { pct: 25, step: 0, delay: 600 },
+    { pct: 50, step: 1, delay: 1400 },
+    { pct: 75, step: 2, delay: 2200 },
+    { pct: 100, step: 3, delay: 3000 }
+  ];
+
+  milestones.forEach(m => {
+    setTimeout(() => {
+      bar.style.width = m.pct + '%';
+      pct.textContent = m.pct + '%';
+      const stepEl = document.getElementById(steps[m.step]);
+      stepEl.style.color = 'var(--bio)';
+      stepEl.querySelector('.zkp-check').innerHTML = '&#10003;';
+    }, m.delay);
+  });
+
+  // Complete
+  setTimeout(() => {
+    title.textContent = 'Proof generation complete';
+    icon.innerHTML = '&#x2705;';
+    summary.style.display = 'block';
+    buttons.style.display = 'flex';
+  }, 3600);
+}
+</script>
+
+</body>
+</html>

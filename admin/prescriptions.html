@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Prescription Approval Workflow</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+<style>
+  .action-btn { padding:6px 12px; border:1px solid var(--border); border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.06em; cursor:pointer; transition:all 0.3s; background:var(--glass); }
+  .action-btn.approve { color:var(--regen); border-color:rgba(62,219,144,0.3); }
+  .action-btn.approve:hover { background:var(--regen-glass); }
+  .action-btn.reject { color:var(--danger); border-color:rgba(255,92,92,0.3); }
+  .action-btn.reject:hover { background:var(--danger-glass); }
+  .action-btn.flag { color:var(--vital); border-color:rgba(232,196,106,0.3); }
+  .action-btn.flag:hover { background:var(--vital-glass); }
+  .detail-panel { background:var(--void-raised); border:1px solid var(--border-mid); border-radius:var(--r); padding:28px; margin-top:24px; display:none; }
+  .detail-panel.visible { display:block; animation:fadeUp 0.3s ease; }
+</style>
+</head>
+<body data-portal="admin">
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Admin Console</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);">admin@tr4nsform.io</span>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">&#128203; Prescriptions</div>
+    <h1 class="page-title">Prescription Approval Workflow</h1>
+    <p class="page-subtitle">Review, approve, reject, or flag protocol prescriptions based on safety gate results.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="stat-card">
+      <div class="stat-label">Pending Review</div>
+      <div class="stat-value text-vital">8</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Approved Today</div>
+      <div class="stat-value text-regen">23</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Rejected</div>
+      <div class="stat-value text-danger">2</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Flagged</div>
+      <div class="stat-value text-vital">3</div>
+    </div>
+  </div>
+
+  <!-- Review Queue -->
+  <section class="section">
+    <h2 class="section-title">&#128203; Review Queue</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Ref</th>
+            <th>Protocol</th>
+            <th>Submitted</th>
+            <th>Safety Gate</th>
+            <th>Risk Level</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="showDetail('RX-2026-0891','Brain Power','All gates passed','Low')" style="cursor:pointer;">
+            <td class="mono" style="font-size:12px;">RX-2026-0891</td>
+            <td>Brain Power</td>
+            <td class="mono" style="font-size:12px;">2026-03-28 09:15</td>
+            <td><span class="badge badge-regen">All Passed</span></td>
+            <td><span class="badge badge-regen">Low</span></td>
+            <td><span class="badge badge-vital">Pending</span></td>
+            <td style="white-space:nowrap;">
+              <button class="action-btn approve" onclick="event.stopPropagation();approveRow(this)">Approve</button>
+              <button class="action-btn reject" onclick="event.stopPropagation();rejectRow(this)">Reject</button>
+              <button class="action-btn flag" onclick="event.stopPropagation();flagRow(this)">Flag</button>
+            </td>
+          </tr>
+          <tr onclick="showDetail('RX-2026-0889','Gut Regeneration','Warning: concurrent medication','Medium')" style="cursor:pointer;">
+            <td class="mono" style="font-size:12px;">RX-2026-0889</td>
+            <td>Gut Regeneration</td>
+            <td class="mono" style="font-size:12px;">2026-03-28 08:42</td>
+            <td><span class="badge badge-vital">Warning</span></td>
+            <td><span class="badge badge-vital">Medium</span></td>
+            <td><span class="badge badge-vital">Pending</span></td>
+            <td style="white-space:nowrap;">
+              <button class="action-btn approve" onclick="event.stopPropagation();approveRow(this)">Approve</button>
+              <button class="action-btn reject" onclick="event.stopPropagation();rejectRow(this)">Reject</button>
+              <button class="action-btn flag" onclick="event.stopPropagation();flagRow(this)">Flag</button>
+            </td>
+          </tr>
+          <tr onclick="showDetail('RX-2026-0887','Longevity Core','All gates passed','Low')" style="cursor:pointer;">
+            <td class="mono" style="font-size:12px;">RX-2026-0887</td>
+            <td>Longevity Core</td>
+            <td class="mono" style="font-size:12px;">2026-03-28 07:58</td>
+            <td><span class="badge badge-regen">All Passed</span></td>
+            <td><span class="badge badge-regen">Low</span></td>
+            <td><span class="badge badge-vital">Pending</span></td>
+            <td style="white-space:nowrap;">
+              <button class="action-btn approve" onclick="event.stopPropagation();approveRow(this)">Approve</button>
+              <button class="action-btn reject" onclick="event.stopPropagation();rejectRow(this)">Reject</button>
+              <button class="action-btn flag" onclick="event.stopPropagation();flagRow(this)">Flag</button>
+            </td>
+          </tr>
+          <tr onclick="showDetail('RX-2026-0885','Sleep Stack','Contraindication detected','High')" style="cursor:pointer;">
+            <td class="mono" style="font-size:12px;">RX-2026-0885</td>
+            <td>Sleep Stack</td>
+            <td class="mono" style="font-size:12px;">2026-03-27 16:30</td>
+            <td><span class="badge badge-danger">Blocked</span></td>
+            <td><span class="badge badge-danger">High</span></td>
+            <td><span class="badge badge-vital">Pending</span></td>
+            <td style="white-space:nowrap;">
+              <button class="action-btn approve" onclick="event.stopPropagation();approveRow(this)">Approve</button>
+              <button class="action-btn reject" onclick="event.stopPropagation();rejectRow(this)">Reject</button>
+              <button class="action-btn flag" onclick="event.stopPropagation();flagRow(this)">Flag</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">RX-2026-0883</td>
+            <td>Immune Shield</td>
+            <td class="mono" style="font-size:12px;">2026-03-27 14:12</td>
+            <td><span class="badge badge-regen">All Passed</span></td>
+            <td><span class="badge badge-regen">Low</span></td>
+            <td><span class="badge badge-bio">Approved</span></td>
+            <td><span style="font-size:11px;color:var(--text-muted);">Approved 14:45</span></td>
+          </tr>
+          <tr>
+            <td class="mono" style="font-size:12px;">RX-2026-0881</td>
+            <td>Skin Rejuvenation</td>
+            <td class="mono" style="font-size:12px;">2026-03-27 11:05</td>
+            <td><span class="badge badge-vital">Warning</span></td>
+            <td><span class="badge badge-vital">Medium</span></td>
+            <td><span class="badge badge-neural">Flagged</span></td>
+            <td><span style="font-size:11px;color:var(--text-muted);">Under review</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Expanded Detail Panel -->
+  <div class="detail-panel" id="detailPanel">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+      <div>
+        <h3 style="font-family:'Syne',sans-serif;font-size:18px;margin-bottom:4px;" id="detailRef">--</h3>
+        <div style="font-size:14px;color:var(--text-2);" id="detailProtocol">--</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('detailPanel').classList.remove('visible')">&#10005; Close</button>
+    </div>
+
+    <div class="grid-2" style="gap:24px;margin-bottom:24px;">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px;margin-bottom:12px;">Safety Gate Results</div>
+        <div id="detailGate" style="font-size:13px;color:var(--text-2);line-height:1.8;">--</div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:13px;margin-bottom:12px;">Risk Assessment</div>
+        <div id="detailRisk" style="font-size:13px;color:var(--text-2);line-height:1.8;">--</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label">Admin Notes</label>
+      <textarea class="form-textarea" placeholder="Add clinical notes or reasoning for decision..."></textarea>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-primary btn-sm" onclick="showToast('Prescription approved','regen');document.getElementById('detailPanel').classList.remove('visible');">Approve</button>
+      <button class="btn btn-sm" style="background:var(--danger-glass);color:var(--danger);border:1px solid rgba(255,92,92,0.3);" onclick="showToast('Prescription rejected','danger');document.getElementById('detailPanel').classList.remove('visible');">Reject</button>
+      <button class="btn btn-sm" style="background:var(--vital-glass);color:var(--vital);border:1px solid rgba(232,196,106,0.3);" onclick="showToast('Prescription flagged for review','vital');document.getElementById('detailPanel').classList.remove('visible');">Flag for Review</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+<script>
+function showDetail(ref, protocol, gate, risk) {
+  const panel = document.getElementById('detailPanel');
+  document.getElementById('detailRef').textContent = ref;
+  document.getElementById('detailProtocol').textContent = 'Protocol: ' + protocol;
+  document.getElementById('detailGate').textContent = gate;
+
+  const riskColor = risk === 'Low' ? 'regen' : risk === 'Medium' ? 'vital' : 'danger';
+  document.getElementById('detailRisk').innerHTML = `Risk Level: <span class="badge badge-${riskColor}">${risk}</span>`;
+
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function approveRow(btn) {
+  const row = btn.closest('tr');
+  const statusCell = row.querySelectorAll('td')[5];
+  statusCell.innerHTML = '<span class="badge badge-bio">Approved</span>';
+  const actionsCell = row.querySelectorAll('td')[6];
+  actionsCell.innerHTML = '<span style="font-size:11px;color:var(--text-muted);">Just now</span>';
+  showToast('Prescription approved', 'regen');
+}
+
+function rejectRow(btn) {
+  const row = btn.closest('tr');
+  const statusCell = row.querySelectorAll('td')[5];
+  statusCell.innerHTML = '<span class="badge badge-danger">Rejected</span>';
+  const actionsCell = row.querySelectorAll('td')[6];
+  actionsCell.innerHTML = '<span style="font-size:11px;color:var(--text-muted);">Just now</span>';
+  showToast('Prescription rejected', 'danger');
+}
+
+function flagRow(btn) {
+  const row = btn.closest('tr');
+  const statusCell = row.querySelectorAll('td')[5];
+  statusCell.innerHTML = '<span class="badge badge-neural">Flagged</span>';
+  const actionsCell = row.querySelectorAll('td')[6];
+  actionsCell.innerHTML = '<span style="font-size:11px;color:var(--text-muted);">Under review</span>';
+  showToast('Prescription flagged', 'vital');
+}
+</script>
+</body>
+</html>

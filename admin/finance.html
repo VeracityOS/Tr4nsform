@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Finance Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/tokens.css"/>
+<link rel="stylesheet" href="../css/components.css"/>
+<link rel="stylesheet" href="../css/layout.css"/>
+<style>
+  .bar-chart { display:flex; align-items:flex-end; gap:16px; height:220px; padding:20px 0; }
+  .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .bar { width:100%; border-radius:6px 6px 0 0; transition:height 0.6s ease; min-width:32px; }
+  .bar-label { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); }
+  .bar-value { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-2); }
+  .revenue-card { text-align:center; padding:24px 16px; }
+  .revenue-card .rc-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+  .revenue-card .rc-value { font-family:'Syne',sans-serif; font-weight:700; font-size:24px; }
+  .revenue-card .rc-change { font-family:'JetBrains Mono',monospace; font-size:11px; margin-top:4px; }
+</style>
+</head>
+<body data-portal="admin">
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">Admin Console</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);">admin@tr4nsform.io</span>
+      <button class="nav-toggle">&#9776;</button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">&#128176; Finance</div>
+    <h1 class="page-title">Finance Dashboard</h1>
+    <p class="page-subtitle">Revenue breakdown, pipeline value, and financial performance metrics.</p>
+  </div>
+
+  <!-- Revenue Breakdown -->
+  <section class="section">
+    <h2 class="section-title">&#128200; Revenue by Category</h2>
+    <div class="grid-4">
+      <div class="card revenue-card" style="border-left:3px solid var(--bio);">
+        <div class="rc-label">Protocols</div>
+        <div class="rc-value text-bio">$124k</div>
+        <div class="rc-change" style="color:var(--regen);">+22% YoY</div>
+      </div>
+      <div class="card revenue-card" style="border-left:3px solid var(--neural);">
+        <div class="rc-label">Consultations</div>
+        <div class="rc-value text-neural">$18k</div>
+        <div class="rc-change" style="color:var(--regen);">+8% YoY</div>
+      </div>
+      <div class="card revenue-card" style="border-left:3px solid var(--vital);">
+        <div class="rc-label">Retreats</div>
+        <div class="rc-value text-vital">$67k</div>
+        <div class="rc-change" style="color:var(--regen);">+35% YoY</div>
+      </div>
+      <div class="card revenue-card" style="border-left:3px solid var(--signal);">
+        <div class="rc-label">Partnerships</div>
+        <div class="rc-value text-signal">$34k</div>
+        <div class="rc-change" style="color:var(--regen);">+14% YoY</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monthly Revenue Chart -->
+  <section class="section">
+    <h2 class="section-title">&#128202; Monthly Revenue Trend</h2>
+    <div class="card">
+      <div class="bar-chart">
+        <div class="bar-col">
+          <div class="bar-value">$28k</div>
+          <div class="bar" style="height:52%;background:linear-gradient(180deg,var(--bio),var(--bio-dim));"></div>
+          <div class="bar-label">Oct</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value">$34k</div>
+          <div class="bar" style="height:63%;background:linear-gradient(180deg,var(--bio),var(--bio-dim));"></div>
+          <div class="bar-label">Nov</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value">$31k</div>
+          <div class="bar" style="height:57%;background:linear-gradient(180deg,var(--bio),var(--bio-dim));"></div>
+          <div class="bar-label">Dec</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value">$42k</div>
+          <div class="bar" style="height:78%;background:linear-gradient(180deg,var(--bio),var(--bio-dim));"></div>
+          <div class="bar-label">Jan</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value">$48k</div>
+          <div class="bar" style="height:89%;background:linear-gradient(180deg,var(--neural),var(--neural-dim));"></div>
+          <div class="bar-label">Feb</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-value">$54k</div>
+          <div class="bar" style="height:100%;background:linear-gradient(180deg,var(--bio-bright),var(--bio));"></div>
+          <div class="bar-label">Mar</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline & Outstanding -->
+  <div class="grid-4" style="margin-bottom:48px;">
+    <div class="stat-card">
+      <div class="stat-label">Open Orders Value</div>
+      <div class="stat-value text-signal">$47.2k</div>
+      <div class="stat-change" style="color:var(--text-muted);">47 orders in pipeline</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Deposits Outstanding</div>
+      <div class="stat-value text-vital">$12.8k</div>
+      <div class="stat-change" style="color:var(--vital);">14 pending deposits</div>
+    </div>
+    <div class="stat-card" style="border-color:rgba(255,92,92,0.15);">
+      <div class="stat-label">Overdue Invoices</div>
+      <div class="stat-value text-danger">$4.1k</div>
+      <div class="stat-change down">3 invoices overdue</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Partner-Held Stock</div>
+      <div class="stat-value text-neural">$89.4k</div>
+      <div class="stat-change" style="color:var(--text-muted);">Across 6 partners</div>
+    </div>
+  </div>
+
+  <!-- Conversion by Protocol -->
+  <section class="section">
+    <h2 class="section-title">&#128202; Conversion by Protocol</h2>
+    <div class="card" style="padding:0;overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Protocol</th>
+            <th>Views</th>
+            <th>Starts</th>
+            <th>Completes</th>
+            <th>Conv%</th>
+            <th>Revenue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Brain Power</td>
+            <td class="mono">2,841</td>
+            <td class="mono">412</td>
+            <td class="mono">287</td>
+            <td class="mono text-regen">10.1%</td>
+            <td class="mono">$35,588</td>
+          </tr>
+          <tr>
+            <td>Gut Regeneration</td>
+            <td class="mono">1,923</td>
+            <td class="mono">298</td>
+            <td class="mono">201</td>
+            <td class="mono text-regen">10.5%</td>
+            <td class="mono">$17,889</td>
+          </tr>
+          <tr>
+            <td>Longevity Core</td>
+            <td class="mono">3,142</td>
+            <td class="mono">521</td>
+            <td class="mono">184</td>
+            <td class="mono text-vital">5.9%</td>
+            <td class="mono">$29,808</td>
+          </tr>
+          <tr>
+            <td>Sleep Stack</td>
+            <td class="mono">1,567</td>
+            <td class="mono">234</td>
+            <td class="mono">156</td>
+            <td class="mono text-regen">10.0%</td>
+            <td class="mono">$12,168</td>
+          </tr>
+          <tr>
+            <td>Immune Shield</td>
+            <td class="mono">2,205</td>
+            <td class="mono">367</td>
+            <td class="mono">198</td>
+            <td class="mono text-regen">9.0%</td>
+            <td class="mono">$20,790</td>
+          </tr>
+          <tr>
+            <td>Skin Rejuvenation</td>
+            <td class="mono">891</td>
+            <td class="mono">145</td>
+            <td class="mono">62</td>
+            <td class="mono text-danger">7.0%</td>
+            <td class="mono">$7,998</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Retreat Economics -->
+  <section class="section">
+    <h2 class="section-title">&#127796; Retreat Economics</h2>
+    <div class="grid-3">
+      <div class="card" style="text-align:center;padding:28px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Occupancy Rate</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:32px;color:var(--regen);">78%</div>
+        <div style="margin-top:12px;background:var(--void-surface);border-radius:4px;height:8px;overflow:hidden;">
+          <div style="width:78%;height:100%;background:var(--regen);border-radius:4px;"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">Target: 85%</div>
+      </div>
+      <div class="card" style="text-align:center;padding:28px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Average Stay</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:32px;color:var(--vital);">5.2<span style="font-size:16px;color:var(--text-muted);"> nights</span></div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:8px;">Range: 3-14 nights</div>
+      </div>
+      <div class="card" style="text-align:center;padding:28px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Revenue per Room</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:32px;color:var(--bio);">$4,820</div>
+        <div style="font-size:12px;color:var(--regen);margin-top:8px;">+12% vs last quarter</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="mockup-badge">MVP MOCKUP</div>
+<script src="../js/nav.js"></script>
+<script src="../js/components.js"></script>
+</body>
+</html>
