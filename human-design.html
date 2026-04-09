@@ -184,39 +184,39 @@
           draggable="false"
         />
 
-        <!-- Organ hotspots — positions matched to the anatomical image -->
+        <!-- Organ hotspots — Lucide SVG icons for cross-platform rendering -->
         <div class="organ-spot status-unknown" id="spot-neuro" style="top:8%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('neuro')" title="Neurological">
-          <span>&#129504;</span>
+          <i data-lucide="brain" style="width:18px;height:18px;color:var(--neural);"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-thyroid" style="top:17%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('thyroid')" title="Thyroid">
-          <span>&#129419;</span>
+          <i data-lucide="bug" style="width:18px;height:18px;color:#A78BFA;"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-cardio" style="top:30%;left:55%;" onclick="selectOrgan('cardio')" title="Cardiovascular">
-          <span>&#129729;</span>
+          <i data-lucide="heart-pulse" style="width:18px;height:18px;color:#F87171;"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-respiratory" style="top:28%;left:38%;" onclick="selectOrgan('respiratory')" title="Respiratory">
-          <span>&#129745;</span>
+          <i data-lucide="wind" style="width:18px;height:18px;color:var(--signal);"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-liver" style="top:38%;left:38%;" onclick="selectOrgan('liver')" title="Liver">
-          <span>&#129756;</span>
+          <i data-lucide="flask-round" style="width:18px;height:18px;color:#FB923C;"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-metabolic" style="top:50%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('metabolic')" title="Metabolic">
-          <span>&#9889;</span>
+          <i data-lucide="zap" style="width:18px;height:18px;color:var(--vital);"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-gi" style="top:44%;left:55%;" onclick="selectOrgan('gi')" title="GI / Digestive">
-          <span>&#128300;</span>
+          <i data-lucide="salad" style="width:18px;height:18px;color:#FBBF24;"></i>
         </div>
-        <div class="organ-spot status-unknown" id="spot-kidney" style="top:42%;left:64%;" onclick="selectOrgan('kidney')" title="Kidneys">
-          <span>&#128167;</span>
+        <div class="organ-spot status-unknown" id="spot-kidney" style="top:42%;left:60%;" onclick="selectOrgan('kidney')" title="Kidneys">
+          <i data-lucide="droplets" style="width:18px;height:18px;color:var(--signal);"></i>
         </div>
-        <div class="organ-spot status-unknown" id="spot-immune" style="top:22%;left:66%;" onclick="selectOrgan('immune')" title="Immune System">
-          <span>&#128737;</span>
+        <div class="organ-spot status-unknown" id="spot-immune" style="top:24%;left:62%;" onclick="selectOrgan('immune')" title="Immune System">
+          <i data-lucide="shield-check" style="width:18px;height:18px;color:#2DD4BF;"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-endocrine" style="top:54%;left:42%;" onclick="selectOrgan('endocrine')" title="Endocrine">
-          <span>&#127793;</span>
+          <i data-lucide="sprout" style="width:18px;height:18px;color:var(--regen);"></i>
         </div>
         <div class="organ-spot status-unknown" id="spot-msk" style="top:70%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('msk')" title="Musculoskeletal">
-          <span>&#129460;</span>
+          <i data-lucide="bone" style="width:18px;height:18px;color:#A8A29E;"></i>
         </div>
       </div>
 
@@ -587,17 +587,17 @@ const MARKER_DB = {
 
 // ── Organ System Definitions ──
 const ORGAN_SYSTEMS = {
-  neuro:       { name:'Neurological', icon:'&#129504;', color:'var(--neural)', markers:[] },
-  thyroid:     { name:'Thyroid', icon:'&#129419;', color:'#A78BFA', markers:['tsh','free_t4','free_t3'] },
-  cardio:      { name:'Cardiovascular', icon:'&#129729;', color:'#F87171', markers:['total_cholesterol','ldl','hdl','triglycerides','homocysteine','hs_crp','troponin','d_dimer'] },
-  respiratory: { name:'Respiratory', icon:'&#129745;', color:'var(--signal)', markers:[] },
-  liver:       { name:'Liver', icon:'&#129756;', color:'#FB923C', markers:['alt','ast','ggt','bilirubin','albumin'] },
-  metabolic:   { name:'Metabolic', icon:'&#9889;', color:'var(--vital)', markers:['hba1c','glucose','vitamin_d','b12','folate','magnesium'] },
-  gi:          { name:'GI / Digestive', icon:'&#128300;', color:'#FBBF24', markers:[] },
-  kidney:      { name:'Kidneys', icon:'&#128167;', color:'var(--signal)', markers:['creatinine','egfr','urea','uric_acid'] },
-  immune:      { name:'Immune System', icon:'&#128737;', color:'#2DD4BF', markers:['crp','wbc','hemoglobin','rbc','platelets','ferritin','iron'] },
-  endocrine:   { name:'Endocrine', icon:'&#127793;', color:'var(--regen)', markers:['testosterone','free_testosterone','oestradiol','cortisol','dhea','igf1'] },
-  msk:         { name:'Musculoskeletal', icon:'&#129460;', color:'#A8A29E', markers:['calcium'] },
+  neuro:       { name:'Neurological', icon:'<i data-lucide="brain" style="width:20px;height:20px;color:var(--neural);"></i>', color:'var(--neural)', markers:[] },
+  thyroid:     { name:'Thyroid', icon:'<i data-lucide="bug" style="width:20px;height:20px;color:#A78BFA;"></i>', color:'#A78BFA', markers:['tsh','free_t4','free_t3'] },
+  cardio:      { name:'Cardiovascular', icon:'<i data-lucide="heart-pulse" style="width:20px;height:20px;color:#F87171;"></i>', color:'#F87171', markers:['total_cholesterol','ldl','hdl','triglycerides','homocysteine','hs_crp','troponin','d_dimer'] },
+  respiratory: { name:'Respiratory', icon:'<i data-lucide="wind" style="width:20px;height:20px;color:var(--signal);"></i>', color:'var(--signal)', markers:[] },
+  liver:       { name:'Liver', icon:'<i data-lucide="flask-round" style="width:20px;height:20px;color:#FB923C;"></i>', color:'#FB923C', markers:['alt','ast','ggt','bilirubin','albumin'] },
+  metabolic:   { name:'Metabolic', icon:'<i data-lucide="zap" style="width:20px;height:20px;color:var(--vital);"></i>', color:'var(--vital)', markers:['hba1c','glucose','vitamin_d','b12','folate','magnesium'] },
+  gi:          { name:'GI / Digestive', icon:'<i data-lucide="salad" style="width:20px;height:20px;color:#FBBF24;"></i>', color:'#FBBF24', markers:[] },
+  kidney:      { name:'Kidneys', icon:'<i data-lucide="droplets" style="width:20px;height:20px;color:var(--signal);"></i>', color:'var(--signal)', markers:['creatinine','egfr','urea','uric_acid'] },
+  immune:      { name:'Immune System', icon:'<i data-lucide="shield-check" style="width:20px;height:20px;color:#2DD4BF;"></i>', color:'#2DD4BF', markers:['crp','wbc','hemoglobin','rbc','platelets','ferritin','iron'] },
+  endocrine:   { name:'Endocrine', icon:'<i data-lucide="sprout" style="width:20px;height:20px;color:var(--regen);"></i>', color:'var(--regen)', markers:['testosterone','free_testosterone','oestradiol','cortisol','dhea','igf1'] },
+  msk:         { name:'Musculoskeletal', icon:'<i data-lucide="bone" style="width:20px;height:20px;color:#A8A29E;"></i>', color:'#A8A29E', markers:['calcium'] },
 };
 
 // ── Mock Data (ported from Anto Goals health records) ──
