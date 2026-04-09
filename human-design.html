@@ -51,6 +51,17 @@
 .organ-spot.status-concern { border-color:var(--danger); box-shadow:0 0 12px rgba(255,92,92,0.25); }
 .organ-spot.status-unknown { border-color:var(--text-subtle); }
 .organ-spot.selected { border-color:var(--bio); box-shadow:var(--bio-glow); transform:scale(1.15); }
+.organ-spot.dragging { cursor:grabbing; z-index:50; transform:scale(1.25); opacity:0.9; }
+.body-svg-wrap.edit-mode { border:2px dashed var(--bio); }
+.body-svg-wrap.edit-mode .organ-spot { cursor:grab; }
+.edit-toggle {
+  display:inline-flex; align-items:center; gap:6px; padding:8px 16px;
+  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em;
+  border:1px solid var(--border); border-radius:var(--r-sm); background:var(--glass);
+  color:var(--text-muted); cursor:pointer; transition:all 0.3s; text-transform:uppercase;
+}
+.edit-toggle:hover { background:var(--glass-hover); color:var(--text-2); }
+.edit-toggle.active { border-color:var(--bio); color:var(--bio); background:var(--bio-glass); }
 
 /* System detail card */
 .system-card {
@@ -160,7 +171,12 @@
 
       <!-- Anatomical Body Image with organ hotspots -->
       <div class="body-svg-wrap" id="bodyWrap">
-        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-2);">Tap a system to inspect</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--text-2);">Tap a system to inspect</div>
+          <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()">
+            <i data-lucide="move" style="width:12px;height:12px;"></i> Edit
+          </button>
+        </div>
         <img
           src="body.png"
           alt="Human body anatomy"
@@ -584,20 +600,220 @@ const ORGAN_SYSTEMS = {
   msk:         { name:'Musculoskeletal', icon:'&#129460;', color:'#A8A29E', markers:['calcium'] },
 };
 
+// ── Mock Data (ported from Anto Goals health records) ──
+const MOCK_DATA = {
+  labEntries: [
+    { id:'lab-mock-001', date:'2024-08-19', facility:'Saudi German Hospital Dubai', markers:[
+      { id:'total_cholesterol', value:5.8 },
+      { id:'ldl', value:4.2 },
+      { id:'hdl', value:1.1 },
+      { id:'triglycerides', value:1.4 },
+      { id:'alt', value:58 },
+      { id:'ast', value:35 },
+      { id:'ggt', value:28 },
+      { id:'bilirubin', value:22 },
+      { id:'albumin', value:48 },
+      { id:'creatinine', value:82 },
+      { id:'egfr', value:95 },
+      { id:'ferritin', value:604 },
+      { id:'hemoglobin', value:155 },
+      { id:'wbc', value:5.8 },
+      { id:'rbc', value:5.1 },
+      { id:'platelets', value:260 },
+    ]},
+    { id:'lab-mock-002', date:'2024-12-20', facility:'PathWest Laboratory', markers:[
+      { id:'total_cholesterol', value:5.6 },
+      { id:'ldl', value:4.0 },
+      { id:'hdl', value:1.2 },
+      { id:'triglycerides', value:1.1 },
+      { id:'homocysteine', value:15.7 },
+      { id:'alt', value:42 },
+      { id:'ast', value:30 },
+      { id:'bilirubin', value:19 },
+      { id:'calcium', value:2.13 },
+    ]},
+    { id:'lab-mock-003', date:'2025-01-09', facility:'Dr Sulaiman Al Habib, Riyadh', markers:[
+      { id:'tsh', value:0.50 },
+      { id:'free_t4', value:14.38 },
+      { id:'free_t3', value:4.49 },
+    ]},
+    { id:'lab-mock-004', date:'2026-01-05', facility:'SMC Healthcare, Riyadh', markers:[
+      { id:'vitamin_d', value:63.5 },
+      { id:'wbc', value:6.09 },
+      { id:'rbc', value:4.90 },
+      { id:'hemoglobin', value:149 },
+      { id:'platelets', value:340 },
+      { id:'creatinine', value:88 },
+      { id:'egfr', value:94 },
+      { id:'total_cholesterol', value:5.4 },
+      { id:'ldl', value:4.03 },
+      { id:'hdl', value:1.21 },
+      { id:'triglycerides', value:1.3 },
+      { id:'tsh', value:0.574 },
+      { id:'testosterone', value:15.2 },
+      { id:'cortisol', value:380 },
+    ]},
+    { id:'lab-mock-005', date:'2026-01-30', facility:'Biomedical Laboratory', markers:[
+      { id:'total_cholesterol', value:5.38 },
+      { id:'ldl', value:3.53 },
+      { id:'hdl', value:1.26 },
+      { id:'triglycerides', value:1.02 },
+      { id:'hs_crp', value:0.43 },
+      { id:'crp', value:0.38 },
+      { id:'alt', value:15 },
+      { id:'ast', value:19 },
+      { id:'ggt', value:19 },
+      { id:'bilirubin', value:14 },
+      { id:'albumin', value:45 },
+      { id:'creatinine', value:80 },
+      { id:'egfr', value:90 },
+      { id:'urea', value:3.9 },
+      { id:'uric_acid', value:173 },
+      { id:'hba1c', value:5.0 },
+      { id:'glucose', value:5.14 },
+      { id:'tsh', value:0.677 },
+      { id:'free_t3', value:4.42 },
+      { id:'free_t4', value:20.4 },
+      { id:'testosterone', value:15.2 },
+      { id:'vitamin_d', value:101.5 },
+      { id:'b12', value:572 },
+      { id:'folate', value:37.2 },
+      { id:'ferritin', value:369.7 },
+      { id:'iron', value:19.48 },
+      { id:'magnesium', value:0.73 },
+      { id:'calcium', value:2.39 },
+      { id:'hemoglobin', value:138 },
+      { id:'wbc', value:6.19 },
+      { id:'rbc', value:4.58 },
+      { id:'platelets', value:272 },
+      { id:'igf1', value:195 },
+      { id:'cortisol', value:340 },
+    ]},
+  ],
+  uploads: 5
+};
+
 // ── State ──
 const STORAGE_KEY = 'tr4nsform-human-design';
+const POSITIONS_KEY = 'tr4nsform-organ-positions';
 let state = loadState();
+let organPositions = loadPositions();
+let editMode = false;
+let dragState = { isDragging: false, organId: null };
 
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.labEntries && parsed.labEntries.length > 0) return parsed;
+    }
   } catch(e) {}
-  return { labEntries: [], uploads: 0 };
+  // Seed with mock data on first load
+  return JSON.parse(JSON.stringify(MOCK_DATA));
 }
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadPositions() {
+  try {
+    const saved = localStorage.getItem(POSITIONS_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return {};
+}
+
+function savePositions() {
+  localStorage.setItem(POSITIONS_KEY, JSON.stringify(organPositions));
+}
+
+// ── Edit Mode (Drag to Reposition) ──
+function toggleEditMode() {
+  editMode = !editMode;
+  const btn = document.getElementById('editToggle');
+  const wrap = document.getElementById('bodyWrap');
+  btn.classList.toggle('active', editMode);
+  btn.innerHTML = editMode
+    ? '<i data-lucide="check" style="width:12px;height:12px;"></i> Done'
+    : '<i data-lucide="move" style="width:12px;height:12px;"></i> Edit';
+  wrap.classList.toggle('edit-mode', editMode);
+  lucide.createIcons();
+  if (!editMode) {
+    savePositions();
+    showToast('Organ positions saved');
+  }
+}
+
+function initDrag() {
+  const wrap = document.getElementById('bodyWrap');
+
+  function getPos(e) {
+    const rect = wrap.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: ((clientX - rect.left) / rect.width) * 100,
+      y: ((clientY - rect.top) / rect.height) * 100
+    };
+  }
+
+  function onMove(e) {
+    if (!editMode || !dragState.isDragging) return;
+    if (e.touches) e.preventDefault();
+    const pos = getPos(e);
+    const spot = document.getElementById('spot-' + dragState.organId);
+    if (spot) {
+      spot.style.top = Math.max(2, Math.min(95, pos.y)) + '%';
+      spot.style.left = Math.max(5, Math.min(95, pos.x)) + '%';
+      spot.style.transform = 'translate(-50%,-50%)';
+      organPositions[dragState.organId] = { top: spot.style.top, left: spot.style.left };
+    }
+  }
+
+  function onEnd() {
+    if (dragState.isDragging) {
+      const spot = document.getElementById('spot-' + dragState.organId);
+      if (spot) spot.classList.remove('dragging');
+      dragState = { isDragging: false, organId: null };
+    }
+  }
+
+  wrap.addEventListener('mousemove', onMove);
+  wrap.addEventListener('mouseup', onEnd);
+  wrap.addEventListener('mouseleave', onEnd);
+  wrap.addEventListener('touchmove', onMove, { passive: false });
+  wrap.addEventListener('touchend', onEnd);
+
+  // Attach mousedown/touchstart to each organ spot
+  document.querySelectorAll('.organ-spot').forEach(spot => {
+    const organId = spot.id.replace('spot-', '');
+
+    spot.addEventListener('mousedown', (e) => {
+      if (!editMode) return;
+      e.preventDefault();
+      dragState = { isDragging: true, organId };
+      spot.classList.add('dragging');
+    });
+
+    spot.addEventListener('touchstart', (e) => {
+      if (!editMode) return;
+      dragState = { isDragging: true, organId };
+      spot.classList.add('dragging');
+    }, { passive: true });
+  });
+}
+
+function applyPositions() {
+  for (const [organId, pos] of Object.entries(organPositions)) {
+    const spot = document.getElementById('spot-' + organId);
+    if (spot && pos.top && pos.left) {
+      spot.style.top = pos.top;
+      spot.style.left = pos.left;
+      spot.style.transform = 'translate(-50%,-50%)';
+    }
+  }
 }
 
 // ── Tab Switching ──
@@ -691,6 +907,7 @@ function refreshBodyMap() {
 }
 
 function selectOrgan(sysId) {
+  if (editMode) return; // Don't select while dragging
   // Highlight spot
   document.querySelectorAll('.organ-spot').forEach(s => s.classList.remove('selected'));
   const spot = document.getElementById('spot-' + sysId);
@@ -1123,6 +1340,13 @@ function exportHistory() {
 document.addEventListener('DOMContentLoaded', () => {
   // Set default date
   document.getElementById('entryDate').value = new Date().toISOString().split('T')[0];
+  // Save mock data to localStorage on first load
+  saveState();
+  // Apply saved organ positions
+  applyPositions();
+  // Init drag-to-reposition
+  initDrag();
+  // Render views
   refreshBodyMap();
   renderRecentUploads();
 });
