@@ -7,6 +7,7 @@ const NAV_CONFIG = {
   b2c: [
     { label: 'Protocols', href: '/protocols.html' },
     { label: 'Builder', href: '/builder.html' },
+    { label: 'Human Design', href: '/human-design.html' },
     { label: 'Dashboard', href: '/dashboard.html' },
     { label: 'Consultation', href: '/consultation.html' },
     { label: 'Tracking', href: '/tracking.html' },

@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TR4NSFORM · Human Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="css/tokens.css"/>
+<link rel="stylesheet" href="css/components.css"/>
+<link rel="stylesheet" href="css/layout.css"/>
+<style>
+/* ═══ HUMAN DESIGN PAGE STYLES ═══ */
+
+/* Tab bar */
+.hd-tabs { display:flex; gap:4px; margin-bottom:28px; border-bottom:1px solid var(--border); padding-bottom:0; overflow-x:auto; }
+.hd-tab {
+  padding:12px 20px; font-family:'Syne',sans-serif; font-size:13px; font-weight:600;
+  color:var(--text-muted); background:none; border:none; cursor:pointer;
+  border-bottom:2px solid transparent; transition:all 0.3s; white-space:nowrap;
+}
+.hd-tab:hover { color:var(--text-2); }
+.hd-tab.active { color:var(--bio); border-bottom-color:var(--bio); }
+
+.hd-panel { display:none; animation:fadeUp 0.35s ease; }
+.hd-panel.visible { display:block; }
+
+/* Body silhouette container */
+.body-container {
+  display:flex; gap:32px; align-items:flex-start; flex-wrap:wrap;
+}
+.body-svg-wrap {
+  position:relative; width:280px; min-width:260px; flex-shrink:0;
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:32px 24px; text-align:center;
+}
+.body-svg-wrap svg { width:200px; height:auto; margin:0 auto; display:block; }
+.body-info { flex:1; min-width:280px; }
+
+/* Organ hotspot */
+.organ-spot {
+  position:absolute; width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; cursor:pointer; transition:all 0.3s;
+  border:2px solid var(--border-mid); background:var(--void-surface);
+  z-index:5;
+}
+.organ-spot:hover { transform:scale(1.15); z-index:10; }
+.organ-spot.status-good { border-color:var(--regen); box-shadow:0 0 12px rgba(62,219,144,0.25); }
+.organ-spot.status-watch { border-color:var(--vital); box-shadow:0 0 12px rgba(232,196,106,0.25); }
+.organ-spot.status-concern { border-color:var(--danger); box-shadow:0 0 12px rgba(255,92,92,0.25); }
+.organ-spot.status-unknown { border-color:var(--text-subtle); }
+.organ-spot.selected { border-color:var(--bio); box-shadow:var(--bio-glow); transform:scale(1.15); }
+
+/* System detail card */
+.system-card {
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r);
+  padding:20px; margin-bottom:16px; transition:all 0.3s;
+}
+.system-card:hover { background:var(--glass-hover); }
+.system-card-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.system-icon { font-size:24px; }
+.system-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; }
+.system-status { margin-left:auto; }
+
+/* Marker row */
+.marker-row {
+  display:flex; align-items:center; gap:12px; padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.marker-row:last-child { border-bottom:none; }
+.marker-name { font-size:14px; font-weight:500; min-width:140px; }
+.marker-value { font-family:'JetBrains Mono',monospace; font-size:14px; min-width:80px; }
+.marker-range { font-size:11px; color:var(--text-muted); min-width:100px; }
+.marker-bar { flex:1; max-width:160px; height:6px; background:var(--void-float); border-radius:999px; overflow:hidden; }
+.marker-bar-fill { height:100%; border-radius:999px; transition:width 0.8s ease; }
+
+/* Upload area */
+.upload-zone {
+  border:2px dashed var(--border-mid); border-radius:var(--r-lg); padding:48px 32px;
+  text-align:center; cursor:pointer; transition:all 0.3s; background:var(--glass);
+}
+.upload-zone:hover { border-color:var(--bio); background:var(--bio-glass); }
+.upload-zone.dragover { border-color:var(--bio); background:var(--bio-glass); }
+
+/* History timeline */
+.history-entry {
+  display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);
+}
+.history-entry:last-child { border-bottom:none; }
+.history-dot {
+  width:12px; height:12px; border-radius:50%; background:var(--bio); margin-top:4px; flex-shrink:0;
+}
+.history-meta { font-size:12px; color:var(--text-muted); margin-top:4px; }
+
+/* Assessment score */
+.score-ring {
+  width:100px; height:100px; position:relative; margin:0 auto 12px;
+}
+.score-ring svg { transform:rotate(-90deg); }
+.score-ring-bg { fill:none; stroke:var(--void-float); stroke-width:8; }
+.score-ring-fill { fill:none; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.score-ring-text {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif; font-size:22px; font-weight:700;
+}
+
+/* Manual entry form */
+.entry-row { display:flex; gap:12px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+.entry-row .form-input { flex:1; min-width:100px; }
+.entry-row select {
+  flex:1; min-width:140px; padding:10px 14px; background:var(--void-surface);
+  border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text);
+  font-family:'DM Sans',sans-serif; font-size:14px;
+}
+
+/* Responsive */
+@media (max-width:768px) {
+  .body-container { flex-direction:column; align-items:center; }
+  .body-svg-wrap { width:100%; max-width:320px; }
+  .body-info { min-width:100%; }
+}
+</style>
+</head>
+<body data-portal="b2c">
+
+<div class="app-shell app-shell--wide">
+
+  <header class="topbar">
+    <div class="logo" onclick="location.href='/'">TR<span class="four">4</span>NSFORM</div>
+    <nav class="main-nav"></nav>
+    <div class="nav-right">
+      <span class="topbar-env">MVP Mockup</span>
+      <button class="wallet-btn connected"><span class="dot"></span>0x7a3B...f291</button>
+      <button class="nav-toggle"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="eyebrow">Human Design</div>
+    <h1 class="page-title">Your Body, Your Data</h1>
+    <p class="page-subtitle">A sovereign view of your biology. Upload results, track markers, assess every system.</p>
+  </div>
+
+  <!-- ═══ TAB BAR ═══ -->
+  <div class="hd-tabs">
+    <button class="hd-tab active" onclick="switchHDTab('body',this)">Body Map</button>
+    <button class="hd-tab" onclick="switchHDTab('results',this)">Lab Results</button>
+    <button class="hd-tab" onclick="switchHDTab('upload',this)">Upload</button>
+    <button class="hd-tab" onclick="switchHDTab('history',this)">History</button>
+    <button class="hd-tab" onclick="switchHDTab('assessment',this)">Assessment</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TAB 1 — BODY MAP
+       ═══════════════════════════════════════════ -->
+  <div class="hd-panel visible" id="panel-body">
+
+    <div class="body-container">
+
+      <!-- Anatomical Body Image with organ hotspots -->
+      <div class="body-svg-wrap" id="bodyWrap">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-2);">Tap a system to inspect</div>
+        <img
+          src="body.png"
+          alt="Human body anatomy"
+          style="width:100%;height:auto;object-fit:contain;opacity:0.85;filter:brightness(0.9) contrast(1.1);pointer-events:none;user-select:none;"
+          draggable="false"
+        />
+
+        <!-- Organ hotspots — positions matched to the anatomical image -->
+        <div class="organ-spot status-unknown" id="spot-neuro" style="top:8%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('neuro')" title="Neurological">
+          <span>&#129504;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-thyroid" style="top:17%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('thyroid')" title="Thyroid">
+          <span>&#129419;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-cardio" style="top:30%;left:55%;" onclick="selectOrgan('cardio')" title="Cardiovascular">
+          <span>&#129729;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-respiratory" style="top:28%;left:38%;" onclick="selectOrgan('respiratory')" title="Respiratory">
+          <span>&#129745;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-liver" style="top:38%;left:38%;" onclick="selectOrgan('liver')" title="Liver">
+          <span>&#129756;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-metabolic" style="top:50%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('metabolic')" title="Metabolic">
+          <span>&#9889;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-gi" style="top:44%;left:55%;" onclick="selectOrgan('gi')" title="GI / Digestive">
+          <span>&#128300;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-kidney" style="top:42%;left:64%;" onclick="selectOrgan('kidney')" title="Kidneys">
+          <span>&#128167;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-immune" style="top:22%;left:66%;" onclick="selectOrgan('immune')" title="Immune System">
+          <span>&#128737;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-endocrine" style="top:54%;left:42%;" onclick="selectOrgan('endocrine')" title="Endocrine">
+          <span>&#127793;</span>
+        </div>
+        <div class="organ-spot status-unknown" id="spot-msk" style="top:70%;left:50%;transform:translateX(-50%);" onclick="selectOrgan('msk')" title="Musculoskeletal">
+          <span>&#129460;</span>
+        </div>
+      </div>
+
+      <!-- System Detail Panel -->
+      <div class="body-info" id="organDetail">
+
+        <!-- Default state -->
+        <div id="organDefault">
+          <div class="card" style="text-align:center;padding:48px 32px;">
+            <div style="font-size:48px;margin-bottom:16px;">&#129489;&#8205;&#9877;&#65039;</div>
+            <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;">Select an Organ System</div>
+            <p style="font-size:14px;color:var(--text-2);">Tap any hotspot on the body map to view markers, status, and assessment for that system.</p>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="stat-grid" style="margin-top:20px;">
+            <div class="stat-card">
+              <div class="stat-label">Systems Tracked</div>
+              <div class="stat-value" id="statSystems" style="color:var(--bio);">0 / 11</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Markers</div>
+              <div class="stat-value" id="statMarkers">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Lab Uploads</div>
+              <div class="stat-value" id="statUploads">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Health Score</div>
+              <div class="stat-value" id="statScore" style="color:var(--text-muted);">--</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected organ detail (hidden until selection) -->
+        <div id="organSelected" style="display:none;"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TAB 2 — LAB RESULTS
+       ═══════════════════════════════════════════ -->
+  <div class="hd-panel" id="panel-results">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;">Lab Results</h2>
+        <p style="font-size:13px;color:var(--text-muted);">All biomarkers from your uploaded results, grouped by category.</p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <select id="filterCategory" onchange="renderResults()" style="padding:8px 14px;background:var(--void-surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:13px;">
+          <option value="all">All Categories</option>
+          <option value="lipids">Lipids</option>
+          <option value="metabolic">Metabolic</option>
+          <option value="cbc">CBC / Blood Count</option>
+          <option value="liver">Liver</option>
+          <option value="kidney">Kidney</option>
+          <option value="thyroid">Thyroid</option>
+          <option value="hormones">Hormones</option>
+          <option value="vitamins">Vitamins</option>
+          <option value="iron">Iron Panel</option>
+          <option value="cardiac">Cardiac</option>
+          <option value="inflammation">Inflammation</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="resultsContainer">
+      <div class="card" style="text-align:center;padding:48px 32px;">
+        <div style="font-size:36px;margin-bottom:12px;">&#128269;</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;margin-bottom:8px;">No Results Yet</div>
+        <p style="font-size:13px;color:var(--text-muted);">Upload your blood work or manually enter markers to populate this view.</p>
+        <button class="btn btn-primary btn-sm" style="margin-top:16px;" onclick="switchHDTab('upload',document.querySelector('.hd-tab:nth-child(3)'));">Upload Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TAB 3 — UPLOAD
+       ═══════════════════════════════════════════ -->
+  <div class="hd-panel" id="panel-upload">
+
+    <div class="grid-2" style="margin-bottom:28px;">
+
+      <!-- File Upload -->
+      <div class="card">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;">Upload Lab Report</div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click();">
+          <div style="font-size:36px;margin-bottom:12px;"><i data-lucide="upload-cloud" style="width:48px;height:48px;color:var(--bio);"></i></div>
+          <div style="font-size:14px;font-weight:500;margin-bottom:4px;">Drop your lab report here</div>
+          <div style="font-size:12px;color:var(--text-muted);">PDF, CSV, or image (JPG/PNG) &middot; Max 10 MB</div>
+          <input type="file" id="fileInput" accept=".pdf,.csv,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(this)"/>
+        </div>
+        <div id="uploadStatus" style="margin-top:12px;display:none;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <i data-lucide="file-check" style="width:18px;height:18px;color:var(--regen);"></i>
+            <span id="uploadFileName" style="font-size:13px;"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manual Entry -->
+      <div class="card">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;">Manual Entry</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Add individual markers from your lab results.</p>
+
+        <div style="margin-bottom:12px;">
+          <label class="form-label">Test Date</label>
+          <input type="date" class="form-input" id="entryDate" style="max-width:200px;"/>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label class="form-label">Lab / Facility</label>
+          <input type="text" class="form-input" id="entryFacility" placeholder="e.g. PathWest, QML, iMedical"/>
+        </div>
+
+        <div id="manualMarkers">
+          <div class="entry-row">
+            <select class="marker-select">
+              <option value="">Select Marker...</option>
+              <optgroup label="Lipids">
+                <option value="total_cholesterol">Total Cholesterol</option>
+                <option value="ldl">LDL Cholesterol</option>
+                <option value="hdl">HDL Cholesterol</option>
+                <option value="triglycerides">Triglycerides</option>
+              </optgroup>
+              <optgroup label="Metabolic">
+                <option value="hba1c">HbA1c</option>
+                <option value="glucose">Glucose (Fasting)</option>
+                <option value="homocysteine">Homocysteine</option>
+                <option value="uric_acid">Uric Acid</option>
+              </optgroup>
+              <optgroup label="CBC">
+                <option value="hemoglobin">Hemoglobin</option>
+                <option value="wbc">White Blood Cells</option>
+                <option value="rbc">Red Blood Cells</option>
+                <option value="platelets">Platelets</option>
+              </optgroup>
+              <optgroup label="Liver">
+                <option value="alt">ALT</option>
+                <option value="ast">AST</option>
+                <option value="ggt">GGT</option>
+                <option value="bilirubin">Bilirubin</option>
+                <option value="albumin">Albumin</option>
+              </optgroup>
+              <optgroup label="Kidney">
+                <option value="creatinine">Creatinine</option>
+                <option value="egfr">eGFR</option>
+                <option value="urea">Urea</option>
+              </optgroup>
+              <optgroup label="Thyroid">
+                <option value="tsh">TSH</option>
+                <option value="free_t4">Free T4</option>
+                <option value="free_t3">Free T3</option>
+              </optgroup>
+              <optgroup label="Hormones">
+                <option value="testosterone">Testosterone</option>
+                <option value="free_testosterone">Free Testosterone</option>
+                <option value="oestradiol">Oestradiol</option>
+                <option value="cortisol">Cortisol</option>
+                <option value="dhea">DHEA-S</option>
+              </optgroup>
+              <optgroup label="Vitamins & Minerals">
+                <option value="vitamin_d">Vitamin D</option>
+                <option value="b12">Vitamin B12</option>
+                <option value="folate">Folate</option>
+                <option value="ferritin">Ferritin</option>
+                <option value="iron">Serum Iron</option>
+                <option value="magnesium">Magnesium</option>
+                <option value="calcium">Calcium</option>
+              </optgroup>
+              <optgroup label="Cardiac / Inflammation">
+                <option value="crp">CRP (C-Reactive Protein)</option>
+                <option value="hs_crp">hs-CRP</option>
+                <option value="troponin">Troponin</option>
+                <option value="d_dimer">D-Dimer</option>
+                <option value="igf1">IGF-1</option>
+              </optgroup>
+            </select>
+            <input type="number" class="form-input" placeholder="Value" step="any" style="max-width:100px;"/>
+            <span style="font-size:12px;color:var(--text-muted);min-width:50px;" class="marker-unit">unit</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:12px;">
+          <button class="btn btn-secondary btn-sm" onclick="addMarkerRow();">+ Add Marker</button>
+          <button class="btn btn-primary btn-sm" onclick="saveManualEntry();">Save Entry</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Recent Uploads -->
+    <div class="section">
+      <h3 class="section-title">Recent Uploads</h3>
+      <div id="recentUploads">
+        <div class="card" style="padding:24px;text-align:center;">
+          <p style="font-size:13px;color:var(--text-muted);">No uploads yet. Your saved entries will appear here.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TAB 4 — HISTORY
+       ═══════════════════════════════════════════ -->
+  <div class="hd-panel" id="panel-history">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;">Health Timeline</h2>
+        <p style="font-size:13px;color:var(--text-muted);">Chronological record of all your lab results and health events.</p>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="exportHistory();">
+        <i data-lucide="download" style="width:14px;height:14px;margin-right:6px;"></i>Export
+      </button>
+    </div>
+
+    <div id="historyTimeline">
+      <div class="card" style="text-align:center;padding:48px 32px;">
+        <div style="font-size:36px;margin-bottom:12px;">&#128197;</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;margin-bottom:8px;">No History Yet</div>
+        <p style="font-size:13px;color:var(--text-muted);">Upload your first lab result to start building your health timeline.</p>
+      </div>
+    </div>
+
+    <!-- Trend Selector -->
+    <div class="section" id="trendSection" style="display:none;">
+      <h3 class="section-title">Marker Trends</h3>
+      <div class="card">
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;">
+          <label class="form-label" style="margin-bottom:0;">Track Marker:</label>
+          <select id="trendMarker" onchange="renderTrend()" style="padding:8px 14px;background:var(--void-surface);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:13px;">
+            <option value="">Select...</option>
+          </select>
+        </div>
+        <div id="trendChart" style="height:180px;position:relative;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TAB 5 — ASSESSMENT
+       ═══════════════════════════════════════════ -->
+  <div class="hd-panel" id="panel-assessment">
+
+    <div style="margin-bottom:24px;">
+      <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;">System Assessment</h2>
+      <p style="font-size:13px;color:var(--text-muted);">Overall health score derived from your latest lab results across all organ systems.</p>
+    </div>
+
+    <!-- Overall Score -->
+    <div class="card" style="text-align:center;margin-bottom:28px;">
+      <div class="score-ring" id="overallScoreRing">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle class="score-ring-bg" cx="50" cy="50" r="42"/>
+          <circle class="score-ring-fill" cx="50" cy="50" r="42" stroke="var(--bio)"
+            stroke-dasharray="263.89" stroke-dashoffset="263.89" id="overallRingFill"/>
+        </svg>
+        <div class="score-ring-text" id="overallScoreText" style="color:var(--text-muted);">--</div>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;">Overall Health Score</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:4px;" id="overallScoreNote">Upload lab results to generate your score</div>
+    </div>
+
+    <!-- System Scores Grid -->
+    <div class="stat-grid" id="systemScoresGrid">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Flagged Markers -->
+    <div class="section" style="margin-top:28px;">
+      <h3 class="section-title">Flagged Markers</h3>
+      <div id="flaggedMarkers">
+        <div class="card" style="padding:20px;text-align:center;">
+          <p style="font-size:13px;color:var(--text-muted);">No flagged markers. Upload lab results to see items requiring attention.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Wallet Modal -->
+<div class="wallet-modal" id="walletModal">
+  <div class="wallet-card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:20px;">Connect Wallet</h3>
+    <div class="wallet-option" onclick="connectWallet('metamask')">
+      <div class="wallet-icon"><i data-lucide="hexagon" class="wallet-icon"></i></div>
+      <div><div class="wallet-name">MetaMask</div><div class="wallet-desc">Browser extension wallet</div></div>
+    </div>
+    <div class="wallet-option" onclick="connectWallet('walletconnect')">
+      <div class="wallet-icon"><i data-lucide="link" class="wallet-icon"></i></div>
+      <div><div class="wallet-name">WalletConnect</div><div class="wallet-desc">Scan with mobile wallet</div></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeWalletModal()" style="margin-top:12px;width:100%;text-align:center;">Cancel</button>
+  </div>
+</div>
+
+<!-- Mockup Badge -->
+<div class="mockup-badge">MVP MOCKUP &middot; HUMAN DESIGN</div>
+
+<script src="js/nav.js"></script>
+<script src="js/components.js"></script>
+<script>
+/* ═══════════════════════════════════════════
+   HUMAN DESIGN — DATA MODEL & LOGIC
+   ═══════════════════════════════════════════ */
+
+// ── Marker Reference Database ──
+const MARKER_DB = {
+  // Lipids
+  total_cholesterol: { name:'Total Cholesterol', unit:'mmol/L', min:3.5, max:5.5, category:'lipids', system:'cardio', note:'Primary cardiovascular risk marker' },
+  ldl: { name:'LDL Cholesterol', unit:'mmol/L', min:0, max:3.4, category:'lipids', system:'cardio', note:'Primary driver of atherosclerosis — lower is better' },
+  hdl: { name:'HDL Cholesterol', unit:'mmol/L', min:1.0, max:2.5, category:'lipids', system:'cardio', note:'Protective cholesterol — higher is better' },
+  triglycerides: { name:'Triglycerides', unit:'mmol/L', min:0.4, max:1.7, category:'lipids', system:'cardio', note:'Elevated with metabolic syndrome' },
+  // Metabolic
+  hba1c: { name:'HbA1c', unit:'%', min:4.0, max:5.6, category:'metabolic', system:'metabolic', note:'3-month blood sugar average. Optimal for longevity: 4.5-5.2%' },
+  glucose: { name:'Glucose (Fasting)', unit:'mmol/L', min:3.9, max:5.6, category:'metabolic', system:'metabolic', note:'Fasting blood sugar — dawn effect can elevate' },
+  homocysteine: { name:'Homocysteine', unit:'umol/L', min:5, max:15, category:'metabolic', system:'cardio', note:'Cardiovascular risk marker — works with folate and B12' },
+  uric_acid: { name:'Uric Acid', unit:'umol/L', min:200, max:430, category:'metabolic', system:'kidney', note:'Gout risk when high, oxidative stress indicator when low' },
+  // CBC
+  hemoglobin: { name:'Hemoglobin', unit:'g/L', min:130, max:175, category:'cbc', system:'immune', note:'Oxygen-carrying capacity' },
+  wbc: { name:'White Blood Cells', unit:'x10^9/L', min:4.0, max:11.0, category:'cbc', system:'immune', note:'Immune system activity' },
+  rbc: { name:'Red Blood Cells', unit:'x10^12/L', min:4.5, max:5.9, category:'cbc', system:'immune', note:'Red cell count' },
+  platelets: { name:'Platelets', unit:'x10^9/L', min:150, max:400, category:'cbc', system:'immune', note:'Clotting function' },
+  // Liver
+  alt: { name:'ALT', unit:'U/L', min:7, max:56, category:'liver', system:'liver', note:'Liver cell damage marker' },
+  ast: { name:'AST', unit:'U/L', min:10, max:40, category:'liver', system:'liver', note:'Liver and muscle damage' },
+  ggt: { name:'GGT', unit:'U/L', min:9, max:48, category:'liver', system:'liver', note:'Bile duct and liver function' },
+  bilirubin: { name:'Bilirubin', unit:'umol/L', min:5, max:21, category:'liver', system:'liver', note:'Red blood cell breakdown product' },
+  albumin: { name:'Albumin', unit:'g/L', min:35, max:52, category:'liver', system:'liver', note:'Protein made by liver — nutritional marker' },
+  // Kidney
+  creatinine: { name:'Creatinine', unit:'umol/L', min:60, max:110, category:'kidney', system:'kidney', note:'Kidney filtration marker' },
+  egfr: { name:'eGFR', unit:'mL/min', min:90, max:120, category:'kidney', system:'kidney', note:'Estimated kidney filtration rate — >90 is normal' },
+  urea: { name:'Urea', unit:'mmol/L', min:2.5, max:7.1, category:'kidney', system:'kidney', note:'Protein metabolism waste product' },
+  // Thyroid
+  tsh: { name:'TSH', unit:'mIU/L', min:0.4, max:4.0, category:'thyroid', system:'thyroid', note:'Thyroid-stimulating hormone — master thyroid control' },
+  free_t4: { name:'Free T4', unit:'pmol/L', min:12, max:22, category:'thyroid', system:'thyroid', note:'Active thyroid hormone' },
+  free_t3: { name:'Free T3', unit:'pmol/L', min:3.1, max:6.8, category:'thyroid', system:'thyroid', note:'Most potent thyroid hormone' },
+  // Hormones
+  testosterone: { name:'Testosterone', unit:'nmol/L', min:8.3, max:30.2, category:'hormones', system:'endocrine', note:'Primary male hormone — affects energy, mood, muscle' },
+  free_testosterone: { name:'Free Testosterone', unit:'pmol/L', min:170, max:700, category:'hormones', system:'endocrine', note:'Bioavailable testosterone' },
+  oestradiol: { name:'Oestradiol', unit:'pmol/L', min:40, max:160, category:'hormones', system:'endocrine', note:'Primary estrogen — important in both sexes' },
+  cortisol: { name:'Cortisol', unit:'nmol/L', min:166, max:507, category:'hormones', system:'endocrine', note:'Stress hormone — morning peak is normal' },
+  dhea: { name:'DHEA-S', unit:'umol/L', min:2.2, max:15.2, category:'hormones', system:'endocrine', note:'Adrenal hormone precursor — declines with age' },
+  // Vitamins & Minerals
+  vitamin_d: { name:'Vitamin D', unit:'nmol/L', min:50, max:150, category:'vitamins', system:'metabolic', note:'Sunshine vitamin — optimal >75 nmol/L' },
+  b12: { name:'Vitamin B12', unit:'pmol/L', min:150, max:700, category:'vitamins', system:'metabolic', note:'Nerve and blood cell function' },
+  folate: { name:'Folate', unit:'nmol/L', min:10, max:45, category:'vitamins', system:'metabolic', note:'Cell division and homocysteine metabolism' },
+  ferritin: { name:'Ferritin', unit:'ug/L', min:30, max:300, category:'iron', system:'immune', note:'Iron storage — too high or low is problematic' },
+  iron: { name:'Serum Iron', unit:'umol/L', min:10, max:30, category:'iron', system:'immune', note:'Circulating iron level' },
+  magnesium: { name:'Magnesium', unit:'mmol/L', min:0.7, max:1.0, category:'vitamins', system:'metabolic', note:'Critical for 300+ enzyme reactions' },
+  calcium: { name:'Calcium', unit:'mmol/L', min:2.1, max:2.6, category:'vitamins', system:'msk', note:'Bone health and nerve/muscle function' },
+  // Cardiac / Inflammation
+  crp: { name:'CRP', unit:'mg/L', min:0, max:5, category:'inflammation', system:'immune', note:'General inflammation marker' },
+  hs_crp: { name:'hs-CRP', unit:'mg/L', min:0, max:1.0, category:'inflammation', system:'cardio', note:'Cardiovascular inflammation risk. <1 low, 1-3 moderate, >3 high' },
+  troponin: { name:'Troponin', unit:'ng/L', min:0, max:14, category:'cardiac', system:'cardio', note:'Heart muscle damage marker' },
+  d_dimer: { name:'D-Dimer', unit:'ug/L', min:0, max:500, category:'cardiac', system:'cardio', note:'Blood clot breakdown product' },
+  igf1: { name:'IGF-1', unit:'ug/L', min:100, max:300, category:'hormones', system:'endocrine', note:'Growth hormone mediator — longevity marker' },
+};
+
+// ── Organ System Definitions ──
+const ORGAN_SYSTEMS = {
+  neuro:       { name:'Neurological', icon:'&#129504;', color:'var(--neural)', markers:[] },
+  thyroid:     { name:'Thyroid', icon:'&#129419;', color:'#A78BFA', markers:['tsh','free_t4','free_t3'] },
+  cardio:      { name:'Cardiovascular', icon:'&#129729;', color:'#F87171', markers:['total_cholesterol','ldl','hdl','triglycerides','homocysteine','hs_crp','troponin','d_dimer'] },
+  respiratory: { name:'Respiratory', icon:'&#129745;', color:'var(--signal)', markers:[] },
+  liver:       { name:'Liver', icon:'&#129756;', color:'#FB923C', markers:['alt','ast','ggt','bilirubin','albumin'] },
+  metabolic:   { name:'Metabolic', icon:'&#9889;', color:'var(--vital)', markers:['hba1c','glucose','vitamin_d','b12','folate','magnesium'] },
+  gi:          { name:'GI / Digestive', icon:'&#128300;', color:'#FBBF24', markers:[] },
+  kidney:      { name:'Kidneys', icon:'&#128167;', color:'var(--signal)', markers:['creatinine','egfr','urea','uric_acid'] },
+  immune:      { name:'Immune System', icon:'&#128737;', color:'#2DD4BF', markers:['crp','wbc','hemoglobin','rbc','platelets','ferritin','iron'] },
+  endocrine:   { name:'Endocrine', icon:'&#127793;', color:'var(--regen)', markers:['testosterone','free_testosterone','oestradiol','cortisol','dhea','igf1'] },
+  msk:         { name:'Musculoskeletal', icon:'&#129460;', color:'#A8A29E', markers:['calcium'] },
+};
+
+// ── State ──
+const STORAGE_KEY = 'tr4nsform-human-design';
+let state = loadState();
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return { labEntries: [], uploads: 0 };
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// ── Tab Switching ──
+function switchHDTab(tabId, el) {
+  document.querySelectorAll('.hd-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.hd-panel').forEach(p => { p.style.display = 'none'; p.classList.remove('visible'); });
+  const panel = document.getElementById('panel-' + tabId);
+  if (panel) { panel.style.display = 'block'; panel.classList.add('visible'); }
+  // Refresh tab content
+  if (tabId === 'results') renderResults();
+  if (tabId === 'history') renderHistory();
+  if (tabId === 'assessment') renderAssessment();
+  if (tabId === 'body') refreshBodyMap();
+}
+
+// ── Get latest value for a marker ──
+function getLatestMarker(markerId) {
+  let latest = null;
+  for (const entry of state.labEntries) {
+    for (const m of entry.markers) {
+      if (m.id === markerId && (!latest || entry.date > latest.date)) {
+        latest = { ...m, date: entry.date, facility: entry.facility };
+      }
+    }
+  }
+  return latest;
+}
+
+// ── Marker Status ──
+function getMarkerStatus(markerId, value) {
+  const ref = MARKER_DB[markerId];
+  if (!ref) return 'unknown';
+  if (value < ref.min) return 'low';
+  if (value > ref.max) return 'high';
+  return 'normal';
+}
+
+function statusBadge(status) {
+  const map = {
+    normal: '<span class="badge badge-regen">Normal</span>',
+    high: '<span class="badge badge-danger">High</span>',
+    low: '<span class="badge badge-vital">Low</span>',
+    unknown: '<span class="badge" style="color:var(--text-muted);background:var(--glass);">--</span>',
+  };
+  return map[status] || map.unknown;
+}
+
+// ── System Status ──
+function getSystemStatus(systemId) {
+  const sys = ORGAN_SYSTEMS[systemId];
+  if (!sys || sys.markers.length === 0) return 'unknown';
+  let hasData = false, flagged = 0, total = 0;
+  for (const mId of sys.markers) {
+    const latest = getLatestMarker(mId);
+    if (latest) {
+      hasData = true;
+      total++;
+      const s = getMarkerStatus(mId, latest.value);
+      if (s !== 'normal') flagged++;
+    }
+  }
+  if (!hasData) return 'unknown';
+  if (flagged === 0) return 'good';
+  if (flagged / total < 0.5) return 'watch';
+  return 'concern';
+}
+
+// ═══ BODY MAP ═══
+function refreshBodyMap() {
+  // Update organ spot statuses
+  for (const sysId of Object.keys(ORGAN_SYSTEMS)) {
+    const spot = document.getElementById('spot-' + sysId);
+    if (!spot) continue;
+    spot.className = 'organ-spot';
+    const status = getSystemStatus(sysId);
+    spot.classList.add('status-' + status);
+  }
+  // Update stats
+  let systemsTracked = 0, totalMarkers = 0;
+  for (const sysId of Object.keys(ORGAN_SYSTEMS)) {
+    if (getSystemStatus(sysId) !== 'unknown') systemsTracked++;
+  }
+  for (const entry of state.labEntries) totalMarkers += entry.markers.length;
+  document.getElementById('statSystems').textContent = systemsTracked + ' / 11';
+  document.getElementById('statMarkers').textContent = totalMarkers;
+  document.getElementById('statUploads').textContent = state.uploads;
+  const score = calcOverallScore();
+  document.getElementById('statScore').textContent = score !== null ? score + '%' : '--';
+  document.getElementById('statScore').style.color = score !== null ? (score >= 75 ? 'var(--regen)' : score >= 50 ? 'var(--vital)' : 'var(--danger)') : 'var(--text-muted)';
+}
+
+function selectOrgan(sysId) {
+  // Highlight spot
+  document.querySelectorAll('.organ-spot').forEach(s => s.classList.remove('selected'));
+  const spot = document.getElementById('spot-' + sysId);
+  if (spot) spot.classList.add('selected');
+
+  const sys = ORGAN_SYSTEMS[sysId];
+  document.getElementById('organDefault').style.display = 'none';
+  const panel = document.getElementById('organSelected');
+  panel.style.display = 'block';
+
+  const status = getSystemStatus(sysId);
+  const statusLabel = { good:'Good', watch:'Watch', concern:'Concern', unknown:'No Data' }[status];
+  const statusColor = { good:'var(--regen)', watch:'var(--vital)', concern:'var(--danger)', unknown:'var(--text-muted)' }[status];
+
+  let markersHTML = '';
+  if (sys.markers.length === 0) {
+    markersHTML = '<p style="font-size:13px;color:var(--text-muted);padding:16px 0;">No biomarkers mapped to this system yet. Markers will appear as we expand coverage.</p>';
+  } else {
+    for (const mId of sys.markers) {
+      const ref = MARKER_DB[mId];
+      const latest = getLatestMarker(mId);
+      const val = latest ? latest.value : null;
+      const s = val !== null ? getMarkerStatus(mId, val) : 'unknown';
+      const pct = val !== null ? Math.min(100, Math.max(0, ((val - ref.min) / (ref.max - ref.min)) * 100)) : 0;
+      const barColor = s === 'normal' ? 'var(--regen)' : s === 'high' ? 'var(--danger)' : s === 'low' ? 'var(--vital)' : 'var(--void-float)';
+      markersHTML += `
+        <div class="marker-row">
+          <div class="marker-name">${ref.name}</div>
+          <div class="marker-value" style="color:${s === 'normal' ? 'var(--regen)' : s === 'high' ? 'var(--danger)' : s === 'low' ? 'var(--vital)' : 'var(--text-muted)'};">${val !== null ? val : '--'}</div>
+          <div class="marker-range">${ref.min} - ${ref.max} ${ref.unit}</div>
+          <div class="marker-bar"><div class="marker-bar-fill" style="width:${pct}%;background:${barColor};"></div></div>
+          ${statusBadge(s)}
+        </div>`;
+    }
+  }
+
+  panel.innerHTML = `
+    <div class="system-card" style="border-left:3px solid ${sys.color};">
+      <div class="system-card-header">
+        <span class="system-icon">${sys.icon}</span>
+        <span class="system-name">${sys.name}</span>
+        <div class="system-status">
+          <span class="badge" style="background:${statusColor}20;color:${statusColor};">${statusLabel}</span>
+        </div>
+      </div>
+      ${markersHTML}
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('organSelected').style.display='none';document.getElementById('organDefault').style.display='block';document.querySelectorAll('.organ-spot').forEach(s=>s.classList.remove('selected'));" style="margin-top:8px;">
+      <i data-lucide="arrow-left" style="width:14px;height:14px;margin-right:6px;"></i>Back to Overview
+    </button>
+  `;
+  lucide.createIcons();
+}
+
+// ═══ LAB RESULTS ═══
+function renderResults() {
+  const container = document.getElementById('resultsContainer');
+  const filter = document.getElementById('filterCategory').value;
+
+  if (state.labEntries.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center;padding:48px 32px;">
+        <div style="font-size:36px;margin-bottom:12px;">&#128269;</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;margin-bottom:8px;">No Results Yet</div>
+        <p style="font-size:13px;color:var(--text-muted);">Upload your blood work or manually enter markers to populate this view.</p>
+        <button class="btn btn-primary btn-sm" style="margin-top:16px;" onclick="switchHDTab('upload',document.querySelector('.hd-tab:nth-child(3)'));">Upload Results</button>
+      </div>`;
+    return;
+  }
+
+  // Collect latest value per marker
+  const latest = {};
+  for (const entry of state.labEntries) {
+    for (const m of entry.markers) {
+      if (!latest[m.id] || entry.date > latest[m.id].date) {
+        latest[m.id] = { ...m, date: entry.date, facility: entry.facility };
+      }
+    }
+  }
+
+  // Group by category
+  const groups = {};
+  for (const [mId, data] of Object.entries(latest)) {
+    const ref = MARKER_DB[mId];
+    if (!ref) continue;
+    if (filter !== 'all' && ref.category !== filter) continue;
+    if (!groups[ref.category]) groups[ref.category] = [];
+    groups[ref.category].push({ id: mId, ...data, ref });
+  }
+
+  if (Object.keys(groups).length === 0) {
+    container.innerHTML = '<div class="card" style="padding:24px;text-align:center;"><p style="font-size:13px;color:var(--text-muted);">No markers match this filter.</p></div>';
+    return;
+  }
+
+  let html = '';
+  for (const [cat, markers] of Object.entries(groups)) {
+    html += `<div class="section"><h3 class="section-title" style="text-transform:capitalize;">${cat}</h3><div class="card">`;
+    for (const m of markers) {
+      const s = getMarkerStatus(m.id, m.value);
+      const pct = Math.min(100, Math.max(0, ((m.value - m.ref.min) / (m.ref.max - m.ref.min)) * 100));
+      const barColor = s === 'normal' ? 'var(--regen)' : s === 'high' ? 'var(--danger)' : 'var(--vital)';
+      html += `
+        <div class="marker-row">
+          <div class="marker-name">${m.ref.name}</div>
+          <div class="marker-value" style="color:${s === 'normal' ? 'var(--regen)' : s === 'high' ? 'var(--danger)' : 'var(--vital)'};">${m.value}</div>
+          <div class="marker-range">${m.ref.min} - ${m.ref.max} ${m.ref.unit}</div>
+          <div class="marker-bar"><div class="marker-bar-fill" style="width:${pct}%;background:${barColor};"></div></div>
+          ${statusBadge(s)}
+        </div>`;
+    }
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+// ═══ UPLOAD / MANUAL ENTRY ═══
+function handleFileUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('uploadStatus').style.display = 'block';
+  document.getElementById('uploadFileName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+  state.uploads++;
+  saveState();
+  lucide.createIcons();
+
+  // Simulate parsing — in production this would OCR/parse the PDF/CSV
+  showToast('File received — in production, markers will be auto-extracted. Use manual entry for now.');
+}
+
+// Drag & drop
+document.addEventListener('DOMContentLoaded', () => {
+  const zone = document.getElementById('uploadZone');
+  if (zone) {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length) { document.getElementById('fileInput').files = files; handleFileUpload(document.getElementById('fileInput')); }
+    });
+  }
+});
+
+function addMarkerRow() {
+  const container = document.getElementById('manualMarkers');
+  const firstRow = container.querySelector('.entry-row');
+  const clone = firstRow.cloneNode(true);
+  clone.querySelector('select').value = '';
+  clone.querySelector('input').value = '';
+  container.appendChild(clone);
+}
+
+function saveManualEntry() {
+  const date = document.getElementById('entryDate').value || new Date().toISOString().split('T')[0];
+  const facility = document.getElementById('entryFacility').value || 'Manual Entry';
+  const rows = document.querySelectorAll('#manualMarkers .entry-row');
+  const markers = [];
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const inp = row.querySelector('input[type="number"]');
+    if (sel.value && inp.value) {
+      markers.push({ id: sel.value, value: parseFloat(inp.value) });
+    }
+  });
+  if (markers.length === 0) { showToast('Add at least one marker with a value', 'vital'); return; }
+
+  state.labEntries.push({ id: 'lab-' + Date.now(), date, facility, markers });
+  saveState();
+
+  // Reset form
+  document.getElementById('manualMarkers').innerHTML = document.getElementById('manualMarkers').querySelector('.entry-row').outerHTML;
+  document.getElementById('entryDate').value = '';
+  document.getElementById('entryFacility').value = '';
+
+  showToast(markers.length + ' marker(s) saved to vault');
+  renderRecentUploads();
+  refreshBodyMap();
+}
+
+function renderRecentUploads() {
+  const container = document.getElementById('recentUploads');
+  if (state.labEntries.length === 0) {
+    container.innerHTML = '<div class="card" style="padding:24px;text-align:center;"><p style="font-size:13px;color:var(--text-muted);">No uploads yet.</p></div>';
+    return;
+  }
+  const recent = [...state.labEntries].reverse().slice(0, 5);
+  let html = '';
+  for (const entry of recent) {
+    const markerNames = entry.markers.map(m => MARKER_DB[m.id]?.name || m.id).join(', ');
+    html += `
+      <div class="card" style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+          <div>
+            <div class="mono" style="font-size:13px;color:var(--bio);">${entry.date}</div>
+            <div style="font-size:14px;font-weight:500;margin-top:2px;">${entry.facility}</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">${entry.markers.length} marker(s): ${markerNames}</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="deleteEntry('${entry.id}');" style="color:var(--danger);font-size:12px;">Remove</button>
+        </div>
+      </div>`;
+  }
+  container.innerHTML = html;
+}
+
+function deleteEntry(entryId) {
+  state.labEntries = state.labEntries.filter(e => e.id !== entryId);
+  saveState();
+  renderRecentUploads();
+  refreshBodyMap();
+  showToast('Entry removed');
+}
+
+// ═══ HISTORY ═══
+function renderHistory() {
+  const container = document.getElementById('historyTimeline');
+  if (state.labEntries.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="text-align:center;padding:48px 32px;">
+        <div style="font-size:36px;margin-bottom:12px;">&#128197;</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;margin-bottom:8px;">No History Yet</div>
+        <p style="font-size:13px;color:var(--text-muted);">Upload your first lab result to start building your health timeline.</p>
+      </div>`;
+    document.getElementById('trendSection').style.display = 'none';
+    return;
+  }
+
+  const sorted = [...state.labEntries].sort((a, b) => b.date.localeCompare(a.date));
+  let html = '<div class="card">';
+  for (const entry of sorted) {
+    const flagged = entry.markers.filter(m => getMarkerStatus(m.id, m.value) !== 'normal');
+    html += `
+      <div class="history-entry">
+        <div class="history-dot" style="background:${flagged.length ? 'var(--vital)' : 'var(--bio)'};"></div>
+        <div style="flex:1;">
+          <div style="font-weight:500;font-size:14px;">${entry.facility}</div>
+          <div class="history-meta">${entry.date} &middot; ${entry.markers.length} markers${flagged.length ? ' &middot; <span style="color:var(--vital);">' + flagged.length + ' flagged</span>' : ''}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+            ${entry.markers.map(m => {
+              const ref = MARKER_DB[m.id];
+              const s = getMarkerStatus(m.id, m.value);
+              const color = s === 'normal' ? 'var(--regen)' : s === 'high' ? 'var(--danger)' : 'var(--vital)';
+              return `<span style="font-size:11px;padding:3px 8px;border-radius:999px;background:${color}15;color:${color};border:1px solid ${color}30;">${ref?.name || m.id}: ${m.value}</span>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>`;
+  }
+  html += '</div>';
+  container.innerHTML = html;
+
+  // Show trend section & populate marker selector
+  document.getElementById('trendSection').style.display = 'block';
+  const trendSelect = document.getElementById('trendMarker');
+  const markersSeen = new Set();
+  state.labEntries.forEach(e => e.markers.forEach(m => markersSeen.add(m.id)));
+  trendSelect.innerHTML = '<option value="">Select...</option>' + [...markersSeen].map(mId => {
+    const ref = MARKER_DB[mId];
+    return `<option value="${mId}">${ref?.name || mId}</option>`;
+  }).join('');
+}
+
+function renderTrend() {
+  const mId = document.getElementById('trendMarker').value;
+  const chart = document.getElementById('trendChart');
+  if (!mId) { chart.innerHTML = ''; return; }
+
+  // Gather data points
+  const points = [];
+  for (const entry of state.labEntries) {
+    for (const m of entry.markers) {
+      if (m.id === mId) points.push({ date: entry.date, value: m.value });
+    }
+  }
+  points.sort((a, b) => a.date.localeCompare(b.date));
+
+  if (points.length < 2) {
+    chart.innerHTML = '<p style="font-size:13px;color:var(--text-muted);text-align:center;padding-top:60px;">Need at least 2 data points for a trend line.</p>';
+    return;
+  }
+
+  const ref = MARKER_DB[mId];
+  const vals = points.map(p => p.value);
+  const minVal = Math.min(...vals, ref.min) * 0.9;
+  const maxVal = Math.max(...vals, ref.max) * 1.1;
+  const range = maxVal - minVal || 1;
+  const w = chart.clientWidth || 400;
+  const h = 160;
+
+  // Build simple SVG line chart
+  const pad = { l:50, r:20, t:10, b:30 };
+  const plotW = w - pad.l - pad.r;
+  const plotH = h - pad.t - pad.b;
+
+  const xStep = plotW / (points.length - 1);
+  const pathPoints = points.map((p, i) => {
+    const x = pad.l + i * xStep;
+    const y = pad.t + plotH - ((p.value - minVal) / range) * plotH;
+    return { x, y, ...p };
+  });
+
+  const refMinY = pad.t + plotH - ((ref.min - minVal) / range) * plotH;
+  const refMaxY = pad.t + plotH - ((ref.max - minVal) / range) * plotH;
+
+  let svg = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="width:100%;height:100%;">`;
+  // Reference range band
+  svg += `<rect x="${pad.l}" y="${refMaxY}" width="${plotW}" height="${refMinY - refMaxY}" fill="var(--regen)" opacity="0.08" rx="4"/>`;
+  // Reference lines
+  svg += `<line x1="${pad.l}" y1="${refMinY}" x2="${w-pad.r}" y2="${refMinY}" stroke="var(--regen)" stroke-dasharray="4,4" opacity="0.3"/>`;
+  svg += `<line x1="${pad.l}" y1="${refMaxY}" x2="${w-pad.r}" y2="${refMaxY}" stroke="var(--regen)" stroke-dasharray="4,4" opacity="0.3"/>`;
+  svg += `<text x="${pad.l-4}" y="${refMinY+4}" text-anchor="end" fill="var(--text-muted)" font-size="10" font-family="JetBrains Mono">${ref.min}</text>`;
+  svg += `<text x="${pad.l-4}" y="${refMaxY+4}" text-anchor="end" fill="var(--text-muted)" font-size="10" font-family="JetBrains Mono">${ref.max}</text>`;
+  // Line
+  const lineD = pathPoints.map((p, i) => (i === 0 ? 'M' : 'L') + p.x + ',' + p.y).join(' ');
+  svg += `<path d="${lineD}" fill="none" stroke="var(--bio)" stroke-width="2" stroke-linecap="round"/>`;
+  // Points
+  for (const p of pathPoints) {
+    const s = getMarkerStatus(mId, p.value);
+    const c = s === 'normal' ? 'var(--regen)' : s === 'high' ? 'var(--danger)' : 'var(--vital)';
+    svg += `<circle cx="${p.x}" cy="${p.y}" r="5" fill="${c}" stroke="var(--void)" stroke-width="2"/>`;
+    svg += `<text x="${p.x}" y="${p.y - 10}" text-anchor="middle" fill="var(--text-2)" font-size="10" font-family="JetBrains Mono">${p.value}</text>`;
+  }
+  // Date labels
+  for (const p of pathPoints) {
+    const shortDate = p.date.slice(5); // MM-DD
+    svg += `<text x="${p.x}" y="${h - 4}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="JetBrains Mono">${shortDate}</text>`;
+  }
+  svg += '</svg>';
+  chart.innerHTML = svg;
+}
+
+// ═══ ASSESSMENT ═══
+function calcOverallScore() {
+  let totalSystems = 0, goodSystems = 0;
+  for (const sysId of Object.keys(ORGAN_SYSTEMS)) {
+    const status = getSystemStatus(sysId);
+    if (status === 'unknown') continue;
+    totalSystems++;
+    if (status === 'good') goodSystems += 1;
+    else if (status === 'watch') goodSystems += 0.5;
+  }
+  if (totalSystems === 0) return null;
+  return Math.round((goodSystems / totalSystems) * 100);
+}
+
+function renderAssessment() {
+  const score = calcOverallScore();
+  const ring = document.getElementById('overallRingFill');
+  const text = document.getElementById('overallScoreText');
+  const note = document.getElementById('overallScoreNote');
+
+  if (score !== null) {
+    const circumference = 263.89;
+    ring.style.strokeDashoffset = circumference - (circumference * score / 100);
+    ring.style.stroke = score >= 75 ? 'var(--regen)' : score >= 50 ? 'var(--vital)' : 'var(--danger)';
+    text.textContent = score + '%';
+    text.style.color = score >= 75 ? 'var(--regen)' : score >= 50 ? 'var(--vital)' : 'var(--danger)';
+    note.textContent = score >= 75 ? 'Looking good — keep tracking!' : score >= 50 ? 'Some areas need attention' : 'Multiple systems flagged — review with a clinician';
+  }
+
+  // System score cards
+  const grid = document.getElementById('systemScoresGrid');
+  let html = '';
+  for (const [sysId, sys] of Object.entries(ORGAN_SYSTEMS)) {
+    const status = getSystemStatus(sysId);
+    const label = { good:'Good', watch:'Watch', concern:'Concern', unknown:'--' }[status];
+    const color = { good:'var(--regen)', watch:'var(--vital)', concern:'var(--danger)', unknown:'var(--text-muted)' }[status];
+    html += `
+      <div class="stat-card" style="cursor:pointer;" onclick="switchHDTab('body',document.querySelector('.hd-tab:first-child'));setTimeout(()=>selectOrgan('${sysId}'),100);">
+        <div style="font-size:20px;margin-bottom:4px;">${sys.icon}</div>
+        <div class="stat-label">${sys.name}</div>
+        <div class="stat-value" style="color:${color};font-size:18px;">${label}</div>
+      </div>`;
+  }
+  grid.innerHTML = html;
+
+  // Flagged markers
+  const flaggedContainer = document.getElementById('flaggedMarkers');
+  const flagged = [];
+  for (const entry of state.labEntries) {
+    for (const m of entry.markers) {
+      const s = getMarkerStatus(m.id, m.value);
+      if (s !== 'normal') {
+        const ref = MARKER_DB[m.id];
+        flagged.push({ ...m, ref, status: s, date: entry.date });
+      }
+    }
+  }
+
+  // Deduplicate — keep latest per marker
+  const latestFlagged = {};
+  for (const f of flagged) {
+    if (!latestFlagged[f.id] || f.date > latestFlagged[f.id].date) latestFlagged[f.id] = f;
+  }
+
+  const flaggedArr = Object.values(latestFlagged);
+  if (flaggedArr.length === 0) {
+    flaggedContainer.innerHTML = '<div class="card" style="padding:20px;text-align:center;"><p style="font-size:13px;color:var(--text-muted);">No flagged markers. ' + (state.labEntries.length ? 'All within range!' : 'Upload results to begin.') + '</p></div>';
+  } else {
+    let fHtml = '<div class="card">';
+    for (const f of flaggedArr) {
+      const color = f.status === 'high' ? 'var(--danger)' : 'var(--vital)';
+      const label = f.status === 'high' ? 'HIGH' : 'LOW';
+      fHtml += `
+        <div class="marker-row">
+          <div class="marker-name">${f.ref.name}</div>
+          <div class="marker-value" style="color:${color};">${f.value} ${f.ref.unit}</div>
+          <div class="marker-range">Range: ${f.ref.min} - ${f.ref.max}</div>
+          <span class="badge" style="background:${color}20;color:${color};">${label}</span>
+        </div>`;
+    }
+    fHtml += '</div>';
+    flaggedContainer.innerHTML = fHtml;
+  }
+}
+
+function exportHistory() {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tr4nsform-health-data-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Health data exported');
+}
+
+// ═══ INIT ═══
+document.addEventListener('DOMContentLoaded', () => {
+  // Set default date
+  document.getElementById('entryDate').value = new Date().toISOString().split('T')[0];
+  refreshBodyMap();
+  renderRecentUploads();
+});
+</script>
+<script>lucide.createIcons();</script>
+
+</body>
+</html>
